@@ -1,0 +1,99 @@
+<<<<<<< HEAD
+﻿namespace ReqIFLib.Tests
+{
+    using System;
+    using System.Linq;
+=======
+﻿// -------------------------------------------------------------------------------------------------
+// <copyright file="ReqIFDeSerializerTestFixture.cs" company="RHEA S.A.">
+//   Copyright (c) 2015 RHEA S.A.
+// </copyright>
+// ------------------------------------------------------------------------------------------------
+
+namespace ReqIFLib.Tests
+{
+    using System;
+    using System.Linq;
+    using System.Xml.Schema;
+
+>>>>>>> development
+    using NUnit.Framework;
+
+    using ReqIF;
+
+    /// <summary>
+    /// Suite of tests for the <see cref="ReqIFDeSerializer"/>
+    /// </summary>
+    [TestFixture]
+    public class ReqIFDeSerializerTestFixture
+    {
+        private string xmlfilepath;
+
+        private const int AmountOfDataTypes = 7;
+        private const int AmountOfSpecTypes = 4;
+        private const int AmountOfSpecObjects = 3;
+        private const int AmountOfSpecRelations = 1;
+        private const int AmountOfSpecifications = 2;
+        private const int AmountOfSpecificationChildren = 1;
+        private const int AmountOfSpecificationSubChildren = 2;
+        private const int AmountOfSpecRelationGroups = 1;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.xmlfilepath = "output.xml";
+        }
+
+        [Test]
+        public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWitouthValidation()
+        {
+            var deserializer = new ReqIFDeserializer();
+            var reqIf = deserializer.Deserialize(this.xmlfilepath);
+
+            Assert.AreEqual("en", reqIf.Lang);
+
+            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
+
+            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
+            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+        }
+
+        [Test]
+        public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
+        {
+            var deserializer = new ReqIFDeserializer();
+            var reqIf = deserializer.Deserialize(this.xmlfilepath, true, this.ValidationEventHandler);
+
+            Assert.AreEqual("en", reqIf.Lang);
+
+            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
+
+            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
+            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+        }
+
+        /// <summary>
+        /// Validation Event Handler
+        /// </summary>
+        /// <param name="sender">
+        /// The sender of the event
+        /// </param>
+        /// <param name="validationEventArgs">
+        /// The event handler arguments
+        /// </param>
+        private void ValidationEventHandler(object sender, ValidationEventArgs validationEventArgs)
+        {
+            throw validationEventArgs.Exception;
+        }
+    }
+}

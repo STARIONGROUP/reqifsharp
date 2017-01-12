@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CBA3678F-B574-4EDF-A217-B6A609966FA0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ReqIFSharp</RootNamespace>
+    <AssemblyName>ReqIFSharp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AccessControlledElement.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinition.cs" />
+    <Compile Include="IReqIFDeSerializer.cs" />
+    <Compile Include="ReqIFDeserializer.cs" />
+    <Compile Include="ReqIfFactory.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionReal.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionString.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionInteger.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionDate.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionBoolean.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionXHTML.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionEnumeration.cs" />
+    <Compile Include="AttributeDefinition\AttributeDefinitionSimple.cs" />
+    <Compile Include="AttributeValue\AttributeValue.cs" />
+    <Compile Include="AttributeValue\AttributeValueString.cs" />
+    <Compile Include="AttributeValue\AttributeValueReal.cs" />
+    <Compile Include="AttributeValue\AttributeValueInteger.cs" />
+    <Compile Include="AttributeValue\AttributeValueDate.cs" />
+    <Compile Include="AttributeValue\AttributeValueBoolean.cs" />
+    <Compile Include="AttributeValue\AttributeValueXHTML.cs" />
+    <Compile Include="AttributeValue\AttributeValueEnumeration.cs" />
+    <Compile Include="AttributeValue\AttributeValueSimple.cs" />
+    <Compile Include="Datatype\DatatypeDefinition.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionString.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionReal.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionInteger.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionDate.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionBoolean.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionXHTML.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionEnumeration.cs" />
+    <Compile Include="Datatype\DatatypeDefinitionSimple.cs" />
+    <Compile Include="Datatype\EmbeddedValue.cs" />
+    <Compile Include="Datatype\EnumValue.cs" />
+    <Compile Include="IReqIFSerializer.cs" />
+    <Compile Include="AlternativeID.cs" />
+    <Compile Include="Identifiable.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReqIF.cs" />
+    <Compile Include="ReqIFContent.cs" />
+    <Compile Include="ReqIFSerializer.cs" />
+    <Compile Include="ReqIFHeader.cs" />
+    <Compile Include="ReqIFToolExtension.cs" />
+    <Compile Include="SpecElementWithAttributes\SpecElementWithAttributes.cs" />
+    <Compile Include="SpecElementWithAttributes\RelationGroup.cs" />
+    <Compile Include="SpecElementWithAttributes\SpecHierarchy.cs" />
+    <Compile Include="SpecElementWithAttributes\SpecRelation.cs" />
+    <Compile Include="SpecElementWithAttributes\SpecObject.cs" />
+    <Compile Include="SpecElementWithAttributes\Specification.cs" />
+    <Compile Include="SpecType\RelationGroupType.cs" />
+    <Compile Include="SpecType\SpecRelationType.cs" />
+    <Compile Include="SpecType\SpecObjectType.cs" />
+    <Compile Include="SpecType\SpecificationType.cs" />
+    <Compile Include="SpecType\SpecType.cs" />
+    <Compile Include="ReqIfSchemaResolver.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\driver.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\reqif.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-attribs-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-blkphras-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-blkpres-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-blkstruct-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-datatypes-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-edit-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-framework-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-hypertext-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-inlphras-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-inlpres-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-inlstruct-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-inlstyle-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-list-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-object-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-param-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-pres-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-table-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xhtml-text-1.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\xml.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
