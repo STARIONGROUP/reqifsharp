@@ -133,7 +133,12 @@ namespace ReqIFSharp
                 var subtree = reader.ReadSubtree();
                 subtree.MoveToContent();
 
-                this.DeserializeSpecification(subtree);
+                if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                {
+                    var reference = reader.ReadElementContentAsString();
+                    var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
+                    this.SourceSpecification = specification;
+                }
             }
 
             if (reader.MoveToContent() == XmlNodeType.Element && reader.Name == "TARGET-SPECIFICATION")
@@ -141,7 +146,12 @@ namespace ReqIFSharp
                 var subtree = reader.ReadSubtree();
                 subtree.MoveToContent();
 
-                this.DeserializeSpecification(subtree);
+                if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                {
+                    var reference = reader.ReadElementContentAsString();
+                    var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
+                    this.TargetSpecification = specification;
+                }
             }
 
             if (reader.MoveToContent() == XmlNodeType.Element && reader.Name == "SPEC-RELATIONS")
@@ -182,23 +192,7 @@ namespace ReqIFSharp
         {
             throw new InvalidOperationException("RelationGroup does not have a hierarchy");
         }
-
-        /// <summary>
-        /// Deserialize the <see cref="Specification"/> contained by the <code>SOURCE-SPECIFICATION</code> and <code>TARGET-SPECIFICATION</code> element
-        /// </summary>
-        /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
-        /// </param>
-        private void DeserializeSpecification(XmlReader reader)
-        {
-            if (reader.ReadToDescendant("SPECIFICATION-REF"))
-            {
-                var reference = reader.ReadElementContentAsString();
-                var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                this.SourceSpecification = specification;
-            }
-        }
-
+        
         /// <summary>
         /// Deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
         /// </summary>
