@@ -68,6 +68,7 @@
     <Compile Include="ReqIFLibTestFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReqIFSerializerTestFixture.cs" />
+    <Compile Include="SpecElementWithAttributesTests\RelationGroupTestFixture.cs" />
     <Compile Include="SpecElementWithAttributesTests\SpecificationTestFixture.cs" />
     <Compile Include="SpecElementWithAttributesTests\SpecObjectTestFixture.cs" />
     <Compile Include="SpecElementWithAttributesTests\SpecRelationTestFixture.cs" />

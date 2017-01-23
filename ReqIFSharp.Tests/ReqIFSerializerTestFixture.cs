@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ReqIFLibTest
+namespace ReqIFSharp.Tests
 {
     using System;
     using System.Linq;
