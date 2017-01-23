@@ -32,7 +32,7 @@ Creating NuGet package:
 	<projectUrl>https://github.com/RHEAGROUP/reqifsharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Version 1.0.1 - initial public release</releaseNotes>
+    <releaseNotes>Version 1.0.2</releaseNotes>
     <copyright>Copyright 2017 RHEA System S.A.</copyright>
     <tags>ReqIF</tags>
   </metadata>
