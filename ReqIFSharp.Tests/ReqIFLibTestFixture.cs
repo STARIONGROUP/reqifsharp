@@ -22,6 +22,7 @@ namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Xml;
     using System.Xml.Schema;
@@ -47,25 +48,28 @@ namespace ReqIFSharp.Tests
             using (var xmlreader = XmlReader.Create(@"../../test.xml"))
             {
                 var reqif = (ReqIF)this.serializer.Deserialize(xmlreader);
+                Assert.IsNotNull(reqif);
 
-                //Assert.IsNotNull(reqif);
-                //Assert.IsNotNull(reqif.TheHeader);                
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.Comment);
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.Identifier);
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.RepositoryId);
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.ReqIFToolId);
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.ReqIFVersion);
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.SourceToolId);
-                //Assert.IsNotNullOrEmpty(reqif.TheHeader.Title);
-                //Assert.IsNotNull(reqif.TheHeader.CreationTime);
+                var reqIfHeader = reqif.TheHeader.Single();
+                Assert.IsNotNull(reqIfHeader);
+                Assert.IsNotNullOrEmpty(reqIfHeader.Comment);
+                Assert.IsNotNullOrEmpty(reqIfHeader.Identifier);
+                Assert.IsNotNullOrEmpty(reqIfHeader.RepositoryId);
+                Assert.IsNotNullOrEmpty(reqIfHeader.ReqIFToolId);
+                Assert.IsNotNullOrEmpty(reqIfHeader.ReqIFVersion);
+                Assert.IsNotNullOrEmpty(reqIfHeader.SourceToolId);
+                Assert.IsNotNullOrEmpty(reqIfHeader.Title);
+                Assert.IsNotNull(reqIfHeader.CreationTime);
 
-                //Assert.IsNotNull(reqif.CoreContent);
-                //Assert.IsNotEmpty(reqif.CoreContent.DataTypes);
-                //Assert.IsNotEmpty(reqif.CoreContent.SpecObjects);
-                //Assert.IsEmpty(reqif.CoreContent.SpecRelationGroups);
-                //Assert.IsNotEmpty(reqif.CoreContent.SpecRelations);
-                //Assert.IsNotEmpty(reqif.CoreContent.SpecTypes);
-                //Assert.IsNotEmpty(reqif.CoreContent.Specifications);
+                var coreContent = reqif.CoreContent.Single();
+                Assert.IsNotNull(coreContent);
+
+                Assert.IsNotEmpty(coreContent.DataTypes);
+                Assert.IsNotEmpty(coreContent.SpecObjects);
+                Assert.IsEmpty(coreContent.SpecRelationGroups);
+                Assert.IsNotEmpty(coreContent.SpecRelations);
+                Assert.IsNotEmpty(coreContent.SpecTypes);
+                Assert.IsNotEmpty(coreContent.Specifications);
             }
         }
     }
