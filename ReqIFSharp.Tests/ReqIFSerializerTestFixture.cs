@@ -21,6 +21,7 @@
 namespace ReqIFSharp.Tests
 {
     using System;
+    using System.IO;
     using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
@@ -31,6 +32,8 @@ namespace ReqIFSharp.Tests
     internal class ReqIFSerializerTestFixture
     {
         private ReqIF reqIF;
+
+        private string resultFileUri;
 
         private const string ReqIFNamespace = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
 
@@ -51,6 +54,8 @@ namespace ReqIFSharp.Tests
         [SetUp]
         public void SetUp()
         {
+            this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.xml");
+
             this.enumdatatype_id = "enumeration";
             this.enum_value_low_id = "enumlow";
             this.enum_value_medium_id = "enummedium";
@@ -89,6 +94,12 @@ namespace ReqIFSharp.Tests
             this.CreateSpecRelations();
             this.CreateSpecifications();
             this.CreateRelationGroup();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            File.Delete(this.resultFileUri); 
         }
 
         /// <summary>
@@ -623,10 +634,10 @@ namespace ReqIFSharp.Tests
             attributeValueString.TheValue = "a string value";
             specElementWithAttributes.Values.Add(attributeValueString);
 
-            //var attributeValueXhtml = new AttributeValueXHTML();
-            //attributeValueXhtml.Definition = (AttributeDefinitionXHTML)specType.SpecAttributes.SingleOrDefault(x => x.GetType() == typeof(AttributeDefinitionXHTML));
-            //attributeValueXhtml.TheValue = this.xhtmlcontent;
-            //specElementWithAttributes.Values.Add(attributeValueXhtml);
+            var attributeValueXhtml = new AttributeValueXHTML();
+            attributeValueXhtml.Definition = (AttributeDefinitionXHTML)specType.SpecAttributes.SingleOrDefault(x => x.GetType() == typeof(AttributeDefinitionXHTML));
+            attributeValueXhtml.TheValue = this.xhtmlcontent;
+            specElementWithAttributes.Values.Add(attributeValueXhtml);
         }
 
         /// <summary>
@@ -654,5 +665,35 @@ namespace ReqIFSharp.Tests
                 xmlSerializer.Serialize(writer, this.reqIF);
             }
         }
+
+        [Test]
+        public void VerifyThatArgumentExceptionIsRaisedOnSerialize()
+        {
+            var serializer = new ReqIFSerializer(false);
+            
+            Assert.That(
+                () => serializer.Serialize(null, null, null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                .With.Message.EqualTo("The reqIf object cannot be null.\r\nParameter name: reqIf"));
+
+            Assert.That(
+                () => serializer.Serialize(this.reqIF, null, null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                .With.Message.EqualTo("The path of the file cannot be null.\r\nParameter name: fileUri"));
+
+            Assert.That(
+                () => serializer.Serialize(this.reqIF, string.Empty, null),
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
+                .With.Message.EqualTo("The path of the file cannot be empty.\r\nParameter name: fileUri"));
+        }
+
+        [Test]
+        public void VerifyThatTheReqIfSerializerSerializesaReqIfDocumentWithoutValidation()
+        {
+            var serializer = new ReqIFSerializer(false);
+            serializer.Serialize(this.reqIF, this.resultFileUri , null);
+
+            Assert.IsTrue(File.Exists(this.resultFileUri));
+        }        
     }
 }
