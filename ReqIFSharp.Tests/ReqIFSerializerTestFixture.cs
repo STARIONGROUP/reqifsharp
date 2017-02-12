@@ -659,8 +659,10 @@ namespace ReqIFSharp.Tests
         public void VerifyThatClassesCanBeSerialized()
         {
             var xmlSerializer = new XmlSerializer(typeof(ReqIF), ReqIFNamespace);
-            
-            using (var writer = XmlWriter.Create(@"../../output.xml", new XmlWriterSettings { Indent = true }))
+
+            var output = Path.Combine(TestContext.CurrentContext.TestDirectory, "output.xml");
+
+            using (var writer = XmlWriter.Create(output, new XmlWriterSettings { Indent = true }))
             {
                 xmlSerializer.Serialize(writer, this.reqIF);
             }
