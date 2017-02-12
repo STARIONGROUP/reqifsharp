@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Tests
 {
+    using System.IO;
     using System.Linq;
     using System.Xml.Schema;
     using NUnit.Framework;
@@ -45,7 +46,7 @@ namespace ReqIFSharp.Tests
         [SetUp]
         public void SetUp()
         {
-            this.xmlfilepath = "output.xml";
+            this.xmlfilepath = Path.Combine(TestContext.CurrentContext.TestDirectory, "output.xml");
         }
 
         [Test]

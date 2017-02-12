@@ -660,12 +660,14 @@ namespace ReqIFSharp.Tests
         {
             var xmlSerializer = new XmlSerializer(typeof(ReqIF), ReqIFNamespace);
 
-            var output = Path.Combine(TestContext.CurrentContext.TestDirectory, "output.xml");
+            var generatedOutput = Path.Combine(TestContext.CurrentContext.TestDirectory, "generatedoutput.xml");
 
-            using (var writer = XmlWriter.Create(output, new XmlWriterSettings { Indent = true }))
+            using (var writer = XmlWriter.Create(generatedOutput, new XmlWriterSettings { Indent = true }))
             {
                 xmlSerializer.Serialize(writer, this.reqIF);
             }
+
+            File.Delete(generatedOutput);
         }
 
         [Test]
@@ -676,17 +678,17 @@ namespace ReqIFSharp.Tests
             Assert.That(
                 () => serializer.Serialize(null, null, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                .With.Message.EqualTo("The reqIf object cannot be null.\r\nParameter name: reqIf"));
+                .With.Message.ContainsSubstring("The reqIf object cannot be null."));
 
             Assert.That(
                 () => serializer.Serialize(this.reqIF, null, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                .With.Message.EqualTo("The path of the file cannot be null.\r\nParameter name: fileUri"));
+                .With.Message.ContainsSubstring("The path of the file cannot be null."));
 
             Assert.That(
                 () => serializer.Serialize(this.reqIF, string.Empty, null),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
-                .With.Message.EqualTo("The path of the file cannot be empty.\r\nParameter name: fileUri"));
+                .With.Message.ContainsSubstring("The path of the file cannot be empty."));
         }
 
         [Test]
