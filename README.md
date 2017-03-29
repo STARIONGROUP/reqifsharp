@@ -1,6 +1,16 @@
 # reqifsharp
-A C# library for reading and writing reqif documents
 
+A C# library for reading and writing ReqIF documents.
+
+## Installation
+
+The package is available on Nuget at https://www.nuget.org/packages/ReqIFSharp/
+
+[![NuGet Stats](https://img.shields.io/badge/nuget-v1.0.2-blue.svg)](https://www.nuget.org/packages/ReqIFSharp/)
+
+## Build Status
+
+Travis CI is used to build and test the library
 
 Branch | Build Status
 ------- | :------------
