@@ -109,31 +109,40 @@ namespace ReqIFSharp
         /// </param>
         public override void ReadXml(XmlReader reader)
         {
-            var value = reader["THE-VALUE"];
-            this.TheValue = value;
-
-            while (reader.Read())
+            var isimplified = reader["IS-SIMPLIFIED"];
+            if (!string.IsNullOrEmpty(isimplified))
             {
-                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-XHTML-REF"))
-                {
-                    var reference = reader.ReadElementContentAsString();
+                this.IsSimplified = bool.Parse(isimplified);
+            }
 
-                    AttributeDefinitionXHTML attributeDefinitionXhtml = null;
-                    foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (subtree.Read())
+                {
+                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
                     {
-                        foreach (var attributeDefinition in specType.SpecAttributes)
+                        var reference = reader.ReadElementContentAsString();
+
+                        AttributeDefinitionXHTML attributeDefinitionXhtml = null;
+                        foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
                         {
-                            if (attributeDefinition.Identifier == reference)
+                            foreach (var attributeDefinition in specType.SpecAttributes)
                             {
-                                attributeDefinitionXhtml = (AttributeDefinitionXHTML)attributeDefinition;
-                                break;
+                                if (attributeDefinition.Identifier == reference)
+                                {
+                                    attributeDefinitionXhtml = (AttributeDefinitionXHTML)attributeDefinition;
+                                    break;
+                                }
                             }
                         }
+
+                        this.Definition = attributeDefinitionXhtml;
                     }
 
-                    this.Definition = attributeDefinitionXhtml;
-
-                    break;
+                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")
+                    {
+                        this.TheValue = subtree.ReadInnerXml().Trim();
+                    }
                 }
             }
         }

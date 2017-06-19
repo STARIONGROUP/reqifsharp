@@ -58,6 +58,11 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual("en", reqIf.Lang);
 
             var reqIfContent = reqIf.CoreContent.FirstOrDefault();
+            var firstobject = reqIfContent.SpecObjects.First();
+            var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
+            Assert.IsNotNull(xhtmlAttribute);
+            Assert.IsNotNullOrEmpty(xhtmlAttribute.TheValue);
+            Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
             Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
             Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);

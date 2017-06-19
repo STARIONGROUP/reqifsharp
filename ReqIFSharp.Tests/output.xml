@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<REQ-IF xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:lang="en" xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
+<REQ-IF xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xml:lang="en" xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" 
+        xmlns:ns2="http://www.w3.org/1999/xhtml">
   <THE-HEADER>
     <REQ-IF-HEADER IDENTIFIER="reqifheader">
       <COMMENT>this is a comment</COMMENT>
@@ -229,6 +232,14 @@
                 <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
               </DEFINITION>
             </ATTRIBUTE-VALUE-STRING>
+              <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="false">
+                  <THE-VALUE>
+                      <ns2:div>The mission duration shall not exceed 3 months from launch.</ns2:div>
+                  </THE-VALUE>
+                  <DEFINITION>
+                      <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+                  </DEFINITION>
+              </ATTRIBUTE-VALUE-XHTML>
           </VALUES>
           <TYPE>
             <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
