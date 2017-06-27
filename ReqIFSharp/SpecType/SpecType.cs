@@ -93,7 +93,7 @@ namespace ReqIFSharp
                         }
                     }
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -108,7 +108,16 @@ namespace ReqIFSharp
         private void CreateAttributeDefinition(XmlReader reader, string xmlname)
         {
             var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this);
-            attributeDefinition.ReadXml(reader);            
+            if (attributeDefinition == null)
+            {
+                return;
+            }
+
+            using (var attributeDefTree = reader.ReadSubtree())
+            {
+                attributeDefTree.MoveToContent();
+                attributeDefinition.ReadXml(attributeDefTree);
+            }
         }
 
         /// <summary>

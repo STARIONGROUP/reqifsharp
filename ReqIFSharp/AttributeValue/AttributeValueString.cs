@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
     
@@ -34,6 +35,19 @@ namespace ReqIFSharp
         /// </summary>
         public AttributeValueString()
         {
+        }
+
+        /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValueString"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinitionString"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionString"/>
+        /// </remarks>
+        internal AttributeValueString(AttributeDefinitionString attributeDefinition)
+            : base(attributeDefinition)
+        {
+            this.OwningDefinition = attributeDefinition;
         }
 
         /// <summary>
@@ -106,22 +120,11 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
 
-                    AttributeDefinitionString attributeDefinitionString = null;
-                    foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
+                    this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionString>().SingleOrDefault(x => x.Identifier == reference);
+                    if (this.Definition == null)
                     {
-                        foreach (var attributeDefinition in specType.SpecAttributes)
-                        {
-                            if (attributeDefinition.Identifier == reference)
-                            {
-                                attributeDefinitionString = (AttributeDefinitionString)attributeDefinition;
-                                break;
-                            }
-                        }
+                        throw new InvalidOperationException(string.Format("The attribute-definition String {0} could not be found for the value.", reference));
                     }
-
-                    this.Definition = attributeDefinitionString;
-
-                    break;
                 }
             }
         }

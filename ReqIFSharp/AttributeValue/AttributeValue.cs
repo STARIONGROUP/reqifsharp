@@ -36,6 +36,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValue"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinition"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinition"/>
+        /// </remarks>
+        protected AttributeValue(AttributeDefinition attributeDefinition)
+        {
+            this.AttributeDefinition = attributeDefinition;
+            this.ReqIFContent = this.AttributeDefinition.SpecType.ReqIFContent;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValue"/> class.
         /// </summary>
         /// <param name="specElAt">
@@ -45,12 +58,18 @@ namespace ReqIFSharp
         {
             this.SpecElAt = specElAt;
             this.SpecElAt.Values.Add(this);
+            this.ReqIFContent = this.SpecElAt.ReqIfContent;
         }
 
         /// <summary>
         /// Gets or sets the owning <see cref="SpecElementWithAttributes"/>
         /// </summary>
         public SpecElementWithAttributes SpecElAt { get; set; }
+
+        /// <summary>
+        /// Gets the <see cref="ReqIFContent"/>
+        /// </summary>
+        protected ReqIFContent ReqIFContent { get; private set; }
 
         /// <summary>
         /// Gets or sets the <see cref="AttributeDefinition"/>

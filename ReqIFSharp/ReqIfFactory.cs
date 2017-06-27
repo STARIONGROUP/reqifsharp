@@ -111,7 +111,7 @@ namespace ReqIFSharp
                 case "ATTRIBUTE-DEFINITION-XHTML":
                     return new AttributeDefinitionXHTML(specType);
                 default:
-                    throw new ArgumentException(string.Format("{0} is not a vaild AttributeDefinition name", xmlname));
+                    return null;
             }
         }
 

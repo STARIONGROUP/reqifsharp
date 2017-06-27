@@ -45,13 +45,12 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void VerifyThatUnkownElementAttributeDefinitionThrowsArgumentException()
         {
             var spectType = new SpecObjectType();
 
             string unknownName = "RHEA";
-            Assert.IsInstanceOf<AttributeDefinition>(ReqIfFactory.AttributeDefinitionConstruct(unknownName, spectType));
+            Assert.IsNull(ReqIfFactory.AttributeDefinitionConstruct(unknownName, spectType));
         }
 
         [Test]

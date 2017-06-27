@@ -123,14 +123,23 @@ namespace ReqIFSharp
                     alternativeId.ReadXml(reader);
                 }
 
-                if (reader.ReadToDescendant("DATATYPE-DEFINITION-ENUMERATION-REF"))
+                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DATATYPE-DEFINITION-ENUMERATION-REF")
                 {
                     var reference = reader.ReadElementContentAsString();
 
                     var datatypeDefinition = (DatatypeDefinitionEnumeration)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                     this.Type = datatypeDefinition;
+                }
 
-                    break;
+                // read the default value if any
+                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-ENUMERATION")
+                {
+                    this.DefaultValue = new AttributeValueEnumeration(this);
+                    using (var valuesubtree = reader.ReadSubtree())
+                    {
+                        valuesubtree.MoveToContent();
+                        this.DefaultValue.ReadXml(valuesubtree);
+                    }
                 }
             }
         }

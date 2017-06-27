@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
     
@@ -34,6 +35,19 @@ namespace ReqIFSharp
         /// </summary>
         public AttributeValueBoolean()
         {
+        }
+
+        /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValueBoolean"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinitionBoolean"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionBoolean"/>
+        /// </remarks>
+        internal AttributeValueBoolean(AttributeDefinitionBoolean attributeDefinition)
+            : base(attributeDefinition)
+        {
+            this.OwningDefinition = attributeDefinition;
         }
 
         /// <summary>
@@ -106,22 +120,11 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
 
-                    AttributeDefinitionBoolean attributeDefinitionBoolean = null;
-                    foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
+                    this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionBoolean>().SingleOrDefault(x => x.Identifier == reference);
+                    if (this.Definition == null)
                     {
-                        foreach (var attributeDefinition in specType.SpecAttributes)
-                        {
-                            if (attributeDefinition.Identifier == reference)
-                            {
-                                attributeDefinitionBoolean = (AttributeDefinitionBoolean)attributeDefinition;
-                                break;
-                            }
-                        }
+                        throw new InvalidOperationException(string.Format("The attribute-definition Boolean {0} could not be found for the value.", reference));
                     }
-
-                    this.Definition = attributeDefinitionBoolean;
-
-                    break;
                 }
             }
         }

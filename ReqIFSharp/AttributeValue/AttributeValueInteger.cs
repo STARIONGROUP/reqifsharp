@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System;
     using System.Globalization;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
 
@@ -35,6 +36,19 @@ namespace ReqIFSharp
         /// </summary>
         public AttributeValueInteger()
         {
+        }
+
+        /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValueInteger"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinitionInteger"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionInteger"/>
+        /// </remarks>
+        internal AttributeValueInteger(AttributeDefinitionInteger attributeDefinition)
+            : base(attributeDefinition)
+        {
+            this.OwningDefinition = attributeDefinition;
         }
 
         /// <summary>
@@ -107,22 +121,11 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
 
-                    AttributeDefinitionInteger attributeDefinitionInteger = null;
-                    foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
+                    this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionInteger>().SingleOrDefault(x => x.Identifier == reference);
+                    if (this.Definition == null)
                     {
-                        foreach (var attributeDefinition in specType.SpecAttributes)
-                        {
-                            if (attributeDefinition.Identifier == reference)
-                            {
-                                attributeDefinitionInteger = (AttributeDefinitionInteger)attributeDefinition;
-                                break;
-                            }
-                        }
+                        throw new InvalidOperationException(string.Format("The attribute-definition XHTML {0} could not be found for the value.", reference));
                     }
-
-                    this.Definition = attributeDefinitionInteger;
-
-                    break;
                 }
             }
         }

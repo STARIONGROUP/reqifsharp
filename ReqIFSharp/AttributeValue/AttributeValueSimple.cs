@@ -33,6 +33,18 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValueSimple"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinitionSimple"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionSimple"/>
+        /// </remarks>
+        internal AttributeValueSimple(AttributeDefinitionSimple attributeDefinition)
+            : base(attributeDefinition)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueSimple"/> class.
         /// </summary>
         /// <param name="specElAt">

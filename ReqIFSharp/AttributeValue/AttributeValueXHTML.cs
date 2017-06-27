@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
     
@@ -50,6 +51,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValueXHTML"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinitionXHTML"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionXHTML"/>
+        /// </remarks>
+        internal AttributeValueXHTML(AttributeDefinitionXHTML attributeDefinition)
+            : base(attributeDefinition)
+        {
+            this.OwningDefinition = attributeDefinition;
+        }
+
+        /// <summary>
         /// Gets or sets the XHTML Content
         /// </summary>
         public string TheValue { get; set; }
@@ -63,6 +77,11 @@ namespace ReqIFSharp
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.
         /// </summary>
         public AttributeDefinitionXHTML Definition { get; set; }
+
+        /// <summary>
+        /// Gets or sets the owning attribute definition.
+        /// </summary>
+        public AttributeDefinitionXHTML OwningDefinition { get; set; }
 
         /// <summary>
         /// Gets the <see cref="AttributeDefinition "/>
@@ -122,21 +141,11 @@ namespace ReqIFSharp
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
                     {
                         var reference = reader.ReadElementContentAsString();
-
-                        AttributeDefinitionXHTML attributeDefinitionXhtml = null;
-                        foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
+                        this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionXHTML>().SingleOrDefault(x => x.Identifier == reference);
+                        if (this.Definition == null)
                         {
-                            foreach (var attributeDefinition in specType.SpecAttributes)
-                            {
-                                if (attributeDefinition.Identifier == reference)
-                                {
-                                    attributeDefinitionXhtml = (AttributeDefinitionXHTML)attributeDefinition;
-                                    break;
-                                }
-                            }
+                            throw new InvalidOperationException(string.Format("The attribute-definition XHTML {0} could not be found for the value.", reference));
                         }
-
-                        this.Definition = attributeDefinitionXhtml;
                     }
 
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")

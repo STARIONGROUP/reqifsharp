@@ -39,6 +39,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Instantiated a new instance of the <see cref="AttributeValueEnumeration"/> class
+        /// </summary>
+        /// <param name="attributeDefinition">The <see cref="AttributeDefinitionEnumeration"/> for which this is the default value</param>
+        /// <remarks>
+        /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionEnumeration"/>
+        /// </remarks>
+        internal AttributeValueEnumeration(AttributeDefinitionEnumeration attributeDefinition)
+            : base(attributeDefinition)
+        {
+            this.OwningDefinition = attributeDefinition;
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueEnumeration"/> class.
         /// </summary>
         /// <param name="specElAt">
@@ -117,39 +130,21 @@ namespace ReqIFSharp
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-ENUMERATION-REF")
                     {
                         var reference = reader.ReadElementContentAsString();
-                        AttributeDefinitionEnumeration attributeDefinitionEnumeration = null;
 
-                        foreach (var specType in this.SpecElAt.ReqIfContent.SpecTypes)
+                        this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionEnumeration>().SingleOrDefault(x => x.Identifier == reference);
+                        if (this.Definition == null)
                         {
-                            foreach (var attributeDefinition in specType.SpecAttributes)
-                            {
-                                if (attributeDefinition.Identifier == reference)
-                                {
-                                    attributeDefinitionEnumeration = (AttributeDefinitionEnumeration)attributeDefinition;
-                                    this.Definition = attributeDefinitionEnumeration;                                    
-                                }
-
-                                if (this.Definition != null)
-                                {
-                                    break;
-                                }
-                            }
-
-                            if (this.Definition != null)
-                            {
-                                break;
-                            }
+                            throw new InvalidOperationException(string.Format("The attribute-definition Enumeration {0} could not be found for the value.", reference));
                         }
                     }
 
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE-REF")
                     {
                         var reference = reader.ReadElementContentAsString();
-                        
-                        var specTypes = this.SpecElAt.ReqIfContent.DataTypes.OfType<DatatypeDefinitionEnumeration>();
-                        foreach (var datatypeDefinitionEnumeration in specTypes)
+
+                        var enumValue = this.ReqIFContent.DataTypes.OfType<DatatypeDefinitionEnumeration>().SelectMany(x => x.SpecifiedValues).SingleOrDefault(x => x.Identifier == reference);
+                        if (enumValue != null)
                         {
-                            var enumValue = datatypeDefinitionEnumeration.SpecifiedValues.SingleOrDefault(x => x.Identifier == reference);
                             this.values.Add(enumValue);
                         }
                     }

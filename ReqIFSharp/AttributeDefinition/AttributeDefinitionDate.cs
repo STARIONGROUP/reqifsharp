@@ -110,14 +110,19 @@ namespace ReqIFSharp
                     alternativeId.ReadXml(reader);
                 }
 
-                if (reader.ReadToDescendant("DATATYPE-DEFINITION-DATE-REF"))
+                // read the default value if any
+                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-DATE")
+                {
+                    this.DefaultValue = new AttributeValueDate(this);
+                    this.DefaultValue.ReadXml(reader.ReadSubtree());
+                }
+
+                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DATATYPE-DEFINITION-DATE-REF")
                 {
                     var reference = reader.ReadElementContentAsString();
 
                     var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                     this.Type = datatypeDefinition;
-
-                    break;
                 }
             }
         }
