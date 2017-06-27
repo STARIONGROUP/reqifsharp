@@ -32,7 +32,7 @@ Creating NuGet package:
 	<projectUrl>https://github.com/RHEAGROUP/reqifsharp</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Version 1.0.3 - Fix XHTML attribute value</releaseNotes>
+    <releaseNotes>Version 1.0.4 - Fix processing of default values of attributes</releaseNotes>
     <copyright>Copyright 2017 RHEA System S.A.</copyright>
     <tags>ReqIF</tags>
   </metadata>
