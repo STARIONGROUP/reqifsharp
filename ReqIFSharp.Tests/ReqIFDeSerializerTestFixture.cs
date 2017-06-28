@@ -46,7 +46,7 @@ namespace ReqIFSharp.Tests
         [SetUp]
         public void SetUp()
         {
-            this.xmlfilepath = Path.Combine(TestContext.CurrentContext.TestDirectory, "_Basic_ReqIF_Exchange.reqif");
+            this.xmlfilepath = Path.Combine(TestContext.CurrentContext.TestDirectory, "output.xml");
         }
 
         [Test]
