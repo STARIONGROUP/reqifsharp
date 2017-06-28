@@ -114,7 +114,11 @@ namespace ReqIFSharp
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-DATE")
                 {
                     this.DefaultValue = new AttributeValueDate(this);
-                    this.DefaultValue.ReadXml(reader.ReadSubtree());
+                    using (var valuesubtree = reader.ReadSubtree())
+                    {
+                        valuesubtree.MoveToContent();
+                        this.DefaultValue.ReadXml(valuesubtree);
+                    }
                 }
 
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DATATYPE-DEFINITION-DATE-REF")

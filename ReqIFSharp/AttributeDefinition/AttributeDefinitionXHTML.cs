@@ -122,7 +122,11 @@ namespace ReqIFSharp
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-XHTML")
                 {
                     this.DefaultValue = new AttributeValueXHTML(this);
-                    this.DefaultValue.ReadXml(reader.ReadSubtree());
+                    using (var valuesubtree = reader.ReadSubtree())
+                    {
+                        valuesubtree.MoveToContent();
+                        this.DefaultValue.ReadXml(valuesubtree);
+                    }
                 }
             }
         }

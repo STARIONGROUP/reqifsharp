@@ -122,7 +122,11 @@ namespace ReqIFSharp
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-INTEGER")
                 {
                     this.DefaultValue = new AttributeValueInteger(this);
-                    this.DefaultValue.ReadXml(reader.ReadSubtree());
+                    using (var valuesubtree = reader.ReadSubtree())
+                    {
+                        valuesubtree.MoveToContent();
+                        this.DefaultValue.ReadXml(valuesubtree);
+                    }
                 }
             }
         }
