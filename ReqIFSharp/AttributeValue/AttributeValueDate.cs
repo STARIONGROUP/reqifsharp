@@ -142,7 +142,7 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException(string.Format("The Definition property of an AttributeValueDate may not be null"));
+                throw new SerializationException("The Definition property of an AttributeValueDate may not be null");
             }
 
             writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString("o"));

@@ -20,8 +20,6 @@
 
 namespace ReqIFSharp
 {
-    using System;
-    using System.Runtime.Serialization;
     using System.Xml;
     using System.Xml.Serialization;
 

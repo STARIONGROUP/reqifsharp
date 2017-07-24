@@ -20,8 +20,6 @@
 
 namespace ReqIFSharp
 {
-    using System;
-    using System.Globalization;
     using System.Xml;
     
     /// <summary>

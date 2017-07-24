@@ -20,8 +20,6 @@
 
 namespace ReqIFSharp
 {
-    using System.Xml;
-
     /// <summary>
     /// The <see cref="AttributeDefinition"/> is the base class for attribute definitions.
     /// </summary>

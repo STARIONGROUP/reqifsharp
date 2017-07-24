@@ -104,7 +104,7 @@ namespace ReqIFSharp
         {
             if (string.IsNullOrEmpty(this.Identifier))
             {
-                throw new SerializationException(string.Format("The Identifier property of an Identifiable may not be null"));
+                throw new SerializationException("The Identifier property of an Identifiable may not be null");
             }
 
             if (!string.IsNullOrEmpty(this.Description))

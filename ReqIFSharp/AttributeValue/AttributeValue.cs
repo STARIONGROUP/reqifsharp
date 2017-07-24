@@ -36,9 +36,11 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Instantiated a new instance of the <see cref="AttributeValue"/> class
+        /// Initializes a new instance of the <see cref="AttributeValue"/> class.         
         /// </summary>
-        /// <param name="attributeDefinition">The <see cref="AttributeDefinition"/> for which this is the default value</param>
+        /// <param name="attributeDefinition">
+        /// The <see cref="AttributeDefinition"/> for which this is the default value
+        /// </param>
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinition"/>
         /// </remarks>
