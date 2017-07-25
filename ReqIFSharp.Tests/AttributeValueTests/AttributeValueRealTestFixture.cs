@@ -62,14 +62,13 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
         {
             var attributeDefinitionString = new AttributeDefinitionString();
             var attributeValueReal = new AttributeValueReal();
             var attributeValue = (AttributeValue)attributeValueReal;
 
-            attributeValue.AttributeDefinition = attributeDefinitionString;
+            Assert.Throws<ArgumentException>(() => attributeValue.AttributeDefinition = attributeDefinitionString);
         }
     }
 }

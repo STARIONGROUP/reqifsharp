@@ -51,15 +51,14 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(datatypeDefinitionBoolean, attributeDefinition.DatatypeDefinition);
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]        
         public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
         {
             var datatypeDefinitionString = new DatatypeDefinitionString();
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
             var attributeDefinition = (AttributeDefinition)attributeDefinitionBoolean;
 
-            attributeDefinition.DatatypeDefinition = datatypeDefinitionString;
+            Assert.Throws<ArgumentException>(() => attributeDefinition.DatatypeDefinition = datatypeDefinitionString) ;
         }
 
         [Test]

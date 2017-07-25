@@ -45,20 +45,37 @@ namespace ReqIFSharp.Tests
         [Test]
         public void VerifyThatReqIfObjectIsCreatedCorrectly()
         {
-            using (var xmlreader = XmlReader.Create(@"../../test.xml"))
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.xml");
+
+            using (var xmlreader = XmlReader.Create(path))
             {
                 var reqif = (ReqIF)this.serializer.Deserialize(xmlreader);
                 Assert.IsNotNull(reqif);
 
                 var reqIfHeader = reqif.TheHeader.Single();
                 Assert.IsNotNull(reqIfHeader);
-                Assert.IsNotNullOrEmpty(reqIfHeader.Comment);
-                Assert.IsNotNullOrEmpty(reqIfHeader.Identifier);
-                Assert.IsNotNullOrEmpty(reqIfHeader.RepositoryId);
-                Assert.IsNotNullOrEmpty(reqIfHeader.ReqIFToolId);
-                Assert.IsNotNullOrEmpty(reqIfHeader.ReqIFVersion);
-                Assert.IsNotNullOrEmpty(reqIfHeader.SourceToolId);
-                Assert.IsNotNullOrEmpty(reqIfHeader.Title);
+
+                Assert.IsNotNull(reqIfHeader.Comment);
+                Assert.IsNotEmpty(reqIfHeader.Comment);
+                
+                Assert.IsNotNull(reqIfHeader.Identifier);
+                Assert.IsNotEmpty(reqIfHeader.Identifier);
+                
+                Assert.IsNotNull(reqIfHeader.RepositoryId);
+                Assert.IsNotEmpty(reqIfHeader.RepositoryId);
+                
+                Assert.IsNotNull(reqIfHeader.ReqIFToolId);
+                Assert.IsNotEmpty(reqIfHeader.ReqIFToolId);
+                
+                Assert.IsNotNull(reqIfHeader.ReqIFVersion);
+                Assert.IsNotEmpty(reqIfHeader.ReqIFVersion);
+                
+                Assert.IsNotNull(reqIfHeader.SourceToolId);
+                Assert.IsNotEmpty(reqIfHeader.SourceToolId);
+                
+                Assert.IsNotNull(reqIfHeader.Title);
+                Assert.IsNotEmpty(reqIfHeader.Title);
+
                 Assert.IsNotNull(reqIfHeader.CreationTime);
 
                 var coreContent = reqif.CoreContent.Single();

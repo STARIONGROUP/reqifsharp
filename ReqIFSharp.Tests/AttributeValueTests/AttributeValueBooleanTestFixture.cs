@@ -52,14 +52,13 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
         {
             var attributeDefinitionString = new AttributeDefinitionString();
             var attributeValueBoolean = new AttributeValueBoolean();
             var attributeValue = (AttributeValue)attributeValueBoolean;
 
-            attributeValue.AttributeDefinition = attributeDefinitionString;
+            Assert.Throws<ArgumentException>(() => attributeValue.AttributeDefinition = attributeDefinitionString);
         }
 
         [Test]

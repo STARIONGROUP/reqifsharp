@@ -50,14 +50,13 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void VerifyThatExceptionIsThrownWhenInvalidTypeIsSet()
         {
             var relationGroupType = new RelationGroupType();
             var spectObject = new SpecObject();
             var specElementWithAttributes = (SpecElementWithAttributes)spectObject;
 
-            specElementWithAttributes.SpecType = relationGroupType;
+            Assert.Throws<ArgumentException>(() => specElementWithAttributes.SpecType = relationGroupType);
         }
     }
 }

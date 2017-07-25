@@ -52,14 +52,13 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
         {
             var datatypeDefinitionDate = new DatatypeDefinitionDate();
             var attributeDefinitionString = new AttributeDefinitionString();
             var attributeDefinition = (AttributeDefinition)attributeDefinitionString;
 
-            attributeDefinition.DatatypeDefinition = datatypeDefinitionDate;
+            Assert.Throws<ArgumentException>(() => attributeDefinition.DatatypeDefinition = datatypeDefinitionDate);
         }
 
         [Test]

@@ -67,14 +67,13 @@ namespace ReqIFSharp.Tests
             Assert.IsInstanceOf<DatatypeDefinitionXHTML>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-XHTML", reqIfContent));
         }
 
-        [Test]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]        
         public void VerifyThatUnkownElementDataTypeDefinitionThrowsArgumentException()
         {
             var reqIfContent = new ReqIFContent();
 
             string unknownName = "RHEA";
-            Assert.IsInstanceOf<DatatypeDefinition>(ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent));
+            Assert.Throws<ArgumentException>(() => ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent));
         }
 
         [Test]
@@ -92,13 +91,12 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
         public void VerifyThatUnkownElementAttributeValueThrowsArgumentException()
         {
             var specObject = new SpecObject();
 
             string unknownName = "RHEA";
-            Assert.IsInstanceOf<AttributeValue>(ReqIfFactory.AttributeValueConstruct(unknownName, specObject));
+            Assert.Throws<ArgumentException>(() => ReqIfFactory.AttributeValueConstruct(unknownName, specObject));
         }
     }
 }
