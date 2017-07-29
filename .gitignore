@@ -254,3 +254,5 @@ paket-files/
 # arcanist
 .arcconfig
 /ReqIFSharp.Tests/test.xml
+/test.xml
+/TestResult.txt
