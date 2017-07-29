@@ -19,6 +19,7 @@
 	  <PackageReleaseNotes>converted project file to VS2017 csproj file</PackageReleaseNotes>
 	  <PackageTags>ReqIF</PackageTags>
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+	  <Authors>Sam Gerene, Naron Phou</Authors>
   </PropertyGroup>
   
   <ItemGroup>

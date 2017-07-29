@@ -1,87 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props" Condition="Exists('..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" />
-  <Import Project="..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.props" Condition="Exists('..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.props')" />
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{3C405392-0B50-4023-BFB8-6F730675D856}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ReqIFSharp.Tests</RootNamespace>
-    <AssemblyName>ReqIFSharp.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
+    <TargetFramework>net45</TargetFramework>
+    <Company>RHEA System S.A.</Company>
+    <Authors>Sam Gerene, Naron Phou</Authors>
+    <Description>Nunit test suite for the ReqIFSharp library</Description>
+    <Copyright>Copyright 2017 RHEA System S.A.</Copyright>
+    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
+    <PackageIconUrl>https://reqifsharp.org/assets/images/reqifsharp-logo.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>ReqIF</PackageTags>
+    <PackageReleaseNotes>converted project file to VS2017 csproj file</PackageReleaseNotes>
+    <AssemblyVersion>1.0.6.0</AssemblyVersion>
+    <FileVersion>1.0.6.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=3.7.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.3.7.1\lib\net45\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <None Remove="driver.xsd" />
+    <None Remove="reqif.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionBooleanTestFixture.cs" />
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionDateTestFixture.cs" />
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionEnumerationTestFixture.cs" />
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionIntegerTestFixture.cs" />
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionRealTestFixture.cs" />
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionStringTestFixture.cs" />
-    <Compile Include="AttributeDefinitionTests\AttributeDefinitionXHTMLTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueBooleanTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueDateTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueEnumerationTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueIntegerTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueRealTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueStringTestFixture.cs" />
-    <Compile Include="AttributeValueTests\AttributeValueXHTMLTestFixture.cs" />
-    <Compile Include="Datatype\EmbeddedValueTestFixture.cs" />
-    <Compile Include="ReqIfSchemaResolverTestFixture.cs" />
-    <Compile Include="ReqIfFactoryTestFixture.cs" />
-    <Compile Include="ReqIFDeSerializerTestFixture.cs" />
-    <Compile Include="ReqIFLibTestFixture.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReqIFSerializerTestFixture.cs" />
-    <Compile Include="SpecElementWithAttributesTests\RelationGroupTestFixture.cs" />
-    <Compile Include="SpecElementWithAttributesTests\SpecificationTestFixture.cs" />
-    <Compile Include="SpecElementWithAttributesTests\SpecObjectTestFixture.cs" />
-    <Compile Include="SpecElementWithAttributesTests\SpecRelationTestFixture.cs" />
+    <EmbeddedResource Include="driver.xsd" />
+    <EmbeddedResource Include="reqif.xsd" />
   </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
+    <PackageReference Include="NUnit" Version="3.7.1" />
+    <PackageReference Include="NUnit.ConsoleRunner" Version="3.7.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+  </ItemGroup>  
+
   <ItemGroup>
     <ProjectReference Include="..\ReqIFSharp\ReqIFSharp.csproj">
-      <Project>{cba3678f-b574-4edf-a217-b6a609966fa0}</Project>
-      <Name>ReqIFSharp</Name>
     </ProjectReference>
+  </ItemGroup>  
+
+  <ItemGroup>
+    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+  </ItemGroup>  
+
+  <ItemGroup>
+    <None Update="output.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="testreqif.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
+
+  <!--
   <ItemGroup>
     <Content Include="manual-testing.reqif.xml" />
     <Content Include="output.xml">
@@ -110,21 +79,5 @@
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.props'))" />
-    <Error Condition="!Exists('..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.targets'))" />
-    <Error Condition="!Exists('..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit3TestAdapter.3.8.0\build\net35\NUnit3TestAdapter.props'))" />
-  </Target>
-  <Import Project="..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.targets" Condition="Exists('..\packages\Microsoft.NET.Test.Sdk.15.0.0\build\net45\Microsoft.Net.Test.Sdk.targets')" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
   -->
 </Project>
