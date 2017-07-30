@@ -10,9 +10,12 @@ The package is available on Nuget at https://www.nuget.org/packages/ReqIFSharp/
 
 ## Build Status
 
-Travis CI is used to build and test the library
+AppVeyor is used to build and test the library
 
 Branch | Build Status
 ------- | :------------
-Master |  [![Build Status](https://travis-ci.org/RHEAGROUP/reqifsharp.svg?branch=master)](https://travis-ci.org/RHEAGROUP/reqifsharp)
-Development |  [![Build Status](https://travis-ci.org/RHEAGROUP/reqifsharp.svg?branch=development)](https://travis-ci.org/RHEAGROUP/reqifsharp)
+Master |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/master?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
+Development |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/development?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
+
+
+
