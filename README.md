@@ -6,7 +6,7 @@ A C# library for reading and writing ReqIF documents. Read more about it here: h
 
 The package is available on Nuget at https://www.nuget.org/packages/ReqIFSharp/
 
-[![NuGet Stats](https://img.shields.io/badge/nuget-v1.0.5-blue.svg)](https://www.nuget.org/packages/ReqIFSharp/)
+[![NuGet Stats](https://img.shields.io/badge/nuget-v1.0.6-blue.svg)](https://www.nuget.org/packages/ReqIFSharp/)
 
 ## Build Status
 
