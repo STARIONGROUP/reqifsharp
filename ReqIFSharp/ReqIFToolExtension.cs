@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Xml;
     using System.Xml.Serialization;
-
+    
     /// <summary>
     /// The <see cref="ReqIFToolExtension"/> class allows the optional inclusion of tool-specific information into a ReqIF Exchange Document.
     /// </summary>

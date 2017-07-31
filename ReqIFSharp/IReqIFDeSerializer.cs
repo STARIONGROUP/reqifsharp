@@ -20,10 +20,17 @@
 
 namespace ReqIFSharp
 {
+    #if NETFULL
     using System.Xml.Schema;
+    #endif
 
+    /// <summary>
+    /// Specifies the <see cref="IReqIFDeSerializer"/> 
+    /// </summary>
     public interface IReqIFDeSerializer
     {
+        #if NETFULL
+
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.
         /// </summary>
@@ -40,5 +47,20 @@ namespace ReqIFSharp
         /// A fully dereferenced <see cref="ReqIF"/> object graph
         /// </returns>
         ReqIF Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
+
+        #else
+
+        /// <summary>
+        /// Deserializes a <see cref="ReqIF"/> XML document.
+        /// </summary>
+        /// <param name="xmlFilePath">
+        /// The Path of the <see cref="ReqIF"/> file to deserialize
+        /// </param>
+        /// <returns>
+        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// </returns>
+        ReqIF Deserialize(string xmlFilePath);
+        
+        #endif
     }
 }

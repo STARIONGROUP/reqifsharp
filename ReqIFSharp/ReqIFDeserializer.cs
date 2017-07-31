@@ -20,20 +20,32 @@
 
 namespace ReqIFSharp
 {
+#if NETFULL
     using System;
-    using System.IO;
+    using System.IO;    
     using System.Reflection;
     using System.Resources;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
-    
+#else
+    using System;
+    using System.IO;    
+    using System.Reflection;
+    using System.Resources;
+    using System.Xml;
+    using System.Xml.Schema;
+    using System.Xml.Serialization;    
+#endif
+
     /// <summary>
     /// The purpose of the <see cref="ReqIFDeserializer"/> is to deserialize a <see cref="ReqIF"/> XML document
     /// and to dereference it to a <see cref="ReqIF"/> complete object graph.
     /// </summary>
     public class ReqIFDeserializer : IReqIFDeSerializer
     {
+#if NETFULL
+
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.
         /// </summary>
@@ -64,6 +76,30 @@ namespace ReqIFSharp
             return validate ? this.ValidatingDeserialization(xmlFilePath, validationEventHandler) : this.NonValidatingDeserialization(xmlFilePath);
         }
 
+#else
+
+        /// <summary>
+        /// Deserializes a <see cref="ReqIF"/> XML document.
+        /// </summary>
+        /// <param name="xmlFilePath">
+        /// The Path of the <see cref="ReqIF"/> file to deserialize
+        /// </param>
+        /// <returns>
+        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// </returns>
+        public ReqIF Deserialize(string xmlFilePath)
+        {
+            if (string.IsNullOrEmpty(xmlFilePath))
+            {
+                throw new ArgumentException("The xml file path may not be null or empty");
+            }
+            
+            return this.NonValidatingDeserialization(xmlFilePath);
+        }
+
+#endif
+
+#if NETFULL
         /// <summary>
         /// Gets the <see cref="ReqIF"/> schema for the embedded resources.
         /// </summary>
@@ -95,6 +131,7 @@ namespace ReqIFSharp
 
             return XmlSchema.Read(stream, validationEventHandler);
         }
+#endif
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
@@ -107,12 +144,15 @@ namespace ReqIFSharp
         /// </returns>
         private ReqIF NonValidatingDeserialization(string xmlFilePath)
         {
+            
+
             var settings = new XmlReaderSettings();            
             var xmlReader = XmlReader.Create(xmlFilePath, settings);
             var xmlSerializer = new XmlSerializer(typeof(ReqIF));
             return (ReqIF)xmlSerializer.Deserialize(xmlReader);
         }
 
+#if NETFULL
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document with validation of the content of the document.
         /// </summary>
@@ -155,5 +195,6 @@ namespace ReqIFSharp
                 }
             }
         }
+#endif
     }
 }

@@ -24,7 +24,9 @@ namespace ReqIFSharp
     using System.Reflection;
     using System.Xml;
     using System.Xml.Schema;
-    
+
+#if NETFULL
+
     /// <summary>
     /// The purpose of the <see cref="ReqIfSchemaResolver"/> is to resolve the imported and included
     /// XML namespaces in an <see cref="XmlSchema"/>
@@ -81,4 +83,6 @@ namespace ReqIFSharp
             return stream;
         }
     }
+
+#endif
 }

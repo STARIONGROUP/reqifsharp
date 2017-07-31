@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project Sdk="Microsoft.NET.Sdk">
+ 
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
-  </PropertyGroup>
-  
-  <PropertyGroup>
-	  <Version>1.0.6.0</Version>
-	  <FileVersion>1.0.6.0</FileVersion>
+    <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
+	  <Version>2.0.0.0</Version>
+	  <FileVersion>2.0.0.0</FileVersion>
 	  <Description>ReqIF library that contains ReqIF classes and a specific serializer.</Description>
 	  <PackageId>ReqIFSharp</PackageId>
 	  <Company>RHEA System S.A.</Company>
@@ -16,11 +14,55 @@
 	  <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
 	  <RepositoryType>Git</RepositoryType>
 	  <PackageIconUrl>https://reqifsharp.org/assets/images/reqifsharp-logo.png</PackageIconUrl>
-	  <PackageReleaseNotes>converted project file to VS2017 csproj file</PackageReleaseNotes>
+	  <PackageReleaseNotes>Add support for netstandard 1.6</PackageReleaseNotes>
 	  <PackageTags>ReqIF</PackageTags>
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	  <Authors>Sam Gerene, Naron Phou</Authors>
+    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>    
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>TRACE;DEBUG;</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <IncludeSymbols>true</IncludeSymbols>
+    <DefineConstants>RELEASE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD1_6</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <DefineConstants>NET45;NETFULL</DefineConstants>
+  </PropertyGroup>
+
+  <!-- .NET 4.5 references, compilation flags and build options -->
+  <ItemGroup Condition=" '$(TargetFramework)'=='net45'">
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)'=='netstandard1.6'">
+    <PackageReference Include="System.Runtime.Serialization.Formatters">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Xml.XmlSerializer">
+      <Version>4.3.0</Version>
+    </PackageReference>
+    <PackageReference Include="System.Xml.XmlDocument">
+      <Version>4.3.0</Version>
+    </PackageReference>
+  </ItemGroup>
   
   <ItemGroup>
     <None Remove="Resources\driver.xsd" />
@@ -69,4 +111,5 @@
     <EmbeddedResource Include="Resources\xhtml-text-1.xsd" />
     <EmbeddedResource Include="Resources\xml.xsd" />
   </ItemGroup>
+
 </Project>
