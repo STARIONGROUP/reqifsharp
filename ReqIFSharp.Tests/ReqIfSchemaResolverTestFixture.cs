@@ -27,6 +27,8 @@ namespace ReqIFSharp.Tests
     using NUnit.Framework;
     using ReqIFSharp;
 
+#if NETFULL
+
     /// <summary>
     /// Suite of tests for the <see cref="ReqIfSchemaResolver"/> class
     /// </summary>
@@ -57,4 +59,6 @@ namespace ReqIFSharp.Tests
             Console.WriteLine("[" + args.Exception.GetType().ToString() + "]: " + args.Message);
         }
     }
+
+#endif
 }

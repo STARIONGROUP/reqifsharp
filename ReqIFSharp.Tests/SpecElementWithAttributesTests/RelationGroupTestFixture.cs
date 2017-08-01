@@ -21,6 +21,7 @@
 namespace ReqIFSharp.Tests
 {
     using System;
+    using System.IO;
     using System.Runtime.Serialization;
     using System.Xml;
     using NUnit.Framework;
@@ -36,33 +37,44 @@ namespace ReqIFSharp.Tests
         public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
         {
             var relationGroup = new RelationGroup();
-            
+
             // Type is not set
-            using (var writer = XmlWriter.Create("test.xml"))
+
+            using (var fs = new FileStream("test.xml", FileMode.Create))
             {
-                Assert.That(() => relationGroup.WriteXml(writer), 
-                    Throws.TypeOf<SerializationException>()
-                    .With.Message.EqualTo("The Type property of RelationGroup : may not be null"));
+                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                {
+                    Assert.That(() => relationGroup.WriteXml(writer),
+                        Throws.TypeOf<SerializationException>()
+                            .With.Message.EqualTo("The Type property of RelationGroup : may not be null"));
+                }
             }
 
             // Source specification is not set
             var relationGroupType = new RelationGroupType();
             relationGroup.Type = relationGroupType;
-            using (var writer = XmlWriter.Create("test.xml"))
+            using (var fs = new FileStream("test.xml", FileMode.Create))
             {
-                Assert.That(() => relationGroup.WriteXml(writer),
-                    Throws.TypeOf<SerializationException>()
-                    .With.Message.EqualTo("The SourceSpecification property of RelationGroup : may not be null"));
+                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                {
+                    Assert.That(() => relationGroup.WriteXml(writer),
+                        Throws.TypeOf<SerializationException>()
+                            .With.Message.EqualTo("The SourceSpecification property of RelationGroup : may not be null"));
+                }
             }
 
             // target specification is not set
             var sourceSpecification = new Specification();
             relationGroup.SourceSpecification = sourceSpecification;
-            using (var writer = XmlWriter.Create("test.xml"))
+            
+            using (var fs = new FileStream("test.xml", FileMode.Create))
             {
-                Assert.That(() => relationGroup.WriteXml(writer),
-                    Throws.TypeOf<SerializationException>()
-                    .With.Message.EqualTo("The TargetSpecification property of RelationGroup : may not be null"));
+                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                {
+                    Assert.That(() => relationGroup.WriteXml(writer),
+                        Throws.TypeOf<SerializationException>()
+                            .With.Message.EqualTo("The TargetSpecification property of RelationGroup : may not be null"));
+                }
             }
         }
 

@@ -21,6 +21,7 @@
 namespace ReqIFSharp.Tests
 {
     using System;
+    using System.IO;
     using System.Runtime.Serialization;
     using System.Text;
     using System.Xml;
@@ -63,12 +64,15 @@ namespace ReqIFSharp.Tests
 
         [Test]
         public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
-        {
-            using (var writer = XmlWriter.Create("test.xml"))
+        {       
+            using (var fs = new FileStream("test.xml", FileMode.Create))
             {
-                var attributeDefinitionDate = new AttributeDefinitionDate();
-                Assert.Throws<SerializationException>(() => attributeDefinitionDate.WriteXml(writer));
-            }            
+                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                {
+                    var attributeDefinitionDate = new AttributeDefinitionDate();
+                    Assert.Throws<SerializationException>(() => attributeDefinitionDate.WriteXml(writer));
+                }
+            }
         }
     }
 }

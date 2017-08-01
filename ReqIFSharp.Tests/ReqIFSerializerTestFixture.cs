@@ -610,7 +610,7 @@ namespace ReqIFSharp.Tests
 
             var attributeValueDate = new AttributeValueDate();
             attributeValueDate.Definition = (AttributeDefinitionDate)specType.SpecAttributes.SingleOrDefault(x => x.GetType() == typeof(AttributeDefinitionDate));
-            attributeValueDate.TheValue = XmlConvert.ToDateTime("2015-12-01"); ;
+            attributeValueDate.TheValue = XmlConvert.ToDateTime("2015-12-01", XmlDateTimeSerializationMode.Utc);
             specElementWithAttributes.Values.Add(attributeValueDate);
 
             var attributeValueEnumeration = new AttributeValueEnumeration();
@@ -661,10 +661,13 @@ namespace ReqIFSharp.Tests
             var xmlSerializer = new XmlSerializer(typeof(ReqIF), ReqIFNamespace);
 
             var generatedOutput = Path.Combine(TestContext.CurrentContext.TestDirectory, "generatedoutput.xml");
-
-            using (var writer = XmlWriter.Create(generatedOutput, new XmlWriterSettings { Indent = true }))
+            
+            using (var fs = new FileStream(generatedOutput, FileMode.Create))
             {
-                xmlSerializer.Serialize(writer, this.reqIF);
+                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                {
+                    xmlSerializer.Serialize(writer, this.reqIF);
+                }
             }
 
             File.Delete(generatedOutput);
@@ -673,6 +676,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public void VerifyThatArgumentExceptionIsRaisedOnSerialize()
         {
+
+#if NETFULL
             var serializer = new ReqIFSerializer(false);
             
             Assert.That(
@@ -689,15 +694,40 @@ namespace ReqIFSharp.Tests
                 () => serializer.Serialize(this.reqIF, string.Empty, null),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
                 .With.Message.ContainsSubstring("The path of the file cannot be empty."));
+#else
+            var serializer = new ReqIFSerializer();
+
+            Assert.That(
+                () => serializer.Serialize(null, null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.ContainsSubstring("The reqIf object cannot be null."));
+
+            Assert.That(
+                () => serializer.Serialize(this.reqIF, null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.ContainsSubstring("The path of the file cannot be null."));
+
+            Assert.That(
+                () => serializer.Serialize(this.reqIF, string.Empty),
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
+                    .With.Message.ContainsSubstring("The path of the file cannot be empty."));
+#endif
         }
 
         [Test]
         public void VerifyThatTheReqIfSerializerSerializesaReqIfDocumentWithoutValidation()
         {
+#if NETFULL
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(this.reqIF, this.resultFileUri , null);
 
             Assert.IsTrue(File.Exists(this.resultFileUri));
+#else
+            var serializer = new ReqIFSerializer();
+            serializer.Serialize(this.reqIF, this.resultFileUri);
+
+            Assert.IsTrue(File.Exists(this.resultFileUri));
+#endif
         }        
     }
 }

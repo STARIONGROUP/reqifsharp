@@ -74,6 +74,7 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
         }
 
+#if NETFULL
         [Test]
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
         {
@@ -105,5 +106,6 @@ namespace ReqIFSharp.Tests
         {
             throw validationEventArgs.Exception;
         }
+#endif
     }
 }

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net45</TargetFramework>
+    <TargetFrameworks>netcoreapp1.1;net45</TargetFrameworks>
     <Company>RHEA System S.A.</Company>
     <Authors>Sam Gerene, Naron Phou</Authors>
     <Description>Nunit test suite for the ReqIFSharp library</Description>
@@ -12,10 +12,20 @@
     <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>ReqIF</PackageTags>
-    <PackageReleaseNotes>converted project file to VS2017 csproj file</PackageReleaseNotes>
-    <AssemblyVersion>1.0.6.0</AssemblyVersion>
-    <FileVersion>1.0.6.0</FileVersion>
+    <PackageReleaseNotes>[Add] support for netstandard 1.6</PackageReleaseNotes>
+    <PackageTags>ReqIF</PackageTags>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
+    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD1_6</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
+    <DefineConstants>NET45;NETFULL</DefineConstants>
+  </PropertyGroup>
+  
   <ItemGroup>
     <None Remove="driver.xsd" />
     <None Remove="reqif.xsd" />
@@ -49,35 +59,5 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
-  <!--
-  <ItemGroup>
-    <Content Include="manual-testing.reqif.xml" />
-    <Content Include="output.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </Content>
-    <Content Include="testreqif.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="reqif.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="driver.xsd">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
-  </ItemGroup>
-  -->
+  
 </Project>
