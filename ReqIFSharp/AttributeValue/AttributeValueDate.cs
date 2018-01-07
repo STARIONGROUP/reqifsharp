@@ -67,6 +67,26 @@ namespace ReqIFSharp
         public DateTime TheValue { get; set; }
 
         /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public override object ObjectValue
+        {
+            get => this.TheValue;
+            set
+            {
+                if (!(value is DateTime datetime))
+                {
+                    throw new InvalidOperationException($"Cannot use {value} as value for this AttributeValueDate.");
+                }
+
+                this.TheValue = datetime;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the Reference to the value definition.
         /// </summary>
         public AttributeDefinitionDate Definition { get; set; }

@@ -67,6 +67,26 @@ namespace ReqIFSharp
         public bool TheValue { get; set; }
 
         /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public override object ObjectValue
+        {
+            get => this.TheValue;
+            set
+            {
+                if (!(value is bool castValue))
+                {
+                    throw new InvalidOperationException($"Cannot use {value} as value for this AttributeValueBoolean.");
+                }
+
+                this.TheValue = castValue;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets a reference to the value definition
         /// </summary>
         public AttributeDefinitionBoolean Definition { get; set; }

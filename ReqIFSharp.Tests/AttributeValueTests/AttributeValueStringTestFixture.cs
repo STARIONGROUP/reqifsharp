@@ -74,5 +74,16 @@ namespace ReqIFLib.Tests
                 }
             }
         }
+
+        [Test]
+        public void VerifyConvenienceValueProperty()
+        {
+            var attributeValue = new AttributeValueString();
+
+            var val = "test";
+            attributeValue.ObjectValue = val;
+
+            Assert.AreEqual(attributeValue.TheValue, val);
+        }
     }
 }

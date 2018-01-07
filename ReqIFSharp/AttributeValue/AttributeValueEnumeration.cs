@@ -79,6 +79,27 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public override object ObjectValue
+        {
+            get => this.Values;
+            set
+            {
+                if (!(value is IEnumerable<EnumValue> enumValues))
+                {
+                    throw new InvalidOperationException($"The value to set is not an IEnumerable<EnumValue>.");
+                }
+
+                this.values.Clear();
+                this.values.AddRange(enumValues);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.
         /// </summary>
         public AttributeDefinitionEnumeration Definition { get; set; }

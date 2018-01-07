@@ -90,6 +90,14 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public abstract object ObjectValue { get; set; }
+
+        /// <summary>
         /// Gets the <see cref="AttributeDefinition"/> from the sub class
         /// </summary>
         /// <returns>

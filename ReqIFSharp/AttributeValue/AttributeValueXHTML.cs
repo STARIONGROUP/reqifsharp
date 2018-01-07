@@ -38,7 +38,6 @@ namespace ReqIFSharp
         {
         }
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueXHTML"/> class.
         /// </summary>
@@ -72,6 +71,18 @@ namespace ReqIFSharp
         /// Gets or sets the Linkage to the original attribute value that has been saved if isSimplified is true.
         /// </summary>
         public string TheOriginalValue { get; set; }
+
+        /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public override object ObjectValue
+        {
+            get => this.TheValue;
+            set => this.TheValue = value.ToString();
+        }
 
         /// <summary>
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.

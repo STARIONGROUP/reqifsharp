@@ -81,5 +81,14 @@ namespace ReqIFSharp.Tests
             var attributeValueBoolean = new AttributeValueBoolean();
             Assert.IsNull(attributeValueBoolean.GetSchema());
         }
+
+        [Test]
+        public void VerifyConvenienceValueProperty()
+        {
+            var attributeValueBoolean = new AttributeValueBoolean();
+            attributeValueBoolean.ObjectValue = true;
+
+            Assert.IsTrue(attributeValueBoolean.TheValue);
+        }
     }
 }

@@ -67,6 +67,18 @@ namespace ReqIFSharp
         public string TheValue { get; set; }
 
         /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public override object ObjectValue
+        {
+            get => this.TheValue;
+            set => this.TheValue = value.ToString();
+        }
+
+        /// <summary>
         /// Gets or sets reference to the value definition
         /// </summary>
         public AttributeDefinitionString Definition { get; set; }

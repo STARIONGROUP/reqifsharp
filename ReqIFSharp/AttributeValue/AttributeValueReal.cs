@@ -67,6 +67,26 @@ namespace ReqIFSharp
         public double TheValue { get; set; }
 
         /// <summary>
+        /// Gets or sets the value of this <see cref="AttributeValue"/>
+        /// </summary>
+        /// <remarks>
+        /// This is a convenience property to get/set TheValue or Values in concrete implementation
+        /// </remarks>
+        public override object ObjectValue
+        {
+            get => this.TheValue;
+            set
+            {
+                if (!(value is double castValue))
+                {
+                    throw new InvalidOperationException($"Cannot use {value} as value for this AttributeValueDouble.");
+                }
+
+                this.TheValue = castValue;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the reference to the value definition
         /// </summary>
         public AttributeDefinitionReal Definition { get; set; }

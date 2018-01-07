@@ -74,5 +74,16 @@ namespace ReqIFLib.Tests
 
             Assert.Throws<ArgumentException>(() => attributeValue.AttributeDefinition = attributeDefinitionString);
         }
+
+        [Test]
+        public void VerifyConvenienceValueProperty()
+        {
+            var attributeValue = new AttributeValueReal();
+
+            var val = 3.66;
+            attributeValue.ObjectValue = val;
+
+            Assert.AreEqual(attributeValue.ObjectValue, val);
+        }
     }
 }

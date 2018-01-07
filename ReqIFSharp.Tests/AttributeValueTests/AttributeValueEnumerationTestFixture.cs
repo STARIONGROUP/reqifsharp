@@ -21,6 +21,7 @@
 namespace ReqIFLib.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Text;
@@ -73,6 +74,17 @@ namespace ReqIFLib.Tests
                     Assert.Throws<SerializationException>(() => attributeValueEnumeration.WriteXml(writer));
                 }
             }
+        }
+
+        [Test]
+        public void VerifyConvenienceValueProperty()
+        {
+            var attributeValue = new AttributeValueEnumeration();
+
+            var val = new List<EnumValue> { new EnumValue() };
+            attributeValue.ObjectValue = val;
+
+            Assert.AreEqual(attributeValue.Values.Count, 1);
         }
     }
 }

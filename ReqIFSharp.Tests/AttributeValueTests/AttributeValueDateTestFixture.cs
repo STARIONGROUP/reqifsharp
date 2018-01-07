@@ -74,5 +74,16 @@ namespace ReqIFSharp.Tests
                 }
             }
         }
+
+        [Test]
+        public void VerifyConvenienceValueProperty()
+        {
+            var attributeValue = new AttributeValueDate();
+
+            var date = DateTime.Now;
+            attributeValue.ObjectValue = date;
+
+            Assert.AreEqual(attributeValue.TheValue, date);
+        }
     }
 }
