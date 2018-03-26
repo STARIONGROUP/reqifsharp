@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml.Serialization;
 
     /// <summary>
@@ -94,5 +95,19 @@ namespace ReqIFSharp
         /// </remarks>
         [XmlAttribute(AttributeName = "lang", Form = System.Xml.Schema.XmlSchemaForm.Qualified, Namespace = "http://www.w3.org/XML/1998/namespace")]
         public string Lang { get; set; }
+
+        /// <summary>
+        /// Merge multiple <see cref="ReqIF"/> instances into one <see cref="ReqIF"/>
+        /// </summary>
+        /// <param name="reqifs">The <see cref="ReqIF"/> to merge</param>
+        /// <returns>The <see cref="ReqIF"/></returns>
+        internal static ReqIF MergeReqIf(IReadOnlyList<ReqIF> reqifs)
+        {
+            var reqif = new ReqIF();
+            reqif.TheHeader.AddRange(reqifs.SelectMany(x => x.TheHeader));
+            reqif.CoreContent.AddRange(reqifs.SelectMany(x => x.CoreContent));
+            reqif.ToolExtensions.AddRange(reqifs.SelectMany(x => x.ToolExtensions));
+            return reqif;
+        }
     }
 }

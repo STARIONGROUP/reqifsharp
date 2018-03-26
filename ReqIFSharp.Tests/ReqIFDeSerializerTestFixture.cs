@@ -46,14 +46,66 @@ namespace ReqIFSharp.Tests
         [SetUp]
         public void SetUp()
         {
-            this.xmlfilepath = Path.Combine(TestContext.CurrentContext.TestDirectory, "output.xml");
         }
 
         [Test]
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWitouthValidation()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(this.xmlfilepath);
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif"));
+
+            Assert.AreEqual("en", reqIf.Lang);
+
+            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
+            var firstobject = reqIfContent.SpecObjects.First();
+            var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
+            Assert.IsNotNull(xhtmlAttribute);
+            Assert.IsNotEmpty(xhtmlAttribute.TheValue);
+            Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
+
+            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
+            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+        }
+
+        [Test]
+        public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidation()
+        {
+            var deserializer = new ReqIFDeserializer();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz"));
+
+            Assert.IsTrue(reqIf.CoreContent.Count > 1);
+        }
+
+#if NETFULL
+        [Test]
+        public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
+        {
+            var deserializer = new ReqIFDeserializer();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif"), true, this.ValidationEventHandler);
+
+            Assert.AreEqual("en", reqIf.Lang);
+
+            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
+
+            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
+            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+        }
+
+        [Test]
+        public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidationNET()
+        {
+            var deserializer = new ReqIFDeserializer();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz"));
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -71,25 +123,6 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
             Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
             Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
-        }
-
-#if NETFULL
-        [Test]
-        public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
-        {
-            var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(this.xmlfilepath, true, this.ValidationEventHandler);
-
-            Assert.AreEqual("en", reqIf.Lang);
-
-            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
-
-            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
             Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
         }
 

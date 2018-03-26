@@ -29,7 +29,7 @@ namespace ReqIFSharp
     /// </summary>
     public interface IReqIFDeSerializer
     {
-        #if NETFULL
+#if NETFULL
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.
@@ -48,7 +48,7 @@ namespace ReqIFSharp
         /// </returns>
         ReqIF Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
 
-        #else
+#else
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.

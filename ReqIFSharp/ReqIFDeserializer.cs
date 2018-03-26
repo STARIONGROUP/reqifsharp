@@ -22,7 +22,10 @@ namespace ReqIFSharp
 {
 #if NETFULL
     using System;
-    using System.IO;    
+    using System.Collections.Generic;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
     using System.Reflection;
     using System.Resources;
     using System.Xml;
@@ -30,7 +33,10 @@ namespace ReqIFSharp
     using System.Xml.Serialization;
 #else
     using System;
-    using System.IO;    
+    using System.Collections.Generic;
+    using System.IO;
+    using System.IO.Compression;
+    using System.Linq;
     using System.Reflection;
     using System.Resources;
     using System.Xml;
@@ -97,9 +103,113 @@ namespace ReqIFSharp
             return this.NonValidatingDeserialization(xmlFilePath);
         }
 
+        /// <summary>
+        /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
+        /// </summary>
+        /// <param name="xmlFilePath">
+        ///     The Path of the <see cref="ReqIF"/> file to deserialize
+        /// </param>
+        /// <returns>
+        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// </returns>
+        private ReqIF NonValidatingDeserialization(string xmlFilePath)
+        {
+            XmlReader xmlReader;
+            var settings = new XmlReaderSettings();
+            var xmlSerializer = new XmlSerializer(typeof(ReqIF));
+
+            try
+            {
+                using (var archive = ZipFile.OpenRead(xmlFilePath))
+                {
+                    var reqifEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
+                    if (reqifEntries.Length == 0)
+                    {
+                        throw new FileNotFoundException($"No reqif file could be found in the archive.");
+                    }
+
+                    var reqifs = new List<ReqIF>();
+                    foreach (var zipArchiveEntry in reqifEntries)
+                    {
+                        using (xmlReader = XmlReader.Create(zipArchiveEntry.Open()))
+                        {
+                            reqifs.Add((ReqIF)xmlSerializer.Deserialize(xmlReader));
+                        }
+                    }
+
+                    return ReqIF.MergeReqIf(reqifs);
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is InvalidDataException || e is NotSupportedException)
+                {
+                    using (xmlReader = XmlReader.Create(xmlFilePath, settings))
+                    {
+                        return (ReqIF)xmlSerializer.Deserialize(xmlReader);
+                    }
+                }
+
+                throw;
+            }
+        }
+
 #endif
 
 #if NETFULL
+
+        /// <summary>
+        /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
+        /// </summary>
+        /// <param name="xmlFilePath">
+        ///     The Path of the <see cref="ReqIF"/> file to deserialize
+        /// </param>
+        /// <returns>
+        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// </returns>
+        private ReqIF NonValidatingDeserialization(string xmlFilePath)
+        {
+            XmlReader xmlReader;
+            var settings = new XmlReaderSettings();
+            var xmlSerializer = new XmlSerializer(typeof(ReqIF));
+
+            try
+            {
+                using (var reader = new FileStream(xmlFilePath, FileMode.Open))
+                using (var archive = new ZipArchive(reader, ZipArchiveMode.Read))
+                {
+                    var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
+                    if (reqIfEntries.Length == 0)
+                    {
+                        throw new FileNotFoundException($"No reqif file could be found in the archive.");
+                    }
+
+                    var reqifs = new List<ReqIF>();
+                    foreach (var zipArchiveEntry in reqIfEntries)
+                    {
+                        using (xmlReader = XmlReader.Create(zipArchiveEntry.Open()))
+                        {
+                            reqifs.Add((ReqIF)xmlSerializer.Deserialize(xmlReader));
+                        }
+                    }
+
+                    return ReqIF.MergeReqIf(reqifs);
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is InvalidDataException || e is NotSupportedException)
+                {
+                    using (xmlReader = XmlReader.Create(xmlFilePath, settings))
+                    {
+                        return (ReqIF)xmlSerializer.Deserialize(xmlReader);
+                    }
+                }
+
+                throw;
+            }
+        }
+
         /// <summary>
         /// Gets the <see cref="ReqIF"/> schema for the embedded resources.
         /// </summary>
@@ -131,28 +241,7 @@ namespace ReqIFSharp
 
             return XmlSchema.Read(stream, validationEventHandler);
         }
-#endif
 
-        /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
-        /// </summary>
-        /// <param name="xmlFilePath">
-        /// The Path of the <see cref="ReqIF"/> file to deserialize
-        /// </param>
-        /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
-        /// </returns>
-        private ReqIF NonValidatingDeserialization(string xmlFilePath)
-        {
-            
-
-            var settings = new XmlReaderSettings();            
-            var xmlReader = XmlReader.Create(xmlFilePath, settings);
-            var xmlSerializer = new XmlSerializer(typeof(ReqIF));
-            return (ReqIF)xmlSerializer.Deserialize(xmlReader);
-        }
-
-#if NETFULL
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document with validation of the content of the document.
         /// </summary>

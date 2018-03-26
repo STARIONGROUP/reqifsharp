@@ -52,7 +52,19 @@
   </ItemGroup>  
 
   <ItemGroup>
+    <None Update="output.reqif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="output.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="output.zip">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="test-multiple-reqif.reqifz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="testreqif.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="testreqif.xml">

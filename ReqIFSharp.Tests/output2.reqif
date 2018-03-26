@@ -1,0 +1,496 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<REQ-IF xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xml:lang="en" xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" 
+        xmlns:ns2="http://www.w3.org/1999/xhtml">
+  <THE-HEADER>
+    <REQ-IF-HEADER IDENTIFIER="reqifheader">
+      <COMMENT>this is a comment</COMMENT>
+      <CREATION-TIME>2015-12-01T00:00:00</CREATION-TIME>
+      <REPOSITORY-ID>a repos id</REPOSITORY-ID>
+      <REQ-IF-TOOL-ID>tool - CDP4</REQ-IF-TOOL-ID>
+      <REQ-IF-VERSION>1.0</REQ-IF-VERSION>
+      <SOURCE-TOOL-ID>source tool - CDP4</SOURCE-TOOL-ID>
+      <TITLE>this is a title</TITLE>
+    </REQ-IF-HEADER>
+  </THE-HEADER>
+  <CORE-CONTENT>
+    <REQ-IF-CONTENT>
+      <DATATYPES>
+        <DATATYPE-DEFINITION-BOOLEAN DESC="boolean data type definition" IDENTIFIER="boolean" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="a boolean" />
+        <DATATYPE-DEFINITION-DATE DESC="date data type definition" IDENTIFIER="DateTime" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="a date" />
+        <DATATYPE-DEFINITION-ENUMERATION DESC="enum value type definition" IDENTIFIER="enumeration" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="an enumeration">
+          <SPECIFIED-VALUES>
+            <ENUM-VALUE IDENTIFIER="enumlow" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="low">
+              <PROPERTIES>
+                <EMBEDDED-VALUE KEY="1" OTHER-CONTENT="foo" />
+              </PROPERTIES>
+            </ENUM-VALUE>
+            <ENUM-VALUE IDENTIFIER="enummedium" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="medium">
+              <PROPERTIES>
+                <EMBEDDED-VALUE KEY="2" OTHER-CONTENT="bar" />
+              </PROPERTIES>
+            </ENUM-VALUE>
+          </SPECIFIED-VALUES>
+        </DATATYPE-DEFINITION-ENUMERATION>
+        <DATATYPE-DEFINITION-INTEGER DESC="integer data type definition" IDENTIFIER="integer" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="an integer" MIN="2" MAX="6" />
+        <DATATYPE-DEFINITION-REAL DESC="real data type definition" IDENTIFIER="real" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="a real" ACCURACY="5" MIN="1" MAX="5" />
+        <DATATYPE-DEFINITION-STRING DESC="string data type definition" IDENTIFIER="string" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="a string" MAX-LENGTH="32000" />
+        <DATATYPE-DEFINITION-XHTML DESC="string data type definition" IDENTIFIER="xhtml" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="a string" />
+      </DATATYPES>
+      <SPEC-TYPES>
+        <SPEC-OBJECT-TYPE IDENTIFIER="requirement" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="Requirement Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="requirement-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="boolean attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="requirement-date-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="date attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="requirement-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="enumeration attribute" IS-EDITABLE="false" MULTI-VALUED="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="requirement-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="integer attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="requirement-real-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="real attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="requirement-string-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="string attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="requirement-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="xhtml attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPEC-OBJECT-TYPE>
+        <SPECIFICATION-TYPE IDENTIFIER="specificationtype" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="Specification Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="specification-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="boolean attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="specification-date-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="date attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="specification-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="enumeration attribute" IS-EDITABLE="false" MULTI-VALUED="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="specification-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="integer attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="specification-real-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="real attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="specification-string-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="string attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="specification-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="xhtml attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPECIFICATION-TYPE>
+        <SPEC-RELATION-TYPE IDENTIFIER="specificationrelation" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="Specification Relation Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="specificationrelation-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="boolean attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="specificationrelation-date-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="date attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="specificationrelation-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="enumeration attribute" IS-EDITABLE="false" MULTI-VALUED="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="specificationrelation-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="integer attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="specificationrelation-real-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="real attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="specificationrelation-string-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="string attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="specificationrelation-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="xhtml attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPEC-RELATION-TYPE>
+        <RELATION-GROUP-TYPE IDENTIFIER="relationgrouptype" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="Relation Group Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="relationgrouptype-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="boolean attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="relationgrouptype-date-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="date attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="relationgrouptype-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="enumeration attribute" IS-EDITABLE="false" MULTI-VALUED="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="relationgrouptype-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="integer attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="relationgrouptype-real-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="real attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="relationgrouptype-string-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="string attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="relationgrouptype-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="xhtml attribute" IS-EDITABLE="false">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </RELATION-GROUP-TYPE>
+      </SPEC-TYPES>
+      <SPEC-OBJECTS>
+        <SPEC-OBJECT IDENTIFIER="specobject_1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="spec object 1">
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>requirement-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>requirement-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>requirement-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>requirement-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>requirement-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+              <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="false">
+                  <THE-VALUE>
+                      <ns2:div>The mission duration shall not exceed 3 months from launch.</ns2:div>
+                  </THE-VALUE>
+                  <DEFINITION>
+                      <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+                  </DEFINITION>
+              </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="specobject_2" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="spec object 2">
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>requirement-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>requirement-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>requirement-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>requirement-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>requirement-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="specobject_3" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="spec object 3">
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>requirement-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>requirement-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>requirement-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>requirement-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>requirement-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+      </SPEC-OBJECTS>
+      <SPEC-RELATIONS>
+        <SPEC-RELATION IDENTIFIER="specobject_1-specobject_2" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="A relationship between spec objects">
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specificationrelation-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>specificationrelation-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specificationrelation-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>specificationrelation-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>specificationrelation-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>specificationrelation-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>specificationrelation</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+          <TARGET>
+            <SPEC-OBJECT-REF>specobject_2</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>specobject_1</SPEC-OBJECT-REF>
+          </SOURCE>
+        </SPEC-RELATION>
+      </SPEC-RELATIONS>
+      <SPECIFICATIONS>
+        <SPECIFICATION IDENTIFIER="specification-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="specification 1">
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specification-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>specification-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specification-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>specification-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>specification-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>specification-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>specificationtype</SPECIFICATION-TYPE-REF>
+          </TYPE>
+          <CHILDREN>
+            <SPEC-HIERARCHY IDENTIFIER="spec-hierarchy-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="specHierarchy 1" IS-EDITABLE="false" IS-TABLE-INTERNAL="false">
+              <OBJECT>
+                <SPEC-OBJECT-REF>specobject_1</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="spec-hierarchy-1-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="specHierarchy 1_1" IS-EDITABLE="false" IS-TABLE-INTERNAL="false">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>specobject_2</SPEC-OBJECT-REF>
+                  </OBJECT>
+                  <CHILDREN />
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="spec-hierarchy-1-2" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="specHierarchy 1_2" IS-EDITABLE="false" IS-TABLE-INTERNAL="false">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>specobject_3</SPEC-OBJECT-REF>
+                  </OBJECT>
+                  <CHILDREN />
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+          </CHILDREN>
+        </SPECIFICATION>
+        <SPECIFICATION IDENTIFIER="specification-2" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="specification 2">
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specification-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>specification-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specification-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>specification-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>specification-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>specification-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>specificationtype</SPECIFICATION-TYPE-REF>
+          </TYPE>
+        </SPECIFICATION>
+      </SPECIFICATIONS>
+      <SPEC-RELATION-GROUPS>
+        <RELATION-GROUP IDENTIFIER="relationgroup-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="relationgroup 1">
+          <TYPE>
+            <RELATION-GROUP-TYPE-REF>relationgrouptype</RELATION-GROUP-TYPE-REF>
+          </TYPE>
+          <SOURCE-SPECIFICATION>
+            <SPECIFICATION-REF>specification-1</SPECIFICATION-REF>
+          </SOURCE-SPECIFICATION>
+          <TARGET-SPECIFICATION>
+            <SPECIFICATION-REF>specification-2</SPECIFICATION-REF>
+          </TARGET-SPECIFICATION>
+        </RELATION-GROUP>
+      </SPEC-RELATION-GROUPS>
+    </REQ-IF-CONTENT>
+  </CORE-CONTENT>
+  <TOOL-EXTENSIONS />
+</REQ-IF>
