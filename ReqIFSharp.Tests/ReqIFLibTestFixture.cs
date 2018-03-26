@@ -45,7 +45,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void VerifyThatReqIfObjectIsCreatedCorrectly()
         {
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.xml");
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.reqif");
 
             using (var xmlreader = XmlReader.Create(path))
             {
