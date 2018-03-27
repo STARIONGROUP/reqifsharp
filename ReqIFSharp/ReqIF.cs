@@ -107,6 +107,7 @@ namespace ReqIFSharp
             reqif.TheHeader.AddRange(reqifs.SelectMany(x => x.TheHeader));
             reqif.CoreContent.AddRange(reqifs.SelectMany(x => x.CoreContent));
             reqif.ToolExtensions.AddRange(reqifs.SelectMany(x => x.ToolExtensions));
+            reqif.Lang = reqifs.FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Lang))?.Lang ?? string.Empty;
             return reqif;
         }
     }
