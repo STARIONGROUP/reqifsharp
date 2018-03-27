@@ -3,13 +3,13 @@
  
   <PropertyGroup>
     <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
-	  <Version>1.2.0.0</Version>	  
-    <AssemblyVersion>1.2.0.0</AssemblyVersion>
-    <FileVersion>1.2.0.0</FileVersion>
+	  <Version>1.3.0.0</Version>	  
+    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <FileVersion>1.3.0.0</FileVersion>
 	  <Description>ReqIF library that contains ReqIF classes and a specific serializer.</Description>
 	  <PackageId>ReqIFSharp</PackageId>
 	  <Company>RHEA System S.A.</Company>
-	  <Copyright>Copyright 2017 RHEA System S.A.</Copyright>
+	  <Copyright>Copyright 2017-2018 RHEA System S.A.</Copyright>
 	  <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
 	  <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
 	  <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
