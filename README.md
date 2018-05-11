@@ -6,7 +6,7 @@ A C# library for reading and writing ReqIF documents. Read more about it here: h
 
 The package is available on Nuget at https://www.nuget.org/packages/ReqIFSharp/
 
-[![NuGet Stats](https://img.shields.io/badge/nuget-v1.2.0-blue.svg)](https://www.nuget.org/packages/ReqIFSharp/)
+[![NuGet Badge](https://buildstats.info/nuget/ReqIFSharp)](https://buildstats.info/nuget/ReqIFSharp)
 
 ## Build Status
 
@@ -16,3 +16,5 @@ Branch | Build Status
 ------- | :------------
 Master |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/master?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
 Development |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/development?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
+
+[![Build history](https://buildstats.info/appveyor/chart/samatrhea/reqifsharp)](https://ci.appveyor.com/project/samatrhea/reqifsharp/history)
