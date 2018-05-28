@@ -115,6 +115,11 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
+            if (reader.GetAttribute("MULTI-VALUED") == "true")
+            {
+                this.IsMultiValued = true;
+            }
+
             while (reader.Read())
             {
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ALTERNATIVE-ID")
