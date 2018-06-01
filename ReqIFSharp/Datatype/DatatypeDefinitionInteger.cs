@@ -62,6 +62,27 @@ namespace ReqIFSharp
         public int Max { get; set; }
 
         /// <summary>
+        /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+
+            if (int.TryParse(reader.GetAttribute("MAX"), out int max))
+            {
+                this.Max = max;
+            }
+
+            if (int.TryParse(reader.GetAttribute("MIN"), out int min))
+            {
+                this.Min = min;
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">
