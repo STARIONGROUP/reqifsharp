@@ -14,8 +14,8 @@
     <PackageTags>ReqIF</PackageTags>
     <PackageReleaseNotes>[Add] support for netstandard 1.6</PackageReleaseNotes>
     <PackageTags>ReqIF</PackageTags>
-    <AssemblyVersion>1.3.0.0</AssemblyVersion>
-    <FileVersion>1.3.0.0</FileVersion>
+    <AssemblyVersion>1.3.1.0</AssemblyVersion>
+    <FileVersion>1.3.1.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
@@ -36,19 +36,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.0.0" />
-    <PackageReference Include="NUnit" Version="3.7.1" />
-    <PackageReference Include="NUnit.Console" Version="3.7.0" />
-    <PackageReference Include="NUnit3TestAdapter" Version="3.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.2" />
+    <PackageReference Include="NUnit" Version="3.10.1" />
+    <PackageReference Include="NUnit.Console" Version="3.8.0" />
+    <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
   </ItemGroup>  
 
   <ItemGroup>
     <ProjectReference Include="..\ReqIFSharp\ReqIFSharp.csproj">
     </ProjectReference>
-  </ItemGroup>  
-
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
   </ItemGroup>  
 
   <ItemGroup>
