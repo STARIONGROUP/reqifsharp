@@ -20,80 +20,81 @@
 
 namespace ReqIFSharp
 {
-    using System.Globalization;
-    using System.Xml;
+	using System.Xml;
 
-    /// <summary>
-    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="int"/> data type
-    /// </summary>
-    /// <remarks>
-    /// This element defines a data type for the representation of Integer data values in the Exchange Document.
-    /// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
-    /// </remarks>
-    public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
-        /// </summary>
-        public DatatypeDefinitionInteger()
-        {
-        }
+	/// <summary>
+	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="int"/> data type
+	/// </summary>
+	/// <remarks>
+	/// This element defines a data type for the representation of Integer data values in the Exchange Document.
+	/// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
+	/// </remarks>
+	public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
+		/// </summary>
+		public DatatypeDefinitionInteger()
+		{
+		}
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
-        /// </summary>
-        /// <param name="reqIfContent">
-        /// The owning <see cref="reqIfContent"/>
-        /// </param>
-        internal DatatypeDefinitionInteger(ReqIFContent reqIfContent) 
-            : base(reqIfContent)            
-        {
-            this.ReqIFContent = reqIfContent;
-        }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
+		/// </summary>
+		/// <param name="reqIfContent">
+		/// The owning <see cref="reqIfContent"/>
+		/// </param>
+		internal DatatypeDefinitionInteger( ReqIFContent reqIfContent )
+			: base( reqIfContent )
+		{
+			this.ReqIFContent = reqIfContent;
+		}
 
-        /// <summary>
-        /// Gets or sets a value that denotes the largest negative data value representable by this data type.
-        /// </summary>
-        public int Min { get; set; }
+		/// <summary>
+		/// Gets or sets a value that denotes the largest negative data value representable by this data type.
+		/// </summary>
+		public int Min { get; set; }
 
-        /// <summary>
-        /// Gets or sets a value that denotes the largest positive data value representable by this data type.
-        /// </summary>
-        public int Max { get; set; }
+		/// <summary>
+		/// Gets or sets a value that denotes the largest positive data value representable by this data type.
+		/// </summary>
+		public int Max { get; set; }
 
-        /// <summary>
-        /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
-        /// </summary>
-        /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
-        /// </param>
-        public override void ReadXml(XmlReader reader)
-        {
-            base.ReadXml(reader);
+		/// <summary>
+		/// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
+		/// </summary>
+		/// <param name="reader">
+		/// an instance of <see cref="XmlReader"/>
+		/// </param>
+		public override void ReadXml( XmlReader reader )
+		{
+			base.ReadXml( reader );
 
-            if (int.TryParse(reader.GetAttribute("MAX"), out int max))
-            {
-                this.Max = max;
-            }
+			var value = reader.GetAttribute( "MAX" );
+			if ( !string.IsNullOrEmpty( value ) )
+			{
+				this.Max = XmlConvert.ToInt32( value );
+			}
 
-            if (int.TryParse(reader.GetAttribute("MIN"), out int min))
-            {
-                this.Min = min;
-            }
-        }
+			value = reader.GetAttribute( "MIN" );
+			if ( !string.IsNullOrEmpty( value ) )
+			{
+				this.Min = XmlConvert.ToInt32( value );
+			}
+		}
 
-        /// <summary>
-        /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
-        /// </summary>
-        /// <param name="writer">
-        /// an instance of <see cref="XmlWriter"/>
-        /// </param>
-        public override void WriteXml(XmlWriter writer)
-        {
-            base.WriteXml(writer);
+		/// <summary>
+		/// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
+		/// </summary>
+		/// <param name="writer">
+		/// an instance of <see cref="XmlWriter"/>
+		/// </param>
+		public override void WriteXml( XmlWriter writer )
+		{
+			base.WriteXml( writer );
 
-            writer.WriteAttributeString("MIN", this.Min.ToString(NumberFormatInfo.InvariantInfo));
-            writer.WriteAttributeString("MAX", this.Max.ToString(NumberFormatInfo.InvariantInfo));
-        }
-    }
+			writer.WriteAttributeString( "MIN", XmlConvert.ToString( this.Min ) );
+			writer.WriteAttributeString( "MAX", XmlConvert.ToString( this.Max ) );
+		}
+	}
 }

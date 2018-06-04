@@ -20,52 +20,69 @@
 
 namespace ReqIFSharp
 {
-    using System.Globalization;
-    using System.Xml;
-    
-    /// <summary>
-    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="string"/> data type    
-    /// </summary>
-    /// <remarks>
-    /// This element defines a data type for the representation of String data values in the Exchange Document.
-    /// </remarks>    
-    public class DatatypeDefinitionString : DatatypeDefinitionSimple
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
-        /// </summary>
-        public DatatypeDefinitionString()
-        {
-        }
+	using System.Globalization;
+	using System.Xml;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
-        /// </summary>
-        /// <param name="reqIfContent">
-        /// The owning <see cref="reqIfContent"/>
-        /// </param>
-        internal DatatypeDefinitionString(ReqIFContent reqIfContent) 
-            : base(reqIfContent)            
-        {
-            this.ReqIFContent = reqIfContent;
-        }
+	/// <summary>
+	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="string"/> data type    
+	/// </summary>
+	/// <remarks>
+	/// This element defines a data type for the representation of String data values in the Exchange Document.
+	/// </remarks>    
+	public class DatatypeDefinitionString : DatatypeDefinitionSimple
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
+		/// </summary>
+		public DatatypeDefinitionString()
+		{
+		}
 
-        /// <summary>
-        /// Gets or sets the maximum permissible string length
-        /// </summary>        
-        public int MaxLength { get; set; }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
+		/// </summary>
+		/// <param name="reqIfContent">
+		/// The owning <see cref="reqIfContent"/>
+		/// </param>
+		internal DatatypeDefinitionString( ReqIFContent reqIfContent )
+			: base( reqIfContent )
+		{
+			this.ReqIFContent = reqIfContent;
+		}
 
-        /// <summary>
-        /// Converts a <see cref="DatatypeDefinitionReal"/> object into its XML representation.
-        /// </summary>
-        /// <param name="writer">
-        /// an instance of <see cref="XmlWriter"/>
-        /// </param>
-        public override void WriteXml(XmlWriter writer)
-        {
-            base.WriteXml(writer);
+		/// <summary>
+		/// Gets or sets the maximum permissible string length
+		/// </summary>        
+		public int MaxLength { get; set; }
 
-            writer.WriteAttributeString("MAX-LENGTH", this.MaxLength.ToString(NumberFormatInfo.InvariantInfo));
-        }
-    }
+		/// <summary>
+		/// Generates a <see cref="DatatypeDefinitionReal"/> object from its XML representation.
+		/// </summary>
+		/// <param name="reader">
+		/// an instance of <see cref="XmlReader"/>
+		/// </param>
+		public override void ReadXml( XmlReader reader )
+		{
+			base.ReadXml( reader );
+
+			var value = reader.GetAttribute( "MAX-LENGTH" );
+			if ( !string.IsNullOrEmpty( value ) )
+			{
+				this.MaxLength = XmlConvert.ToInt32( value );
+			}
+		}
+
+		/// <summary>
+		/// Converts a <see cref="DatatypeDefinitionReal"/> object into its XML representation.
+		/// </summary>
+		/// <param name="writer">
+		/// an instance of <see cref="XmlWriter"/>
+		/// </param>
+		public override void WriteXml( XmlWriter writer )
+		{
+			base.WriteXml( writer );
+
+			writer.WriteAttributeString( "MAX-LENGTH", XmlConvert.ToString( this.MaxLength ) );
+		}
+	}
 }
