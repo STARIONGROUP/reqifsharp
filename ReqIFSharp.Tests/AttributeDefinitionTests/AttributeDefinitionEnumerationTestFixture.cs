@@ -61,18 +61,5 @@ namespace ReqIFSharp.Tests
 
             Assert.Throws<ArgumentException>(() => attributeDefinition.DatatypeDefinition = datatypeDefinitionString);
         }
-
-        [Test]
-        public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
-        {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
-                    Assert.Throws<SerializationException>(() => attributeDefinitionEnumeration.WriteXml(writer));
-                }
-            }
-        }
     }
 }

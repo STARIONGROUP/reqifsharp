@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Globalization;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -44,13 +45,13 @@ namespace ReqIFSharp
         internal EmbeddedValue(EnumValue enumValue)
         {
             this.EnumValue = enumValue;
-            this.EnumValue.Properties = this;            
+            this.EnumValue.Properties = this;
         }
 
         /// <summary>
         /// Gets or sets the numerical value corresponding to the enumeration literal.
         /// </summary>
-        public int Key { get; set; }
+        public int? Key { get; set; }
 
         /// <summary>
         /// Gets or sets Arbitrary additional information related to the enumeration literal.
@@ -73,11 +74,10 @@ namespace ReqIFSharp
         /// </param>
         public void ReadXml(XmlReader reader)
         {
-            var key = reader.GetAttribute("KEY");
-
-            if (key != null)
+            var value = reader.GetAttribute("KEY");
+            if (int.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out int key))
             {
-                this.Key = XmlConvert.ToInt32(key);
+                this.Key = key;
             }
 
             this.OtherContent = reader.GetAttribute("OTHER-CONTENT");
@@ -91,8 +91,15 @@ namespace ReqIFSharp
         /// </param>
         public void WriteXml(XmlWriter writer)
         {
-            writer.WriteAttributeString("KEY", XmlConvert.ToString(this.Key));
-            writer.WriteAttributeString("OTHER-CONTENT", this.OtherContent);
+            if (this.Key.HasValue)
+            {
+                writer.WriteAttributeString("KEY", this.Key.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
+
+            if (!string.IsNullOrEmpty(this.OtherContent))
+            {
+                writer.WriteAttributeString("OTHER-CONTENT", this.OtherContent);
+            }
         }
 
         /// <summary>

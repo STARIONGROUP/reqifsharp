@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Globalization;
     using System.Xml;
 
     /// <summary>
@@ -27,12 +28,12 @@ namespace ReqIFSharp
     /// </summary>
     public class DatatypeDefinitionReal : DatatypeDefinitionSimple
     {
-	    /// <summary>
-	    /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
-	    /// </summary>
-	    public DatatypeDefinitionReal()
-	    {
-	    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
+        /// </summary>
+        public DatatypeDefinitionReal()
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
@@ -41,25 +42,25 @@ namespace ReqIFSharp
         /// The owning <see cref="reqIfContent"/>
         /// </param>
         internal DatatypeDefinitionReal(ReqIFContent reqIfContent)
-	        : base(reqIfContent)
+            : base(reqIfContent)
         {
-	        this.ReqIFContent = reqIfContent;
+            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
         /// Gets or sets a value that Denotes the supported maximum precision of real numbers represented by this data type.
         /// </summary>
-        public int Accuracy { get; set; }
+        public int? Accuracy { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
         /// </summary>
-        public double Min { get; set; }
+        public double? Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest positive data value representable by this data type.
         /// </summary>
-        public double Max { get; set; }
+        public double? Max { get; set; }
 
         /// <summary>
         /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
@@ -69,25 +70,25 @@ namespace ReqIFSharp
         /// </param>
         public override void ReadXml(XmlReader reader)
         {
-	        base.ReadXml(reader);
+            base.ReadXml(reader);
 
-	        var value = reader.GetAttribute("ACCURACY");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Accuracy = XmlConvert.ToInt32(value);
-	        }
+            var value = reader.GetAttribute("ACCURACY");
+            if (int.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out int accuracy))
+            {
+                this.Accuracy = accuracy;
+            }
 
-	        value = reader.GetAttribute("MAX");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Max = XmlConvert.ToDouble(value);
-	        }
+            value = reader.GetAttribute("MAX");
+            if (double.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out double max))
+            {
+                this.Max = max;
+            }
 
-	        value = reader.GetAttribute("MIN");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Min = XmlConvert.ToDouble(value);
-	        }
+            value = reader.GetAttribute("MIN");
+            if (double.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out double min))
+            {
+                this.Min = min;
+            }
         }
 
         /// <summary>
@@ -98,11 +99,21 @@ namespace ReqIFSharp
         /// </param>
         public override void WriteXml(XmlWriter writer)
         {
-	        base.WriteXml(writer);
+            base.WriteXml(writer);
+            if (this.Accuracy.HasValue)
+            {
+                writer.WriteAttributeString("ACCURACY", this.Accuracy.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
 
-	        writer.WriteAttributeString("ACCURACY", XmlConvert.ToString(this.Accuracy));
-	        writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min));
-	        writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
+            if (this.Min.HasValue)
+            {
+                writer.WriteAttributeString("MIN", this.Min.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
+
+            if (this.Max.HasValue)
+            {
+                writer.WriteAttributeString("MAX", this.Max.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
         }
-	}
+    }
 }

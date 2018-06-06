@@ -25,7 +25,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueEnumeration"/> class is to define an enumeration attribute value.
     /// </summary>
@@ -70,7 +70,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets <see cref="EnumValue"/>s that are chosen from a set of specified values
         /// </summary>
-        public List<EnumValue> Values 
+        public List<EnumValue> Values
         {
             get
             {
@@ -153,10 +153,6 @@ namespace ReqIFSharp
                         var reference = reader.ReadElementContentAsString();
 
                         this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionEnumeration>().SingleOrDefault(x => x.Identifier == reference);
-                        if (this.Definition == null)
-                        {
-                            throw new InvalidOperationException(string.Format("The attribute-definition Enumeration {0} could not be found for the value.", reference));
-                        }
                     }
 
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE-REF")
@@ -183,11 +179,10 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueEnumeration may not be null");
+                return;
             }
 
             this.WriteDefinition(writer);
-
             this.WriteValues(writer);
         }
 

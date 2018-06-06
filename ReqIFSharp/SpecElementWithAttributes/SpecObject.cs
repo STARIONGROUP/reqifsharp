@@ -24,9 +24,9 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
-    /// Constitutes an identifiable requirements object that can be associated with various attributes. 
+    /// Constitutes an identifiable requirements object that can be associated with various attributes.
     /// This is the smallest granularity by which requirements are referenced.
     /// </summary>
     /// <remarks>
@@ -56,7 +56,7 @@ namespace ReqIFSharp
 
         /// <summary>
         /// Gets or sets the <see cref="SpecObject"/> reference.
-        /// </summary>        
+        /// </summary>
         public SpecObjectType Type { get; set; }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Sets the <see cref="SpecType"/> 
+        /// Sets the <see cref="SpecType"/>
         /// </summary>
         /// <param name="specType">
         /// The <see cref="SpecType"/> to set.
@@ -98,7 +98,7 @@ namespace ReqIFSharp
             {
                 var reference = reader.ReadElementContentAsString();
                 var specType = this.ReqIfContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
-                this.Type = (SpecObjectType)specType;                    
+                this.Type = (SpecObjectType)specType;
             }
         }
 
@@ -128,7 +128,7 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type property of SpecObject {0}:{1} may not be null", this.Identifier, this.LongName));
+                return;
             }
 
             base.WriteXml(writer);

@@ -25,7 +25,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// Represents a hierarchically structured requirements specification.
     /// It is the root node of the tree that hierarchically structures <see cref="SpecObject"/> instances.
@@ -59,7 +59,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the links to next level of owned SpecHierarchy.
         /// </summary>
-        public List<SpecHierarchy> Children 
+        public List<SpecHierarchy> Children
         {
             get
             {
@@ -82,7 +82,7 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type property of Specification {0}:{1} may not be null", this.Identifier, this.LongName));
+                return;
             }
 
             base.WriteXml(writer);
@@ -104,7 +104,7 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Sets the <see cref="SpecType"/> 
+        /// Sets the <see cref="SpecType"/>
         /// </summary>
         /// <param name="specType">
         /// The <see cref="SpecType"/> to set.

@@ -63,19 +63,6 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
-        {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueDate = new AttributeValueDate();
-                    Assert.Throws<SerializationException>(() => attributeValueDate.WriteXml(writer));
-                }
-            }
-        }
-
-        [Test]
         public void VerifyConvenienceValueProperty()
         {
             var attributeValue = new AttributeValueDate();

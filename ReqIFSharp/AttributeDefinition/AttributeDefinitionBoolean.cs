@@ -49,20 +49,20 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionBoolean(SpecType specType) 
+        internal AttributeDefinitionBoolean(SpecType specType)
             : base(specType)
-        {            
+        {
         }
 
         /// <summary>
-        /// Gets or sets the owned default value that is used if no attribute value is supplied 
+        /// Gets or sets the owned default value that is used if no attribute value is supplied
         /// by the user of the requirements authoring tool.
-        /// </summary>        
+        /// </summary>
         public AttributeValueBoolean DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
-        /// </summary>                
+        /// </summary>
         public DatatypeDefinitionBoolean Type { get; set; }
 
         /// <summary>

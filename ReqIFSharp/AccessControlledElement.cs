@@ -21,7 +21,7 @@
 namespace ReqIFSharp
 {
     using System.Xml;
-    
+
     /// <summary>
     /// The <see cref="AccessControlledElement"/> is the base class for classes that may restrict user access to their information.
     /// </summary>
@@ -34,12 +34,7 @@ namespace ReqIFSharp
         /// True means that the element’s contents may be modified by the user of a tool containing the element.
         /// False or leaving isEditable out means that the element is read-only to the user of a tool containing the element.
         /// </remarks>
-        public bool IsEditable { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether <see cref="IsEditable"/> is specified.
-        /// </summary>
-        public bool IsEditableSpecified { get; set; }
+        public bool? IsEditable { get; set; }
 
         /// <summary>
         /// Generates a <see cref="AccessControlledElement"/> object from its XML representation.
@@ -52,9 +47,13 @@ namespace ReqIFSharp
             base.ReadXml(reader);
             var isEditable = reader.GetAttribute("IS-EDITABLE");
 
-            if (isEditable != null)
+            if (isEditable == "1" || isEditable == "true")
             {
-                this.IsEditable = XmlConvert.ToBoolean(isEditable);
+                this.IsEditable = true;
+            }
+            else if (isEditable == "0" || isEditable == "false")
+            {
+                this.IsEditable = false;
             }
         }
 
@@ -68,7 +67,10 @@ namespace ReqIFSharp
         {
             base.WriteXml(writer);
 
-            writer.WriteAttributeString("IS-EDITABLE", this.IsEditable ? "true" : "false");
+            if (this.IsEditable.HasValue)
+            {
+                writer.WriteAttributeString("IS-EDITABLE", this.IsEditable.Value ? "true" : "false");
+            }
         }
     }
 }

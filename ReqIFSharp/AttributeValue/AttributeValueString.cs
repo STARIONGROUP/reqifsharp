@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueString"/> class is to define a <see cref="string"/> attribute value.
     /// </summary>
@@ -133,10 +133,6 @@ namespace ReqIFSharp
                     var reference = reader.ReadElementContentAsString();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionString>().SingleOrDefault(x => x.Identifier == reference);
-                    if (this.Definition == null)
-                    {
-                        throw new InvalidOperationException(string.Format("The attribute-definition String {0} could not be found for the value.", reference));
-                    }
                 }
             }
         }
@@ -154,10 +150,10 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueString may not be null");
+                return;
             }
 
-            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString());
+            writer.WriteAttributeString("THE-VALUE", this.TheValue);
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-STRING-REF", this.Definition.Identifier);
             writer.WriteEndElement();

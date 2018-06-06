@@ -65,7 +65,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
-        public int TheValue { get; set; }
+        public int? TheValue { get; set; }
 
         /// <summary>
         /// Gets or sets the value of this <see cref="AttributeValue"/>
@@ -75,7 +75,7 @@ namespace ReqIFSharp
         /// </remarks>
         public override object ObjectValue
         {
-            get => this.TheValue;
+            get => this.TheValue.Value;
             set
             {
                 if (!(value is int castValue))
@@ -133,7 +133,10 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToInt32(value);
+            if (int.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out int theValue))
+            {
+                this.TheValue = theValue;
+            }
 
             while (reader.Read())
             {
@@ -142,10 +145,6 @@ namespace ReqIFSharp
                     var reference = reader.ReadElementContentAsString();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionInteger>().SingleOrDefault(x => x.Identifier == reference);
-                    if (this.Definition == null)
-                    {
-                        throw new InvalidOperationException(string.Format("The attribute-definition XHTML {0} could not be found for the value.", reference));
-                    }
                 }
             }
         }
@@ -163,10 +162,14 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueInteger may not be null");
+                return;
             }
 
-            writer.WriteAttributeString("THE-VALUE",  this.TheValue.ToString(NumberFormatInfo.InvariantInfo));
+            if (this.TheValue.HasValue)
+            {
+                writer.WriteAttributeString("THE-VALUE", this.TheValue.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
+
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-INTEGER-REF", this.Definition.Identifier);
             writer.WriteEndElement();

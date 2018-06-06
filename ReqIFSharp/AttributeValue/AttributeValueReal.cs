@@ -21,10 +21,11 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueReal"/> class is to define a real attribute value.
     /// </summary>
@@ -64,7 +65,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
-        public double TheValue { get; set; }
+        public double? TheValue { get; set; }
 
         /// <summary>
         /// Gets or sets the value of this <see cref="AttributeValue"/>
@@ -74,7 +75,7 @@ namespace ReqIFSharp
         /// </remarks>
         public override object ObjectValue
         {
-            get => this.TheValue;
+            get => this.TheValue.Value;
             set
             {
                 if (!(value is double castValue))
@@ -132,7 +133,10 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToDouble(value);
+            if (double.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out double theValue))
+            {
+                this.TheValue = theValue;
+            }
 
             while (reader.Read())
             {
@@ -141,10 +145,6 @@ namespace ReqIFSharp
                     var reference = reader.ReadElementContentAsString();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionReal>().SingleOrDefault(x => x.Identifier == reference);
-                    if (this.Definition == null)
-                    {
-                        throw new InvalidOperationException(string.Format("The attribute-definition Real {0} could not be found for the value.", reference));
-                    }
                 }
             }
         }
@@ -162,10 +162,14 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueReal may not be null");
+                return;
             }
-            
-            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString());
+
+            if (this.TheValue.HasValue)
+            {
+                writer.WriteAttributeString("THE-VALUE", this.TheValue.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
+
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-REAL-REF", this.Definition.Identifier);
             writer.WriteEndElement();

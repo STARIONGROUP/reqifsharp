@@ -25,7 +25,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The <see cref="RelationGroup"/> class represents a group of relations.
     /// </summary>
@@ -79,7 +79,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the grouped <see cref="SpecRelation"/>s
         /// </summary>
-        public List<SpecRelation> SpecRelations 
+        public List<SpecRelation> SpecRelations
         {
             get
             {
@@ -104,7 +104,7 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Sets the <see cref="SpecType"/> 
+        /// Sets the <see cref="SpecType"/>
         /// </summary>
         /// <param name="specType">
         /// The <see cref="SpecType"/> to set.
@@ -136,8 +136,7 @@ namespace ReqIFSharp
                 if (reader.ReadToDescendant("SPECIFICATION-REF"))
                 {
                     var reference = reader.ReadElementContentAsString();
-                    var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                    this.SourceSpecification = specification;
+                    this.SourceSpecification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                 }
             }
 
@@ -149,8 +148,7 @@ namespace ReqIFSharp
                 if (reader.ReadToDescendant("SPECIFICATION-REF"))
                 {
                     var reference = reader.ReadElementContentAsString();
-                    var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                    this.TargetSpecification = specification;
+                    this.TargetSpecification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                 }
             }
 
@@ -192,7 +190,7 @@ namespace ReqIFSharp
         {
             throw new InvalidOperationException("RelationGroup does not have a hierarchy");
         }
-        
+
         /// <summary>
         /// Deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
         /// </summary>
@@ -223,19 +221,9 @@ namespace ReqIFSharp
         /// </exception>
         public override void WriteXml(XmlWriter writer)
         {
-            if (this.Type == null)
+            if (this.Type == null || this.SourceSpecification == null || this.TargetSpecification == null)
             {
-                throw new SerializationException(string.Format("The Type property of RelationGroup {0}:{1} may not be null", this.Identifier, this.LongName));
-            }
-
-            if (this.SourceSpecification == null)
-            {
-                throw new SerializationException(string.Format("The SourceSpecification property of RelationGroup {0}:{1} may not be null", this.Identifier, this.LongName));
-            }
-
-            if (this.TargetSpecification == null)
-            {
-                throw new SerializationException(string.Format("The TargetSpecification property of RelationGroup {0}:{1} may not be null", this.Identifier, this.LongName));
+                return;
             }
 
             base.WriteXml(writer);
@@ -299,7 +287,7 @@ namespace ReqIFSharp
             }
 
             writer.WriteStartElement("SPEC-RELATIONS");
-            
+
             foreach (var specRelation in this.SpecRelations)
             {
                 writer.WriteElementString("SPEC-RELATION-REF", specRelation.Identifier);
