@@ -34,51 +34,6 @@ namespace ReqIFSharp.Tests
     public class RelationGroupTestFixture
     {
         [Test]
-        public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
-        {
-            var relationGroup = new RelationGroup();
-
-            // Type is not set
-
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    Assert.That(() => relationGroup.WriteXml(writer),
-                        Throws.TypeOf<SerializationException>()
-                            .With.Message.EqualTo("The Type property of RelationGroup : may not be null"));
-                }
-            }
-
-            // Source specification is not set
-            var relationGroupType = new RelationGroupType();
-            relationGroup.Type = relationGroupType;
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    Assert.That(() => relationGroup.WriteXml(writer),
-                        Throws.TypeOf<SerializationException>()
-                            .With.Message.EqualTo("The SourceSpecification property of RelationGroup : may not be null"));
-                }
-            }
-
-            // target specification is not set
-            var sourceSpecification = new Specification();
-            relationGroup.SourceSpecification = sourceSpecification;
-            
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    Assert.That(() => relationGroup.WriteXml(writer),
-                        Throws.TypeOf<SerializationException>()
-                            .With.Message.EqualTo("The TargetSpecification property of RelationGroup : may not be null"));
-                }
-            }
-        }
-
-        [Test]
         public void VerifyThatTheSpectTypeCanBeSet()
         {
             var relationGroupType = new RelationGroupType();
@@ -97,7 +52,7 @@ namespace ReqIFSharp.Tests
 
             Assert.That(() => relationGroup.SpecType = specificationType,
                 Throws.TypeOf<ArgumentException>()
-                .With.Message.EqualTo("specType must of type RelationGroupType")); 
+                .With.Message.EqualTo("specType must of type RelationGroupType"));
         }
     }
 }

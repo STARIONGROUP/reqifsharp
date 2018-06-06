@@ -63,19 +63,6 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
-        {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueInteger = new AttributeValueInteger();
-                    Assert.Throws<SerializationException>(() => attributeValueInteger.WriteXml(writer));
-                }
-            }
-        }
-
-        [Test]
         public void VerifyConvenienceValueProperty()
         {
             var attributeValue = new AttributeValueInteger();

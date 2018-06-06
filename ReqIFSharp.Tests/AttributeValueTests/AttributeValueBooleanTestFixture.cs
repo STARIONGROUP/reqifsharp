@@ -63,19 +63,6 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
-        {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueReal = new AttributeValueBoolean();
-                    Assert.Throws<SerializationException>(() => attributeValueReal.WriteXml(writer));
-                }
-            }
-        }
-
-        [Test]
         public void VerifyThatGetSchemaReturnsNull()
         {
             var attributeValueBoolean = new AttributeValueBoolean();
