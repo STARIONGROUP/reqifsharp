@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueXHTML"/> class is to define an attribute value with XHTML contents.
     /// </summary>
@@ -124,12 +124,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets a value indicating whether the attribute value is a simplified representation of the original value.
         /// </summary>
-        public bool IsSimplified { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether <see cref="IsSimplified"/> is specified
-        /// </summary>
-        public bool IsSimplifiedSpecified { get; set; }
+        public bool? IsSimplified { get; set; }
 
         /// <summary>
         /// Generates a <see cref="AttributeValueXHTML"/> object from its XML representation.
@@ -139,10 +134,14 @@ namespace ReqIFSharp
         /// </param>
         public override void ReadXml(XmlReader reader)
         {
-            var isimplified = reader["IS-SIMPLIFIED"];
-            if (!string.IsNullOrEmpty(isimplified))
+            var isSimplified = reader["IS-SIMPLIFIED"];
+            if (isSimplified == "1" || isSimplified == "true")
             {
-                this.IsSimplified = bool.Parse(isimplified);
+                this.IsSimplified = true;
+            }
+            else if (isSimplified == "0" || isSimplified == "false")
+            {
+                this.IsSimplified = false;
             }
 
             using (var subtree = reader.ReadSubtree())
@@ -153,10 +152,6 @@ namespace ReqIFSharp
                     {
                         var reference = reader.ReadElementContentAsString();
                         this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionXHTML>().SingleOrDefault(x => x.Identifier == reference);
-                        if (this.Definition == null)
-                        {
-                            throw new InvalidOperationException(string.Format("The attribute-definition XHTML {0} could not be found for the value.", reference));
-                        }
                     }
 
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")
@@ -180,15 +175,17 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
+                return;
             }
-
-            writer.WriteAttributeString("IS-SIMPLIFIED", this.IsSimplified.ToString());
+            if (this.IsSimplified.HasValue)
+            {
+                writer.WriteAttributeString("IS-SIMPLIFIED", this.IsSimplified.Value ? "true" : "false");
+            }
 
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-XHTML-REF", this.Definition.Identifier);
             writer.WriteEndElement();
-   
+
             writer.WriteStartElement("THE-VALUE");
             writer.WriteRaw(this.TheValue);
             writer.WriteEndElement();

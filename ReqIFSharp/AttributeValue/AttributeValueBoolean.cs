@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueBoolean"/> class is to define a <see cref="bool"/> attribute value.
     /// </summary>
@@ -64,7 +64,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value.
         /// </summary>
-        public bool TheValue { get; set; }
+        public bool? TheValue { get; set; }
 
         /// <summary>
         /// Gets or sets the value of this <see cref="AttributeValue"/>
@@ -74,7 +74,7 @@ namespace ReqIFSharp
         /// </remarks>
         public override object ObjectValue
         {
-            get => this.TheValue;
+            get => this.TheValue.Value;
             set
             {
                 if (!(value is bool castValue))
@@ -132,7 +132,14 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToBoolean(value);
+            if (value == "1" || value == "true")
+            {
+                this.TheValue = true;
+            }
+            else if (value == "0" || value == "false")
+            {
+                this.TheValue = false;
+            }
 
             while (reader.Read())
             {
@@ -141,10 +148,6 @@ namespace ReqIFSharp
                     var reference = reader.ReadElementContentAsString();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionBoolean>().SingleOrDefault(x => x.Identifier == reference);
-                    if (this.Definition == null)
-                    {
-                        throw new InvalidOperationException(string.Format("The attribute-definition Boolean {0} could not be found for the value.", reference));
-                    }
                 }
             }
         }
@@ -162,12 +165,20 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueBoolean may not be null");
+                return;
             }
 
-            writer.WriteAttributeString("THE-VALUE", this.TheValue ? "true" : "false");
+            if (this.TheValue.HasValue)
+            {
+                writer.WriteAttributeString("THE-VALUE", this.TheValue.Value ? "true" : "false");
+            }
+
             writer.WriteStartElement("DEFINITION");
-            writer.WriteElementString("ATTRIBUTE-DEFINITION-BOOLEAN-REF", this.Definition.Identifier);
+            if (!string.IsNullOrEmpty(this.Definition.Identifier))
+            {
+                writer.WriteElementString("ATTRIBUTE-DEFINITION-BOOLEAN-REF", this.Definition.Identifier);
+            }
+
             writer.WriteEndElement();
         }
     }

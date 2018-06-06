@@ -64,7 +64,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value.
         /// </summary>
-        public DateTime TheValue { get; set; }
+        public DateTime? TheValue { get; set; }
 
         /// <summary>
         /// Gets or sets the value of this <see cref="AttributeValue"/>
@@ -74,7 +74,7 @@ namespace ReqIFSharp
         /// </remarks>
         public override object ObjectValue
         {
-            get => this.TheValue;
+            get => this.TheValue.Value;
             set
             {
                 if (!(value is DateTime datetime))
@@ -93,7 +93,7 @@ namespace ReqIFSharp
 
         /// <summary>
         /// Gets or sets the owning attribute definition.
-        /// </summary>        
+        /// </summary>
         public AttributeDefinitionDate OwningDefinition { get; set; }
 
         /// <summary>
@@ -132,7 +132,14 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.Utc);
+            try
+            {
+                this.TheValue = XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.Utc);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine(ex.Message);
+            }
 
             while (reader.Read())
             {
@@ -141,10 +148,6 @@ namespace ReqIFSharp
                     var reference = reader.ReadElementContentAsString();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionDate>().SingleOrDefault(x => x.Identifier == reference);
-                    if (this.Definition == null)
-                    {
-                        throw new InvalidOperationException(string.Format("The attribute-definition Date {0} could not be found for the value.", reference));
-                    }
                 }
             }
         }
@@ -162,10 +165,14 @@ namespace ReqIFSharp
         {
             if (this.Definition == null)
             {
-                throw new SerializationException("The Definition property of an AttributeValueDate may not be null");
+                return;
             }
 
-            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString("o"));
+            if (this.TheValue.HasValue)
+            {
+                writer.WriteAttributeString("THE-VALUE", this.TheValue.Value.ToString("o"));
+            }
+
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-DATE-REF", this.Definition.Identifier);
             writer.WriteEndElement();

@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// Defines relations (links) between two <see cref="SpecObject"/> instances.
     /// </summary>
@@ -84,7 +84,6 @@ namespace ReqIFSharp
                     var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                     this.Source = specObject;
                 }
-                    
             }
 
             if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "TARGET")
@@ -113,7 +112,7 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Sets the <see cref="SpecType"/> 
+        /// Sets the <see cref="SpecType"/>
         /// </summary>
         /// <param name="specType">
         /// The <see cref="SpecType"/> to set.
@@ -168,19 +167,9 @@ namespace ReqIFSharp
         /// </exception>
         public override void WriteXml(XmlWriter writer)
         {
-            if (this.Type == null)
+            if (this.Type == null || this.Source == null || this.Target == null)
             {
-                throw new SerializationException(string.Format("The Type of SpecRelation {0}:{1} may not be null", this.Identifier, this.LongName));
-            }
-
-            if (this.Source == null)
-            {
-                throw new SerializationException(string.Format("The Source of SpecRelation {0}:{1} may not be null", this.Identifier, this.LongName));
-            }
-
-            if (this.Target == null)
-            {
-                throw new SerializationException(string.Format("The Target of SpecRelation {0}:{1} may not be null", this.Identifier, this.LongName));
+                return;
             }
 
             base.WriteXml(writer);

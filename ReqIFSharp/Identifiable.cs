@@ -55,7 +55,7 @@ namespace ReqIFSharp
         public string Identifier { get; set; }
 
         /// <summary>
-        /// Gets or sets the date and time of the last change of the information element. 
+        /// Gets or sets the date and time of the last change of the information element.
         /// This includes the creation of the information element. lastChange is of the XML Schema data type “dateTime” that specifies the time format as
         /// <code>CCYY-MM-DDThh:mm:ss</code> with optional time zone indicator as a suffix <code>±hh:mm</code>.
         /// </summary>
@@ -102,17 +102,15 @@ namespace ReqIFSharp
         /// </exception>
         public virtual void WriteXml(XmlWriter writer)
         {
-            if (string.IsNullOrEmpty(this.Identifier))
+            if (!string.IsNullOrEmpty(this.Identifier))
             {
-                throw new SerializationException("The Identifier property of an Identifiable may not be null");
+                writer.WriteAttributeString("IDENTIFIER", this.Identifier);
             }
 
             if (!string.IsNullOrEmpty(this.Description))
             {
                 writer.WriteAttributeString("DESC", this.Description);
             }
-
-            writer.WriteAttributeString("IDENTIFIER", this.Identifier);
 
             writer.WriteAttributeString("LAST-CHANGE", XmlConvert.ToString(this.LastChange, XmlDateTimeSerializationMode.Utc));
 

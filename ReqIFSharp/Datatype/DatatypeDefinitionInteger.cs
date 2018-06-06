@@ -20,17 +20,18 @@
 
 namespace ReqIFSharp
 {
-	using System.Xml;
+    using System.Globalization;
+    using System.Xml;
 
-	/// <summary>
-	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="int"/> data type
-	/// </summary>
-	/// <remarks>
-	/// This element defines a data type for the representation of Integer data values in the Exchange Document.
-	/// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
-	/// </remarks>
-	public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
-	{
+    /// <summary>
+    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="int"/> data type
+    /// </summary>
+    /// <remarks>
+    /// This element defines a data type for the representation of Integer data values in the Exchange Document.
+    /// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
+    /// </remarks>
+    public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
         /// </summary>
@@ -45,20 +46,20 @@ namespace ReqIFSharp
         /// The owning <see cref="reqIfContent"/>
         /// </param>
         internal DatatypeDefinitionInteger(ReqIFContent reqIfContent)
-	        : base(reqIfContent)
+            : base(reqIfContent)
         {
-	        this.ReqIFContent = reqIfContent;
+            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
         /// </summary>
-        public int Min { get; set; }
+        public int? Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest positive data value representable by this data type.
         /// </summary>
-        public int Max { get; set; }
+        public int? Max { get; set; }
 
         /// <summary>
         /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
@@ -68,19 +69,19 @@ namespace ReqIFSharp
         /// </param>
         public override void ReadXml(XmlReader reader)
         {
-	        base.ReadXml(reader);
+            base.ReadXml(reader);
 
-	        var value = reader.GetAttribute("MAX");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Max = XmlConvert.ToInt32(value);
-	        }
+            var value = reader.GetAttribute("MIN");
+            if (int.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out int min))
+            {
+                this.Min = min;
+            }
 
-	        value = reader.GetAttribute("MIN");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Min = XmlConvert.ToInt32(value);
-	        }
+            value = reader.GetAttribute("MAX");
+            if (int.TryParse(value, NumberStyles.Any, NumberFormatInfo.InvariantInfo, out int max))
+            {
+                this.Max = max;
+            }
         }
 
         /// <summary>
@@ -91,10 +92,17 @@ namespace ReqIFSharp
         /// </param>
         public override void WriteXml(XmlWriter writer)
         {
-	        base.WriteXml(writer);
+            base.WriteXml(writer);
 
-	        writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min));
-	        writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
+            if (this.Min.HasValue)
+            {
+                writer.WriteAttributeString("MIN", this.Min.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
+
+            if (this.Max.HasValue)
+            {
+                writer.WriteAttributeString("MAX", this.Max.Value.ToString(NumberFormatInfo.InvariantInfo));
+            }
         }
     }
 }

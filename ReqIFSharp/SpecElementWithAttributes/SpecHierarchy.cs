@@ -29,7 +29,7 @@ namespace ReqIFSharp
     /// The <see cref="SpecHierarchy"/> class represents a node in a hierarchically structured requirements specification.
     /// </summary>
     /// <remarks>
-    /// The nodes of the tree that constitutes the structure of <see cref="SpecObject"/>s. 
+    /// The nodes of the tree that constitutes the structure of <see cref="SpecObject"/>s.
     /// The tree is created by references of <see cref="SpecHierarchy"/> instances to other <see cref="SpecHierarchy"/> instances.
     /// Each node has additionally a reference to a <see cref="SpecObject"/> resulting in a hierarchical structure of <see cref="SpecObject"/>s
     /// </remarks>
@@ -93,7 +93,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the Down links to next level of owned SpecHierarchy.
         /// </summary>
-        public List<SpecHierarchy> Children 
+        public List<SpecHierarchy> Children
         {
             get
             {
@@ -104,7 +104,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the attributes whose values are editable for the <see cref="SpecHierarchy"/> by a tool user
         /// </summary>
-        public List<AttributeDefinition> EditableAtts 
+        public List<AttributeDefinition> EditableAtts
         {
             get
             {
@@ -114,7 +114,7 @@ namespace ReqIFSharp
 
         /// <summary>
         /// Gets or sets the reference to the associated <see cref="SpecObject"/>
-        /// </summary>        
+        /// </summary>
         public SpecObject Object { get; set; }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace ReqIFSharp
         /// The root node of the table hierarchy is related to the SpecObject element that is the root of the table by the object
         /// association.
         /// </remarks>
-        public bool IsTableInternal { get; set; }
+        public bool? IsTableInternal { get; set; }
 
         /// <summary>
         /// Gets or sets the root.
@@ -184,12 +184,15 @@ namespace ReqIFSharp
         {
             if (this.Object == null)
             {
-                throw new SerializationException(string.Format("The Object property of SpecHierarchy {0}:{1} may not be null", this.Identifier, this.LongName));
+                return;
             }
 
             base.WriteXml(writer);
 
-            writer.WriteAttributeString("IS-TABLE-INTERNAL", this.IsTableInternal ? "true" : "false");
+            if (this.IsTableInternal.HasValue)
+            {
+                writer.WriteAttributeString("IS-TABLE-INTERNAL", this.IsTableInternal.Value ? "true" : "false");
+            }
 
             this.WriteObject(writer);
 
@@ -245,11 +248,15 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
-                    bool isTableInternal;
+                    var value = reader.GetAttribute("IS-TABLE-INTERNAL");
 
-                    if (bool.TryParse(reader.GetAttribute("IS-TABLE-INTERNAL"), out isTableInternal))
+                    if (value == "1" || value == "true")
                     {
-                        this.IsTableInternal = isTableInternal;
+                        this.IsTableInternal = true;
+                    }
+                    else if (value == "0" || value == "false")
+                    {
+                        this.IsTableInternal = false;
                     }
 
                     using (var subtree = reader.ReadSubtree())
