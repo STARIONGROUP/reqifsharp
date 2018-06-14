@@ -18,3 +18,11 @@ Master |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sq
 Development |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/development?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
 
 [![Build history](https://buildstats.info/appveyor/chart/samatrhea/reqifsharp)](https://ci.appveyor.com/project/samatrhea/reqifsharp/history)
+
+# License
+
+The reqifsharp library is provided to the community under the Apache License 2.0.
+
+# Contributions
+
+Contributions to the code-base are welcome. However, before we can accept your contributions we ask any contributor to sign the Contributor License Agreement (CLA) and send this digitaly signed to s.gerene@rheagroup.com. You can find the CLA's in the CLA folder.
