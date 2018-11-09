@@ -82,9 +82,13 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
                     var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
-                    this.Source = specObject;
+                    this.Source = specObject
+                                  ?? new SpecObject
+                                  {
+                                      Identifier = reference,
+                                      Description = "This spec-object was not found in the source file."
+                                  };
                 }
-                    
             }
 
             if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "TARGET")
@@ -96,7 +100,12 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
                     var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
-                    this.Target = specObject;
+                    this.Target = specObject
+                                  ?? new SpecObject
+                                  {
+                                      Identifier = reference,
+                                      Description = "This spec-object was not found in the source file."
+                                  };
                 }
             }
         }

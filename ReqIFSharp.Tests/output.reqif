@@ -373,6 +373,52 @@
             <SPEC-OBJECT-REF>specobject_1</SPEC-OBJECT-REF>
           </SOURCE>
         </SPEC-RELATION>
+          <SPEC-RELATION IDENTIFIER="specobject_1-unknown" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="A relationship between spec objects">
+              <VALUES>
+                  <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+                      <DEFINITION>
+                          <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specificationrelation-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+                      </DEFINITION>
+                  </ATTRIBUTE-VALUE-BOOLEAN>
+                  <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000">
+                      <DEFINITION>
+                          <ATTRIBUTE-DEFINITION-DATE-REF>specificationrelation-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+                      </DEFINITION>
+                  </ATTRIBUTE-VALUE-DATE>
+                  <ATTRIBUTE-VALUE-ENUMERATION>
+                      <DEFINITION>
+                          <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specificationrelation-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+                      </DEFINITION>
+                      <VALUES>
+                          <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+                      </VALUES>
+                  </ATTRIBUTE-VALUE-ENUMERATION>
+                  <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+                      <DEFINITION>
+                          <ATTRIBUTE-DEFINITION-INTEGER-REF>specificationrelation-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+                      </DEFINITION>
+                  </ATTRIBUTE-VALUE-INTEGER>
+                  <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+                      <DEFINITION>
+                          <ATTRIBUTE-DEFINITION-REAL-REF>specificationrelation-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+                      </DEFINITION>
+                  </ATTRIBUTE-VALUE-REAL>
+                  <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+                      <DEFINITION>
+                          <ATTRIBUTE-DEFINITION-STRING-REF>specificationrelation-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+                      </DEFINITION>
+                  </ATTRIBUTE-VALUE-STRING>
+              </VALUES>
+              <TYPE>
+                  <SPEC-RELATION-TYPE-REF>specificationrelation</SPEC-RELATION-TYPE-REF>
+              </TYPE>
+              <TARGET>
+                  <SPEC-OBJECT-REF>unknown-specobject</SPEC-OBJECT-REF>
+              </TARGET>
+              <SOURCE>
+                  <SPEC-OBJECT-REF>specobject_1</SPEC-OBJECT-REF>
+              </SOURCE>
+          </SPEC-RELATION>
       </SPEC-RELATIONS>
       <SPECIFICATIONS>
         <SPECIFICATION IDENTIFIER="specification-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="specification 1">
@@ -488,6 +534,17 @@
           <TARGET-SPECIFICATION>
             <SPECIFICATION-REF>specification-2</SPECIFICATION-REF>
           </TARGET-SPECIFICATION>
+        </RELATION-GROUP>
+        <RELATION-GROUP IDENTIFIER="relationgroup-no-target" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="relationgroup no target 1">
+            <TYPE>
+                <RELATION-GROUP-TYPE-REF>relationgrouptype</RELATION-GROUP-TYPE-REF>
+            </TYPE>
+            <SOURCE-SPECIFICATION>
+                <SPECIFICATION-REF>specification-1</SPECIFICATION-REF>
+            </SOURCE-SPECIFICATION>
+            <TARGET-SPECIFICATION>
+                <SPECIFICATION-REF>unknown</SPECIFICATION-REF>
+            </TARGET-SPECIFICATION>
         </RELATION-GROUP>
       </SPEC-RELATION-GROUPS>
     </REQ-IF-CONTENT>

@@ -37,11 +37,11 @@ namespace ReqIFSharp.Tests
         private const int AmountOfDataTypes = 7;
         private const int AmountOfSpecTypes = 4;
         private const int AmountOfSpecObjects = 3;
-        private const int AmountOfSpecRelations = 1;
+        private const int AmountOfSpecRelations = 2;
         private const int AmountOfSpecifications = 2;
         private const int AmountOfSpecificationChildren = 1;
         private const int AmountOfSpecificationSubChildren = 2;
-        private const int AmountOfSpecRelationGroups = 1;
+        private const int AmountOfSpecRelationGroups = 2;
 
         [SetUp]
         public void SetUp()
@@ -71,6 +71,13 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
             Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
             Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+
+            var unknownSpecRel = reqIf.CoreContent.Single().SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
+            Assert.IsNotNull(unknownSpecRel.Target);
+            Assert.AreEqual("unknown-specobject", unknownSpecRel.Target.Identifier);
+
+            var unknownrelGroup = reqIf.CoreContent.Single().SpecRelationGroups.First(x => x.Identifier == "relationgroup-no-target");
+            Assert.AreEqual("unknown", unknownrelGroup.TargetSpecification.Identifier);
         }
 
         [Test]
@@ -80,6 +87,7 @@ namespace ReqIFSharp.Tests
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz"));
 
             Assert.IsTrue(reqIf.CoreContent.Count > 1);
+
         }
 
 #if NETFULL

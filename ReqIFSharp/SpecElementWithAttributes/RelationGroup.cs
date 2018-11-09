@@ -137,7 +137,12 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
                     var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                    this.SourceSpecification = specification;
+                    this.SourceSpecification = specification
+                                               ?? new Specification
+                                               {
+                                                   Identifier = reference,
+                                                   Description = "This specification was not found in the source file."
+                                               };
                 }
             }
 
@@ -150,7 +155,12 @@ namespace ReqIFSharp
                 {
                     var reference = reader.ReadElementContentAsString();
                     var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                    this.TargetSpecification = specification;
+                    this.TargetSpecification = specification
+                                               ?? new Specification
+                                                    {
+                                                        Identifier = reference,
+                                                        Description = "This specification was not found in the source file."
+                                                    };
                 }
             }
 
