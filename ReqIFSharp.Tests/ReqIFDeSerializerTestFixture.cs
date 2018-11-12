@@ -127,11 +127,11 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
             Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
             Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
+            Assert.AreEqual(1, reqIfContent.SpecRelations.Count);
             Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
             Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
             Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+            Assert.AreEqual(1, reqIfContent.SpecRelationGroups.Count);
         }
 
         /// <summary>
