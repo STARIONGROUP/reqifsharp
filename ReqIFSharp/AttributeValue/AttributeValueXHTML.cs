@@ -142,7 +142,7 @@ namespace ReqIFSharp
             var isimplified = reader["IS-SIMPLIFIED"];
             if (!string.IsNullOrEmpty(isimplified))
             {
-                this.IsSimplified = bool.Parse(isimplified);
+                this.IsSimplified = XmlConvert.ToBoolean(isimplified);
             }
 
             using (var subtree = reader.ReadSubtree())
@@ -183,7 +183,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
             }
 
-            writer.WriteAttributeString("IS-SIMPLIFIED", this.IsSimplified.ToString());
+            writer.WriteAttributeString("IS-SIMPLIFIED", XmlConvert.ToString(this.IsSimplified));
 
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-XHTML-REF", this.Definition.Identifier);
