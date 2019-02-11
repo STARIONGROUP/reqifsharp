@@ -139,10 +139,10 @@ namespace ReqIFSharp
         /// </param>
         public override void ReadXml(XmlReader reader)
         {
-            var isimplified = reader["IS-SIMPLIFIED"];
-            if (!string.IsNullOrEmpty(isimplified))
+            var isSimplified = reader["IS-SIMPLIFIED"];
+            if (!string.IsNullOrEmpty(isSimplified))
             {
-                this.IsSimplified = XmlConvert.ToBoolean(isimplified);
+                this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
             }
 
             using (var subtree = reader.ReadSubtree())
@@ -182,8 +182,8 @@ namespace ReqIFSharp
             {
                 throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
             }
-
-            writer.WriteAttributeString("IS-SIMPLIFIED", XmlConvert.ToString(this.IsSimplified));
+            
+            writer.WriteAttributeString("IS-SIMPLIFIED", this.IsSimplified ? "true" : "false");
 
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-XHTML-REF", this.Definition.Identifier);
