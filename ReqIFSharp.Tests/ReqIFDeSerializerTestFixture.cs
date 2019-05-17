@@ -18,6 +18,8 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace ReqIFSharp.Tests
 {
     using System.IO;
@@ -87,7 +89,6 @@ namespace ReqIFSharp.Tests
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz"));
 
             Assert.IsTrue(reqIf.CoreContent.Count > 1);
-
         }
 
 #if NETFULL
@@ -107,6 +108,23 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
             Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
             Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+        }
+
+        [Test]
+        public void Verify_that_XHTML_attributes_can_de_deserialized()
+        {
+            var deserializer = new ReqIFDeserializer();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.reqif"));
+
+            Assert.AreEqual("en", reqIf.Lang);
+
+            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
+
+            var specObject = reqIfContent.SpecObjects.Single(r => r.Identifier == "R001");
+
+            var xhtmlValue = specObject.Values.Single(x => x.AttributeDefinition.Identifier == "FUNC-REQ-NOTES") as AttributeValueXHTML;
+
+            Assert.That(xhtmlValue.TheValue, Is.Not.Null.Or.Empty);
         }
 
         [Test]

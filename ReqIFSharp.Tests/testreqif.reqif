@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<REQ-IF xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"
+<REQ-IF xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" xmlns:xhtml="http://www.w3.org/1999/xhtml"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd http://www.omg.org/spec/ReqIF/20110401/reqif.xsd"
   xml:lang="en">
@@ -72,6 +72,11 @@
                 <DATATYPE-DEFINITION-ENUMERATION-REF>Status</DATATYPE-DEFINITION-ENUMERATION-REF>
               </TYPE>
             </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-XHTML DESC = "Formatted notes of the requirement." LAST-CHANGE= "2019-05-17T07:10:00+01:00" IDENTIFIER = "FUNC-REQ-NOTES">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>Notes</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
           </SPEC-ATTRIBUTES>
         </SPEC-OBJECT-TYPE>
         <SPEC-OBJECT-TYPE DESC = "A (user) story is a special kind of functional requirement, which uses one or more sentences in the everyday or business language of the end user that captures what the user (resp. a role) wants to achieve. User stories generally follow the following template: &quot;As a &lt;role&gt;, I want &lt;goal/desire&gt; so that &lt;benefit&gt;.&quot;" IDENTIFIER = "STORY" LAST-CHANGE = "2011-06-13T10:24:18+01:00" LONG-NAME = "User Story">
@@ -136,6 +141,14 @@
                 <ENUM-VALUE-REF>Proposed</ENUM-VALUE-REF>
               </VALUES>
             </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>FUNC-REQ-NOTES</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div>Description of the SpecObject that includes formatted tables and/or style:<xhtml:ul class="noindent"><xhtml:li>Element 1</xhtml:li><xhtml:li>Element 2</xhtml:li></xhtml:ul></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
           </VALUES>
         </SPEC-OBJECT>
         <SPEC-OBJECT DESC = "" IDENTIFIER = "R002" LAST-CHANGE = "2011-06-13T10:24:18+01:00" LONG-NAME = "Spotting fire">
