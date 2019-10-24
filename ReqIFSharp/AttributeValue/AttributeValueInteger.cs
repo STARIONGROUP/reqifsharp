@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
 // <copyright file="AttributeValueInteger.cs" company="RHEA System S.A.">
 //
-//   Copyright 2017 RHEA System S.A.
+//   Copyright 2017-2019 RHEA System S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     /// <summary>
-    /// The purpose of the <see cref="AttributeValueInteger"/> class is to define a <see cref="int"/> attribute value.
+    /// The purpose of the <see cref="AttributeValueInteger"/> class is to define an Integer attribute value.
     /// </summary>
     public class AttributeValueInteger : AttributeValueSimple
     {
@@ -65,7 +65,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
-        public int TheValue { get; set; }
+        public long TheValue { get; set; }
 
         /// <summary>
         /// Gets or sets the value of this <see cref="AttributeValue"/>
@@ -78,7 +78,7 @@ namespace ReqIFSharp
             get => this.TheValue;
             set
             {
-                if (!(value is int castValue))
+                if (!(value is long castValue))
                 {
                     throw new InvalidOperationException($"Cannot use {value} as value for this AttributeValueInteger.");
                 }
@@ -133,7 +133,7 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToInt32(value);
+            this.TheValue = XmlConvert.ToInt64(value);
 
             while (reader.Read())
             {
@@ -144,7 +144,7 @@ namespace ReqIFSharp
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionInteger>().SingleOrDefault(x => x.Identifier == reference);
                     if (this.Definition == null)
                     {
-                        throw new InvalidOperationException(string.Format("The attribute-definition XHTML {0} could not be found for the value.", reference));
+                        throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
                     }
                 }
             }

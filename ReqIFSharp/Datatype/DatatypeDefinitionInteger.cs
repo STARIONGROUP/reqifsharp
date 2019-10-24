@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
 // <copyright file="DatatypeDefinitionInteger.cs" company="RHEA System S.A.">
 //
-//   Copyright 2017 RHEA System S.A.
+//   Copyright 2017-2019 RHEA System S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ namespace ReqIFSharp
 	using System.Xml;
 
 	/// <summary>
-	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="int"/> data type
+	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive Integer data type
 	/// </summary>
 	/// <remarks>
 	/// This element defines a data type for the representation of Integer data values in the Exchange Document.
@@ -53,12 +53,12 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
         /// </summary>
-        public int Min { get; set; }
+        public long Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest positive data value representable by this data type.
         /// </summary>
-        public int Max { get; set; }
+        public long Max { get; set; }
 
         /// <summary>
         /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
@@ -73,13 +73,13 @@ namespace ReqIFSharp
 	        var value = reader.GetAttribute("MAX");
 	        if (!string.IsNullOrEmpty(value))
 	        {
-		        this.Max = XmlConvert.ToInt32(value);
+		        this.Max = XmlConvert.ToInt64(value);
 	        }
 
 	        value = reader.GetAttribute("MIN");
 	        if (!string.IsNullOrEmpty(value))
 	        {
-		        this.Min = XmlConvert.ToInt32(value);
+		        this.Min = XmlConvert.ToInt64(value);
 	        }
         }
 

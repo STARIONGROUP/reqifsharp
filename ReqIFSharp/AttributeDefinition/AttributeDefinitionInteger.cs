@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
 // <copyright file="AttributeDefinitionInteger.cs" company="RHEA System S.A.">
 //
-//   Copyright 2017 RHEA System S.A.
+//   Copyright 2017-2019 RHEA System S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     /// <summary>
-    /// The purpose of the <see cref="AttributeDefinitionInteger"/> class is to define an <see cref="int"/> attribute.
+    /// The purpose of the <see cref="AttributeDefinitionInteger"/> class is to define an Integer attribute.
     /// </summary>
     /// <remarks>
     /// An <see cref="AttributeDefinitionInteger"/> element relates an <see cref="AttributeValueInteger"/> element to a
@@ -144,7 +144,7 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type property of AttributeDefinitionInteger {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Type property of AttributeDefinitionInteger {this.Identifier}:{this.LongName} may not be null");
             }
 
             base.WriteXml(writer);

@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
 // <copyright file="AttributeValueIntegerTestFixture.cs" company="RHEA System S.A.">
 //
-//   Copyright 2017 RHEA System S.A.
+//   Copyright 2017-2019 RHEA System S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.
@@ -23,9 +23,7 @@ namespace ReqIFLib.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
-    using System.Text;
     using System.Xml;
-
     using NUnit.Framework;
     using ReqIFSharp;
 
@@ -80,7 +78,7 @@ namespace ReqIFLib.Tests
         {
             var attributeValue = new AttributeValueInteger();
 
-            var val = 3;
+            long val = 3;
             attributeValue.ObjectValue = val;
 
             Assert.AreEqual(attributeValue.TheValue, val);
