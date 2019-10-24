@@ -33,6 +33,7 @@ namespace ReqIFSharp
     /// <see cref="DatatypeDefinitionInteger"/> element via its <see cref="Type"/> attribute.
     /// An <see cref="AttributeDefinitionInteger"/> element MAY contain a default value that represents the value that is used as an attribute
     /// value if no attribute value is supplied by the user of the requirements authoring tool.
+    /// ReqIfSharp supports 64 bit singed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
     public class AttributeDefinitionInteger : AttributeDefinitionSimple
     {

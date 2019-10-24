@@ -18,7 +18,7 @@
 	  <Authors>Sam Gerene, Naron Phou</Authors>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageReleaseNotes>
-      [Update] integers to 64-bit (long) datatype; fixes #13
+      [Update] integers to signed 64-bit (long) datatype; fixes #13
     </PackageReleaseNotes>
   </PropertyGroup>
 

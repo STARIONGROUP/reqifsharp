@@ -22,14 +22,15 @@ namespace ReqIFSharp
 {
 	using System.Xml;
 
-	/// <summary>
-	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive Integer data type
-	/// </summary>
-	/// <remarks>
-	/// This element defines a data type for the representation of Integer data values in the Exchange Document.
-	/// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
-	/// </remarks>
-	public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
+    /// <summary>
+    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive Integer data type
+    /// </summary>
+    /// <remarks>
+    /// This element defines a data type for the representation of Integer data values in the Exchange Document.
+    /// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
+    /// ReqIfSharp supports 64 bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
+    /// </remarks>
+    public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
 	{
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.

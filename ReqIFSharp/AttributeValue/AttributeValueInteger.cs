@@ -29,6 +29,9 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueInteger"/> class is to define an Integer attribute value.
     /// </summary>
+    /// <remarks>
+    /// ReqIfSharp supports 64 bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
+    /// </remarks>
     public class AttributeValueInteger : AttributeValueSimple
     {
         /// <summary>
