@@ -19,6 +19,10 @@ Development |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp
 
 [![Build history](https://buildstats.info/appveyor/chart/samatrhea/reqifsharp)](https://ci.appveyor.com/project/samatrhea/reqifsharp/history)
 
+# Synopsis Coverty
+
+![coverty](https://img.shields.io/coverity/scan/12245?style=plastic) Synopsis Coverty is used to perform static analysis, find the [report here](https://scan.coverity.com/projects/rheagroup-reqifsharp?tab=overview) (you will need an account) 
+
 # License
 
 The reqifsharp library is provided to the community under the Apache License 2.0.
