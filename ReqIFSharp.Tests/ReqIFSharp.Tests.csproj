@@ -26,8 +26,7 @@
     <None Remove="reqif.xsd" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="driver.xsd" />
-    <EmbeddedResource Include="reqif.xsd" />
+    <EmbeddedResource Include="Resources\driver.xsd" />
   </ItemGroup>
 
   <ItemGroup>
