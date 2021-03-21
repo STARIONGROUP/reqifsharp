@@ -148,25 +148,30 @@ namespace ReqIFSharp
             {
                 while (subtree.Read())
                 {
-                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-ENUMERATION-REF")
+                    if (subtree.MoveToContent() == XmlNodeType.Element)
                     {
-                        var reference = reader.ReadElementContentAsString();
+                        string reference;
 
-                        this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionEnumeration>().SingleOrDefault(x => x.Identifier == reference);
-                        if (this.Definition == null)
+                        switch (subtree.LocalName)
                         {
-                            throw new InvalidOperationException(string.Format("The attribute-definition Enumeration {0} could not be found for the value.", reference));
-                        }
-                    }
+                            case "ATTRIBUTE-DEFINITION-ENUMERATION-REF":
+                                reference = subtree.ReadElementContentAsString();
 
-                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE-REF")
-                    {
-                        var reference = reader.ReadElementContentAsString();
+                                this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionEnumeration>().SingleOrDefault(x => x.Identifier == reference);
+                                if (this.Definition == null)
+                                {
+                                    throw new InvalidOperationException($"The attribute-definition Enumeration {reference} could not be found for the value.");
+                                }
+                                break;
+                            case "ENUM-VALUE-REF":
+                                reference = subtree.ReadElementContentAsString();
 
-                        var enumValue = this.ReqIFContent.DataTypes.OfType<DatatypeDefinitionEnumeration>().SelectMany(x => x.SpecifiedValues).SingleOrDefault(x => x.Identifier == reference);
-                        if (enumValue != null)
-                        {
-                            this.values.Add(enumValue);
+                                var enumValue = this.ReqIFContent.DataTypes.OfType<DatatypeDefinitionEnumeration>().SelectMany(x => x.SpecifiedValues).SingleOrDefault(x => x.Identifier == reference);
+                                if (enumValue != null)
+                                {
+                                    this.values.Add(enumValue);
+                                }
+                                break;
                         }
                     }
                 }

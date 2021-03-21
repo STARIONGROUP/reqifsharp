@@ -143,7 +143,7 @@ namespace ReqIFSharp
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionReal>().SingleOrDefault(x => x.Identifier == reference);
                     if (this.Definition == null)
                     {
-                        throw new InvalidOperationException(string.Format("The attribute-definition Real {0} could not be found for the value.", reference));
+                        throw new InvalidOperationException($"The attribute-definition Real {reference} could not be found for the value.");
                     }
                 }
             }
