@@ -4,7 +4,7 @@ environment:
   DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
 before_build:
   - cmd: nuget install NUnit.Console -Version 3.12.0 -OutputDirectory tools
-  - cmd: nuget install OpenCover -Version 4.6.519 -OutputDirectory tools
+  - cmd: nuget install OpenCover -Version 4.7.922 -OutputDirectory tools
   - cmd: nuget restore
   - cmd: choco install codecov
 build:
@@ -13,5 +13,5 @@ test:
   assemblies:  
     - '**\*.tests.dll'
 after_test:
-  - .\tools\OpenCover.4.6.519\tools\OpenCover.Console.exe -register:user -target:".\tools\NUnit.ConsoleRunner.3.7.0\tools\nunit3-console.exe" -targetargs:".\ReqIFSharp.Tests\bin\Debug\net45\ReqIFSharp.Tests.dll" -output:"coverage.xml"
+  - .\tools\OpenCover.4.7.922\tools\OpenCover.Console.exe -register:user -target:".\tools\NUnit.ConsoleRunner.3.12.0\tools\nunit3-console.exe" -targetargs:".\ReqIFSharp.Tests\bin\Debug\net45\ReqIFSharp.Tests.dll" -output:"coverage.xml"
   - codecov -f "coverage.xml" -t 43c5e259-ed5a-4ea2-9171-783e4fdf014d
