@@ -52,7 +52,7 @@ namespace ReqIFSharp
 
             var type = this.GetType();
             var @namespace = type.Namespace;
-            this.resourcePath = string.Format("{0}.Resources.", @namespace);
+            this.resourcePath = $"{@namespace}.Resources.";
         }
 
         /// <summary>

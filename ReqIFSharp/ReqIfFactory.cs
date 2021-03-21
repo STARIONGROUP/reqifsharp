@@ -74,7 +74,7 @@ namespace ReqIFSharp
                 return "ATTRIBUTE-DEFINITION-XHTML";
             }
 
-            throw new ArgumentException(string.Format("The {0} type cannot be converted to an XML element name", attributeDefinition.GetType()));
+            throw new ArgumentException($"The {attributeDefinition.GetType()} type cannot be converted to an XML element name");
         }
 
         /// <summary>
@@ -161,7 +161,7 @@ namespace ReqIFSharp
                 return "DATATYPE-DEFINITION-XHTML";
             }
 
-            throw new ArgumentException(string.Format("The {0} type cannot be converted to an XML element name", datatypeDefinition.GetType()));
+            throw new ArgumentException($"The {datatypeDefinition.GetType()} type cannot be converted to an XML element name");
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace ReqIFSharp
                 case "DATATYPE-DEFINITION-XHTML":
                     return new DatatypeDefinitionXHTML(reqIfContent);
                 default:
-                    throw new ArgumentException(string.Format("{0} is not a vaild DatatypeDefinition name", xmlname));
+                    throw new ArgumentException($"{xmlname} is not a vaild DatatypeDefinition name");
             }
         }
 
@@ -248,7 +248,7 @@ namespace ReqIFSharp
                 return "ATTRIBUTE-VALUE-XHTML";
             }
 
-            throw new ArgumentException(string.Format("The {0} type cannot be converted to an XML element name", attributeValue.GetType()));
+            throw new ArgumentException($"The {attributeValue.GetType()} type cannot be converted to an XML element name");
         }
 
         /// <summary>
@@ -285,7 +285,7 @@ namespace ReqIFSharp
                 case "ATTRIBUTE-VALUE-XHTML":
                     return new AttributeValueXHTML(specElementWithAttributes);
                 default:
-                    throw new ArgumentException(string.Format("{0} is not a vaild AttributeValue name", xmlname));
+                    throw new ArgumentException($"{xmlname} is not a vaild AttributeValue name");
             }
         }
 
@@ -320,7 +320,7 @@ namespace ReqIFSharp
                 return "RELATION-GROUP-TYPE";
             }
 
-            throw new ArgumentException(string.Format("The {0} type cannot be converted to an XML element name", specType.GetType()));
+            throw new ArgumentException($"The {specType.GetType()} type cannot be converted to an XML element name");
         }
 
         /// <summary>
@@ -351,7 +351,7 @@ namespace ReqIFSharp
                 case "RELATION-GROUP-TYPE":
                     return new RelationGroupType(reqIfContent);
                 default:
-                    throw new ArgumentException(string.Format("{0} is not a vaild SpecType name", xmlname));
+                    throw new ArgumentException($"{xmlname} is not a vaild SpecType name");
             }
         }
     }

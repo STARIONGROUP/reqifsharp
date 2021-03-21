@@ -93,34 +93,35 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "THE-HEADER")
+                if (reader.MoveToContent() == XmlNodeType.Element)
                 {
-                    var headerSubTreeXmlReader = reader.ReadSubtree();
-                    this.TheHeader = new ReqIFHeader { DocumentRoot = this };
-                    this.TheHeader.ReadXml(headerSubTreeXmlReader);
-                }
-
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "CORE-CONTENT")
-                {
-                    var coreContentTreeXmlReader = reader.ReadSubtree();
-                    this.CoreContent = new ReqIFContent { DocumentRoot = this };
-                    this.CoreContent.ReadXml(coreContentTreeXmlReader);
-                }
-
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "TOOL-EXTENSIONS")
-                {
-                    var toolExtensionsXmlReader = reader.ReadSubtree();
-
-                    while (toolExtensionsXmlReader.Read())
+                    switch (reader.LocalName)
                     {
-                        if (toolExtensionsXmlReader.MoveToContent() == XmlNodeType.Element && toolExtensionsXmlReader.LocalName == "REQ-IF-TOOL-EXTENSION")
-                        {
-                            var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();
+                        case "THE-HEADER":
+                            var headerSubTreeXmlReader = reader.ReadSubtree();
+                            this.TheHeader = new ReqIFHeader { DocumentRoot = this };
+                            this.TheHeader.ReadXml(headerSubTreeXmlReader);
+                            break;
+                        case "CORE-CONTENT":
+                            var coreContentTreeXmlReader = reader.ReadSubtree();
+                            this.CoreContent = new ReqIFContent { DocumentRoot = this };
+                            this.CoreContent.ReadXml(coreContentTreeXmlReader);
+                            break;
+                        case "TOOL-EXTENSIONS":
+                            var toolExtensionsXmlReader = reader.ReadSubtree();
 
-                            var reqIfToolExtension = new ReqIFToolExtension();
-                            reqIfToolExtension.ReadXml(reqIfToolExtensionSubTreeXmlReader);
-                            this.ToolExtension.Add(reqIfToolExtension);
-                        }
+                            while (toolExtensionsXmlReader.Read())
+                            {
+                                if (toolExtensionsXmlReader.MoveToContent() == XmlNodeType.Element && toolExtensionsXmlReader.LocalName == "REQ-IF-TOOL-EXTENSION")
+                                {
+                                    var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();
+
+                                    var reqIfToolExtension = new ReqIFToolExtension();
+                                    reqIfToolExtension.ReadXml(reqIfToolExtensionSubTreeXmlReader);
+                                    this.ToolExtension.Add(reqIfToolExtension);
+                                }
+                            }
+                            break;
                     }
                 }
             }

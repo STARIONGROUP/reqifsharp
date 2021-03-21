@@ -20,10 +20,9 @@
 
 namespace ReqIFSharp
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// Encapsulates an xml attribute extracted from a ReqIF document
+    /// </summary>
     internal class XmlAttribute
     {
         /// <summary>

@@ -18,13 +18,13 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.Collections.Generic;
-
 namespace ReqIFSharp
 {
-    #if NETFULL
+    using System.Collections.Generic;
+
+#if NETFULL
     using System.Xml.Schema;
-    #endif
+#endif
 
     /// <summary>
     /// Specifies the <see cref="IReqIFDeSerializer"/> 

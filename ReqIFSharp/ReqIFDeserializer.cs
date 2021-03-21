@@ -237,13 +237,13 @@ namespace ReqIFSharp
             var a = Assembly.GetExecutingAssembly();
             var type = this.GetType();
             var @namespace = type.Namespace;
-            var reqifSchemaResourceName = string.Format("{0}.Resources.{1}", @namespace, resourceName);
+            var reqifSchemaResourceName = $"{@namespace}.Resources.{resourceName}";
 
             var stream = a.GetManifestResourceStream(reqifSchemaResourceName);
 
             if (stream == null)
             {
-                throw new MissingManifestResourceException(string.Format("The {0} resource could not be found", reqifSchemaResourceName));
+                throw new MissingManifestResourceException($"The {reqifSchemaResourceName} resource could not be found");
             }
 
             return XmlSchema.Read(stream, validationEventHandler);

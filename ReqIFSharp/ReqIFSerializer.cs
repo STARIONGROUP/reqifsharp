@@ -120,17 +120,17 @@ namespace ReqIFSharp
         {
             if (reqIf == null)
             {
-                throw new ArgumentNullException("reqIf", "The reqIf object cannot be null.");
+                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
             }
 
             if (fileUri == null)
             {
-                throw new ArgumentNullException("fileUri", "The path of the file cannot be null.");
+                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
             }
 
             if (fileUri == string.Empty)
             {
-                throw new ArgumentOutOfRangeException("fileUri", "The path of the file cannot be empty.");
+                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
             }
 
             if (this.shouldBeValidated)
@@ -180,17 +180,17 @@ namespace ReqIFSharp
         {
             if (reqIf == null)
             {
-                throw new ArgumentNullException("reqIf", "The reqIf object cannot be null.");
+                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
             }
 
             if (fileUri == null)
             {
-                throw new ArgumentNullException("fileUri", "The path of the file cannot be null.");
+                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
             }
 
             if (fileUri == string.Empty)
             {
-                throw new ArgumentOutOfRangeException("fileUri", "The path of the file cannot be empty.");
+                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
             }
 
 
