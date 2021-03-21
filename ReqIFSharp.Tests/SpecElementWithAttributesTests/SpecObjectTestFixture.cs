@@ -21,7 +21,9 @@
 namespace ReqIFLib.Tests
 {
     using System;
+
     using NUnit.Framework;
+
     using ReqIFSharp;
 
     /// <summary>

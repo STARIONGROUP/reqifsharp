@@ -20,11 +20,12 @@
 
 namespace ReqIFSharp.Tests
 {
-    using System;
     using System.IO;
     using System.Linq;
     using System.Xml.Schema;
+
     using NUnit.Framework;
+
     using ReqIFSharp;
 
     /// <summary>
@@ -53,7 +54,7 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWitouthValidation()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif")).First();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -85,7 +86,7 @@ namespace ReqIFSharp.Tests
         {
             var deserializer = new ReqIFDeserializer();
             
-            Assert.DoesNotThrow(() => deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz")));
+            Assert.DoesNotThrow(() => deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz")));
         }
 
         [Test]
@@ -93,7 +94,7 @@ namespace ReqIFSharp.Tests
         {
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0.reqif")).First() ;
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif")).First() ;
 
             Assert.That(reqIf.TheHeader.Identifier, Is.EqualTo("_o7scMadbEeafNduaIhMwQg"));
             Assert.That(reqIf.TheHeader.Title, Is.EqualTo("Traceability Template"));
@@ -107,7 +108,7 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif"), true, this.ValidationEventHandler).First();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), true, this.ValidationEventHandler).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -123,7 +124,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_XHTML_attributes_can_de_deserialized()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.reqif")).First();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -138,7 +139,7 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidationNET()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz")).First();
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 

@@ -25,6 +25,7 @@ namespace ReqIFSharp.Tests
     using System.Xml.Schema;
 
     using NUnit.Framework;
+
     using ReqIFSharp;
 
 #if NETFULL

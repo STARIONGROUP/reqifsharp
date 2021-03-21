@@ -42,7 +42,7 @@
   </ItemGroup>  
 
   <ItemGroup>
-    <None Update="output.reqif">
+    <None Update="TestData\output.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="output.xml">
@@ -51,16 +51,16 @@
     <None Update="output.zip">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="ProR_Traceability-Template-v1.0.reqif">
+    <None Update="TestData\ProR_Traceability-Template-v1.0.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="sample_debug.reqif">
+    <None Update="TestData\sample_debug.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="test-multiple-reqif.reqifz">
+    <None Update="TestData\test-multiple-reqif.reqifz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="testreqif.reqif">
+    <None Update="TestData\testreqif.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="testreqif.xml">

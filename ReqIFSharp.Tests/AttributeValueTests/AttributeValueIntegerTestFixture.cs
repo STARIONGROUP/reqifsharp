@@ -24,7 +24,9 @@ namespace ReqIFLib.Tests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Xml;
+
     using NUnit.Framework;
+
     using ReqIFSharp;
 
     /// <summary>

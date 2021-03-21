@@ -25,7 +25,9 @@ namespace ReqIFSharp.Tests
     using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
+
     using NUnit.Framework;
+
     using ReqIFSharp;
 
     [TestFixture]

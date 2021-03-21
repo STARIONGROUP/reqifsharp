@@ -20,14 +20,12 @@
 
 namespace ReqIFSharp.Tests
 {
-    using System;
     using System.IO;
-    using System.Linq;
-    using System.Text;
     using System.Xml;
-    using System.Xml.Schema;
     using System.Xml.Serialization;
+
     using NUnit.Framework;
+
     using ReqIFSharp;
 
     [TestFixture]
@@ -45,7 +43,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void VerifyThatReqIfObjectIsCreatedCorrectly()
         {
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.reqif");
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif");
 
             using (var xmlreader = XmlReader.Create(path))
             {
