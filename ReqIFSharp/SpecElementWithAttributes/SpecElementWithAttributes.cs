@@ -119,97 +119,84 @@ namespace ReqIFSharp
             {
                 while (specElementWithAttributesReader.Read())
                 {
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ALTERNATIVE-ID")
+                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element)
                     {
-                        var alternativeId = new AlternativeId(this);
-                        alternativeId.ReadXml(specElementWithAttributesReader);
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "TYPE")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                        switch (specElementWithAttributesReader.LocalName)
                         {
-                            subtree.MoveToContent();
-                            this.ReadSpecType(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "CHILDREN")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            this.ReadHierarchy(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-BOOLEAN")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueBoolean = new AttributeValueBoolean(this);
-                            attributeValueBoolean.ReadXml(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-DATE")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueDate = new AttributeValueDate(this);
-                            attributeValueDate.ReadXml(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-ENUMERATION")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueEnumeration = new AttributeValueEnumeration(this);
-                            attributeValueEnumeration.ReadXml(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-INTEGER")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueInteger = new AttributeValueInteger(this);
-                            attributeValueInteger.ReadXml(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-REAL")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueReal = new AttributeValueReal(this);
-                            attributeValueReal.ReadXml(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-STRING")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueString = new AttributeValueString(this);
-                            attributeValueString.ReadXml(subtree);
-                        }
-                    }
-
-                    if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element && specElementWithAttributesReader.LocalName == "ATTRIBUTE-VALUE-XHTML")
-                    {
-                        using (var subtree = specElementWithAttributesReader.ReadSubtree())
-                        {
-                            subtree.MoveToContent();
-                            var attributeValueXhtml = new AttributeValueXHTML(this);
-                            attributeValueXhtml.ReadXml(subtree);
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(specElementWithAttributesReader);
+                                break;
+                            case "TYPE":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    this.ReadSpecType(subtree);
+                                }
+                                break;
+                            case "CHILDREN":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    this.ReadHierarchy(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-BOOLEAN":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueBoolean = new AttributeValueBoolean(this);
+                                    attributeValueBoolean.ReadXml(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-DATE":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueDate = new AttributeValueDate(this);
+                                    attributeValueDate.ReadXml(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-ENUMERATION":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueEnumeration = new AttributeValueEnumeration(this);
+                                    attributeValueEnumeration.ReadXml(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-INTEGER":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueInteger = new AttributeValueInteger(this);
+                                    attributeValueInteger.ReadXml(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-REAL":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueReal = new AttributeValueReal(this);
+                                    attributeValueReal.ReadXml(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-STRING":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueString = new AttributeValueString(this);
+                                    attributeValueString.ReadXml(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-XHTML":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    var attributeValueXhtml = new AttributeValueXHTML(this);
+                                    attributeValueXhtml.ReadXml(subtree);
+                                }
+                                break;
                         }
                     }
 

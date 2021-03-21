@@ -73,39 +73,36 @@ namespace ReqIFSharp
         /// </remarks>
         protected override void ReadObjectSpecificElements(XmlReader reader)
         {
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SOURCE")
+            if (reader.MoveToContent() == XmlNodeType.Element)
             {
-                var subtree = reader.ReadSubtree();
-                subtree.MoveToContent();
-
-                if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                switch (reader.LocalName)
                 {
-                    var reference = reader.ReadElementContentAsString();
-                    var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
-                    this.Source = specObject
-                                  ?? new SpecObject
-                                  {
-                                      Identifier = reference,
-                                      Description = "This spec-object was not found in the source file."
-                                  };
-                }
-            }
-
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "TARGET")
-            {
-                var subtree = reader.ReadSubtree();
-                subtree.MoveToContent();
-
-                if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
-                {
-                    var reference = reader.ReadElementContentAsString();
-                    var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
-                    this.Target = specObject
-                                  ?? new SpecObject
-                                  {
-                                      Identifier = reference,
-                                      Description = "This spec-object was not found in the source file."
-                                  };
+                    case "SOURCE":
+                        if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                        {
+                            var reference = reader.ReadElementContentAsString();
+                            var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
+                            this.Source = specObject
+                                          ?? new SpecObject
+                                          {
+                                              Identifier = reference,
+                                              Description = "This spec-object was not found in the source file."
+                                          };
+                        }
+                        break;
+                    case "TARGET":
+                        if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                        {
+                            var reference = reader.ReadElementContentAsString();
+                            var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
+                            this.Target = specObject
+                                          ?? new SpecObject
+                                          {
+                                              Identifier = reference,
+                                              Description = "This spec-object was not found in the source file."
+                                          };
+                        }
+                        break;
                 }
             }
         }
@@ -179,17 +176,17 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type of SpecRelation {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Type of SpecRelation {this.Identifier}:{this.LongName} may not be null");
             }
 
             if (this.Source == null)
             {
-                throw new SerializationException(string.Format("The Source of SpecRelation {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Source of SpecRelation {this.Identifier}:{this.LongName} may not be null");
             }
 
             if (this.Target == null)
             {
-                throw new SerializationException(string.Format("The Target of SpecRelation {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Target of SpecRelation {this.Identifier}:{this.LongName} may not be null");
             }
 
             base.WriteXml(writer);

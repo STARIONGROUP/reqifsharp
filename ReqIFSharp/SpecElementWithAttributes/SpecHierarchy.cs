@@ -151,21 +151,24 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "OBJECT")
+                if (reader.MoveToContent() == XmlNodeType.Element)
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    switch (reader.LocalName)
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeObject(subtree);
-                    }
-                }
-
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "CHILDREN")
-                {
-                    using (var subtree = reader.ReadSubtree())
-                    {
-                        subtree.MoveToContent();
-                        this.DeserializeSpecHierarchy(subtree);
+                        case "OBJECT":
+                            using (var subtree = reader.ReadSubtree())
+                            {
+                                subtree.MoveToContent();
+                                this.DeserializeObject(subtree);
+                            }
+                            break;
+                        case "CHILDREN":
+                            using (var subtree = reader.ReadSubtree())
+                            {
+                                subtree.MoveToContent();
+                                this.DeserializeSpecHierarchy(subtree);
+                            }
+                            break;
                     }
                 }
             }
@@ -184,7 +187,7 @@ namespace ReqIFSharp
         {
             if (this.Object == null)
             {
-                throw new SerializationException(string.Format("The Object property of SpecHierarchy {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Object property of SpecHierarchy {this.Identifier}:{this.LongName} may not be null");
             }
 
             base.WriteXml(writer);

@@ -128,49 +128,44 @@ namespace ReqIFSharp
         /// </remarks>
         protected override void ReadObjectSpecificElements(XmlReader reader)
         {
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.Name == "SOURCE-SPECIFICATION")
+            if (reader.MoveToContent() == XmlNodeType.Element)
             {
-                var subtree = reader.ReadSubtree();
-                subtree.MoveToContent();
-
-                if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                switch (reader.Name)
                 {
-                    var reference = reader.ReadElementContentAsString();
-                    var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                    this.SourceSpecification = specification
-                                               ?? new Specification
-                                               {
-                                                   Identifier = reference,
-                                                   Description = "This specification was not found in the source file."
-                                               };
+                    case "SOURCE-SPECIFICATION":
+                        if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                        {
+                            var reference = reader.ReadElementContentAsString();
+                            var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
+                            this.SourceSpecification = specification
+                                                       ?? new Specification
+                                                       {
+                                                           Identifier = reference,
+                                                           Description = "This specification was not found in the source file."
+                                                       };
+                        }
+                        break;
+                    case "TARGET-SPECIFICATION":
+                        if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                        {
+                            var reference = reader.ReadElementContentAsString();
+                            var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
+                            this.TargetSpecification = specification
+                                                       ?? new Specification
+                                                       {
+                                                           Identifier = reference,
+                                                           Description = "This specification was not found in the source file."
+                                                       };
+                        }
+                        break;
+                    case "SPEC-RELATIONS":
+                        reader.ReadStartElement();
+
+                        this.DeserializeSpecRelations(reader);
+
+                        reader.ReadEndElement();
+                        break;
                 }
-            }
-
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.Name == "TARGET-SPECIFICATION")
-            {
-                var subtree = reader.ReadSubtree();
-                subtree.MoveToContent();
-
-                if (reader.ReadToDescendant("SPECIFICATION-REF"))
-                {
-                    var reference = reader.ReadElementContentAsString();
-                    var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
-                    this.TargetSpecification = specification
-                                               ?? new Specification
-                                                    {
-                                                        Identifier = reference,
-                                                        Description = "This specification was not found in the source file."
-                                                    };
-                }
-            }
-
-            if (reader.MoveToContent() == XmlNodeType.Element && reader.Name == "SPEC-RELATIONS")
-            {
-                reader.ReadStartElement();
-
-                this.DeserializeSpecRelations(reader);
-
-                reader.ReadEndElement();
             }
         }
 
