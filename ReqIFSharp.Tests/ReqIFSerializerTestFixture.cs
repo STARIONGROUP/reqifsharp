@@ -673,7 +673,7 @@ namespace ReqIFSharp.Tests
         public void VerifyThatArgumentExceptionIsRaisedOnSerialize()
         {
 
-#if NETFULL
+#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             
             Assert.That(
@@ -713,7 +713,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void VerifyThatTheReqIfSerializerSerializesaReqIfDocumentWithoutValidation()
         {
-#if NETFULL
+#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(this.reqIF, this.resultFileUri , null);
 

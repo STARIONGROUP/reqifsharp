@@ -100,7 +100,7 @@ namespace ReqIFSharp.Tests
 
             Assert.That(reqIf.TheHeader.Identifier, Is.EqualTo("_o7scMadbEeafNduaIhMwQg"));
             Assert.That(reqIf.TheHeader.Comment, Is.EqualTo("Download this template and others at https://reqif.academy"));
-            Assert.That(reqIf.TheHeader.CreationTime, Is.EqualTo(DateTime.Parse("2016-11-10T16:37:50.954")));
+            Assert.That(reqIf.TheHeader.CreationTime, Is.EqualTo(DateTimeOffset.Parse("2016-11-10T16:37:50.954").DateTime));
             Assert.That(reqIf.TheHeader.ReqIFToolId, Is.EqualTo("fmStudio (http://formalmind.com/studio)"));
             Assert.That(reqIf.TheHeader.ReqIFVersion, Is.EqualTo("1.0"));
             Assert.That(reqIf.TheHeader.SourceToolId, Is.EqualTo("fmStudio (http://formalmind.com/studio)"));
@@ -129,7 +129,7 @@ namespace ReqIFSharp.Tests
             Assert.That(toolExtension.InnerXml, Is.Not.Empty);
         }
 
-#if NETFULL
+#if NETFRAMEWORK || NETCOREAPP3_1
         [Test]
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
         {

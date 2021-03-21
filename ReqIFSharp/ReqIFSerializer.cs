@@ -53,7 +53,7 @@ namespace ReqIFSharp
         /// </summary>
         private readonly XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
 
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// The <see cref="ReqIF"/> <see cref="XmlSchemaSet"/>
         /// </summary>
@@ -65,7 +65,7 @@ namespace ReqIFSharp
         private readonly bool shouldBeValidated;
 #endif
 
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Initializes a new instance of the <see cref="ReqIFSerializer"/> class. 
         /// </summary>
@@ -95,7 +95,7 @@ namespace ReqIFSharp
         }
 #endif
 
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
         /// </summary>

@@ -25,7 +25,7 @@ namespace ReqIFSharp
     using System.Xml;
     using System.Xml.Schema;
 
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
 
     /// <summary>
     /// The purpose of the <see cref="ReqIfSchemaResolver"/> is to resolve the imported and included

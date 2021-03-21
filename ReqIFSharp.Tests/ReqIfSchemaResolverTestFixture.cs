@@ -28,7 +28,7 @@ namespace ReqIFSharp.Tests
 
     using ReqIFSharp;
 
-#if NETFULL
+#if NETFRAMEWORK || NETCOREAPP3_1
 
     /// <summary>
     /// Suite of tests for the <see cref="ReqIfSchemaResolver"/> class

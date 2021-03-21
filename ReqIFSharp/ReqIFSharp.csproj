@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
  
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.6;net45</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0;netstandard1.6;net45</TargetFrameworks>
     <Version>3.0.0</Version>
     <Description>ReqIF library that contains ReqIF classes and a specific serializer.</Description>
     <PackageId>ReqIFSharp</PackageId>
@@ -29,14 +29,6 @@
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
     <IncludeSymbols>true</IncludeSymbols>
     <DefineConstants>RELEASE</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)'=='netstandard1.6'">
-    <DefineConstants>NETCORE;NETSTANDARD;NETSTANDARD1_6</DefineConstants>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(TargetFramework)'=='net45'">
-    <DefineConstants>NET45;NETFULL</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)'=='net45'">

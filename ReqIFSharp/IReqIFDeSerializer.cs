@@ -22,7 +22,7 @@ namespace ReqIFSharp
 {
     using System.Collections.Generic;
 
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
     using System.Xml.Schema;
 #endif
 
@@ -31,7 +31,7 @@ namespace ReqIFSharp
     /// </summary>
     public interface IReqIFDeSerializer
     {
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.

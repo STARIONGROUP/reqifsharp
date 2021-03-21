@@ -20,7 +20,7 @@
 
 namespace ReqIFSharp
 {
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -50,7 +50,7 @@ namespace ReqIFSharp
     /// </summary>
     public class ReqIFDeserializer : IReqIFDeSerializer
     {
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.
@@ -159,7 +159,7 @@ namespace ReqIFSharp
 
 #endif
 
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.

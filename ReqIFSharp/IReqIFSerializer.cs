@@ -20,7 +20,7 @@
 
 namespace ReqIFSharp
 {
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
     using System;
     using System.IO;
     using System.Security;
@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// </summary>
     public interface IReqIFSerializer
     {
-#if NETFULL
+#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
         /// </summary>

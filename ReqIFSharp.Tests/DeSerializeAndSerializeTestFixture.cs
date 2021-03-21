@@ -40,7 +40,7 @@ namespace ReqIFSharp.Tests
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-reserialize.reqif");
 
-#if NETFULL
+#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(reqIf, resultFileUri, null);
 #else
@@ -59,7 +59,7 @@ namespace ReqIFSharp.Tests
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-reserialize.reqif");
 
-#if NETFULL
+#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(reqIf, resultFileUri, null);
 #else
