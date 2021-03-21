@@ -366,6 +366,11 @@ namespace ReqIFSharp
         /// </param>
         private void WriteDataDefinitions(XmlWriter writer)
         {
+            if (this.dataTypes.Count == 0)
+            {
+                return;
+            }
+
             writer.WriteStartElement("DATATYPES");
 
             foreach (var datatypeDefinition in this.dataTypes)
@@ -387,6 +392,11 @@ namespace ReqIFSharp
         /// </param>
         private void WriteSpecTypes(XmlWriter writer)
         {
+            if (this.specTypes.Count == 0)
+            {
+                return;
+            }
+
             writer.WriteStartElement("SPEC-TYPES");
 
             foreach (var specType in this.specTypes)

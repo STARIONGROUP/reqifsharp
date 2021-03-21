@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueString"/> class is to define a <see cref="string"/> attribute value.
     /// </summary>

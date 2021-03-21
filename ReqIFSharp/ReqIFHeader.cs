@@ -142,9 +142,18 @@ namespace ReqIFSharp
         {
             writer.WriteAttributeString("IDENTIFIER", this.Identifier);
 
-            writer.WriteElementString("COMMENT", this.Comment);
+            if (!string.IsNullOrEmpty(this.Comment))
+            {
+                writer.WriteElementString("COMMENT", this.Comment);
+            }
+
             writer.WriteElementString("CREATION-TIME", XmlConvert.ToString(this.CreationTime, XmlDateTimeSerializationMode.Utc));
-            writer.WriteElementString("REPOSITORY-ID", this.RepositoryId);
+
+            if (!string.IsNullOrEmpty(this.RepositoryId))
+            {
+                writer.WriteElementString("REPOSITORY-ID", this.RepositoryId);
+            }
+
             writer.WriteElementString("REQ-IF-TOOL-ID", this.ReqIFToolId);
             writer.WriteElementString("REQ-IF-VERSION", this.ReqIFVersion);
             writer.WriteElementString("SOURCE-TOOL-ID", this.SourceToolId);

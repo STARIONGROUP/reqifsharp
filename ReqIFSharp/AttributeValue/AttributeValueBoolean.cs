@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueBoolean"/> class is to define a <see cref="bool"/> attribute value.
     /// </summary>

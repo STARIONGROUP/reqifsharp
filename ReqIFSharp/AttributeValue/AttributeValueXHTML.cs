@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueXHTML"/> class is to define an attribute value with XHTML contents.
     /// </summary>
@@ -182,13 +182,13 @@ namespace ReqIFSharp
             {
                 throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
             }
-            
+
             writer.WriteAttributeString("IS-SIMPLIFIED", this.IsSimplified ? "true" : "false");
 
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-XHTML-REF", this.Definition.Identifier);
             writer.WriteEndElement();
-   
+
             writer.WriteStartElement("THE-VALUE");
             writer.WriteRaw(this.TheValue);
             writer.WriteEndElement();

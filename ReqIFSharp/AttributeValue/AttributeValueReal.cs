@@ -24,7 +24,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueReal"/> class is to define a real attribute value.
     /// </summary>

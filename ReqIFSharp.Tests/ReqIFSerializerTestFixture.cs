@@ -662,7 +662,7 @@ namespace ReqIFSharp.Tests
             {
                 using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
                 {
-                    xmlSerializer.Serialize(writer, this.reqIF);
+                    Assert.DoesNotThrow(() => xmlSerializer.Serialize(writer, this.reqIF));
                 }
             }
 

@@ -26,6 +26,11 @@ namespace ReqIFSharp
     internal class XmlAttribute
     {
         /// <summary>
+        /// Gets or sets the namespace prefix of the attribute
+        /// </summary>
+        internal string Prefix { get; set; }
+
+        /// <summary>
         /// Gets or sets the local name of the attribute
         /// </summary>
         internal string LocalName { get; set; }

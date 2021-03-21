@@ -83,10 +83,13 @@ namespace ReqIFSharp
             {
                 if (reader.Name != "xml:lang")
                 {
-                    var xmlAttribute = new ReqIFSharp.XmlAttribute();
-                    xmlAttribute.LocalName = reader.Name;
-                    xmlAttribute.Value = reader.Value;
-                    
+                    var xmlAttribute = new ReqIFSharp.XmlAttribute
+                    {
+                        Prefix = reader.Prefix,
+                        LocalName = reader.LocalName,
+                        Value = reader.Value
+                    };
+
                     attributes.Add(xmlAttribute);
                 }
             }
@@ -142,7 +145,21 @@ namespace ReqIFSharp
 
             foreach (var xmlAttribute in this.attributes)
             {
-                writer.WriteAttributeString(xmlAttribute.LocalName, xmlAttribute.Value);
+                if (xmlAttribute.Prefix != string.Empty)
+                {
+                    if (xmlAttribute.Prefix == "xmlns")
+                    {
+                        writer.WriteAttributeString(xmlAttribute.Prefix, xmlAttribute.LocalName,  null, xmlAttribute.Value);
+                    }
+                    else
+                    {
+                        writer.WriteAttributeString(xmlAttribute.LocalName, xmlAttribute.Prefix, xmlAttribute.Value);
+                    }
+                }
+                else
+                {
+                    writer.WriteAttributeString(xmlAttribute.LocalName, xmlAttribute.Value);
+                }
             }
 
             this.WriteTheHeader(writer);
@@ -188,7 +205,12 @@ namespace ReqIFSharp
         /// </param>
         private void WriteToolExtension(XmlWriter writer)
         {
-            writer.WriteStartElement("REQ-IF-TOOL-EXTENSION");
+            if (this.ToolExtension.Count == 0)
+            {
+                return;
+            }
+
+            writer.WriteStartElement("TOOL-EXTENSIONS");
             foreach (var reqIfToolExtension in this.ToolExtension)
             {
                 writer.WriteStartElement("REQ-IF-TOOL-EXTENSION");

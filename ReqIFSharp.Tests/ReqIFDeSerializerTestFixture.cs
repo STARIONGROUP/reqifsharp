@@ -18,6 +18,8 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using System;
+
 namespace ReqIFSharp.Tests
 {
     using System.IO;
@@ -90,17 +92,30 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_the_Tool_Extensions_are_deserialized()
+        public void Verify_that_the_Tool_Extensions_are_deserialized_from_ProR_Traceability_template()
         {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif")).First() ;
+            var reqIf = deserializer.Deserialize(reqifPath).First() ;
 
             Assert.That(reqIf.TheHeader.Identifier, Is.EqualTo("_o7scMadbEeafNduaIhMwQg"));
+            Assert.That(reqIf.TheHeader.Comment, Is.EqualTo("Download this template and others at https://reqif.academy"));
+            Assert.That(reqIf.TheHeader.CreationTime, Is.EqualTo(DateTime.Parse("2016-11-10T15:37:50.954")));
+            Assert.That(reqIf.TheHeader.ReqIFToolId, Is.EqualTo("fmStudio (http://formalmind.com/studio)"));
+            Assert.That(reqIf.TheHeader.ReqIFVersion, Is.EqualTo("1.0"));
+            Assert.That(reqIf.TheHeader.SourceToolId, Is.EqualTo("fmStudio (http://formalmind.com/studio)"));
             Assert.That(reqIf.TheHeader.Title, Is.EqualTo("Traceability Template"));
-            Assert.That(reqIf.CoreContent.DataTypes, Is.Not.Empty);
 
-            Assert.That(reqIf.ToolExtension, Is.Not.Empty);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(8));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(21));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(9));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(2));
+            Assert.That(reqIf.ToolExtension.Count, Is.EqualTo(1));
+
+            var toolExtension = reqIf.ToolExtension.First();
+            Assert.That(toolExtension.InnerXml, Is.Not.Empty);
         }
 
 #if NETFULL

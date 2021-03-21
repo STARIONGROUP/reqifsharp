@@ -25,7 +25,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueEnumeration"/> class is to define an enumeration attribute value.
     /// </summary>
