@@ -23,7 +23,6 @@
   
   <ItemGroup>
     <None Remove="driver.xsd" />
-    <None Remove="reqif.xsd" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\driver.xsd" />
@@ -42,6 +41,9 @@
   </ItemGroup>  
 
   <ItemGroup>
+    <None Update="TestData\Datatype-Demo.reqif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\output.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

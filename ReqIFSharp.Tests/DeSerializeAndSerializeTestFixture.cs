@@ -31,7 +31,7 @@ namespace ReqIFSharp.Tests
     public class DeSerializeAndSerializeTestFixture
     {
         [Test]
-        public void Verify_That_a_reqif_file_can_deserialized_and_serialized_with_equivalent_output()
+        public void Verify_That_ProR_Traceability_Template_reqif_file_can_deserialized_and_serialized_with_equivalent_output()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
@@ -39,6 +39,25 @@ namespace ReqIFSharp.Tests
             var reqIf = deserializer.Deserialize(reqifPath).First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-reserialize.reqif");
+
+#if NETFULL
+            var serializer = new ReqIFSerializer(false);
+            serializer.Serialize(reqIf, resultFileUri, null);
+#else
+            var serializer = new ReqIFSerializer();
+            serializer.Serialize(reqIf, resultFileUri);
+#endif
+        }
+
+        [Test]
+        public void Verify_That_Datatype_Demo_reqif_file_can_deserialized_and_serialized_with_equivalent_output()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
+            var deserializer = new ReqIFDeserializer();
+
+            var reqIf = deserializer.Deserialize(reqifPath).First();
+
+            var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-reserialize.reqif");
 
 #if NETFULL
             var serializer = new ReqIFSerializer(false);

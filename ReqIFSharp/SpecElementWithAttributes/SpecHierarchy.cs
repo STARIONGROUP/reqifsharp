@@ -356,6 +356,11 @@ namespace ReqIFSharp
         /// </param>
         private void WriteChildren(XmlWriter writer)
         {
+            if (this.children.Count == 0)
+            {
+                return;
+            }
+
             writer.WriteStartElement("CHILDREN");
 
             foreach (var specHierarchy in this.children)
