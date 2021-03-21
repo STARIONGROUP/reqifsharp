@@ -85,7 +85,7 @@ namespace ReqIFSharp
             this.Identifier = reader.GetAttribute("IDENTIFIER");
 
             var lastChange = reader.GetAttribute("LAST-CHANGE");
-            this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.Utc);
+            this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
 
             this.Description = reader.GetAttribute("DESC");
             this.LongName = reader.GetAttribute("LONG-NAME");
@@ -114,7 +114,7 @@ namespace ReqIFSharp
 
             writer.WriteAttributeString("IDENTIFIER", this.Identifier);
 
-            writer.WriteAttributeString("LAST-CHANGE", XmlConvert.ToString(this.LastChange, XmlDateTimeSerializationMode.Utc));
+            writer.WriteAttributeString("LAST-CHANGE", XmlConvert.ToString(this.LastChange, XmlDateTimeSerializationMode.RoundtripKind));
 
             if (!string.IsNullOrEmpty(this.LongName))
             {

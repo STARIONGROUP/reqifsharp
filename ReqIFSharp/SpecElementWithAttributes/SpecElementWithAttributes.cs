@@ -22,7 +22,7 @@ namespace ReqIFSharp
 {
     using System.Collections.Generic;
     using System.Xml;
-    
+
     /// <summary>
     /// An abstract super class for elements that can own attributes.
     /// </summary>
@@ -54,7 +54,7 @@ namespace ReqIFSharp
         /// </param>
         internal SpecElementWithAttributes(ReqIFContent reqIfContent)
         {
-            this.ReqIfContent = reqIfContent;
+            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the owning <see cref="ReqIFContent"/>
         /// </summary>
-        public ReqIFContent ReqIfContent { get; set; }
+        public ReqIFContent ReqIFContent { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="SpecType"/>

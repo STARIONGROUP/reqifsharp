@@ -60,7 +60,7 @@ namespace ReqIFSharp
         {
             this.SpecElAt = specElAt;
             this.SpecElAt.Values.Add(this);
-            this.ReqIFContent = this.SpecElAt.ReqIfContent;
+            this.ReqIFContent = this.SpecElAt.ReqIFContent;
         }
 
         /// <summary>

@@ -192,7 +192,10 @@ namespace ReqIFSharp
 
             base.WriteXml(writer);
 
-            writer.WriteAttributeString("IS-TABLE-INTERNAL", this.IsTableInternal ? "true" : "false");
+            if (this.IsTableInternal)
+            {
+                writer.WriteAttributeString("IS-TABLE-INTERNAL", "true");
+            }
 
             this.WriteObject(writer);
 
@@ -248,9 +251,7 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
-                    bool isTableInternal;
-
-                    if (bool.TryParse(reader.GetAttribute("IS-TABLE-INTERNAL"), out isTableInternal))
+                    if (bool.TryParse(reader.GetAttribute("IS-TABLE-INTERNAL"), out var isTableInternal))
                     {
                         this.IsTableInternal = isTableInternal;
                     }

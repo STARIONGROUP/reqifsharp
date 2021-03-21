@@ -180,7 +180,7 @@ namespace ReqIFSharp
             if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF"))
             {
                 var reference = reader.ReadElementContentAsString();
-                var specType = this.ReqIfContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
+                var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (RelationGroupType)specType;
             }
         }

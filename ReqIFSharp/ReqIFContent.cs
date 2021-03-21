@@ -23,7 +23,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Xml;
     using System.Xml.Serialization;
-    
+
     /// <summary>
     /// The <see cref="ReqIFContent"/> class represents the mandatory content of a ReqIF Exchange Document.
     /// </summary>

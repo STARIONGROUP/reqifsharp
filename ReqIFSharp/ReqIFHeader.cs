@@ -110,7 +110,7 @@ namespace ReqIFSharp
                             this.Comment = reader.ReadElementContentAsString();
                             break;
                         case "CREATION-TIME":
-                            this.CreationTime = XmlConvert.ToDateTime(reader.ReadElementContentAsString(), XmlDateTimeSerializationMode.Utc);
+                            this.CreationTime = XmlConvert.ToDateTime(reader.ReadElementContentAsString(), XmlDateTimeSerializationMode.RoundtripKind);
                             break;
                         case "REPOSITORY-ID":
                             this.RepositoryId = reader.ReadElementContentAsString();
@@ -147,7 +147,7 @@ namespace ReqIFSharp
                 writer.WriteElementString("COMMENT", this.Comment);
             }
 
-            writer.WriteElementString("CREATION-TIME", XmlConvert.ToString(this.CreationTime, XmlDateTimeSerializationMode.Utc));
+            writer.WriteElementString("CREATION-TIME", XmlConvert.ToString(this.CreationTime, XmlDateTimeSerializationMode.RoundtripKind));
 
             if (!string.IsNullOrEmpty(this.RepositoryId))
             {

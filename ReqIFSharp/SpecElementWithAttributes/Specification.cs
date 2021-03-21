@@ -53,7 +53,7 @@ namespace ReqIFSharp
         internal Specification(ReqIFContent reqIfContent)
             : base(reqIfContent)
         {
-            this.ReqIfContent.Specifications.Add(this);
+            this.ReqIFContent.Specifications.Add(this);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace ReqIFSharp
             if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF"))
             {
                 var reference = reader.ReadElementContentAsString();
-                var specType = this.ReqIfContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
+                var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecificationType)specType;
             }
         }
@@ -151,7 +151,7 @@ namespace ReqIFSharp
                     {
                         subtree.MoveToContent();
 
-                        var specHierarchy = new SpecHierarchy(this, this.ReqIfContent);
+                        var specHierarchy = new SpecHierarchy(this, this.ReqIFContent);
                         specHierarchy.ReadXml(subtree);
                     }
                 }

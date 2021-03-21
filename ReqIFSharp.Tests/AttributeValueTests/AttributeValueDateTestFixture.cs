@@ -30,7 +30,7 @@ namespace ReqIFSharp.Tests
     using ReqIFSharp;
 
     /// <summary>
-    /// Suite of tests for the <see cref="AttributeValueBoolean"/>
+    /// Suite of tests for the <see cref="AttributeValueDate"/>
     /// </summary>
     [TestFixture]
     public class AttributeValueDateTestFixture
@@ -60,6 +60,13 @@ namespace ReqIFSharp.Tests
             var attributeValue = (AttributeValue)attributeValueDate;
 
             Assert.Throws<ArgumentException>(() => attributeValue.AttributeDefinition = attributeDefinitionString);
+        }
+
+        [Test]
+        public void Verify_that_GetSchema_returns_null()
+        {
+            var attributeValue = new AttributeValueDate();
+            Assert.That(attributeValue.GetSchema(), Is.Null);
         }
 
         [Test]

@@ -36,5 +36,12 @@ namespace ReqIFLib.Tests
             var embeddedValue = new EmbeddedValue();
             Assert.IsNull(embeddedValue.GetSchema());
         }
+
+        [Test]
+        public void Verify_that_GetSchema_returns_null()
+        {
+            var embeddedValue = new EmbeddedValue();
+            Assert.That(embeddedValue.GetSchema(), Is.Null);
+        }
     }
 }

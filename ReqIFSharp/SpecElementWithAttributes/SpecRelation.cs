@@ -46,7 +46,7 @@ namespace ReqIFSharp
         internal SpecRelation(ReqIFContent reqIfContent)
             : base(reqIfContent)
         {
-            this.ReqIfContent.SpecRelations.Add(this);
+            this.ReqIFContent.SpecRelations.Add(this);
         }
 
         /// <summary>
@@ -81,7 +81,7 @@ namespace ReqIFSharp
                         if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
                         {
                             var reference = reader.ReadElementContentAsString();
-                            var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
+                            var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                             this.Source = specObject
                                           ?? new SpecObject
                                           {
@@ -94,7 +94,7 @@ namespace ReqIFSharp
                         if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
                         {
                             var reference = reader.ReadElementContentAsString();
-                            var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
+                            var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                             this.Target = specObject
                                           ?? new SpecObject
                                           {
@@ -145,7 +145,7 @@ namespace ReqIFSharp
             if (reader.ReadToDescendant("SPEC-RELATION-TYPE-REF"))
             {
                 var reference = reader.ReadElementContentAsString();
-                var specType = this.ReqIfContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
+                var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecRelationType)specType;
             }
         }

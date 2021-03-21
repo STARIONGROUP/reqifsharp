@@ -27,12 +27,13 @@ namespace ReqIFSharp
     /// </summary>
     public class DatatypeDefinitionReal : DatatypeDefinitionSimple
     {
-	    /// <summary>
-	    /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
-	    /// </summary>
-	    public DatatypeDefinitionReal()
-	    {
-	    }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
+        /// </summary>
+        public DatatypeDefinitionReal()
+        {
+
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
@@ -40,10 +41,10 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionReal(ReqIFContent reqIfContent)
-	        : base(reqIfContent)
-        {
-	        this.ReqIFContent = reqIfContent;
+        internal DatatypeDefinitionReal(ReqIFContent reqIfContent) 
+            : base(reqIfContent)
+        { 
+            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -69,25 +70,25 @@ namespace ReqIFSharp
         /// </param>
         public override void ReadXml(XmlReader reader)
         {
-	        base.ReadXml(reader);
+            base.ReadXml(reader);
 
-	        var value = reader.GetAttribute("ACCURACY");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Accuracy = XmlConvert.ToInt32(value);
-	        }
+            var accuraryvalue = reader.GetAttribute("ACCURACY");
+            if (!string.IsNullOrEmpty(accuraryvalue))
+            {
+                this.Accuracy = XmlConvert.ToInt32(accuraryvalue);
+            }
 
-	        value = reader.GetAttribute("MAX");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Max = XmlConvert.ToDouble(value);
-	        }
+            var maxValue = reader.GetAttribute("MAX");
+            if (!string.IsNullOrEmpty(maxValue))
+            {
+                this.Max = XmlConvert.ToDouble(maxValue);
+            }
 
-	        value = reader.GetAttribute("MIN");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Min = XmlConvert.ToDouble(value);
-	        }
+            var minValue = reader.GetAttribute("MIN"); 
+            if (!string.IsNullOrEmpty(minValue)) 
+            { 
+                this.Min = XmlConvert.ToDouble(minValue);
+            }
         }
 
         /// <summary>
@@ -98,11 +99,11 @@ namespace ReqIFSharp
         /// </param>
         public override void WriteXml(XmlWriter writer)
         {
-	        base.WriteXml(writer);
+            base.WriteXml(writer);
 
-	        writer.WriteAttributeString("ACCURACY", XmlConvert.ToString(this.Accuracy));
-	        writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min));
-	        writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
+            writer.WriteAttributeString("ACCURACY", XmlConvert.ToString(this.Accuracy));
+            writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min));
+            writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
         }
-	}
+    }
 }

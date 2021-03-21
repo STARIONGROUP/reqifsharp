@@ -127,11 +127,6 @@ namespace ReqIFSharp
         public bool IsSimplified { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether <see cref="IsSimplified"/> is specified
-        /// </summary>
-        public bool IsSimplifiedSpecified { get; set; }
-
-        /// <summary>
         /// Generates a <see cref="AttributeValueXHTML"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">
@@ -183,7 +178,10 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
             }
 
-            writer.WriteAttributeString("IS-SIMPLIFIED", this.IsSimplified ? "true" : "false");
+            if (this.IsSimplified)
+            {
+                writer.WriteAttributeString("IS-SIMPLIFIED", "true");
+            }
 
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-XHTML-REF", this.Definition.Identifier);

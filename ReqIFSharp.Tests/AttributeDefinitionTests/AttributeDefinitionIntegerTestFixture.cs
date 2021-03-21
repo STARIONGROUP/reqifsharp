@@ -63,6 +63,13 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_that_GetSchema_returns_null()
+        {
+            var attribute = new AttributeDefinitionInteger();
+            Assert.That(attribute.GetSchema(), Is.Null);
+        }
+
+        [Test]
         public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
         {
             using (var fs = new FileStream("test.xml", FileMode.Create))

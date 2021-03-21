@@ -132,7 +132,7 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.Utc);
+            this.TheValue = XmlConvert.ToDateTime(value, XmlDateTimeSerializationMode.RoundtripKind);
 
             while (reader.Read())
             {

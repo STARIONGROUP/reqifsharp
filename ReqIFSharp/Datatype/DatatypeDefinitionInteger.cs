@@ -20,7 +20,7 @@
 
 namespace ReqIFSharp
 {
-	using System.Xml;
+    using System.Xml;
 
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive Integer data type
@@ -31,7 +31,7 @@ namespace ReqIFSharp
     /// ReqIfSharp supports 64 bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
     public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
-	{
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
         /// </summary>
@@ -45,10 +45,10 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionInteger(ReqIFContent reqIfContent)
-	        : base(reqIfContent)
-        {
-	        this.ReqIFContent = reqIfContent;
+        internal DatatypeDefinitionInteger(ReqIFContent reqIfContent) 
+            : base(reqIfContent)
+        { 
+            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -68,20 +68,20 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlReader"/>
         /// </param>
         public override void ReadXml(XmlReader reader)
-        {
-	        base.ReadXml(reader);
-
-	        var value = reader.GetAttribute("MAX");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Max = XmlConvert.ToInt64(value);
-	        }
-
-	        value = reader.GetAttribute("MIN");
-	        if (!string.IsNullOrEmpty(value))
-	        {
-		        this.Min = XmlConvert.ToInt64(value);
-	        }
+        { 
+            base.ReadXml(reader);
+            
+            var maxValue = reader.GetAttribute("MAX"); 
+            if (!string.IsNullOrEmpty(maxValue)) 
+            { 
+                this.Max = XmlConvert.ToInt64(maxValue);
+            }
+            
+            var minValue = reader.GetAttribute("MIN"); 
+            if (!string.IsNullOrEmpty(minValue)) 
+            { 
+                this.Min = XmlConvert.ToInt64(minValue);
+            }
         }
 
         /// <summary>
@@ -91,11 +91,11 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
         public override void WriteXml(XmlWriter writer)
-        {
-	        base.WriteXml(writer);
-
-	        writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min));
-	        writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
+        { 
+            base.WriteXml(writer);
+            
+            writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min)); 
+            writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
         }
     }
 }

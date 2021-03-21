@@ -37,11 +37,6 @@ namespace ReqIFSharp
         public bool IsEditable { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether <see cref="IsEditable"/> is specified.
-        /// </summary>
-        public bool IsEditableSpecified { get; set; }
-
-        /// <summary>
         /// Generates a <see cref="AccessControlledElement"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">
@@ -68,7 +63,10 @@ namespace ReqIFSharp
         {
             base.WriteXml(writer);
 
-            writer.WriteAttributeString("IS-EDITABLE", this.IsEditable ? "true" : "false");
+            if (this.IsEditable)
+            {
+                writer.WriteAttributeString("IS-EDITABLE", "true");
+            }
         }
     }
 }

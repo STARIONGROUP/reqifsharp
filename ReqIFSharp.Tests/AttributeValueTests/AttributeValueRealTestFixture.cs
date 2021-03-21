@@ -53,6 +53,13 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
+        public void Verify_that_GetSchema_returns_null()
+        {
+            var attributeValue = new AttributeValueReal();
+            Assert.That(attributeValue.GetSchema(), Is.Null);
+        }
+
+        [Test]
         public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
         {
             using (var fs = new FileStream("test.xml", FileMode.Create))

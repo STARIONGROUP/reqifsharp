@@ -19,17 +19,17 @@
 // -------------------------------------------------------------------------------------------------
 
 namespace ReqIFSharp
-{
-	using System.Xml;
-
-	/// <summary>
-	/// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="string"/> data type    
-	/// </summary>
-	/// <remarks>
-	/// This element defines a data type for the representation of String data values in the Exchange Document.
-	/// </remarks>    
-	public class DatatypeDefinitionString : DatatypeDefinitionSimple
-	{
+{ 
+    using System.Xml;
+    
+    /// <summary>
+    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="string"/> data type
+    /// </summary>
+    /// <remarks>
+    /// This element defines a data type for the representation of String data values in the Exchange Document.
+    /// </remarks>
+    public class DatatypeDefinitionString : DatatypeDefinitionSimple 
+    {
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
         /// </summary>
@@ -43,10 +43,10 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionString(ReqIFContent reqIfContent)
-	        : base(reqIfContent)
-        {
-	        this.ReqIFContent = reqIfContent;
+        internal DatatypeDefinitionString(ReqIFContent reqIfContent) 
+            : base(reqIfContent)
+        { 
+            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -61,14 +61,14 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlReader"/>
         /// </param>
         public override void ReadXml(XmlReader reader)
-        {
-	        base.ReadXml(reader);
-
-	        var value = reader.GetAttribute("MAX-LENGTH");
-	        if ( !string.IsNullOrEmpty(value))
-	        {
-		        this.MaxLength = XmlConvert.ToInt32(value);
-	        }
+        { 
+            base.ReadXml(reader);
+            
+            var value = reader.GetAttribute("MAX-LENGTH"); 
+            if ( !string.IsNullOrEmpty(value)) 
+            { 
+                this.MaxLength = XmlConvert.ToInt32(value);
+            }
         }
 
         /// <summary>
@@ -78,10 +78,10 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
         public override void WriteXml(XmlWriter writer)
-        {
-	        base.WriteXml(writer);
-
-	        writer.WriteAttributeString("MAX-LENGTH", XmlConvert.ToString(this.MaxLength));
+        { 
+            base.WriteXml(writer);
+            
+            writer.WriteAttributeString("MAX-LENGTH", XmlConvert.ToString(this.MaxLength));
         }
-	}
+    }
 }
