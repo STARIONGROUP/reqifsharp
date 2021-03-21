@@ -104,29 +104,28 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ALTERNATIVE-ID")
+                if (reader.MoveToContent() == XmlNodeType.Element)
                 {
-                    var alternativeId = new AlternativeId(this);
-                    alternativeId.ReadXml(reader);
-                }
-
-                // read the default value if any
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-DATE")
-                {
-                    this.DefaultValue = new AttributeValueDate(this);
-                    using (var valuesubtree = reader.ReadSubtree())
+                    switch (reader.LocalName)
                     {
-                        valuesubtree.MoveToContent();
-                        this.DefaultValue.ReadXml(valuesubtree);
+                        case "ALTERNATIVE-ID":
+                            var alternativeId = new AlternativeId(this);
+                            alternativeId.ReadXml(reader);
+                            break;
+                        case "ATTRIBUTE-VALUE-DATE":
+                            this.DefaultValue = new AttributeValueDate(this);
+                            using (var valuesubtree = reader.ReadSubtree())
+                            {
+                                valuesubtree.MoveToContent();
+                                this.DefaultValue.ReadXml(valuesubtree);
+                            }
+                            break;
+                        case "DATATYPE-DEFINITION-DATE-REF":
+                            var reference = reader.ReadElementContentAsString();
+                            var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
+                            this.Type = datatypeDefinition;
+                            break;
                     }
-                }
-
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DATATYPE-DEFINITION-DATE-REF")
-                {
-                    var reference = reader.ReadElementContentAsString();
-
-                    var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
-                    this.Type = datatypeDefinition;
                 }
             }
         }
@@ -144,7 +143,7 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type property of AttributeDefinitionDate {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Type property of AttributeDefinitionDate {this.Identifier}:{this.LongName} may not be null");
             }
 
             base.WriteXml(writer);

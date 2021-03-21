@@ -49,9 +49,9 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionBoolean(SpecType specType) 
+        internal AttributeDefinitionBoolean(SpecType specType)
             : base(specType)
-        {            
+        {
         }
 
         /// <summary>
@@ -104,28 +104,27 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ALTERNATIVE-ID")
+                if (reader.MoveToContent() == XmlNodeType.Element)
                 {
-                    var alternativeId = new AlternativeId(this);
-                    alternativeId.ReadXml(reader);
-                }
-
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DATATYPE-DEFINITION-BOOLEAN-REF")
-                {
-                    var reference = reader.ReadElementContentAsString();
-
-                    var datatypeDefinition = (DatatypeDefinitionBoolean)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
-                    this.Type = datatypeDefinition;
-                }
-
-                // read the default value if any
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-VALUE-BOOLEAN")
-                {
-                    this.DefaultValue = new AttributeValueBoolean(this);
-                    using (var valuesubtree = reader.ReadSubtree())
+                    switch (reader.LocalName)
                     {
-                        valuesubtree.MoveToContent();
-                        this.DefaultValue.ReadXml(valuesubtree);
+                        case "ALTERNATIVE-ID":
+                            var alternativeId = new AlternativeId(this);
+                            alternativeId.ReadXml(reader);
+                            break;
+                        case "DATATYPE-DEFINITION-BOOLEAN-REF":
+                            var reference = reader.ReadElementContentAsString();
+                            var datatypeDefinition = (DatatypeDefinitionBoolean)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
+                            this.Type = datatypeDefinition;
+                            break;
+                        case "ATTRIBUTE-VALUE-BOOLEAN":
+                            this.DefaultValue = new AttributeValueBoolean(this);
+                            using (var valuesubtree = reader.ReadSubtree())
+                            {
+                                valuesubtree.MoveToContent();
+                                this.DefaultValue.ReadXml(valuesubtree);
+                            }
+                            break;
                     }
                 }
             }
@@ -144,7 +143,7 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type property of AttributeDefinitionBoolean {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Type property of AttributeDefinitionBoolean {this.Identifier}:{this.LongName} may not be null");
             }
 
             base.WriteXml(writer);
