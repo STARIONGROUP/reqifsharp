@@ -142,55 +142,55 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "DATATYPES")
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    using (var dataTypesSubtree = reader.ReadSubtree())
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeDataTypes(subtree);
+                        dataTypesSubtree.MoveToContent();
+                        this.DeserializeDataTypes(dataTypesSubtree);
                     }
                 }
 
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-TYPES")
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    using (var specTypesSubtree = reader.ReadSubtree())
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeSpecTypes(subtree);                    
-                    }                    
+                        specTypesSubtree.MoveToContent();
+                        this.DeserializeSpecTypes(specTypesSubtree);
+                    }
                 }
 
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECTS")
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    using (var specObjectsSubtree = reader.ReadSubtree())
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeSpectObjects(subtree);
-                    }                    
+                        specObjectsSubtree.MoveToContent();
+                        this.DeserializeSpectObjects(specObjectsSubtree);
+                    }
                 }
 
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATIONS")
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    using (var specRelationsSubtree = reader.ReadSubtree())
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeSpecRelations(subtree);
+                        specRelationsSubtree.MoveToContent();
+                        this.DeserializeSpecRelations(specRelationsSubtree);
                     }
                 }
 
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPECIFICATIONS")
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    using (var specificationsSubtree = reader.ReadSubtree())
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeSpecifications(subtree);
+                        specificationsSubtree.MoveToContent();
+                        this.DeserializeSpecifications(specificationsSubtree);
                     }
                 }
 
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION-GROUPS")
                 {
-                    using (var subtree = reader.ReadSubtree())
+                    using (var specRelationGroupsSubtree = reader.ReadSubtree())
                     {
-                        subtree.MoveToContent();
-                        this.DeserializeRelationGroups(subtree);
+                        specRelationGroupsSubtree.MoveToContent();
+                        this.DeserializeRelationGroups(specRelationGroupsSubtree);
                     }
                 }
             }

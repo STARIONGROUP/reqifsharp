@@ -52,41 +52,39 @@ namespace ReqIFSharp.Tests
                 var reqif = (ReqIF)this.serializer.Deserialize(xmlreader);
                 Assert.IsNotNull(reqif);
 
-                var reqIfHeader = reqif.TheHeader.Single();
-                Assert.IsNotNull(reqIfHeader);
+                Assert.IsNotNull(reqif.TheHeader);
 
-                Assert.IsNotNull(reqIfHeader.Comment);
-                Assert.IsNotEmpty(reqIfHeader.Comment);
+                Assert.IsNotNull(reqif.TheHeader.Comment);
+                Assert.IsNotEmpty(reqif.TheHeader.Comment);
                 
-                Assert.IsNotNull(reqIfHeader.Identifier);
-                Assert.IsNotEmpty(reqIfHeader.Identifier);
+                Assert.IsNotNull(reqif.TheHeader.Identifier);
+                Assert.IsNotEmpty(reqif.TheHeader.Identifier);
                 
-                Assert.IsNotNull(reqIfHeader.RepositoryId);
-                Assert.IsNotEmpty(reqIfHeader.RepositoryId);
+                Assert.IsNotNull(reqif.TheHeader.RepositoryId);
+                Assert.IsNotEmpty(reqif.TheHeader.RepositoryId);
                 
-                Assert.IsNotNull(reqIfHeader.ReqIFToolId);
-                Assert.IsNotEmpty(reqIfHeader.ReqIFToolId);
+                Assert.IsNotNull(reqif.TheHeader.ReqIFToolId);
+                Assert.IsNotEmpty(reqif.TheHeader.ReqIFToolId);
                 
-                Assert.IsNotNull(reqIfHeader.ReqIFVersion);
-                Assert.IsNotEmpty(reqIfHeader.ReqIFVersion);
+                Assert.IsNotNull(reqif.TheHeader.ReqIFVersion);
+                Assert.IsNotEmpty(reqif.TheHeader.ReqIFVersion);
                 
-                Assert.IsNotNull(reqIfHeader.SourceToolId);
-                Assert.IsNotEmpty(reqIfHeader.SourceToolId);
+                Assert.IsNotNull(reqif.TheHeader.SourceToolId);
+                Assert.IsNotEmpty(reqif.TheHeader.SourceToolId);
                 
-                Assert.IsNotNull(reqIfHeader.Title);
-                Assert.IsNotEmpty(reqIfHeader.Title);
+                Assert.IsNotNull(reqif.TheHeader.Title);
+                Assert.IsNotEmpty(reqif.TheHeader.Title);
 
-                Assert.IsNotNull(reqIfHeader.CreationTime);
+                Assert.IsNotNull(reqif.TheHeader.CreationTime);
 
-                var coreContent = reqif.CoreContent.Single();
-                Assert.IsNotNull(coreContent);
+                Assert.IsNotNull(reqif.CoreContent);
 
-                Assert.IsNotEmpty(coreContent.DataTypes);
-                Assert.IsNotEmpty(coreContent.SpecObjects);
-                Assert.IsEmpty(coreContent.SpecRelationGroups);
-                Assert.IsNotEmpty(coreContent.SpecRelations);
-                Assert.IsNotEmpty(coreContent.SpecTypes);
-                Assert.IsNotEmpty(coreContent.Specifications);
+                Assert.IsNotEmpty(reqif.CoreContent.DataTypes);
+                Assert.IsNotEmpty(reqif.CoreContent.SpecObjects);
+                Assert.IsEmpty(reqif.CoreContent.SpecRelationGroups);
+                Assert.IsNotEmpty(reqif.CoreContent.SpecRelations);
+                Assert.IsNotEmpty(reqif.CoreContent.SpecTypes);
+                Assert.IsNotEmpty(reqif.CoreContent.Specifications);
             }
         }
     }

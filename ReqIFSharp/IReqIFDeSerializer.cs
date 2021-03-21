@@ -18,6 +18,8 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using System.Collections.Generic;
+
 namespace ReqIFSharp
 {
     #if NETFULL
@@ -46,7 +48,7 @@ namespace ReqIFSharp
         /// <returns>
         /// A fully dereferenced <see cref="ReqIF"/> object graph
         /// </returns>
-        ReqIF Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
+        IEnumerable<ReqIF> Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
 
 #else
 
@@ -59,7 +61,7 @@ namespace ReqIFSharp
         /// <returns>
         /// A fully dereferenced <see cref="ReqIF"/> object graph
         /// </returns>
-        ReqIF Deserialize(string xmlFilePath);
+        IEnumerable<ReqIF> Deserialize(string xmlFilePath);
         
         #endif
     }

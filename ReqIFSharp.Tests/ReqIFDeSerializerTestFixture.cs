@@ -18,10 +18,9 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System;
-
 namespace ReqIFSharp.Tests
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Xml.Schema;
@@ -54,31 +53,30 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWitouthValidation()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif"));
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
-            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
-            var firstobject = reqIfContent.SpecObjects.First();
+            var firstobject = reqIf.CoreContent.SpecObjects.First();
             var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
             Assert.IsNotNull(xhtmlAttribute);
             Assert.IsNotEmpty(xhtmlAttribute.TheValue);
             Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(AmountOfSpecRelations, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
 
-            var unknownSpecRel = reqIf.CoreContent.Single().SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
+            var unknownSpecRel = reqIf.CoreContent.SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
             Assert.IsNotNull(unknownSpecRel.Target);
             Assert.AreEqual("unknown-specobject", unknownSpecRel.Target.Identifier);
 
-            var unknownrelGroup = reqIf.CoreContent.Single().SpecRelationGroups.First(x => x.Identifier == "relationgroup-no-target");
+            var unknownrelGroup = reqIf.CoreContent.SpecRelationGroups.First(x => x.Identifier == "relationgroup-no-target");
             Assert.AreEqual("unknown", unknownrelGroup.TargetSpecification.Identifier);
         }
 
@@ -86,9 +84,22 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidation()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz"));
+            
+            Assert.DoesNotThrow(() => deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz")));
+        }
 
-            Assert.IsTrue(reqIf.CoreContent.Count > 1);
+        [Test]
+        public void Verify_that_the_Tool_Extensions_are_deserialized()
+        {
+            var deserializer = new ReqIFDeserializer();
+
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0.reqif")).First() ;
+
+            Assert.That(reqIf.TheHeader.Identifier, Is.EqualTo("_o7scMadbEeafNduaIhMwQg"));
+            Assert.That(reqIf.TheHeader.Title, Is.EqualTo("Traceability Template"));
+            Assert.That(reqIf.CoreContent.DataTypes, Is.Not.Empty);
+
+            Assert.That(reqIf.ToolExtension, Is.Not.Empty);
         }
 
 #if NETFULL
@@ -96,31 +107,27 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif"), true, this.ValidationEventHandler);
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "output.reqif"), true, this.ValidationEventHandler).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
-            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
-
-            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIfContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIfContent.SpecRelationGroups.Count);
+            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(AmountOfSpecRelations, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 
         [Test]
         public void Verify_that_XHTML_attributes_can_de_deserialized()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.reqif"));
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "testreqif.reqif")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
-            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
-
-            var specObject = reqIfContent.SpecObjects.Single(r => r.Identifier == "R001");
+            var specObject = reqIf.CoreContent.SpecObjects.Single(r => r.Identifier == "R001");
 
             var xhtmlValue = specObject.Values.Single(x => x.AttributeDefinition.Identifier == "FUNC-REQ-NOTES") as AttributeValueXHTML;
 
@@ -131,25 +138,24 @@ namespace ReqIFSharp.Tests
         public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidationNET()
         {
             var deserializer = new ReqIFDeserializer();
-            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz"));
+            var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "test-multiple-reqif.reqifz")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
-            var reqIfContent = reqIf.CoreContent.FirstOrDefault();
-            var firstobject = reqIfContent.SpecObjects.First();
+            var firstobject = reqIf.CoreContent.SpecObjects.First();
             var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
             Assert.IsNotNull(xhtmlAttribute);
             Assert.IsNotEmpty(xhtmlAttribute.TheValue);
             Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIfContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIfContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIfContent.SpecObjects.Count);
-            Assert.AreEqual(1, reqIfContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIfContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecificationChildren, reqIfContent.Specifications[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIfContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(1, reqIfContent.SpecRelationGroups.Count);
+            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(1, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
+            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 
         /// <summary>
