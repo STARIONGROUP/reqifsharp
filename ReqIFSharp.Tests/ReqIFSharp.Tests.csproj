@@ -36,6 +36,9 @@
     <None Update="TestData\Datatype-Demo.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\DefaultValueDemo.reqif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\output.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
