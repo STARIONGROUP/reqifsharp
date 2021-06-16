@@ -148,6 +148,18 @@ namespace ReqIFSharp
 
             base.WriteXml(writer);
 
+            if (this.DefaultValue != null)
+            {
+                writer.WriteStartElement("DEFAULT-VALUE");
+                    writer.WriteStartElement("ATTRIBUTE-VALUE-STRING");
+                    writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue);
+                        writer.WriteStartElement("DEFINITION");
+                            writer.WriteElementString("ATTRIBUTE-DEFINITION-STRING-REF", this.DefaultValue.Definition.Identifier);
+                        writer.WriteEndElement();
+                    writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("DATATYPE-DEFINITION-STRING-REF", this.Type.Identifier);
             writer.WriteEndElement();

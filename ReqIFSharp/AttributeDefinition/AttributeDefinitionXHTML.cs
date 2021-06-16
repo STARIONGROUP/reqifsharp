@@ -148,6 +148,20 @@ namespace ReqIFSharp
 
             base.WriteXml(writer);
 
+            if (this.DefaultValue != null)
+            {
+                writer.WriteStartElement("DEFAULT-VALUE");
+                    writer.WriteStartElement("ATTRIBUTE-VALUE-XHTML");
+                        writer.WriteStartElement("THE-VALUE");
+                            writer.WriteRaw(this.DefaultValue.TheValue);
+                        writer.WriteEndElement();
+                        writer.WriteStartElement("DEFINITION");
+                            writer.WriteElementString("ATTRIBUTE-DEFINITION-XHTML-REF", this.DefaultValue.Definition.Identifier);
+                        writer.WriteEndElement();
+                    writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("DATATYPE-DEFINITION-XHTML-REF", this.Type.Identifier);
             writer.WriteEndElement();

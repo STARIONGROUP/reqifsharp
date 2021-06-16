@@ -148,6 +148,18 @@ namespace ReqIFSharp
 
             base.WriteXml(writer);
 
+            if (this.DefaultValue != null)
+            {
+                writer.WriteStartElement("DEFAULT-VALUE");
+                    writer.WriteStartElement("ATTRIBUTE-VALUE-DATE");
+                    writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue.ToString("o"));
+                        writer.WriteStartElement("DEFINITION");
+                            writer.WriteElementString("ATTRIBUTE-DEFINITION-DATE-REF", this.DefaultValue.Definition.Identifier);
+                        writer.WriteEndElement();
+                    writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("DATATYPE-DEFINITION-DATE-REF", this.Type.Identifier);
             writer.WriteEndElement();

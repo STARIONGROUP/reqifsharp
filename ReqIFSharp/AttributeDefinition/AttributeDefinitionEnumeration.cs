@@ -168,6 +168,23 @@ namespace ReqIFSharp
 
             writer.WriteAttributeString("MULTI-VALUED", this.IsMultiValued ? "true" : "false");
 
+            if (this.DefaultValue != null)
+            {
+                writer.WriteStartElement("DEFAULT-VALUE");
+                    writer.WriteStartElement("ATTRIBUTE-VALUE-ENUMERATION");
+                        writer.WriteStartElement("DEFINITION");
+                            writer.WriteElementString("ATTRIBUTE-DEFINITION-ENUMERATION-REF", this.DefaultValue.Definition.Identifier);
+                        writer.WriteEndElement();
+                        writer.WriteStartElement("VALUES");
+                            foreach (var defaultValue in this.DefaultValue.Values)
+                            {
+                                writer.WriteElementString("ENUM-VALUE-REF", defaultValue.Identifier);
+                            }
+                        writer.WriteEndElement();
+                    writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
+
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("DATATYPE-DEFINITION-ENUMERATION-REF", this.Type.Identifier);
             writer.WriteEndElement();

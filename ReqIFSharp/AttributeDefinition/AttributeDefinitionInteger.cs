@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
@@ -148,6 +149,18 @@ namespace ReqIFSharp
             }
 
             base.WriteXml(writer);
+
+            if (this.DefaultValue != null)
+            {
+                writer.WriteStartElement("DEFAULT-VALUE");
+                    writer.WriteStartElement("ATTRIBUTE-VALUE-INTEGER");
+                    writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue.ToString(NumberFormatInfo.InvariantInfo));
+                        writer.WriteStartElement("DEFINITION");
+                            writer.WriteElementString("ATTRIBUTE-DEFINITION-INTEGER-REF", this.DefaultValue.Definition.Identifier);
+                        writer.WriteEndElement();
+                    writer.WriteEndElement();
+                writer.WriteEndElement();
+            }
 
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("DATATYPE-DEFINITION-INTEGER-REF", this.Type.Identifier);
