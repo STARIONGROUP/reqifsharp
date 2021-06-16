@@ -133,7 +133,11 @@ namespace ReqIFSharp
                     {
                         using (xmlReader = XmlReader.Create(zipArchiveEntry.Open()))
                         {
-                            reqifs.Add((ReqIF)xmlSerializer.Deserialize(xmlReader));
+                            var reqif = (ReqIF) xmlSerializer.Deserialize(xmlReader);
+
+                            this.UpdateExternalObjectsReqIfFilePath(reqif, xmlFilePath);
+
+                            reqifs.Add(reqif);
                         }
                     }
 
@@ -193,6 +197,9 @@ namespace ReqIFSharp
                         using (xmlReader = XmlReader.Create(zipArchiveEntry.Open()))
                         {
                             var reqif = (ReqIF) xmlSerializer.Deserialize(xmlReader);
+
+                            this.UpdateExternalObjectsReqIfFilePath(reqif, xmlFilePath);
+
                             reqifs.Add(reqif);
                         }
                     }
@@ -295,5 +302,29 @@ namespace ReqIFSharp
             }
         }
 #endif
+
+        /// <summary>
+        /// Updates the <see cref="ExternalObject.ReqIFFilePath"/> property with the path to the source reqifz file
+        /// that contains the reqif xml files and external objects
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object that contains the <see cref="SpecObject"/>s
+        /// </param>
+        /// <param name="path">
+        /// The path to the source reqifz file.
+        /// </param>
+        private void UpdateExternalObjectsReqIfFilePath(ReqIF reqIf, string path)
+        {
+            foreach (var specObject in reqIf.CoreContent.SpecObjects)
+            {
+                foreach (var attributeValueXhtml in specObject.Values.OfType<AttributeValueXHTML>() )
+                {
+                    foreach (var externalObject in attributeValueXhtml.ExternalObjects)
+                    {
+                        externalObject.ReqIFFilePath = path;
+                    }
+                }
+            }
+        }
     }
 }

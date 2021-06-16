@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
@@ -36,6 +37,7 @@ namespace ReqIFSharp
         /// </summary>
         public AttributeValueXHTML()
         {
+            this.ExternalObjects = new List<ExternalObject>();
         }
 
         /// <summary>
@@ -47,6 +49,7 @@ namespace ReqIFSharp
         internal AttributeValueXHTML(SpecElementWithAttributes specElAt)
             : base(specElAt)
         {
+            this.ExternalObjects = new List<ExternalObject>();
         }
 
         /// <summary>
@@ -59,6 +62,8 @@ namespace ReqIFSharp
         internal AttributeValueXHTML(AttributeDefinitionXHTML attributeDefinition)
             : base(attributeDefinition)
         {
+            this.ExternalObjects = new List<ExternalObject>();
+
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -83,6 +88,11 @@ namespace ReqIFSharp
             get => this.TheValue;
             set => this.TheValue = value.ToString();
         }
+
+        /// <summary>
+        /// Gets the <see cref="List{ExternalObject}"/> that may be present as xhtml:object in the XHTML content
+        /// </summary>
+        public List<ExternalObject> ExternalObjects { get; private set; }
 
         /// <summary>
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.
@@ -125,7 +135,7 @@ namespace ReqIFSharp
         /// Gets or sets a value indicating whether the attribute value is a simplified representation of the original value.
         /// </summary>
         public bool IsSimplified { get; set; }
-
+        
         /// <summary>
         /// Generates a <see cref="AttributeValueXHTML"/> object from its XML representation.
         /// </summary>
@@ -157,9 +167,67 @@ namespace ReqIFSharp
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")
                     {
                         this.TheValue = subtree.ReadInnerXml().Trim();
+
+                        if (this.TheValue.Contains("xhtml:object data"))
+                        {
+                            var externalObjects = this.CreateExternalObjects(this.TheValue);
+                            this.ExternalObjects.AddRange(externalObjects);
+                        }
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Creates <see cref="ExternalObject"/>s from provided XHTML
+        /// </summary>
+        /// <param name="xhtml">
+        /// The XHTML that may contain <see cref="ExternalObject"/>
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{ExternalObject}"/> which may be empty
+        /// </returns>
+        private IEnumerable<ExternalObject> CreateExternalObjects(string xhtml)
+        {
+            var result = new List<ExternalObject>();
+
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(xhtml);
+
+            var xmlNodeList = xmlDocument.GetElementsByTagName("xhtml:object").OfType<XmlElement>() ;
+            
+            foreach (var xmlElement in xmlNodeList)
+            {
+                var mimeTypeAttribute = xmlElement.GetAttribute("type");
+                var uriAttribute = xmlElement.GetAttribute("data");
+                if (!string.IsNullOrEmpty(uriAttribute))
+                {
+                    uriAttribute = Uri.UnescapeDataString(uriAttribute);
+                }
+
+                var heightAttribute = xmlElement.GetAttribute("height");
+                var widthAttribute = xmlElement.GetAttribute("width");
+                
+                var externalObject = new ExternalObject(this)
+                {
+                    MimeType = mimeTypeAttribute, 
+                    Uri = uriAttribute
+                };
+
+                if (!string.IsNullOrEmpty(heightAttribute) && int.TryParse(heightAttribute, out int height))
+                {
+                    externalObject.Height = height;
+                }
+
+                if (!string.IsNullOrEmpty(widthAttribute) && int.TryParse(widthAttribute, out int width))
+                {
+                    externalObject.Width = width;
+                }
+
+                result.Add(externalObject);
+            }
+
+            return result;
         }
 
         /// <summary>

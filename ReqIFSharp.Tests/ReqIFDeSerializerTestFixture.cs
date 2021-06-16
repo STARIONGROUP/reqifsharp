@@ -128,6 +128,29 @@ namespace ReqIFSharp.Tests
             Assert.That(toolExtension.InnerXml, Is.Not.Empty);
         }
 
+        [Test]
+        public void Verify_that_ExternalObjects_are_created_and_that_local_data_can_be_queried()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
+            var deserializer = new ReqIFDeserializer();
+
+            var reqIf = deserializer.Deserialize(reqifPath).First();
+
+            foreach (var specObject in reqIf.CoreContent.SpecObjects)
+            {
+                foreach (var attributeValueXhtml in specObject.Values.OfType<AttributeValueXHTML>())
+                {
+                    foreach (var externalObject in attributeValueXhtml.ExternalObjects)
+                    {
+                        var targetStream = new MemoryStream();
+                        externalObject.QueryLocalData(targetStream);
+                        Assert.That(targetStream.Length, Is.GreaterThan(0));
+                        targetStream.Dispose();
+                    }
+                }
+            }
+        }
+
 #if NETFRAMEWORK || NETCOREAPP3_1
         [Test]
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()

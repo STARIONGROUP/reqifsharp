@@ -114,7 +114,7 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
-            
+
             using (var specElementWithAttributesReader = reader.ReadSubtree())
             {
                 while (specElementWithAttributesReader.Read())
