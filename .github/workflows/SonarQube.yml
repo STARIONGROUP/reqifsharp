@@ -1,8 +1,10 @@
-name: Build
+name: Build & Test & SonarQube
+
 on:
   push:
   pull_request:
     types: [opened, synchronize, reopened]
+    
 jobs:
   build:
     name: Build

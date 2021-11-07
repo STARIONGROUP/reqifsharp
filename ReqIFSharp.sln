@@ -13,12 +13,18 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		coverlet.runsettings = coverlet.runsettings
-		.github\workflows\integrate.yml = .github\workflows\integrate.yml
 		LICENSE = LICENSE
 		Nuget.Config = Nuget.Config
 		README.md = README.md
 		reqifsharp-logo-small.png = reqifsharp-logo-small.png
 		reqifsharp-logo.png = reqifsharp-logo.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{5A1268EB-E14B-4DF3-BC02-2C094B36385D}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\CodeCov.yml = .github\workflows\CodeCov.yml
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
+		.github\workflows\SonarQube.yml = .github\workflows\SonarQube.yml
 	EndProjectSection
 EndProject
 Global
@@ -38,6 +44,9 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5A1268EB-E14B-4DF3-BC02-2C094B36385D} = {FCF6768D-232D-46FC-8CB5-E01B7495826E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {618F57C1-2D92-4ABE-8566-038BA52F3C41}
