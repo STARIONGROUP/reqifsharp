@@ -251,8 +251,7 @@ paket-files/
 .idea/
 *.sln.iml
 
-# arcanist
-.arcconfig
+# intermedia test file results
 /ReqIFSharp.Tests/test.xml
 /test.xml
 /TestResult.txt
