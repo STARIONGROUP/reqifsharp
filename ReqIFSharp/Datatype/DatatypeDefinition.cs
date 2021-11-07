@@ -38,7 +38,7 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinition(ReqIFContent reqIfContent)
+        protected DatatypeDefinition(ReqIFContent reqIfContent)
         {
             this.ReqIFContent = reqIfContent;
             reqIfContent.DataTypes.Add(this);

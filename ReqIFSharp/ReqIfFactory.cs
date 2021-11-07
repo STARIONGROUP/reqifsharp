@@ -78,44 +78,6 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Constructs a new instance <see cref="AttributeDefinition"/> based on the XML Name
-        /// </summary>
-        /// <param name="xmlname">
-        /// The XML name of the <see cref="AttributeDefinition"/> that is to be constructed
-        /// </param>
-        /// <param name="specType">
-        /// The owning <see cref="SpecType"/>
-        /// </param>
-        /// <returns>
-        /// an instance of <see cref="AttributeDefinition"/>
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when an invalid <paramref name="xmlname"/> is provided
-        /// </exception>
-        internal static AttributeDefinition AttributeDefinitionConstruct(string xmlname, SpecType specType)
-        {
-            switch (xmlname)
-            {
-                case "ATTRIBUTE-DEFINITION-BOOLEAN":
-                    return new AttributeDefinitionBoolean(specType);
-                case "ATTRIBUTE-DEFINITION-DATE":
-                    return new AttributeDefinitionDate(specType);
-                case "ATTRIBUTE-DEFINITION-ENUMERATION":
-                    return new AttributeDefinitionEnumeration(specType);
-                case "ATTRIBUTE-DEFINITION-INTEGER":
-                    return new AttributeDefinitionInteger(specType);
-                case "ATTRIBUTE-DEFINITION-REAL":
-                    return new AttributeDefinitionReal(specType);
-                case "ATTRIBUTE-DEFINITION-STRING":
-                    return new AttributeDefinitionString(specType);
-                case "ATTRIBUTE-DEFINITION-XHTML":
-                    return new AttributeDefinitionXHTML(specType);
-                default:
-                    return null;
-            }
-        }
-
-        /// <summary>
         /// returns the XML element name of the specified <see cref="DatatypeDefinition"/>.
         /// </summary>
         /// <param name="datatypeDefinition">
@@ -162,44 +124,6 @@ namespace ReqIFSharp
             }
 
             throw new ArgumentException($"The {datatypeDefinition.GetType()} type cannot be converted to an XML element name");
-        }
-
-        /// <summary>
-        /// Constructs a new instance <see cref="DatatypeDefinition"/> based on the XML Name
-        /// </summary>
-        /// <param name="xmlname">
-        /// The XML name of the <see cref="DatatypeDefinition"/> that is to be constructed
-        /// </param>
-        /// <param name="reqIfContent">
-        /// The owning <see cref="ReqIFContent"/>
-        /// </param>
-        /// <returns>
-        /// an instance of <see cref="DatatypeDefinition"/>
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when an invalid <paramref name="xmlname"/> is provided
-        /// </exception>
-        internal static DatatypeDefinition DatatypeDefinitionConstruct(string xmlname, ReqIFContent reqIfContent)
-        {
-            switch (xmlname)
-            {
-                case "DATATYPE-DEFINITION-BOOLEAN":
-                    return new DatatypeDefinitionBoolean(reqIfContent);
-                case "DATATYPE-DEFINITION-DATE":
-                    return new DatatypeDefinitionDate(reqIfContent);
-                case "DATATYPE-DEFINITION-ENUMERATION":
-                    return new DatatypeDefinitionEnumeration(reqIfContent);
-                case "DATATYPE-DEFINITION-INTEGER":
-                    return new DatatypeDefinitionInteger(reqIfContent);
-                case "DATATYPE-DEFINITION-REAL":
-                    return new DatatypeDefinitionReal(reqIfContent);
-                case "DATATYPE-DEFINITION-STRING":
-                    return new DatatypeDefinitionString(reqIfContent);
-                case "DATATYPE-DEFINITION-XHTML":
-                    return new DatatypeDefinitionXHTML(reqIfContent);
-                default:
-                    throw new ArgumentException($"{xmlname} is not a vaild DatatypeDefinition name");
-            }
         }
 
         /// <summary>
@@ -252,6 +176,116 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// returns the XML element name of the specified <see cref="SpecType"/>.
+        /// </summary>
+        /// <param name="specType">
+        /// an instance of <see cref="SpecType"/>.
+        /// </param>
+        /// <returns>
+        /// a string that contains the XML element name.
+        /// </returns>
+        internal static string XmlName(SpecType specType)
+        {
+            if (specType is SpecObjectType)
+            {
+                return "SPEC-OBJECT-TYPE";
+            }
+
+            if (specType is SpecificationType)
+            {
+                return "SPECIFICATION-TYPE";
+            }
+
+            if (specType is SpecRelationType)
+            {
+                return "SPEC-RELATION-TYPE";
+            }
+
+            if (specType is RelationGroupType)
+            {
+                return "RELATION-GROUP-TYPE";
+            }
+
+            throw new ArgumentException($"The {specType.GetType()} type cannot be converted to an XML element name");
+        }
+
+        /// <summary>
+        /// Constructs a new instance <see cref="AttributeDefinition"/> based on the XML Name
+        /// </summary>
+        /// <param name="xmlname">
+        /// The XML name of the <see cref="AttributeDefinition"/> that is to be constructed
+        /// </param>
+        /// <param name="specType">
+        /// The owning <see cref="SpecType"/>
+        /// </param>
+        /// <returns>
+        /// an instance of <see cref="AttributeDefinition"/>
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when an invalid <paramref name="xmlname"/> is provided
+        /// </exception>
+        internal static AttributeDefinition AttributeDefinitionConstruct(string xmlname, SpecType specType)
+        {
+            switch (xmlname)
+            {
+                case "ATTRIBUTE-DEFINITION-BOOLEAN":
+                    return new AttributeDefinitionBoolean(specType);
+                case "ATTRIBUTE-DEFINITION-DATE":
+                    return new AttributeDefinitionDate(specType);
+                case "ATTRIBUTE-DEFINITION-ENUMERATION":
+                    return new AttributeDefinitionEnumeration(specType);
+                case "ATTRIBUTE-DEFINITION-INTEGER":
+                    return new AttributeDefinitionInteger(specType);
+                case "ATTRIBUTE-DEFINITION-REAL":
+                    return new AttributeDefinitionReal(specType);
+                case "ATTRIBUTE-DEFINITION-STRING":
+                    return new AttributeDefinitionString(specType);
+                case "ATTRIBUTE-DEFINITION-XHTML":
+                    return new AttributeDefinitionXHTML(specType);
+                default:
+                    return null;
+            }
+        }
+        
+        /// <summary>
+        /// Constructs a new instance <see cref="DatatypeDefinition"/> based on the XML Name
+        /// </summary>
+        /// <param name="xmlname">
+        /// The XML name of the <see cref="DatatypeDefinition"/> that is to be constructed
+        /// </param>
+        /// <param name="reqIfContent">
+        /// The owning <see cref="ReqIFContent"/>
+        /// </param>
+        /// <returns>
+        /// an instance of <see cref="DatatypeDefinition"/>
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// Thrown when an invalid <paramref name="xmlname"/> is provided
+        /// </exception>
+        internal static DatatypeDefinition DatatypeDefinitionConstruct(string xmlname, ReqIFContent reqIfContent)
+        {
+            switch (xmlname)
+            {
+                case "DATATYPE-DEFINITION-BOOLEAN":
+                    return new DatatypeDefinitionBoolean(reqIfContent);
+                case "DATATYPE-DEFINITION-DATE":
+                    return new DatatypeDefinitionDate(reqIfContent);
+                case "DATATYPE-DEFINITION-ENUMERATION":
+                    return new DatatypeDefinitionEnumeration(reqIfContent);
+                case "DATATYPE-DEFINITION-INTEGER":
+                    return new DatatypeDefinitionInteger(reqIfContent);
+                case "DATATYPE-DEFINITION-REAL":
+                    return new DatatypeDefinitionReal(reqIfContent);
+                case "DATATYPE-DEFINITION-STRING":
+                    return new DatatypeDefinitionString(reqIfContent);
+                case "DATATYPE-DEFINITION-XHTML":
+                    return new DatatypeDefinitionXHTML(reqIfContent);
+                default:
+                    throw new ArgumentException($"{xmlname} is not a vaild DatatypeDefinition name");
+            }
+        }
+
+        /// <summary>
         /// Constructs a new instance <see cref="AttributeValue"/> based on the XML Name
         /// </summary>
         /// <param name="xmlname">
@@ -287,40 +321,6 @@ namespace ReqIFSharp
                 default:
                     throw new ArgumentException($"{xmlname} is not a vaild AttributeValue name");
             }
-        }
-
-        /// <summary>
-        /// returns the XML element name of the specified <see cref="SpecType"/>.
-        /// </summary>
-        /// <param name="specType">
-        /// an instance of <see cref="SpecType"/>.
-        /// </param>
-        /// <returns>
-        /// a string that contains the XML element name.
-        /// </returns>
-        internal static string XmlName(SpecType specType)
-        {
-            if (specType is SpecObjectType)
-            {
-                return "SPEC-OBJECT-TYPE";
-            }
-
-            if (specType is SpecificationType)
-            {
-                return "SPECIFICATION-TYPE";
-            }
-
-            if (specType is SpecRelationType)
-            {
-                return "SPEC-RELATION-TYPE";
-            }
-
-            if (specType is RelationGroupType)
-            {
-                return "RELATION-GROUP-TYPE";
-            }
-
-            throw new ArgumentException($"The {specType.GetType()} type cannot be converted to an XML element name");
         }
 
         /// <summary>

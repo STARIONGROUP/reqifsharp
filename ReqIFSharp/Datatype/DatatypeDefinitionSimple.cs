@@ -38,7 +38,7 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionSimple(ReqIFContent reqIfContent)            
+        protected DatatypeDefinitionSimple(ReqIFContent reqIfContent)            
             : base(reqIfContent)
         {
         }

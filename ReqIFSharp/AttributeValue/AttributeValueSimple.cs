@@ -39,7 +39,7 @@ namespace ReqIFSharp
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionSimple"/>
         /// </remarks>
-        internal AttributeValueSimple(AttributeDefinitionSimple attributeDefinition)
+        protected AttributeValueSimple(AttributeDefinitionSimple attributeDefinition)
             : base(attributeDefinition)
         {
         }
@@ -50,7 +50,7 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        internal AttributeValueSimple(SpecElementWithAttributes specElAt)
+        protected AttributeValueSimple(SpecElementWithAttributes specElAt)
             : base(specElAt)
         {
         }

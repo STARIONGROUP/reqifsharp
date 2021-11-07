@@ -38,7 +38,7 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionSimple(SpecType specType) 
+        protected AttributeDefinitionSimple(SpecType specType) 
             : base(specType)
         {            
         }

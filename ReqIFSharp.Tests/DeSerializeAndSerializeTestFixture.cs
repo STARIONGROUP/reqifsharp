@@ -41,7 +41,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-reserialize.reqif");
 
             var serializer = new ReqIFSerializer(false);
-            serializer.Serialize(reqIf, resultFileUri, null);
+            Assert.DoesNotThrow(() => serializer.Serialize(reqIf, resultFileUri, null));
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-reserialize.reqif");
 
             var serializer = new ReqIFSerializer(false);
-            serializer.Serialize(reqIf, resultFileUri, null);
+            Assert.DoesNotThrow(() => serializer.Serialize(reqIf, resultFileUri, null));
         }
 
         [Test]

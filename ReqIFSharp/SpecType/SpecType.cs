@@ -32,7 +32,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Backing field for the <see cref="SpecAttributes"/> property
         /// </summary>
-        private List<AttributeDefinition> specAttributes = new List<AttributeDefinition>();
+        private readonly List<AttributeDefinition> specAttributes = new List<AttributeDefinition>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecType"/> class.
@@ -47,7 +47,7 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal SpecType(ReqIFContent reqIfContent)
+        protected SpecType(ReqIFContent reqIfContent)
         {
             this.ReqIFContent = reqIfContent;
             reqIfContent.SpecTypes.Add(this);

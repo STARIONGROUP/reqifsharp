@@ -43,7 +43,7 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinition(SpecType specType)
+        protected AttributeDefinition(SpecType specType)
         {
             this.SpecType = specType;
             specType.SpecAttributes.Add(this);

@@ -37,7 +37,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Backing field for the <see cref="Values"/> property.
         /// </summary>
-        private List<AttributeValue> values = new List<AttributeValue>(); 
+        private readonly List<AttributeValue> values = new List<AttributeValue>(); 
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecElementWithAttributes"/> class.
@@ -52,7 +52,7 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>
-        internal SpecElementWithAttributes(ReqIFContent reqIfContent)
+        protected SpecElementWithAttributes(ReqIFContent reqIfContent)
         {
             this.ReqIFContent = reqIfContent;
         }

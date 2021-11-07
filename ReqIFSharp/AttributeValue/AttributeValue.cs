@@ -56,7 +56,7 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        internal AttributeValue(SpecElementWithAttributes specElAt)
+        protected AttributeValue(SpecElementWithAttributes specElAt)
         {
             this.SpecElAt = specElAt;
             this.SpecElAt.Values.Add(this);

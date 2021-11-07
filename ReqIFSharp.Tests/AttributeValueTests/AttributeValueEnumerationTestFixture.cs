@@ -46,11 +46,11 @@ namespace ReqIFLib.Tests
 
             var attributeValue = (AttributeValue)attributeValueEnumeration;
 
-            Assert.AreEqual(attributeDefinitionEnumeration, attributeValue.AttributeDefinition);
-
+            Assert.That(attributeValue.AttributeDefinition, Is.EqualTo(attributeDefinitionEnumeration));
+            
             attributeValue.AttributeDefinition = attributeDefinitionEnumeration;
 
-            Assert.AreEqual(attributeDefinitionEnumeration, attributeValue.AttributeDefinition);
+            Assert.That(attributeValue.AttributeDefinition, Is.EqualTo(attributeDefinitionEnumeration));
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace ReqIFLib.Tests
             var val = new List<EnumValue> { new EnumValue() };
             attributeValue.ObjectValue = val;
 
-            Assert.AreEqual(attributeValue.Values.Count, 1);
+            Assert.That(attributeValue.Values.Count, Is.EqualTo(1));
         }
     }
 }
