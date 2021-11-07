@@ -1,6 +1,6 @@
-# reqifsharp
+<img src="https://raw.githubusercontent.com/RHEAGROUP/reqifsharp/master/reqifsharp-logo.png" width="350">
 
-A C# library for reading and writing ReqIF documents. Read more about it here: https://www.reqifsharp.org
+ReqIFSharp is a C# library for reading and writing ReqIF documents. Read more about it here: https://www.reqifsharp.org
 
 ## Installation
 
