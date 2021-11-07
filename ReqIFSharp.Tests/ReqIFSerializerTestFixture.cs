@@ -672,10 +672,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public void VerifyThatArgumentExceptionIsRaisedOnSerialize()
         {
-
-#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
-            
+
             Assert.That(
                 () => serializer.Serialize(null, null, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
@@ -690,40 +688,15 @@ namespace ReqIFSharp.Tests
                 () => serializer.Serialize(this.reqIF, string.Empty, null),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
                 .With.Message.ContainsSubstring("The path of the file cannot be empty."));
-#else
-            var serializer = new ReqIFSerializer();
-
-            Assert.That(
-                () => serializer.Serialize(null, null),
-                Throws.Exception.TypeOf<ArgumentNullException>()
-                    .With.Message.ContainsSubstring("The reqIf object cannot be null."));
-
-            Assert.That(
-                () => serializer.Serialize(this.reqIF, null),
-                Throws.Exception.TypeOf<ArgumentNullException>()
-                    .With.Message.ContainsSubstring("The path of the file cannot be null."));
-
-            Assert.That(
-                () => serializer.Serialize(this.reqIF, string.Empty),
-                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
-                    .With.Message.ContainsSubstring("The path of the file cannot be empty."));
-#endif
         }
 
         [Test]
         public void VerifyThatTheReqIfSerializerSerializesaReqIfDocumentWithoutValidation()
         {
-#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(this.reqIF, this.resultFileUri , null);
 
             Assert.IsTrue(File.Exists(this.resultFileUri));
-#else
-            var serializer = new ReqIFSerializer();
-            serializer.Serialize(this.reqIF, this.resultFileUri);
-
-            Assert.IsTrue(File.Exists(this.resultFileUri));
-#endif
-        }        
+        }
     }
 }

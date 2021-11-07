@@ -20,7 +20,6 @@
 
 namespace ReqIFSharp
 {
-#if NETFRAMEWORK || NETSTANDARD2_0
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -31,18 +30,6 @@ namespace ReqIFSharp
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
-#else
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.IO.Compression;
-    using System.Linq;
-    using System.Reflection;
-    using System.Resources;
-    using System.Xml;
-    using System.Xml.Schema;
-    using System.Xml.Serialization;    
-#endif
 
     /// <summary>
     /// The purpose of the <see cref="ReqIFDeserializer"/> is to deserialize a <see cref="ReqIF"/> XML document
@@ -50,8 +37,6 @@ namespace ReqIFSharp
     /// </summary>
     public class ReqIFDeserializer : IReqIFDeSerializer
     {
-#if NETFRAMEWORK || NETSTANDARD2_0
-
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.
         /// </summary>
@@ -81,89 +66,6 @@ namespace ReqIFSharp
 
             return validate ? this.ValidatingDeserialization(xmlFilePath, validationEventHandler) : this.NonValidatingDeserialization(xmlFilePath);
         }
-
-#else
-
-        /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> XML document.
-        /// </summary>
-        /// <param name="xmlFilePath">
-        /// The Path of the <see cref="ReqIF"/> file to deserialize
-        /// </param>
-        /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
-        /// </returns>
-        public IEnumerable<ReqIF> Deserialize(string xmlFilePath)
-        {
-            if (string.IsNullOrEmpty(xmlFilePath))
-            {
-                throw new ArgumentException("The xml file path may not be null or empty");
-            }
-            
-            return this.NonValidatingDeserialization(xmlFilePath);
-        }
-
-        /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
-        /// </summary>
-        /// <param name="xmlFilePath">
-        ///     The Path of the <see cref="ReqIF"/> file to deserialize
-        /// </param>
-        /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
-        /// </returns>
-        private IEnumerable<ReqIF> NonValidatingDeserialization(string xmlFilePath)
-        {
-            XmlReader xmlReader;
-            var settings = new XmlReaderSettings();
-            var xmlSerializer = new XmlSerializer(typeof(ReqIF));
-
-            try
-            {
-                using (var archive = ZipFile.OpenRead(xmlFilePath))
-                {
-                    var reqifEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
-                    if (reqifEntries.Length == 0)
-                    {
-                        throw new FileNotFoundException($"No reqif file could be found in the archive.");
-                    }
-
-                    var reqifs = new List<ReqIF>();
-                    foreach (var zipArchiveEntry in reqifEntries)
-                    {
-                        using (xmlReader = XmlReader.Create(zipArchiveEntry.Open()))
-                        {
-                            var reqif = (ReqIF) xmlSerializer.Deserialize(xmlReader);
-
-                            this.UpdateExternalObjectsReqIfFilePath(reqif, xmlFilePath);
-
-                            reqifs.Add(reqif);
-                        }
-                    }
-
-                    return reqifs;
-                }
-            }
-            catch (Exception e)
-            {
-                if (e is InvalidDataException || e is NotSupportedException)
-                {
-                    using (xmlReader = XmlReader.Create(xmlFilePath, settings))
-                    {
-                        var reqifs = new List<ReqIF>();
-                        reqifs.Add((ReqIF)xmlSerializer.Deserialize(xmlReader));
-
-                        return reqifs;
-                    }
-                }
-
-                throw;
-            }
-        }
-
-#endif
-
-#if NETFRAMEWORK || NETSTANDARD2_0
 
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
@@ -301,7 +203,6 @@ namespace ReqIFSharp
                 }
             }
         }
-#endif
 
         /// <summary>
         /// Updates the <see cref="ExternalObject.ReqIFFilePath"/> property with the path to the source reqifz file

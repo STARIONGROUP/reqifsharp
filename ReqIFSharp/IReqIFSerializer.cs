@@ -20,19 +20,16 @@
 
 namespace ReqIFSharp
 {
-#if NETFRAMEWORK || NETSTANDARD2_0
     using System;
     using System.IO;
     using System.Security;
     using System.Xml.Schema;
-#endif
 
     /// <summary>
     /// The interface for the a <see cref="ReqIF"/> serializer
     /// </summary>
     public interface IReqIFSerializer
     {
-#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
@@ -47,19 +44,5 @@ namespace ReqIFSharp
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
         void Serialize(ReqIF reqIf, string fileUri, ValidationEventHandler validationEventHandler);
-#else
-        /// <summary>
-        /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
-        /// </summary>
-        /// <param name="reqIf">The <see cref="ReqIF"/> object to serialize</param>
-        /// <param name="fileUri">The path of the output file</param>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        void Serialize(ReqIF reqIf, string fileUri);
-#endif
     }
 }

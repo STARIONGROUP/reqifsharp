@@ -53,7 +53,6 @@ namespace ReqIFSharp
         /// </summary>
         private readonly XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
 
-#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// The <see cref="ReqIF"/> <see cref="XmlSchemaSet"/>
         /// </summary>
@@ -63,9 +62,7 @@ namespace ReqIFSharp
         /// A value that indicates whether the <see cref="ReqIF"/> file should be validated against the schema
         /// </summary>
         private readonly bool shouldBeValidated;
-#endif
 
-#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Initializes a new instance of the <see cref="ReqIFSerializer"/> class. 
         /// </summary>
@@ -86,16 +83,7 @@ namespace ReqIFSharp
             this.xmlReaderSettings.ValidationType = ValidationType.Schema;
             this.xmlReaderSettings.Schemas.Add(this.reqIFSchemaSet);
         }
-#else
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReqIFSerializer"/> class. 
-        /// </summary>
-        public ReqIFSerializer()
-        {
-        }
-#endif
 
-#if NETFRAMEWORK || NETSTANDARD2_0
         /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
@@ -160,48 +148,5 @@ namespace ReqIFSharp
                 }
             }
         }
-#else
-        /// <summary>
-        /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
-        /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object to serialize
-        /// </param>
-        /// <param name="fileUri">
-        /// The path of the output file
-        /// </param>        
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public void Serialize(ReqIF reqIf, string fileUri)
-        {
-            if (reqIf == null)
-            {
-                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
-            }
-
-            if (fileUri == null)
-            {
-                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
-            }
-
-            if (fileUri == string.Empty)
-            {
-                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
-            }
-
-
-            using (var fs = new FileStream(fileUri, FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    this.xmlSerializer.Serialize(writer, reqIf);
-                }
-            }
-        }
-#endif
     }
 }

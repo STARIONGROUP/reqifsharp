@@ -40,13 +40,8 @@ namespace ReqIFSharp.Tests
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-reserialize.reqif");
 
-#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(reqIf, resultFileUri, null);
-#else
-            var serializer = new ReqIFSerializer();
-            serializer.Serialize(reqIf, resultFileUri);
-#endif
         }
 
         [Test]
@@ -59,13 +54,8 @@ namespace ReqIFSharp.Tests
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-reserialize.reqif");
 
-#if NETFRAMEWORK || NETCOREAPP3_1
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(reqIf, resultFileUri, null);
-#else
-            var serializer = new ReqIFSerializer();
-            serializer.Serialize(reqIf, resultFileUri);
-#endif
         }
 
         [Test]
@@ -77,17 +67,12 @@ namespace ReqIFSharp.Tests
             var reqIf = deserializer.Deserialize(reqifPath).First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "DefaultValueDemo-reserialize.reqif");
-            
-#if NETFRAMEWORK || NETCOREAPP3_1
+
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(reqIf, resultFileUri, null);
-#else
-            var serializer = new ReqIFSerializer();
-            serializer.Serialize(reqIf, resultFileUri);
-#endif
 
             var reqIf2 = deserializer.Deserialize(resultFileUri).First();
-            
+
             var OBJECT_TYPE = reqIf2.CoreContent.SpecTypes.First(x => x.Identifier == "_94301492-ef46-443d-9778-596b14a0a20e");
             var attributeDefinitionEnumeration = OBJECT_TYPE.SpecAttributes.OfType<AttributeDefinitionEnumeration>().First(x => x.Identifier == "_e5e971b3-62e3-4607-8696-f359c1ae85f3") ;
             Assert.That(attributeDefinitionEnumeration.DefaultValue, Is.Not.Null);

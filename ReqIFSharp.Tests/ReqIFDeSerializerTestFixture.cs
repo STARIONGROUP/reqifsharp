@@ -151,7 +151,6 @@ namespace ReqIFSharp.Tests
             }
         }
 
-#if NETFRAMEWORK || NETCOREAPP3_1
         [Test]
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWithValidation()
         {
@@ -220,6 +219,5 @@ namespace ReqIFSharp.Tests
         {
             throw validationEventArgs.Exception;
         }
-#endif
     }
 }
