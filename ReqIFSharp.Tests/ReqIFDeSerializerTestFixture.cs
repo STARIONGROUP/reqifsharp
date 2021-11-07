@@ -35,8 +35,6 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class ReqIFDeSerializerTestFixture
     {
-        private string xmlfilepath;
-
         private const int AmountOfDataTypes = 7;
         private const int AmountOfSpecTypes = 4;
         private const int AmountOfSpecObjects = 3;

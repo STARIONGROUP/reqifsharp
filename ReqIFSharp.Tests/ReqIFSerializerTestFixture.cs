@@ -677,17 +677,17 @@ namespace ReqIFSharp.Tests
             Assert.That(
                 () => serializer.Serialize(null, null, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                .With.Message.ContainsSubstring("The reqIf object cannot be null."));
+                .With.Message.Contains("The reqIf object cannot be null."));
 
             Assert.That(
                 () => serializer.Serialize(this.reqIF, null, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                .With.Message.ContainsSubstring("The path of the file cannot be null."));
+                .With.Message.Contains("The path of the file cannot be null."));
 
             Assert.That(
                 () => serializer.Serialize(this.reqIF, string.Empty, null),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
-                .With.Message.ContainsSubstring("The path of the file cannot be empty."));
+                .With.Message.Contains("The path of the file cannot be empty."));
         }
 
         [Test]

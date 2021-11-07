@@ -10,18 +10,19 @@ The package is available on Nuget at https://www.nuget.org/packages/ReqIFSharp/
 
 ## Build Status
 
-AppVeyor is used to build and test the library
+GitHub actions are used to build and test the library
 
 Branch | Build Status
 ------- | :------------
-Master |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/master?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
-Development |  [![Build Status](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb/branch/development?svg=true)](https://ci.appveyor.com/api/projects/status/eisp790sqa4lsgmb)
+Master | ![Build Status](https://github.com/RHEAGROUP/reqifsharp/actions/workflows/CodeQuality.yml/badge.svg?branch=Master)
+Development | ![Build Status](https://github.com/RHEAGROUP/reqifsharp/actions/workflows/CodeQuality.yml/badge.svg?branch=Development)
 
-[![Build history](https://buildstats.info/appveyor/chart/samatrhea/reqifsharp)](https://ci.appveyor.com/project/samatrhea/reqifsharp/history)
+# CodeCov - Code Coverage
 
-# Synopsis Coverty
-
-![coverty](https://img.shields.io/coverity/scan/12245?style=plastic) Synopsis Coverty is used to perform static analysis, find the [report here](https://scan.coverity.com/projects/rheagroup-reqifsharp?tab=overview) (you will need an account) 
+Branch      | Build Status
+----------- | ------------
+Master      | [![codecov](https://codecov.io/gh/RHEAGROUP/reqifsharp/branch/master/graph/badge.svg?token=2kfZrIOUtI)](https://codecov.io/gh/RHEAGROUP/reqifsharp)
+Development | [![codecov](https://codecov.io/gh/RHEAGROUP/reqifsharp/branch/development/graph/badge.svg?token=2kfZrIOUtI)](https://codecov.io/gh/RHEAGROUP/reqifsharp)
 
 # License
 
