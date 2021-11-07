@@ -114,6 +114,7 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionBoolean.Identifier = "boolean";
             datatypeDefinitionBoolean.LastChange = DateTime.Parse("2015-12-01");
             datatypeDefinitionBoolean.LongName = "a boolean";
+            this.CreateAlternativeId(datatypeDefinitionBoolean);
             this.reqIF.CoreContent.DataTypes.Add(datatypeDefinitionBoolean);
             
             var datatypeDefinitionDate = new DatatypeDefinitionDate();
@@ -121,6 +122,7 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionDate.Identifier = "DateTime";
             datatypeDefinitionDate.LastChange = DateTime.Parse("2015-12-01");
             datatypeDefinitionDate.LongName = "a date";
+            this.CreateAlternativeId(datatypeDefinitionDate);
             this.reqIF.CoreContent.DataTypes.Add(datatypeDefinitionDate);
 
             var datatypeDefinitionEnumeration = new DatatypeDefinitionEnumeration();
@@ -128,11 +130,13 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionEnumeration.Identifier = this.enumdatatype_id;
             datatypeDefinitionEnumeration.LastChange = DateTime.Parse("2015-12-01");
             datatypeDefinitionEnumeration.LongName = "an enumeration";
+            this.CreateAlternativeId(datatypeDefinitionEnumeration);
 
             var enumValuelow = new EnumValue();            
             enumValuelow.Identifier = this.enum_value_low_id;
             enumValuelow.LastChange = DateTime.Parse("2015-12-01");
             enumValuelow.LongName = "low";
+            this.CreateAlternativeId(enumValuelow);
 
             var embeddedValueLow = new EmbeddedValue();
             embeddedValueLow.Key = 1;
@@ -143,6 +147,7 @@ namespace ReqIFSharp.Tests
             enumValuemedium.Identifier = this.enum_value_medium_id;
             enumValuemedium.LastChange = DateTime.Parse("2015-12-01");
             enumValuemedium.LongName = "medium";
+            this.CreateAlternativeId(enumValuemedium);
 
             var embeddedValueMedium = new EmbeddedValue();
             embeddedValueMedium.Key = 2;
@@ -161,6 +166,7 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionInteger.LongName = "an integer";
             datatypeDefinitionInteger.Min = 2;
             datatypeDefinitionInteger.Max = 6;
+            this.CreateAlternativeId(datatypeDefinitionInteger);
             this.reqIF.CoreContent.DataTypes.Add(datatypeDefinitionInteger);
 
             var datatypeDefinitionReal = new DatatypeDefinitionReal();
@@ -171,6 +177,7 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionReal.Accuracy = 5;
             datatypeDefinitionReal.Min = 1;
             datatypeDefinitionReal.Max = 5;
+            this.CreateAlternativeId(datatypeDefinitionReal);
             this.reqIF.CoreContent.DataTypes.Add(datatypeDefinitionReal);
 
             var datatypeDefinitionString = new DatatypeDefinitionString();
@@ -179,6 +186,7 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionString.LastChange = DateTime.Parse("2015-12-01");
             datatypeDefinitionString.MaxLength = 32000;
             datatypeDefinitionString.LongName = "a string";
+            this.CreateAlternativeId(datatypeDefinitionString);
             this.reqIF.CoreContent.DataTypes.Add(datatypeDefinitionString);
 
             var datatypeDefinitionXhtml = new DatatypeDefinitionXHTML();
@@ -186,6 +194,7 @@ namespace ReqIFSharp.Tests
             datatypeDefinitionXhtml.Identifier = "xhtml";
             datatypeDefinitionXhtml.LastChange = DateTime.Parse("2015-12-01");
             datatypeDefinitionXhtml.LongName = "a string";
+            this.CreateAlternativeId(datatypeDefinitionXhtml);
             this.reqIF.CoreContent.DataTypes.Add(datatypeDefinitionXhtml);
         }
 
@@ -198,12 +207,14 @@ namespace ReqIFSharp.Tests
             specObjectType.LongName = "Requirement Type";
             specObjectType.Identifier = "requirement";
             specObjectType.LastChange = DateTime.Parse("2015-12-01");
+            this.CreateAlternativeId(specObjectType);
 
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
             attributeDefinitionBoolean.LongName = "boolean attribute";
             attributeDefinitionBoolean.Identifier = "requirement-boolean-attribute";
             attributeDefinitionBoolean.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionBoolean.Type = (DatatypeDefinitionBoolean)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionBoolean));
+            this.CreateAlternativeId(attributeDefinitionBoolean);
             specObjectType.SpecAttributes.Add(attributeDefinitionBoolean);
 
             var attributeDefinitionDate = new AttributeDefinitionDate();
@@ -211,6 +222,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionDate.Identifier = "requirement-date-attribute";
             attributeDefinitionDate.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionDate.Type = (DatatypeDefinitionDate)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionDate));
+            this.CreateAlternativeId(attributeDefinitionDate);
             specObjectType.SpecAttributes.Add(attributeDefinitionDate);
 
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
@@ -218,6 +230,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionEnumeration.Identifier = "requirement-enumeration-attribute";
             attributeDefinitionEnumeration.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionEnumeration.Type = (DatatypeDefinitionEnumeration)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionEnumeration));
+            this.CreateAlternativeId(attributeDefinitionEnumeration);
             specObjectType.SpecAttributes.Add(attributeDefinitionEnumeration);
 
             var attributeDefinitionInteger = new AttributeDefinitionInteger();
@@ -225,6 +238,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionInteger.Identifier = "requirement-integer-attribute";
             attributeDefinitionInteger.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionInteger.Type = (DatatypeDefinitionInteger)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionInteger));
+            this.CreateAlternativeId(attributeDefinitionInteger);
             specObjectType.SpecAttributes.Add(attributeDefinitionInteger);
 
             var attributeDefinitionReal = new AttributeDefinitionReal();
@@ -232,6 +246,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionReal.Identifier = "requirement-real-attribute";
             attributeDefinitionReal.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionReal.Type = (DatatypeDefinitionReal)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionReal));
+            this.CreateAlternativeId(attributeDefinitionReal);
             specObjectType.SpecAttributes.Add(attributeDefinitionReal);
 
             var attributeDefinitionString = new AttributeDefinitionString();
@@ -239,6 +254,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionString.Identifier = "requirement-string-attribute";
             attributeDefinitionString.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionString.Type = (DatatypeDefinitionString)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionString));
+            this.CreateAlternativeId(attributeDefinitionString);
             specObjectType.SpecAttributes.Add(attributeDefinitionString);
 
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
@@ -246,6 +262,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionXhtml.Identifier = "requirement-xhtml-attribute";
             attributeDefinitionXhtml.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionXhtml.Type = (DatatypeDefinitionXHTML)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionXHTML));
+            this.CreateAlternativeId(attributeDefinitionXhtml);
             specObjectType.SpecAttributes.Add(attributeDefinitionXhtml);
 
             this.reqIF.CoreContent.SpecTypes.Add(specObjectType);
@@ -262,6 +279,7 @@ namespace ReqIFSharp.Tests
             specificationType.LongName = "Specification Type";
             specificationType.Identifier = "specificationtype";
             specificationType.LastChange = DateTime.Parse("2015-12-01");
+            this.CreateAlternativeId(specificationType);
 
             this.CreateAndAddAttributeDefinitionsToSpecType(specificationType, reqIfContent);
 
@@ -279,12 +297,14 @@ namespace ReqIFSharp.Tests
             specRelationType.LongName = "Specification Relation Type";
             specRelationType.Identifier = "specificationrelation";
             specRelationType.LastChange = DateTime.Parse("2015-12-01");
+            this.CreateAlternativeId(specRelationType);
 
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
             attributeDefinitionBoolean.LongName = "boolean attribute";
             attributeDefinitionBoolean.Identifier = "specificationrelation-boolean-attribute";
             attributeDefinitionBoolean.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionBoolean.Type = (DatatypeDefinitionBoolean)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionBoolean));
+            this.CreateAlternativeId(attributeDefinitionBoolean);
             specRelationType.SpecAttributes.Add(attributeDefinitionBoolean);
 
             var attributeDefinitionDate = new AttributeDefinitionDate();
@@ -292,6 +312,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionDate.Identifier = "specificationrelation-date-attribute";
             attributeDefinitionDate.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionDate.Type = (DatatypeDefinitionDate)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionDate));
+            this.CreateAlternativeId(attributeDefinitionDate);
             specRelationType.SpecAttributes.Add(attributeDefinitionDate);
 
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
@@ -299,6 +320,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionEnumeration.Identifier = "specificationrelation-enumeration-attribute";
             attributeDefinitionEnumeration.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionEnumeration.Type = (DatatypeDefinitionEnumeration)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionEnumeration));
+            this.CreateAlternativeId(attributeDefinitionEnumeration);
             specRelationType.SpecAttributes.Add(attributeDefinitionEnumeration);
 
             var attributeDefinitionInteger = new AttributeDefinitionInteger();
@@ -306,6 +328,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionInteger.Identifier = "specificationrelation-integer-attribute";
             attributeDefinitionInteger.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionInteger.Type = (DatatypeDefinitionInteger)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionInteger));
+            this.CreateAlternativeId(attributeDefinitionInteger);
             specRelationType.SpecAttributes.Add(attributeDefinitionInteger);
 
             var attributeDefinitionReal = new AttributeDefinitionReal();
@@ -313,6 +336,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionReal.Identifier = "specificationrelation-real-attribute";
             attributeDefinitionReal.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionReal.Type = (DatatypeDefinitionReal)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionReal));
+            this.CreateAlternativeId(attributeDefinitionReal);
             specRelationType.SpecAttributes.Add(attributeDefinitionReal);
 
             var attributeDefinitionString = new AttributeDefinitionString();
@@ -320,6 +344,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionString.Identifier = "specificationrelation-string-attribute";
             attributeDefinitionString.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionString.Type = (DatatypeDefinitionString)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionString));
+            this.CreateAlternativeId(attributeDefinitionString);
             specRelationType.SpecAttributes.Add(attributeDefinitionString);
 
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
@@ -327,6 +352,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionXhtml.Identifier = "specificationrelation-xhtml-attribute";
             attributeDefinitionXhtml.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionXhtml.Type = (DatatypeDefinitionXHTML)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionXHTML));
+            this.CreateAlternativeId(attributeDefinitionXhtml);
             specRelationType.SpecAttributes.Add(attributeDefinitionXhtml);
 
             reqIfContent.SpecTypes.Add(specRelationType);
@@ -341,12 +367,14 @@ namespace ReqIFSharp.Tests
             relationGroupType.LongName = "Relation Group Type";
             relationGroupType.Identifier = "relationgrouptype";
             relationGroupType.LastChange = DateTime.Parse("2015-12-01");
+            this.CreateAlternativeId(relationGroupType);
 
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
             attributeDefinitionBoolean.LongName = "boolean attribute";
             attributeDefinitionBoolean.Identifier = "relationgrouptype-boolean-attribute";
             attributeDefinitionBoolean.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionBoolean.Type = (DatatypeDefinitionBoolean)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionBoolean));
+            this.CreateAlternativeId(attributeDefinitionBoolean);
             relationGroupType.SpecAttributes.Add(attributeDefinitionBoolean);
 
             var attributeDefinitionDate = new AttributeDefinitionDate();
@@ -354,6 +382,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionDate.Identifier = "relationgrouptype-date-attribute";
             attributeDefinitionDate.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionDate.Type = (DatatypeDefinitionDate)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionDate));
+            this.CreateAlternativeId(attributeDefinitionDate);
             relationGroupType.SpecAttributes.Add(attributeDefinitionDate);
 
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
@@ -361,6 +390,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionEnumeration.Identifier = "relationgrouptype-enumeration-attribute";
             attributeDefinitionEnumeration.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionEnumeration.Type = (DatatypeDefinitionEnumeration)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionEnumeration));
+            this.CreateAlternativeId(attributeDefinitionEnumeration);
             relationGroupType.SpecAttributes.Add(attributeDefinitionEnumeration);
 
             var attributeDefinitionInteger = new AttributeDefinitionInteger();
@@ -368,6 +398,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionInteger.Identifier = "relationgrouptype-integer-attribute";
             attributeDefinitionInteger.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionInteger.Type = (DatatypeDefinitionInteger)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionInteger));
+            this.CreateAlternativeId(attributeDefinitionInteger);
             relationGroupType.SpecAttributes.Add(attributeDefinitionInteger);
 
             var attributeDefinitionReal = new AttributeDefinitionReal();
@@ -375,6 +406,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionReal.Identifier = "relationgrouptype-real-attribute";
             attributeDefinitionReal.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionReal.Type = (DatatypeDefinitionReal)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionReal));
+            this.CreateAlternativeId(attributeDefinitionReal);
             relationGroupType.SpecAttributes.Add(attributeDefinitionReal);
 
             var attributeDefinitionString = new AttributeDefinitionString();
@@ -382,6 +414,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionString.Identifier = "relationgrouptype-string-attribute";
             attributeDefinitionString.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionString.Type = (DatatypeDefinitionString)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionString));
+            this.CreateAlternativeId(attributeDefinitionString);
             relationGroupType.SpecAttributes.Add(attributeDefinitionString);
 
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
@@ -389,6 +422,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionXhtml.Identifier = "relationgrouptype-xhtml-attribute";
             attributeDefinitionXhtml.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionXhtml.Type = (DatatypeDefinitionXHTML)this.reqIF.CoreContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionXHTML));
+            this.CreateAlternativeId(attributeDefinitionXhtml);
             relationGroupType.SpecAttributes.Add(attributeDefinitionXhtml);
 
             this.reqIF.CoreContent.SpecTypes.Add(relationGroupType);
@@ -410,6 +444,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionBoolean.Identifier = "specification-boolean-attribute";
             attributeDefinitionBoolean.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionBoolean.Type = (DatatypeDefinitionBoolean)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionBoolean));
+            this.CreateAlternativeId(attributeDefinitionBoolean);
             specType.SpecAttributes.Add(attributeDefinitionBoolean);
 
             var attributeDefinitionDate = new AttributeDefinitionDate();
@@ -417,6 +452,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionDate.Identifier = "specification-date-attribute";
             attributeDefinitionDate.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionDate.Type = (DatatypeDefinitionDate)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionDate));
+            this.CreateAlternativeId(attributeDefinitionDate);
             specType.SpecAttributes.Add(attributeDefinitionDate);
 
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
@@ -424,6 +460,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionEnumeration.Identifier = "specification-enumeration-attribute";
             attributeDefinitionEnumeration.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionEnumeration.Type = (DatatypeDefinitionEnumeration)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionEnumeration));
+            this.CreateAlternativeId(attributeDefinitionEnumeration);
             specType.SpecAttributes.Add(attributeDefinitionEnumeration);
 
             var attributeDefinitionInteger = new AttributeDefinitionInteger();
@@ -431,6 +468,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionInteger.Identifier = "specification-integer-attribute";
             attributeDefinitionInteger.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionInteger.Type = (DatatypeDefinitionInteger)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionInteger));
+            this.CreateAlternativeId(attributeDefinitionInteger);
             specType.SpecAttributes.Add(attributeDefinitionInteger);
 
             var attributeDefinitionReal = new AttributeDefinitionReal();
@@ -438,6 +476,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionReal.Identifier = "specification-real-attribute";
             attributeDefinitionReal.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionReal.Type = (DatatypeDefinitionReal)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionReal));
+            this.CreateAlternativeId(attributeDefinitionReal);
             specType.SpecAttributes.Add(attributeDefinitionReal);
 
             var attributeDefinitionString = new AttributeDefinitionString();
@@ -445,6 +484,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionString.Identifier = "specification-string-attribute";
             attributeDefinitionString.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionString.Type = (DatatypeDefinitionString)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionString));
+            this.CreateAlternativeId(attributeDefinitionString);
             specType.SpecAttributes.Add(attributeDefinitionString);
 
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
@@ -452,6 +492,7 @@ namespace ReqIFSharp.Tests
             attributeDefinitionXhtml.Identifier = "specification-xhtml-attribute";
             attributeDefinitionXhtml.LastChange = DateTime.Parse("2015-12-01");
             attributeDefinitionXhtml.Type = (DatatypeDefinitionXHTML)reqIfContent.DataTypes.SingleOrDefault(x => x.GetType() == typeof(DatatypeDefinitionXHTML));
+            this.CreateAlternativeId(attributeDefinitionXhtml);
             specType.SpecAttributes.Add(attributeDefinitionXhtml);
         }
 
@@ -468,7 +509,8 @@ namespace ReqIFSharp.Tests
             specObject.LastChange = DateTime.Parse("2015-12-01");
             var specType = (SpecObjectType)reqIfContent.SpecTypes.SingleOrDefault(x => x.GetType() == typeof(SpecObjectType));
             specObject.Type = specType;
-            this.CreateValuesForSpecElementWithAttributes(specObject, specType);            
+            this.CreateValuesForSpecElementWithAttributes(specObject, specType);
+            this.CreateAlternativeId(specObject);
             reqIfContent.SpecObjects.Add(specObject);
 
             var specobject_2 = new SpecObject();
@@ -477,6 +519,7 @@ namespace ReqIFSharp.Tests
             specobject_2.LastChange = DateTime.Parse("2015-12-01");
             specobject_2.Type = specType;
             this.CreateValuesForSpecElementWithAttributes(specobject_2, specType);
+            this.CreateAlternativeId(specobject_2);
             reqIfContent.SpecObjects.Add(specobject_2);
 
             var specobject_3 = new SpecObject();
@@ -485,6 +528,7 @@ namespace ReqIFSharp.Tests
             specobject_3.LastChange = DateTime.Parse("2015-12-01");
             specobject_3.Type = specType;
             this.CreateValuesForSpecElementWithAttributes(specobject_3, specType);
+            this.CreateAlternativeId(specobject_3);
             reqIfContent.SpecObjects.Add(specobject_3);
         }
 
@@ -507,7 +551,8 @@ namespace ReqIFSharp.Tests
             specRelation.Source = source;
             specRelation.Target = target;
             this.CreateValuesForSpecElementWithAttributes(specRelation, specRelationType);
-            
+            this.CreateAlternativeId(specRelation);
+
             reqIfContent.SpecRelations.Add(specRelation);
         }
 
@@ -529,27 +574,30 @@ namespace ReqIFSharp.Tests
             specification1.LongName = "specification 1";
             specification1.Type = specificationType;
             this.CreateValuesForSpecElementWithAttributes(specification1, specificationType);
-            
+            this.CreateAlternativeId(specification1);
+
             var specHierarchy1 = new SpecHierarchy();
             specHierarchy1.Identifier = "spec-hierarchy-1";
             specHierarchy1.LastChange = DateTime.Parse("2015-12-01");
             specHierarchy1.LongName = "specHierarchy 1";
             specHierarchy1.Object = object1;
-            
+            this.CreateAlternativeId(specHierarchy1);
+
             var specHierarchy1_1 = new SpecHierarchy();
             specHierarchy1_1.Identifier = "spec-hierarchy-1-1";
             specHierarchy1_1.LastChange = DateTime.Parse("2015-12-01");
             specHierarchy1_1.LongName = "specHierarchy 1_1";
             specHierarchy1_1.Object = object2;
+            this.CreateAlternativeId(specHierarchy1_1);
 
             var specHierarchy1_2 = new SpecHierarchy();
             specHierarchy1_2.Identifier = "spec-hierarchy-1-2";
             specHierarchy1_2.LastChange = DateTime.Parse("2015-12-01");
             specHierarchy1_2.LongName = "specHierarchy 1_2";
             specHierarchy1_2.Object = object3;
+            this.CreateAlternativeId(specHierarchy1_2);
 
             specification1.Children.Add(specHierarchy1);
-
             specHierarchy1.Children.Add(specHierarchy1_1);
             specHierarchy1.Children.Add(specHierarchy1_2);
 
@@ -561,6 +609,7 @@ namespace ReqIFSharp.Tests
             specification2.LongName = "specification 2";
             specification2.Type = specificationType;
             this.CreateValuesForSpecElementWithAttributes(specification2, specificationType);
+            this.CreateAlternativeId(specification2);
             reqIfContent.Specifications.Add(specification2);
         }
 
@@ -578,6 +627,7 @@ namespace ReqIFSharp.Tests
             relationGroup.LastChange = DateTime.Parse("2015-12-01");
             relationGroup.LongName = "relationgroup 1";
             relationGroup.Type = relationGroupType;
+            this.CreateAlternativeId(relationGroup);
 
             var sourceSpecification = reqIfContent.Specifications.SingleOrDefault(x => x.Identifier == "specification-1");
             var targetSpecification = reqIfContent.Specifications.SingleOrDefault(x => x.Identifier == "specification-2");

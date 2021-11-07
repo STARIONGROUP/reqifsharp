@@ -159,14 +159,14 @@ namespace ReqIFSharp
         /// </exception>
         public override void WriteXml(XmlWriter writer)
         {
-            base.WriteXml(writer);
-
             if (this.Type == null)
             {
                 throw new SerializationException($"The Type property of AttributeDefinitionEnumeration {this.Identifier}:{this.LongName} may not be null");
             }
 
             writer.WriteAttributeString("MULTI-VALUED", this.IsMultiValued ? "true" : "false");
+
+            base.WriteXml(writer);
 
             if (this.DefaultValue != null)
             {

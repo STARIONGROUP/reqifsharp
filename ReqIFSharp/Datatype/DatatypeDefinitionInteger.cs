@@ -92,10 +92,10 @@ namespace ReqIFSharp
         /// </param>
         public override void WriteXml(XmlWriter writer)
         { 
-            base.WriteXml(writer);
-            
             writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min)); 
             writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
+
+            base.WriteXml(writer);
         }
     }
 }

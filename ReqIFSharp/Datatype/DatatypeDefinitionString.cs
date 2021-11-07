@@ -79,9 +79,9 @@ namespace ReqIFSharp
         /// </param>
         public override void WriteXml(XmlWriter writer)
         { 
-            base.WriteXml(writer);
-            
             writer.WriteAttributeString("MAX-LENGTH", XmlConvert.ToString(this.MaxLength));
+
+            base.WriteXml(writer);
         }
     }
 }
