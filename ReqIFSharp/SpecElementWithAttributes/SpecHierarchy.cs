@@ -114,7 +114,7 @@ namespace ReqIFSharp
 
         /// <summary>
         /// Gets or sets the reference to the associated <see cref="SpecObject"/>
-        /// </summary>        
+        /// </summary>
         public SpecObject Object { get; set; }
 
         /// <summary>

@@ -21,6 +21,9 @@
 namespace ReqIFLib.Tests
 {
     using System;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using System.Xml;
 
     using NUnit.Framework;
 
@@ -32,6 +35,14 @@ namespace ReqIFLib.Tests
     [TestFixture]
     public class SpecificationTestFixture
     {
+        private XmlWriterSettings settings;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.settings = new XmlWriterSettings();
+        }
+
         [Test]
         public void VerifyThatTheSpecTypeCanBeSetOrGet()
         {
@@ -59,6 +70,26 @@ namespace ReqIFLib.Tests
             var specElementWithAttributes = (SpecElementWithAttributes)spectObject;
 
             Assert.Throws<ArgumentException>(() => specElementWithAttributes.SpecType = relationGroupType);
+        }
+
+        [Test]
+        public void Verify_that_When_Type_is_null_WriteXml_throws_excepyion()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specHierarchy = new SpecHierarchy();
+
+            Assert.Throws<SerializationException>(() => specHierarchy.WriteXml(writer));
+        }
+
+        [Test]
+        public void Verify_that_when_specType_is_not_SpecificationType_an_exception_is_thrown()
+        {
+            var specObjectType = new SpecObjectType();
+            
+            var specification = new Specification();
+            Assert.Throws<ArgumentException>(() => specification.SpecType = specObjectType);
         }
     }
 }

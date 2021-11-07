@@ -91,7 +91,7 @@ namespace ReqIFSharp
             {
                 if (!(value is IEnumerable<EnumValue> enumValues))
                 {
-                    throw new InvalidOperationException($"The value to set is not an IEnumerable<EnumValue>.");
+                    throw new InvalidOperationException("The value to set is not an IEnumerable<EnumValue>.");
                 }
 
                 this.values.Clear();

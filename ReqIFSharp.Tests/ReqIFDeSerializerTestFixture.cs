@@ -204,6 +204,28 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 
+        [Test]
+        public void Verify_that_when_path_is_null_exception_is_thrown()
+        {
+            var deserializer = new ReqIFDeserializer();
+            
+            Assert.That(
+                () => deserializer.Deserialize(null),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("The xml file path may not be null or empty"));
+        }
+
+        [Test]
+        public void Verify_that_when_ValidationEventHandler_is_not_null_exception_is_thrown()
+        {
+            var deserializer = new ReqIFDeserializer();
+
+            Assert.That(
+                () => deserializer.Deserialize("some-path", false, this.ValidationEventHandler),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("validationEventHandler must be null when validate is false"));
+        }
+
         /// <summary>
         /// Validation Event Handler
         /// </summary>

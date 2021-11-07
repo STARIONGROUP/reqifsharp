@@ -90,7 +90,18 @@ namespace ReqIFSharp.Tests
             var date = DateTime.Now;
             attributeValue.ObjectValue = date;
 
-            Assert.AreEqual(attributeValue.TheValue, date);
+            Assert.That(attributeValue.TheValue, Is.EqualTo(date));
+        }
+
+        [Test]
+        public void Verify_that_when_ObjectValue_is_not_Date_an_exception_is_thrown()
+        {
+            var attributeValue = new AttributeValueDate();
+
+            Assert.That(
+                () => attributeValue.ObjectValue = "true",
+                Throws.Exception.TypeOf<InvalidOperationException>()
+                    .With.Message.Contains("Cannot use true as value for this AttributeValueDate."));
         }
     }
 }

@@ -21,6 +21,9 @@
 namespace ReqIFLib.Tests
 {
     using System;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using System.Xml;
 
     using NUnit.Framework;
 
@@ -32,6 +35,14 @@ namespace ReqIFLib.Tests
     [TestFixture]
     public class SpecRelationTestFixture
     {
+        private XmlWriterSettings settings;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.settings = new XmlWriterSettings();
+        }
+
         [Test]
         public void VerifyThatTheSpecTypeCanBeSetOrGet()
         {
@@ -59,6 +70,68 @@ namespace ReqIFLib.Tests
             var specElementWithAttributes = (SpecElementWithAttributes)specRelation;
 
             Assert.Throws<ArgumentException>(() => specElementWithAttributes.SpecType = relationGroupType);
+        }
+
+        [Test]
+        public void Verify_that_When_Type_is_null_WriteXml_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specRelation = new SpecRelation
+            {
+                Identifier = "SpecRelationIdentifier",
+                LongName = "SpecRelationLongName"
+            };
+
+            Assert.That(
+                () => specRelation.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Type of SpecRelation SpecRelationIdentifier:SpecRelationLongName may not be null"));
+        }
+
+        [Test]
+        public void Verify_that_When_Source_is_null_WriteXml_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specRelationType = new SpecRelationType();
+
+            var specRelation = new SpecRelation
+            {
+                Identifier = "SpecRelationIdentifier",
+                LongName = "SpecRelationLongName",
+                Type = specRelationType
+            };
+
+            Assert.That(
+                () => specRelation.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Source of SpecRelation SpecRelationIdentifier:SpecRelationLongName may not be null"));
+        }
+
+        [Test]
+        public void Verify_that_When_Target_is_null_WriteXml_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specRelationType = new SpecRelationType();
+            var spectObject = new SpecObject();
+
+            var specRelation = new SpecRelation
+            {
+                Identifier = "SpecRelationIdentifier",
+                LongName = "SpecRelationLongName",
+                Type = specRelationType,
+                Source = spectObject
+            };
+
+            Assert.That(
+                () => specRelation.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Target of SpecRelation SpecRelationIdentifier:SpecRelationLongName may not be null"));
         }
     }
 }

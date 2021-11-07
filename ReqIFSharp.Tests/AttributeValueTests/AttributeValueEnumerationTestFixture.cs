@@ -90,8 +90,19 @@ namespace ReqIFLib.Tests
 
             var val = new List<EnumValue> { new EnumValue() };
             attributeValue.ObjectValue = val;
-
+            
             Assert.That(attributeValue.Values.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Verify_that_when_ObjectValue_is_not_real_an_exception_is_thrown()
+        {
+            var attributeValue = new AttributeValueEnumeration();
+
+            Assert.That(
+                () => attributeValue.ObjectValue = "true",
+                Throws.Exception.TypeOf<InvalidOperationException>()
+                    .With.Message.Contains("The value to set is not an IEnumerable<EnumValue>."));
         }
     }
 }

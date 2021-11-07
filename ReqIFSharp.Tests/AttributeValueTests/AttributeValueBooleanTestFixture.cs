@@ -77,25 +77,33 @@ namespace ReqIFSharp.Tests
                 using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
                 {
                     var attributeValueReal = new AttributeValueBoolean();
-                    Assert.Throws<SerializationException>(() => attributeValueReal.WriteXml(writer));
+
+                    Assert.That(
+                        () => attributeValueReal.WriteXml(writer),
+                        Throws.Exception.TypeOf<SerializationException>()
+                            .With.Message.Contains("The Definition property of an AttributeValueBoolean may not be null"));
                 }
             }
         }
-
-        [Test]
-        public void VerifyThatGetSchemaReturnsNull()
-        {
-            var attributeValueBoolean = new AttributeValueBoolean();
-            Assert.IsNull(attributeValueBoolean.GetSchema());
-        }
-
+        
         [Test]
         public void VerifyConvenienceValueProperty()
         {
             var attributeValueBoolean = new AttributeValueBoolean();
             attributeValueBoolean.ObjectValue = true;
 
-            Assert.IsTrue(attributeValueBoolean.TheValue);
+            Assert.That(attributeValueBoolean.TheValue, Is.True);
+        }
+
+        [Test]
+        public void Verify_that_when_ObjectValue_is_not_boolean_an_exception_is_thrown()
+        {
+            var attributeValueBoolean = new AttributeValueBoolean();
+
+            Assert.That(
+                () => attributeValueBoolean.ObjectValue = "true",
+                Throws.Exception.TypeOf<InvalidOperationException>()
+                    .With.Message.Contains("Cannot use true as value for this AttributeValueBoolean."));
         }
     }
 }

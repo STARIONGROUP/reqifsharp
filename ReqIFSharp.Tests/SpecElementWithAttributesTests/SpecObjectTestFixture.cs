@@ -21,6 +21,9 @@
 namespace ReqIFLib.Tests
 {
     using System;
+    using System.IO;
+    using System.Runtime.Serialization;
+    using System.Xml;
 
     using NUnit.Framework;
 
@@ -32,6 +35,14 @@ namespace ReqIFLib.Tests
     [TestFixture]
     public class SpecObjectTestFixture
     {
+        private XmlWriterSettings settings;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.settings = new XmlWriterSettings();
+        }
+
         [Test]
         public void VerifyThatTheSpecTypeCanBeSetOrGet()
         {
@@ -59,6 +70,24 @@ namespace ReqIFLib.Tests
             var specElementWithAttributes = (SpecElementWithAttributes)spectObject;
 
             Assert.Throws<ArgumentException>(() => specElementWithAttributes.SpecType = relationGroupType);
+        }
+
+        [Test]
+        public void Verify_that_When_Type_is_null_WriteXml_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var spectObject = new SpecObject
+            {
+                Identifier = "SpectObjectIdentifier",
+                LongName = "SpectObjectLongName"
+            };
+            
+            Assert.That(
+                () => spectObject.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Type property of SpecObject SpectObjectIdentifier:SpectObjectLongName may not be null"));
         }
     }
 }

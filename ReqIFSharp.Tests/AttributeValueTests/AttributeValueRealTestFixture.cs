@@ -53,6 +53,20 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
+        public void Verify_Constructor_with_parameters()
+        {
+            var reqIFContent = new ReqIFContent();
+
+            var specObjectType = new SpecObjectType(reqIFContent);
+
+            var attributeDefinitionReal = new AttributeDefinitionReal(specObjectType);
+
+            var attributeValueReal = new AttributeValueReal(attributeDefinitionReal);
+
+            Assert.That(attributeValueReal.OwningDefinition, Is.EqualTo(attributeDefinitionReal));
+        }
+
+        [Test]
         public void Verify_that_GetSchema_returns_null()
         {
             var attributeValue = new AttributeValueReal();
@@ -91,6 +105,17 @@ namespace ReqIFLib.Tests
             attributeValue.ObjectValue = val;
 
             Assert.AreEqual(attributeValue.ObjectValue, val);
+        }
+
+        [Test]
+        public void Verify_that_when_ObjectValue_is_not_real_an_exception_is_thrown()
+        {
+            var attributeValue = new AttributeValueReal();
+
+            Assert.That(
+                () => attributeValue.ObjectValue = "true",
+                Throws.Exception.TypeOf<InvalidOperationException>()
+                    .With.Message.Contains("Cannot use true as value for this AttributeValueDouble."));
         }
     }
 }

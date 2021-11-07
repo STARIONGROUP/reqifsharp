@@ -90,7 +90,18 @@ namespace ReqIFLib.Tests
             long val = 3;
             attributeValue.ObjectValue = val;
 
-            Assert.AreEqual(attributeValue.TheValue, val);
+            Assert.That(attributeValue.TheValue, Is.EqualTo(val));
+        }
+
+        [Test]
+        public void Verify_that_when_ObjectValue_is_not_integer_an_exception_is_thrown()
+        {
+            var attributeValue = new AttributeValueInteger();
+
+            Assert.That(
+                () => attributeValue.ObjectValue = "true",
+                Throws.Exception.TypeOf<InvalidOperationException>()
+                    .With.Message.Contains("Cannot use true as value for this AttributeValueInteger."));
         }
     }
 }
