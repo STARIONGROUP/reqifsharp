@@ -18,7 +18,8 @@
     <Authors>Sam Gerene, Naron Phou</Authors>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageReleaseNotes>
-      [Add] Remove support netstandard1.6 and net45; support for netstandard2.0 only
+      [Add] Remove support netstandard1.6 and net45; support for netstandard2.0 only; fixes #20
+      [Refactor] serialization of DefaultValue property of Identifiable; fixes #21
     </PackageReleaseNotes>
   </PropertyGroup>
 
