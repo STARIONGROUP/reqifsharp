@@ -9,10 +9,10 @@
     <Company>RHEA System S.A.</Company>
     <Copyright>Copyright 2017-2021 RHEA System S.A.</Copyright>
     <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
-    <PackageLicenseUrl>http://www.apache.org/licenses/LICENSE-2.0</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
-    <PackageIconUrl>https://reqifsharp.org/assets/images/reqifsharp-logo.png</PackageIconUrl>
+    <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
     <PackageTags>ReqIF</PackageTags>
     <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
     <Authors>Sam Gerene, Naron Phou</Authors>
@@ -78,6 +78,11 @@
     <EmbeddedResource Include="Resources\xhtml-table-1.xsd" />
     <EmbeddedResource Include="Resources\xhtml-text-1.xsd" />
     <EmbeddedResource Include="Resources\xml.xsd" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="images\" />
+    <None Include="images\reqifsharp-logo-small.png" Pack="true" PackagePath=""/>
   </ItemGroup>
 
 </Project>
