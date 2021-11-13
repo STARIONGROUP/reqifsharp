@@ -44,11 +44,6 @@ namespace ReqIFSharp.Tests
         private const int AmountOfSpecificationSubChildren = 2;
         private const int AmountOfSpecRelationGroups = 2;
 
-        [SetUp]
-        public void SetUp()
-        {
-        }
-
         [Test]
         public void VerifyThatAReqIFXMLDocumentCanBeDeserializedWitouthValidation()
         {
@@ -81,11 +76,17 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidation()
+        public void Verify_That_A_ReqIF_Archive_Can_Be_Deserialized_Witouth_Validation()
         {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData",  "test-multiple-reqif.reqifz");
+
             var deserializer = new ReqIFDeserializer();
-            
-            Assert.DoesNotThrow(() => deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz")));
+            Assert.DoesNotThrow(() => deserializer.Deserialize(reqifPath));
+
+            using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                Assert.DoesNotThrow(() => deserializer.Deserialize(sourceStream));
+            }
         }
 
         [Test]
@@ -141,7 +142,7 @@ namespace ReqIFSharp.Tests
                     foreach (var externalObject in attributeValueXhtml.ExternalObjects)
                     {
                         var targetStream = new MemoryStream();
-                        externalObject.QueryLocalData(targetStream);
+                        externalObject.QueryLocalData(reqifPath, targetStream);
                         Assert.That(targetStream.Length, Is.GreaterThan(0));
                         targetStream.Dispose();
                     }
@@ -208,9 +209,11 @@ namespace ReqIFSharp.Tests
         public void Verify_that_when_path_is_null_exception_is_thrown()
         {
             var deserializer = new ReqIFDeserializer();
-            
+
+            string xmlPath = null;
+
             Assert.That(
-                () => deserializer.Deserialize(null),
+                () => deserializer.Deserialize(xmlPath),
                 Throws.Exception.TypeOf<ArgumentException>()
                     .With.Message.Contains("The xml file path may not be null or empty"));
         }
@@ -218,10 +221,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_when_ValidationEventHandler_is_not_null_exception_is_thrown()
         {
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
+
             var deserializer = new ReqIFDeserializer();
 
             Assert.That(
-                () => deserializer.Deserialize("some-path", false, this.ValidationEventHandler),
+                () => deserializer.Deserialize(path, false, this.ValidationEventHandler),
                 Throws.Exception.TypeOf<ArgumentException>()
                     .With.Message.Contains("validationEventHandler must be null when validate is false"));
         }

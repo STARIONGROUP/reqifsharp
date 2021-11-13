@@ -18,13 +18,10 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.IO;
-
 namespace ReqIFSharp.Tests.AttributeValueTests
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
+    using System.IO;
 
     using NUnit.Framework;
 
@@ -43,18 +40,36 @@ namespace ReqIFSharp.Tests.AttributeValueTests
         }
 
         [Test]
-        public void Verfify_that_expected_exceptions_are_raised_when_QueryLocalData_is_called()
+        public void Verify_that_expected_exceptions_are_raised_when_QueryLocalData_is_called()
         {
-            Assert.Throws<ArgumentNullException>(() => this.externalObject.QueryLocalData(null));
+            string reqifPath = null;
+            Assert.Throws<ArgumentException>(() => this.externalObject.QueryLocalData(reqifPath, null));
 
-            var stream = new MemoryStream();
+            Stream sourceStream = null;
+            Assert.Throws<ArgumentNullException>(() => this.externalObject.QueryLocalData(sourceStream, null));
+
+            reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
+            Assert.Throws<ArgumentNullException>(() => this.externalObject.QueryLocalData(reqifPath, null));
+
+            using (sourceStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                Assert.Throws<ArgumentNullException>(() => this.externalObject.QueryLocalData(sourceStream, null));
+            }
+
+            var targetStream = new MemoryStream();
+            
+            using (sourceStream = new MemoryStream())
+            {
+                Assert.Throws<ArgumentException>(() => this.externalObject.QueryLocalData(sourceStream, null));
+            }
 
             this.externalObject.Uri = "http";
-            Assert.Throws<InvalidOperationException>(() => this.externalObject.QueryLocalData(stream));
+            Assert.Throws<InvalidOperationException>(() => this.externalObject.QueryLocalData(reqifPath, targetStream));
 
-            this.externalObject.Uri = "somfile";
-            this.externalObject.ReqIFFilePath = "";
-            Assert.Throws<InvalidOperationException>(() => this.externalObject.QueryLocalData(stream));
+            using (sourceStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                Assert.Throws<InvalidOperationException>(() => this.externalObject.QueryLocalData(sourceStream, targetStream));
+            }
         }
     }
 }

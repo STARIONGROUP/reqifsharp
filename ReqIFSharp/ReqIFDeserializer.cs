@@ -50,7 +50,7 @@ namespace ReqIFSharp
         /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
         /// </param>
         /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
         /// </returns>
         public IEnumerable<ReqIF> Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
@@ -59,33 +59,72 @@ namespace ReqIFSharp
                 throw new ArgumentException("The xml file path may not be null or empty");
             }
 
+            using (var fileStream = File.OpenRead(xmlFilePath))
+            {
+                return this.Deserialize(fileStream, validate, validationEventHandler);
+            }
+        }
+
+        /// <summary>
+        /// Deserializes a <see cref="ReqIF"/> XML stream.
+        /// </summary>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="validate">
+        /// a value indicating whether the XML document needs to be validated or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// </param>
+        /// <returns>
+        /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
+        /// </returns>
+        public IEnumerable<ReqIF> Deserialize(Stream stream, bool validate = false,  ValidationEventHandler validationEventHandler = null)
+        {
             if (!validate && validationEventHandler != null)
             {
                 throw new ArgumentException("validationEventHandler must be null when validate is false");
             }
 
-            return validate ? this.ValidatingDeserialization(xmlFilePath, validationEventHandler) : this.NonValidatingDeserialization(xmlFilePath);
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream), $"The {nameof(stream)} may not be null");
+            }
+
+            if (stream.Length == 0)
+            {
+                throw new ArgumentException($"The {nameof(stream)} may not be empty", nameof(stream));
+            }
+
+            return this.DeserializeReqIF(stream, validate, validationEventHandler);
         }
 
         /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> XML document without validation of the content of the document.
+        /// Deserialize the provided <see cref="Stream"/> to ReqIF
         /// </summary>
-        /// <param name="xmlFilePath">
-        ///     The Path of the <see cref="ReqIF"/> file to deserialize
+        /// <param name="stream">
+        /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="validate">
+        /// a value indicating whether the XML document needs to be validated or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
         /// </param>
         /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
         /// </returns>
-        private IEnumerable<ReqIF> NonValidatingDeserialization(string xmlFilePath)
+        private IEnumerable<ReqIF> DeserializeReqIF(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
             XmlReader xmlReader;
-            var settings = new XmlReaderSettings();
+
+            var settings = this.CreateXmlReaderSettings(validate, validationEventHandler);
             var xmlSerializer = new XmlSerializer(typeof(ReqIF));
 
             try
             {
-                using (var reader = new FileStream(xmlFilePath, FileMode.Open))
-                using (var archive = new ZipArchive(reader, ZipArchiveMode.Read))
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
                     var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
                     if (reqIfEntries.Length == 0)
@@ -96,11 +135,11 @@ namespace ReqIFSharp
                     var reqifs = new List<ReqIF>();
                     foreach (var zipArchiveEntry in reqIfEntries)
                     {
-                        using (xmlReader = XmlReader.Create(zipArchiveEntry.Open()))
+                        using (xmlReader = XmlReader.Create(zipArchiveEntry.Open(), settings))
                         {
-                            var reqif = (ReqIF) xmlSerializer.Deserialize(xmlReader);
+                            var reqif = (ReqIF)xmlSerializer.Deserialize(xmlReader);
 
-                            this.UpdateExternalObjectsReqIfFilePath(reqif, xmlFilePath);
+                            //this.UpdateExternalObjectsReqIfFilePath(reqif, xmlFilePath);
 
                             reqifs.Add(reqif);
                         }
@@ -113,7 +152,7 @@ namespace ReqIFSharp
             {
                 if (e is InvalidDataException || e is NotSupportedException)
                 {
-                    using (xmlReader = XmlReader.Create(xmlFilePath, settings))
+                    using (xmlReader = XmlReader.Create(stream, settings))
                     {
                         var reqifs = new List<ReqIF>();
                         var reqif = (ReqIF)xmlSerializer.Deserialize(xmlReader);
@@ -126,6 +165,50 @@ namespace ReqIFSharp
             }
         }
 
+        /// <summary>
+        /// Creates an instance of <see cref="XmlReaderSettings"/> with or without validation settings
+        /// </summary>
+        /// <param name="validate">
+        /// a value indicating whether the <see cref="XmlReaderSettings"/> should be created with validation settings or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// </param>
+        /// <returns>
+        /// An instance of <see cref="XmlReaderSettings"/>
+        /// </returns>
+        private XmlReaderSettings CreateXmlReaderSettings(bool validate = false, ValidationEventHandler validationEventHandler = null)
+        {
+            XmlReaderSettings settings;
+
+            if (validate)
+            {
+                settings = new XmlReaderSettings { ValidationType = ValidationType.Schema };
+                settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
+                settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
+                settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
+                settings.ValidationEventHandler += validationEventHandler;
+
+                var schemaSet = new XmlSchemaSet { XmlResolver = new ReqIfSchemaResolver() };
+
+                // add validation schema
+                schemaSet.Add(this.GetSchemaFromResource("reqif.xsd", validationEventHandler));
+                schemaSet.ValidationEventHandler += validationEventHandler;
+
+                // now combine and user the custom xmlresolver to serve all xsd references from resource manifest
+                schemaSet.Compile();
+
+                // register the resolved schema set to the reader settings
+                settings.Schemas.Add(schemaSet);
+            }
+            else
+            {
+                settings = new XmlReaderSettings();
+            }
+
+            return settings;
+        }
+        
         /// <summary>
         /// Gets the <see cref="ReqIF"/> schema for the embedded resources.
         /// </summary>
@@ -156,76 +239,6 @@ namespace ReqIFSharp
             }
 
             return XmlSchema.Read(stream, validationEventHandler);
-        }
-
-        /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> XML document with validation of the content of the document.
-        /// </summary>
-        /// <param name="xmlFilePath">
-        /// The Path of the <see cref="ReqIF"/> file to deserialize
-        /// </param>
-        /// <param name="validationEventHandler">
-        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
-        /// </param>
-        /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
-        /// </returns>
-        private IEnumerable<ReqIF>  ValidatingDeserialization(string xmlFilePath, ValidationEventHandler validationEventHandler)
-        {
-            var settings = new XmlReaderSettings { ValidationType = ValidationType.Schema };
-            settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessInlineSchema;
-            settings.ValidationFlags |= XmlSchemaValidationFlags.ProcessSchemaLocation;
-            settings.ValidationFlags |= XmlSchemaValidationFlags.ReportValidationWarnings;
-            settings.ValidationEventHandler += validationEventHandler;
-
-            var schemaSet = new XmlSchemaSet { XmlResolver = new ReqIfSchemaResolver() };
-
-            // add validation schema
-            schemaSet.Add(this.GetSchemaFromResource("reqif.xsd", validationEventHandler));
-            schemaSet.ValidationEventHandler += validationEventHandler;
-
-            // now combine and user the custom xmlresolver to serve all xsd references from resource manifest
-            schemaSet.Compile();
-
-            // register the resolved schema set to the reader settings
-            settings.Schemas.Add(schemaSet);
-
-            using (var streamReader = new StreamReader(xmlFilePath))
-            {
-                using (var reader = XmlReader.Create(streamReader, settings))
-                {
-                    var serializer = new XmlSerializer(typeof(ReqIF));
-                    var reqIf = (ReqIF)serializer.Deserialize(reader);
-
-                    var result = new List<ReqIF>();
-                    result.Add(reqIf);
-                    return result;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Updates the <see cref="ExternalObject.ReqIFFilePath"/> property with the path to the source reqifz file
-        /// that contains the reqif xml files and external objects
-        /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object that contains the <see cref="SpecObject"/>s
-        /// </param>
-        /// <param name="path">
-        /// The path to the source reqifz file.
-        /// </param>
-        private void UpdateExternalObjectsReqIfFilePath(ReqIF reqIf, string path)
-        {
-            foreach (var specObject in reqIf.CoreContent.SpecObjects)
-            {
-                foreach (var attributeValueXhtml in specObject.Values.OfType<AttributeValueXHTML>() )
-                {
-                    foreach (var externalObject in attributeValueXhtml.ExternalObjects)
-                    {
-                        externalObject.ReqIFFilePath = path;
-                    }
-                }
-            }
         }
     }
 }

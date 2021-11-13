@@ -70,13 +70,7 @@ namespace ReqIFSharp
         /// Gets or sets the width of the external object in case it is an image
         /// </summary>
         public int? Width { get; set; }
-
-        /// <summary>
-        /// Gets or sets the path of the reqif file that contains the data from which this <see cref="AttributeValueXHTML"/>
-        /// object was created/
-        /// </summary>
-        internal string ReqIFFilePath { get; set; }
-
+        
         /// <summary>
         /// Asserts whether the external object should be queried from the reqifz file or from
         /// another (absolute) location such as a resource available via HTTP or HTTPS
@@ -90,6 +84,9 @@ namespace ReqIFSharp
         /// <summary>
         /// Queries the local data from the reqifz file and writes the data to the provided target <see cref="Stream"/>
         /// </summary>
+        /// <param name="reqifPath">
+        /// The path of the reqifz file that contains the data local data
+        /// </param>
         /// <param name="target">
         /// The target <see cref="Stream"/> to which the data is written
         /// </param>
@@ -100,8 +97,47 @@ namespace ReqIFSharp
         /// thrown when the <see cref="Uri"/> is an absolute uri and not a relative Uri or
         /// when the reqifz file is unknown
         /// </exception>
-        public void QueryLocalData(Stream target)
+        public void QueryLocalData(string reqifPath, Stream target)
         {
+            if (string.IsNullOrEmpty(reqifPath))
+            {
+                throw new ArgumentException($"The {nameof(reqifPath)} file path may not be null or empty", nameof(reqifPath));
+            }
+
+            using (var reader = new FileStream(reqifPath, FileMode.Open))
+            {
+                this.QueryLocalData(reader, target);
+            }
+        }
+
+        /// <summary>
+        /// Queries the local data from the reqifz file and writes the data to the provided target <see cref="Stream"/>
+        /// </summary>
+        /// <param name="reqifz">
+        /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="target">
+        /// The target <see cref="Stream"/> to which the data is written
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// Thrown when the <paramref name="target"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// thrown when the <see cref="Uri"/> is an absolute uri and not a relative Uri or
+        /// when the reqifz file is unknown
+        /// </exception>
+        public void QueryLocalData(Stream reqifz, Stream target)
+        {
+            if (reqifz == null)
+            {
+                throw new ArgumentNullException(nameof(reqifz), $"The {nameof(reqifz)} may not be null");
+            }
+
+            if (reqifz.Length == 0)
+            {
+                throw new ArgumentException($"The {nameof(reqifz)} may not be empty", nameof(reqifz));
+            }
+
             if (target == null)
             {
                 throw new ArgumentNullException(nameof(target), "The target stream may not be null");
@@ -112,22 +148,14 @@ namespace ReqIFSharp
                 throw new InvalidOperationException("The Uri of the External Object is not a relative Uri that can be found in the reqifz file");
             }
 
-            if (string.IsNullOrEmpty(this.ReqIFFilePath))
+            using (var archive = new ZipArchive(reqifz, ZipArchiveMode.Read))
             {
-                throw new InvalidOperationException("The local data cannot be queried, the path to the reqifz file is unknown");
-            }
-
-            using (var reader = new FileStream(this.ReqIFFilePath, FileMode.Open))
-            {
-                using (var archive = new ZipArchive(reader, ZipArchiveMode.Read))
+                var zipArchiveEntry = archive.GetEntry(this.Uri);
+                if (zipArchiveEntry != null)
                 {
-                    var zipArchiveEntry = archive.GetEntry(this.Uri);
-                    if (zipArchiveEntry != null)
-                    {
-                        var sourceStream = zipArchiveEntry.Open();
-                        sourceStream.CopyTo(target);
-                        sourceStream.Dispose();
-                    }
+                    var sourceStream = zipArchiveEntry.Open();
+                    sourceStream.CopyTo(target);
+                    sourceStream.Dispose();
                 }
             }
         }
