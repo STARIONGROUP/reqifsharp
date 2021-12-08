@@ -1,6 +1,6 @@
 <img src="https://raw.githubusercontent.com/RHEAGROUP/reqifsharp/master/reqifsharp-logo.png" width="350">
 
-ReqIFSharp is a C# library for reading and writing ReqIF documents. Read more about it here: https://www.reqifsharp.org
+ReqIFSharp is a C# library for reading and writing ReqIF documents. ReqIFSharp is used in RHEA products such as [COMET](https://www.rheagroup.com/services-solutions/system-engineering/concurrent-design/) and a web based ReqIF [Viewer](https://viewer.reqifsharp.org). Read more about it here: https://www.reqifsharp.org
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
