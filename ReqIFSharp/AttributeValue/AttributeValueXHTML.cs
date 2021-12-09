@@ -22,8 +22,10 @@ namespace ReqIFSharp
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Text;
     using System.Xml;
 
     /// <summary>
@@ -135,7 +137,46 @@ namespace ReqIFSharp
         /// Gets or sets a value indicating whether the attribute value is a simplified representation of the original value.
         /// </summary>
         public bool IsSimplified { get; set; }
-        
+
+        /// <summary>
+        /// extract text from the value of the removing all the formatting xhtml nodes 
+        /// </summary>
+        /// <returns>
+        /// a string stripped of xhtml formatting elements
+        /// </returns>
+        public string ExtractUnformattedTextFromValue()
+        {
+            if (string.IsNullOrEmpty(this.TheValue))
+            {
+                return string.Empty;
+            }
+
+            var result = new List<string>();
+            
+            using (var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(this.TheValue)))
+            {
+                using (var xmlTextReader = new XmlTextReader(memoryStream))
+                {
+                    xmlTextReader.Namespaces = false;
+
+                    xmlTextReader.MoveToContent();
+
+                    using (var subtree = xmlTextReader.ReadSubtree())
+                    {
+                        while (subtree.Read())
+                        {
+                            if (subtree.MoveToContent() == XmlNodeType.Text)
+                            {
+                                result.Add(subtree.Value);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return result.Any() ? string.Join(" ", result) : string.Empty;
+        }
+
         /// <summary>
         /// Generates a <see cref="AttributeValueXHTML"/> object from its XML representation.
         /// </summary>

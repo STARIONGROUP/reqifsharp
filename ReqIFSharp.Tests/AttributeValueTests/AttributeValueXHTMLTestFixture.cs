@@ -92,5 +92,24 @@ namespace ReqIFLib.Tests
 
             Assert.AreEqual(attributeValue.TheValue, val);
         }
+
+        [Test]
+        public void Verify_that_raw_text_can_be_extracted_from_xtml_value()
+        {
+            var attributeValue = new AttributeValueXHTML();
+
+            attributeValue.TheValue = null;
+            Assert.That(attributeValue.ExtractUnformattedTextFromValue(), Is.Empty);
+
+            attributeValue.TheValue = "";
+            Assert.That(attributeValue.ExtractUnformattedTextFromValue(), Is.Empty);
+            
+            var val = "<xhtml:div>Description of the SpecObject that includes formatted tables and/or style:<xhtml:ul class=\"noindent\"><xhtml:li>Element 1</xhtml:li><xhtml:li>Element 2</xhtml:li></xhtml:ul></xhtml:div>";
+            attributeValue.ObjectValue = val;
+
+            var unformattedText = attributeValue.ExtractUnformattedTextFromValue();
+
+            Assert.That(unformattedText, Is.EqualTo("Description of the SpecObject that includes formatted tables and/or style: Element 1 Element 2"));
+        }
     }
 }
