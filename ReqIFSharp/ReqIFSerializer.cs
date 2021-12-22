@@ -94,7 +94,7 @@ namespace ReqIFSharp
         /// The path of the output file
         /// </param>
         /// <param name="validationEventHandler">
-        /// The <see cref="ValidationEventHandler"/> that processes the result of the reqif validation.
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
         /// May be null if validation is off.
         /// </param>
         /// <exception cref="XmlSchemaValidationException"></exception>
@@ -123,29 +123,81 @@ namespace ReqIFSharp
 
             if (this.shouldBeValidated)
             {
-                using (var writer = new StringWriter())
-                {
-                    this.xmlSerializer.Serialize(writer, reqIf);
-
-                    var xmlDocument = new XmlDocument();
-                    xmlDocument.LoadXml(writer.ToString());
-                    xmlDocument.Schemas = this.reqIFSchemaSet;
-
-                    // throws XmlSchemaValidationException upon failure
-                    xmlDocument.Validate(validationEventHandler);
-
-                    using (var xmlTextWriter = new XmlTextWriter(fileUri, Encoding.UTF8) { Formatting = Formatting.Indented })
-                    {
-                        xmlDocument.Save(xmlTextWriter);
-                    }
-                }
+                this.Validate(reqIf, validationEventHandler);
             }
-            else
+
+            using (var writer = XmlWriter.Create(fileUri, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 }))
             {
-                using (var writer = XmlWriter.Create(fileUri, new XmlWriterSettings { Indent = true }))
-                {
-                    this.xmlSerializer.Serialize(writer, reqIf);
-                }
+                this.xmlSerializer.Serialize(writer, reqIf);
+            }
+        }
+
+        /// <summary>
+        /// Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object to serialize
+        /// </param>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the reqif validation.
+        /// May be null if validation is off.
+        /// </param>
+        /// <exception cref="XmlSchemaValidationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="SecurityException"></exception>
+        public void Serialize(ReqIF reqIf, Stream stream, ValidationEventHandler validationEventHandler)
+        {
+            if (reqIf == null)
+            {
+                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream), "The stream cannot be null.");
+            }
+
+            if (this.shouldBeValidated)
+            {
+                this.Validate(reqIf, validationEventHandler);
+            }
+
+            using (var writer = XmlWriter.Create(stream, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8}))
+            {
+                this.xmlSerializer.Serialize(writer, reqIf);
+                writer.Flush();
+            }
+        }
+
+        /// <summary>
+        /// Validates the xml output
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object that is being serialized
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// May be null if validation is off.
+        /// </param>
+        private void Validate(ReqIF reqIf, ValidationEventHandler validationEventHandler)
+        {
+            using (var writer = new StringWriter())
+            {
+                this.xmlSerializer.Serialize(writer, reqIf);
+
+                var xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(writer.ToString());
+                xmlDocument.Schemas = this.reqIFSchemaSet;
+
+                // throws XmlSchemaValidationException upon failure
+                xmlDocument.Validate(validationEventHandler);
             }
         }
     }

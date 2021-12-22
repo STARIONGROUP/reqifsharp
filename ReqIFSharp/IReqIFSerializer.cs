@@ -44,5 +44,27 @@ namespace ReqIFSharp
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
         void Serialize(ReqIF reqIf, string fileUri, ValidationEventHandler validationEventHandler);
+
+        /// <summary>
+        /// Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object to serialize
+        /// </param>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the reqif validation.
+        /// May be null if validation is off.
+        /// </param>
+        /// <exception cref="XmlSchemaValidationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="SecurityException"></exception>
+        void Serialize(ReqIF reqIf, Stream stream, ValidationEventHandler validationEventHandler);
     }
 }

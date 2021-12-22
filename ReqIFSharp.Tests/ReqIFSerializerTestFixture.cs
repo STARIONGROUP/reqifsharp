@@ -702,7 +702,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatClassesCanBeSerialized()
+        public void Verify_That_Classes_Can_Be_Serialized_to_file()
         {
             var xmlSerializer = new XmlSerializer(typeof(ReqIF), ReqIFNamespace);
 
@@ -720,17 +720,19 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatArgumentExceptionIsRaisedOnSerialize()
+        public void Verify_That_ArgumentException_Is_Raised_OnSerialize_to_file()
         {
             var serializer = new ReqIFSerializer(false);
 
+            string filePath = null;
+
             Assert.That(
-                () => serializer.Serialize(null, null, null),
+                () => serializer.Serialize(null, filePath, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                 .With.Message.Contains("The reqIf object cannot be null."));
 
             Assert.That(
-                () => serializer.Serialize(this.reqIF, null, null),
+                () => serializer.Serialize(this.reqIF, filePath, null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                 .With.Message.Contains("The path of the file cannot be null."));
 
@@ -741,12 +743,41 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatTheReqIfSerializerSerializesaReqIfDocumentWithoutValidation()
+        public void VerifyThatArgumentExceptionIsRaisedOnSerialize_to_stream()
+        {
+            var serializer = new ReqIFSerializer(false);
+
+            Stream stream = null;
+
+            Assert.That(
+                () => serializer.Serialize(null, stream, null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The reqIf object cannot be null."));
+
+            Assert.That(
+                () => serializer.Serialize(this.reqIF, stream, null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The stream cannot be null."));
+        }
+
+        [Test]
+        public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_file_Without_Validation()
         {
             var serializer = new ReqIFSerializer(false);
             serializer.Serialize(this.reqIF, this.resultFileUri , null);
 
             Assert.IsTrue(File.Exists(this.resultFileUri));
+        }
+
+        [Test]
+        public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_stream_Without_Validation()
+        {
+            var stream = new MemoryStream();
+
+            var serializer = new ReqIFSerializer(false);
+            serializer.Serialize(this.reqIF, stream, null);
+
+            Assert.That(stream.Length, Is.Not.Zero);
         }
     }
 }
