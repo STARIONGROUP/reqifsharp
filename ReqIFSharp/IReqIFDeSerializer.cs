@@ -21,6 +21,8 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
     using System.Xml.Schema;
     
     /// <summary>
@@ -44,5 +46,22 @@ namespace ReqIFSharp
         /// A fully dereferenced <see cref="ReqIF"/> object graph
         /// </returns>
         IEnumerable<ReqIF> Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
+
+        /// <summary>
+        /// Deserializes a <see cref="ReqIF"/> XML <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="validate">
+        /// a value indicating whether the XML document needs to be validated or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// </param>
+        /// <returns>
+        /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
+        /// </returns>
+        IEnumerable<ReqIF> Deserialize(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null);
     }
 }

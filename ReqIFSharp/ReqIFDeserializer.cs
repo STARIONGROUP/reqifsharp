@@ -27,6 +27,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Reflection;
     using System.Resources;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Schema;
     using System.Xml.Serialization;
@@ -139,8 +140,6 @@ namespace ReqIFSharp
                         {
                             var reqif = (ReqIF)xmlSerializer.Deserialize(xmlReader);
 
-                            //this.UpdateExternalObjectsReqIfFilePath(reqif, xmlFilePath);
-
                             reqifs.Add(reqif);
                         }
                     }
@@ -237,7 +236,7 @@ namespace ReqIFSharp
             {
                 throw new MissingManifestResourceException($"The {reqifSchemaResourceName} resource could not be found");
             }
-
+            
             return XmlSchema.Read(stream, validationEventHandler);
         }
     }
