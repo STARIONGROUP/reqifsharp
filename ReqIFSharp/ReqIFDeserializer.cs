@@ -27,10 +27,8 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Reflection;
     using System.Resources;
-    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Schema;
-    using System.Xml.Serialization;
 
     /// <summary>
     /// The purpose of the <see cref="ReqIFDeserializer"/> is to deserialize a <see cref="ReqIF"/> XML document
@@ -121,7 +119,6 @@ namespace ReqIFSharp
             XmlReader xmlReader;
 
             var settings = this.CreateXmlReaderSettings(validate, validationEventHandler);
-            var xmlSerializer = new XmlSerializer(typeof(ReqIF));
 
             try
             {
@@ -138,9 +135,15 @@ namespace ReqIFSharp
                     {
                         using (xmlReader = XmlReader.Create(zipArchiveEntry.Open(), settings))
                         {
-                            var reqif = (ReqIF)xmlSerializer.Deserialize(xmlReader);
-
-                            reqifs.Add(reqif);
+                            while (xmlReader.Read())
+                            {
+                                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                                {
+                                    var reqif = new ReqIF();
+                                    reqif.ReadXml(xmlReader);
+                                    reqifs.Add(reqif);
+                                }
+                            }
                         }
                     }
 
@@ -154,8 +157,17 @@ namespace ReqIFSharp
                     using (xmlReader = XmlReader.Create(stream, settings))
                     {
                         var reqifs = new List<ReqIF>();
-                        var reqif = (ReqIF)xmlSerializer.Deserialize(xmlReader);
-                        reqifs.Add(reqif);
+
+                        while (xmlReader.Read())
+                        {
+                            if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                            {
+                                var reqif = new ReqIF();
+                                reqif.ReadXml(xmlReader);
+                                reqifs.Add(reqif);
+                            }
+                        }
+
                         return reqifs;
                     }
                 }
@@ -194,7 +206,7 @@ namespace ReqIFSharp
                 schemaSet.Add(this.GetSchemaFromResource("reqif.xsd", validationEventHandler));
                 schemaSet.ValidationEventHandler += validationEventHandler;
 
-                // now combine and user the custom xmlresolver to serve all xsd references from resource manifest
+                // now combine and use the custom xmlresolver to serve all xsd references from resource manifest
                 schemaSet.Compile();
 
                 // register the resolved schema set to the reader settings

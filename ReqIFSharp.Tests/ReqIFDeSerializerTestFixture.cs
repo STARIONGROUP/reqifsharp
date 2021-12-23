@@ -21,6 +21,7 @@
 namespace ReqIFSharp.Tests
 {
     using System;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Xml.Schema;
@@ -73,20 +74,6 @@ namespace ReqIFSharp.Tests
 
             var unknownrelGroup = reqIf.CoreContent.SpecRelationGroups.First(x => x.Identifier == "relationgroup-no-target");
             Assert.AreEqual("unknown", unknownrelGroup.TargetSpecification.Identifier);
-        }
-
-        [Test]
-        public void Verify_That_A_ReqIF_Archive_Can_Be_Deserialized_Witouth_Validation()
-        {
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData",  "test-multiple-reqif.reqifz");
-
-            var deserializer = new ReqIFDeserializer();
-            Assert.DoesNotThrow(() => deserializer.Deserialize(reqifPath));
-
-            using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
-            {
-                Assert.DoesNotThrow(() => deserializer.Deserialize(sourceStream));
-            }
         }
 
         [Test]
@@ -167,6 +154,16 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_That_when_schema_is_not_available_A_ReqIF_file_Can_Be_Deserialized_With_Validation_and_that_schemavalidationexception_is_thrown()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+
+            var deserializer = new ReqIFDeserializer();
+
+            Assert.Throws<XmlSchemaValidationException>(() => deserializer.Deserialize(reqifPath, true, this.ValidationEventHandler));
+        }
+
+        [Test]
         public void Verify_that_XHTML_attributes_can_de_deserialized()
         {
             var deserializer = new ReqIFDeserializer();
@@ -182,7 +179,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatAReqIFArchiveCanBeDeserializedWitouthValidationNET()
+        public void Verify_That_A_ReqIF_Archive_Can_Be_Deserialized_Without_Validation()
         {
             var deserializer = new ReqIFDeserializer();
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz")).First();
@@ -203,6 +200,20 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
             Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
             Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
+        }
+
+        [Test]
+        public void Verify_That_A_ReqIF_Archive_Can_Be_Deserialized_With_Validation()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
+
+            var deserializer = new ReqIFDeserializer();
+            Assert.DoesNotThrow(() => deserializer.Deserialize(reqifPath, true, this.ValidationEventHandler));
+
+            using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                Assert.DoesNotThrow(() => deserializer.Deserialize(sourceStream));
+            }
         }
 
         [Test]
@@ -243,6 +254,25 @@ namespace ReqIFSharp.Tests
         private void ValidationEventHandler(object sender, ValidationEventArgs validationEventArgs)
         {
             throw validationEventArgs.Exception;
+        }
+
+        [Test]
+        public void Verify_that_ReqIF_can_be_deserializaed_from_stream()
+        {
+            var deserializer = new ReqIFDeserializer();
+
+            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
+
+            using (var fileStream = new FileStream(path, FileMode.Open))
+            {
+                var sw = Stopwatch.StartNew();
+
+                var reqif = deserializer.Deserialize(fileStream, false, null).First();
+
+                Console.WriteLine($"deserialization done in: {sw.ElapsedMilliseconds} [ms]");
+
+                Assert.That(reqif, Is.Not.Null);
+            }
         }
     }
 }

@@ -22,7 +22,6 @@ namespace ReqIFSharp
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Threading.Tasks;
     using System.Xml.Schema;
     
     /// <summary>
@@ -43,7 +42,7 @@ namespace ReqIFSharp
         /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
         /// </param>
         /// <returns>
-        /// A fully dereferenced <see cref="ReqIF"/> object graph
+        /// A fully de-referenced <see cref="ReqIF"/> object graph
         /// </returns>
         IEnumerable<ReqIF> Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
 

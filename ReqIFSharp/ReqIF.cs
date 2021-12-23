@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -29,7 +30,6 @@ namespace ReqIFSharp
     /// The <see cref="ReqIF"/> class constitutes the root element of a ReqIF Exchange Document.
     /// </summary>
     [Serializable]
-    [XmlRoot("REQ-IF", Namespace = "http://www.omg.org/spec/ReqIF/20110401/reqif.xsd", IsNullable = false)]
     public class ReqIF : IXmlSerializable
     {
         private List<XmlAttribute> attributes = new List<XmlAttribute>();
@@ -138,9 +138,33 @@ namespace ReqIFSharp
         /// </param>
         public void WriteXml(XmlWriter writer)
         {
+            this.WriteNameSpaceAttributes(writer);
+
             if (!string.IsNullOrEmpty(this.Lang))
             {
                 writer.WriteAttributeString("lang", "xml", this.Lang);
+            }
+
+            this.WriteTheHeader(writer);
+            this.WriteCoreContent(writer);
+            this.WriteToolExtension(writer);
+        }
+
+        /// <summary>
+        /// Writes the namespace attributes to the REQ-IF XML Element
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private void WriteNameSpaceAttributes(XmlWriter writer)
+        {
+            if (attributes.All(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
+            {
+                var xmlAttribute = DefaultXmlAttributeFactory.CreateXHTMLNameSpaceAttribute(this);
+                if (xmlAttribute != null)
+                {
+                    this.attributes.Add(xmlAttribute);
+                }
             }
 
             foreach (var xmlAttribute in this.attributes)
@@ -149,7 +173,7 @@ namespace ReqIFSharp
                 {
                     if (xmlAttribute.Prefix == "xmlns")
                     {
-                        writer.WriteAttributeString(xmlAttribute.Prefix, xmlAttribute.LocalName,  null, xmlAttribute.Value);
+                        writer.WriteAttributeString(xmlAttribute.Prefix, xmlAttribute.LocalName, null, xmlAttribute.Value);
                     }
                     else
                     {
@@ -161,10 +185,6 @@ namespace ReqIFSharp
                     writer.WriteAttributeString(xmlAttribute.LocalName, xmlAttribute.Value);
                 }
             }
-
-            this.WriteTheHeader(writer);
-            this.WriteCoreContent(writer);
-            this.WriteToolExtension(writer);
         }
 
         /// <summary>

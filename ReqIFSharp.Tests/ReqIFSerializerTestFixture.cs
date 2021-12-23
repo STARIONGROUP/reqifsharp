@@ -24,7 +24,6 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Linq;
     using System.Xml;
-    using System.Xml.Serialization;
 
     using NUnit.Framework;
 
@@ -700,62 +699,44 @@ namespace ReqIFSharp.Tests
             alternativeId.Ident = identifiable;
             identifiable.AlternativeId = alternativeId;
         }
-
-        [Test]
-        public void Verify_That_Classes_Can_Be_Serialized_to_file()
-        {
-            var xmlSerializer = new XmlSerializer(typeof(ReqIF), ReqIFNamespace);
-
-            var generatedOutput = Path.Combine(TestContext.CurrentContext.TestDirectory, "generatedoutput.xml");
-            
-            using (var fs = new FileStream(generatedOutput, FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    Assert.DoesNotThrow(() => xmlSerializer.Serialize(writer, this.reqIF));
-                }
-            }
-
-            File.Delete(generatedOutput);
-        }
-
+        
         [Test]
         public void Verify_That_ArgumentException_Is_Raised_OnSerialize_to_file()
         {
-            var serializer = new ReqIFSerializer(false);
+            var serializer = new ReqIFSerializer();
 
             string filePath = null;
 
             Assert.That(
-                () => serializer.Serialize(null, filePath, null),
+                () => serializer.Serialize(null, filePath),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                 .With.Message.Contains("The reqIf object cannot be null."));
 
             Assert.That(
-                () => serializer.Serialize(this.reqIF, filePath, null),
+                () => serializer.Serialize(this.reqIF, filePath),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                 .With.Message.Contains("The path of the file cannot be null."));
 
             Assert.That(
-                () => serializer.Serialize(this.reqIF, string.Empty, null),
+                () => serializer.Serialize(this.reqIF, string.Empty),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
                 .With.Message.Contains("The path of the file cannot be empty."));
         }
 
         [Test]
-        public void VerifyThatArgumentExceptionIsRaisedOnSerialize_to_stream()
+        public void Verify_That_ArgumentException_Is_Raised_On_Serialize_to_stream()
         {
-            var serializer = new ReqIFSerializer(false);
+            var serializer = new ReqIFSerializer();
 
             Stream stream = null;
 
             Assert.That(
-                () => serializer.Serialize(null, stream, null),
+                () => serializer.Serialize(null, stream),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                     .With.Message.Contains("The reqIf object cannot be null."));
 
             Assert.That(
-                () => serializer.Serialize(this.reqIF, stream, null),
+                () => serializer.Serialize(this.reqIF, stream),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                     .With.Message.Contains("The stream cannot be null."));
         }
@@ -763,8 +744,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_file_Without_Validation()
         {
-            var serializer = new ReqIFSerializer(false);
-            serializer.Serialize(this.reqIF, this.resultFileUri , null);
+            var serializer = new ReqIFSerializer();
+            serializer.Serialize(this.reqIF, this.resultFileUri);
 
             Assert.IsTrue(File.Exists(this.resultFileUri));
         }
@@ -774,8 +755,8 @@ namespace ReqIFSharp.Tests
         {
             var stream = new MemoryStream();
 
-            var serializer = new ReqIFSerializer(false);
-            serializer.Serialize(this.reqIF, stream, null);
+            var serializer = new ReqIFSerializer();
+            serializer.Serialize(this.reqIF, stream);
 
             Assert.That(stream.Length, Is.Not.Zero);
         }

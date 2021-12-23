@@ -22,68 +22,14 @@ namespace ReqIFSharp
 {
     using System;
     using System.IO;
-    using System.Security;
     using System.Text;
     using System.Xml;
-    using System.Xml.Schema;
-    using System.Xml.Serialization;
 
     /// <summary>
     /// The <see cref="ReqIF"/> Serializer class
     /// </summary>
     public class ReqIFSerializer : IReqIFSerializer
     {
-        /// <summary>
-        /// The <see cref="ReqIF"/> namespace
-        /// </summary>
-        private const string ReqIFNamespace = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
-
-        /// <summary>
-        /// The <see cref="ReqIF"/> schema location
-        /// </summary>
-        private const string ReqIFSchemaUri = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
-
-        /// <summary>
-        /// The <see cref="XmlSerializer"/>
-        /// </summary>
-        private readonly XmlSerializer xmlSerializer = new XmlSerializer(typeof(ReqIF), ReqIFNamespace);
-
-        /// <summary>
-        /// The <see cref="XmlReaderSettings"/>
-        /// </summary>
-        private readonly XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
-
-        /// <summary>
-        /// The <see cref="ReqIF"/> <see cref="XmlSchemaSet"/>
-        /// </summary>
-        private readonly XmlSchemaSet reqIFSchemaSet = new XmlSchemaSet();
- 
-        /// <summary>
-        /// A value that indicates whether the <see cref="ReqIF"/> file should be validated against the schema
-        /// </summary>
-        private readonly bool shouldBeValidated;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ReqIFSerializer"/> class. 
-        /// </summary>
-        /// <param name="shouldBeValidated">
-        /// a value indicating whether the <see cref="ReqIF"/> file should be validated against the schema
-        /// </param>
-        public ReqIFSerializer(bool shouldBeValidated)
-        {
-            this.shouldBeValidated = shouldBeValidated;
-
-            if (!this.shouldBeValidated)
-            {
-                return;
-            }
-
-            this.reqIFSchemaSet.Add(ReqIFNamespace, ReqIFSchemaUri);
-
-            this.xmlReaderSettings.ValidationType = ValidationType.Schema;
-            this.xmlReaderSettings.Schemas.Add(this.reqIFSchemaSet);
-        }
-
         /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
@@ -93,18 +39,9 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
-        /// <param name="validationEventHandler">
-        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
-        /// May be null if validation is off.
-        /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public void Serialize(ReqIF reqIf, string fileUri, ValidationEventHandler validationEventHandler)
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public void Serialize(ReqIF reqIf, string fileUri)
         {
             if (reqIf == null)
             {
@@ -120,15 +57,10 @@ namespace ReqIFSharp
             {
                 throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
             }
-
-            if (this.shouldBeValidated)
+            
+            using (var writer = XmlWriter.Create(fileUri, this.CreateXmlWriterSettings()))
             {
-                this.Validate(reqIf, validationEventHandler);
-            }
-
-            using (var writer = XmlWriter.Create(fileUri, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8 }))
-            {
-                this.xmlSerializer.Serialize(writer, reqIf);
+                this.WriteXml(writer, reqIf);
             }
         }
 
@@ -141,18 +73,8 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
-        /// <param name="validationEventHandler">
-        /// The <see cref="ValidationEventHandler"/> that processes the result of the reqif validation.
-        /// May be null if validation is off.
-        /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
         /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public void Serialize(ReqIF reqIf, Stream stream, ValidationEventHandler validationEventHandler)
+        public void Serialize(ReqIF reqIf, Stream stream)
         {
             if (reqIf == null)
             {
@@ -163,42 +85,45 @@ namespace ReqIFSharp
             {
                 throw new ArgumentNullException(nameof(stream), "The stream cannot be null.");
             }
-
-            if (this.shouldBeValidated)
+            
+            using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings()))
             {
-                this.Validate(reqIf, validationEventHandler);
-            }
-
-            using (var writer = XmlWriter.Create(stream, new XmlWriterSettings { Indent = true, Encoding = Encoding.UTF8}))
-            {
-                this.xmlSerializer.Serialize(writer, reqIf);
-                writer.Flush();
+                this.WriteXml(writer, reqIf);
             }
         }
 
         /// <summary>
-        /// Validates the xml output
+        /// Create <see cref="XmlWriterSettings"/>
         /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object that is being serialized
-        /// </param>
-        /// <param name="validationEventHandler">
-        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
-        /// May be null if validation is off.
-        /// </param>
-        private void Validate(ReqIF reqIf, ValidationEventHandler validationEventHandler)
+        /// <returns>
+        /// an instance of <see cref="XmlWriterSettings"/>
+        /// </returns>
+        private XmlWriterSettings CreateXmlWriterSettings()
         {
-            using (var writer = new StringWriter())
-            {
-                this.xmlSerializer.Serialize(writer, reqIf);
+            return new XmlWriterSettings
+                {
+                    Indent = true, 
+                    Encoding = Encoding.UTF8,
+                    ConformanceLevel = ConformanceLevel.Document,
+                };
+        }
 
-                var xmlDocument = new XmlDocument();
-                xmlDocument.LoadXml(writer.ToString());
-                xmlDocument.Schemas = this.reqIFSchemaSet;
-
-                // throws XmlSchemaValidationException upon failure
-                xmlDocument.Validate(validationEventHandler);
-            }
+        /// <summary>
+        /// Write root xml element and contained objects
+        /// </summary>
+        /// <param name="xmlWriter">
+        /// The <see cref="XmlWriter"/> used to write the <see cref="ReqIF"/> object
+        /// </param>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object that is to be serialized
+        /// </param>
+        private void WriteXml(XmlWriter xmlWriter, ReqIF reqIf)
+        {
+            xmlWriter.WriteStartDocument();
+            xmlWriter.WriteStartElement("REQ-IF", DefaultXmlAttributeFactory.ReqIFSchemaUri);
+            reqIf.WriteXml(xmlWriter);
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndDocument();
         }
     }
 }
