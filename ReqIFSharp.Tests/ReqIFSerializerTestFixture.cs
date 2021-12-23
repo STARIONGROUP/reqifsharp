@@ -769,7 +769,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_That_ArgumentException_Is_Raised_On_Async_Serialize_to_stream()
+        public void Verify_That_ArgumentException_Is_Raised_On_Async_Serialize_to_stream()
         {
             var serializer = new ReqIFSerializer();
 

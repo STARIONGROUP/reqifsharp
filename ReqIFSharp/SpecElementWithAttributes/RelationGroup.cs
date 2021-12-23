@@ -231,17 +231,17 @@ namespace ReqIFSharp
         {
             if (this.Type == null)
             {
-                throw new SerializationException(string.Format("The Type property of RelationGroup {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The Type property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
             }
 
             if (this.SourceSpecification == null)
             {
-                throw new SerializationException(string.Format("The SourceSpecification property of RelationGroup {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The SourceSpecification property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
             }
 
             if (this.TargetSpecification == null)
             {
-                throw new SerializationException(string.Format("The TargetSpecification property of RelationGroup {0}:{1} may not be null", this.Identifier, this.LongName));
+                throw new SerializationException($"The TargetSpecification property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
             }
 
             base.WriteXml(writer);

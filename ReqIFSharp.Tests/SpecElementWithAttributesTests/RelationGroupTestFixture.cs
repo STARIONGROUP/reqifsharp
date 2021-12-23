@@ -36,15 +36,14 @@ namespace ReqIFSharp.Tests
     public class RelationGroupTestFixture
     {
         [Test]
-        public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
+        public void Verify_That_WriteXml_Throws_Exception_When_Type_Is_Null()
         {
             var relationGroup = new RelationGroup();
 
             // Type is not set
-
-            using (var fs = new FileStream("test.xml", FileMode.Create))
+            using (var memoryStream = new MemoryStream())
             {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
                 {
                     Assert.That(() => relationGroup.WriteXml(writer),
                         Throws.TypeOf<SerializationException>()
@@ -55,9 +54,9 @@ namespace ReqIFSharp.Tests
             // Source specification is not set
             var relationGroupType = new RelationGroupType();
             relationGroup.Type = relationGroupType;
-            using (var fs = new FileStream("test.xml", FileMode.Create))
+            using (var memoryStream = new MemoryStream())
             {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
                 {
                     Assert.That(() => relationGroup.WriteXml(writer),
                         Throws.TypeOf<SerializationException>()
@@ -69,9 +68,9 @@ namespace ReqIFSharp.Tests
             var sourceSpecification = new Specification();
             relationGroup.SourceSpecification = sourceSpecification;
             
-            using (var fs = new FileStream("test.xml", FileMode.Create))
+            using (var memoryStream = new MemoryStream())
             {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
+                using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
                 {
                     Assert.That(() => relationGroup.WriteXml(writer),
                         Throws.TypeOf<SerializationException>()
@@ -81,7 +80,51 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatTheSpectTypeCanBeSet()
+        public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_Is_Null()
+        {
+            var relationGroup = new RelationGroup();
+
+            // Type is not set
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
+                {
+                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer),
+                        Throws.TypeOf<SerializationException>()
+                            .With.Message.EqualTo("The Type property of RelationGroup : may not be null"));
+                }
+            }
+
+            // Source specification is not set
+            var relationGroupType = new RelationGroupType();
+            relationGroup.Type = relationGroupType;
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
+                {
+                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer),
+                        Throws.TypeOf<SerializationException>()
+                            .With.Message.EqualTo("The SourceSpecification property of RelationGroup : may not be null"));
+                }
+            }
+
+            // target specification is not set
+            var sourceSpecification = new Specification();
+            relationGroup.SourceSpecification = sourceSpecification;
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
+                {
+                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer),
+                        Throws.TypeOf<SerializationException>()
+                            .With.Message.EqualTo("The TargetSpecification property of RelationGroup : may not be null"));
+                }
+            }
+        }
+
+        [Test]
+        public void Verify_That_The_SpectType_Can_Be_Set()
         {
             var relationGroupType = new RelationGroupType();
             var relationGroup = new RelationGroup();
@@ -92,7 +135,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatSettingAnIncorrectSpecTypeThrowsException()
+        public void Verify_That_Setting_An_Incorrect_SpecType_Throws_Exception()
         {
             var specificationType = new SpecificationType();
             var relationGroup = new RelationGroup();
