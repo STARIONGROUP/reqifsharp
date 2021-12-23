@@ -46,9 +46,36 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
             var stream = new MemoryStream();
             var writer = XmlWriter.Create(stream, this.settings);
 
-            var specHierarchy = new SpecHierarchy();
+            var specHierarchy = new SpecHierarchy
+            {
+                Identifier = "identifier",
+                LongName = "longname"
+            };
 
-            Assert.Throws<SerializationException>(() => specHierarchy.WriteXml(writer));
+            Assert.That(
+                () => specHierarchy.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Object property of SpecHierarchy identifier:longname may not be null"));
+        }
+
+        [Test]
+        public void Verify_that_When_Object_is_null_WriteXmlAsync_throws_exception()
+        {
+            this.settings.Async = true;
+
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specHierarchy = new SpecHierarchy
+            {
+                Identifier = "identifier",
+                LongName = "longname"
+            };
+
+            Assert.That(
+                async () => await specHierarchy.WriteXmlAsync(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Object property of SpecHierarchy identifier:longname may not be null"));
         }
     }
 }

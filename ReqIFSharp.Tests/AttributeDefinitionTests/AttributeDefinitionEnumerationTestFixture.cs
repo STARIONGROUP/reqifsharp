@@ -36,7 +36,7 @@ namespace ReqIFSharp.Tests
     public class AttributeDefinitionEnumerationTestFixture
     {
         [Test]
-        public void VerifyThatTheAttributeDefinitionCanBeSetOrGet()
+        public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
             var datatypeDefinitionEnumeration = new DatatypeDefinitionEnumeration();
 
@@ -53,7 +53,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
+        public void Verify_That_Exception_Is_Raised_When_Invalid_AttributeDefinition_Is_Set()
         {
             var datatypeDefinitionString = new DatatypeDefinitionString();
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
@@ -70,16 +70,25 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
+        public void Verify_That_WriteXml_Throws_Exception_When_Type_I_sNull()
         {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
-                    Assert.Throws<SerializationException>(() => attributeDefinitionEnumeration.WriteXml(writer));
-                }
-            }
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
+
+            Assert.That(() => attributeDefinitionEnumeration.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_I_sNull()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, Async = true});
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
+
+            Assert.That(async () => await attributeDefinitionEnumeration.WriteXmlAsync(writer),
+                Throws.Exception.TypeOf<SerializationException>());
         }
     }
 }

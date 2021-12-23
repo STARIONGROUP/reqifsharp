@@ -22,7 +22,8 @@ namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;
-    using System.Runtime.Serialization;    
+    using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
 
     using NUnit.Framework;
@@ -36,7 +37,7 @@ namespace ReqIFSharp.Tests
     public class AttributeDefinitionBooleanTestFixture
     {
         [Test]
-        public void VerifyThatTheAttributeDefinitionCanBeSetOrGet()
+        public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
             var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean();
 
@@ -53,7 +54,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]        
-        public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
+        public void Verify_That_Exception_Is_Raised_When_Invalid_AttributeDefinition_Is_Set()
         {
             var datatypeDefinitionString = new DatatypeDefinitionString();
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
@@ -70,16 +71,85 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlThrowsExceptionWhenTypeIsNull()
+        public void Verify_That_WriteXml_Throws_Exception_When_Type_Is_Null()
         {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
+            using var fs = new FileStream("test.xml", FileMode.Create);
+            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean()
             {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
-                    Assert.Throws<SerializationException>(() => attributeDefinitionBoolean.WriteXml(writer));
-                }
-            }
+                Identifier = "identifier",
+                LongName = "longname"
+            };
+
+            Assert.That(() => attributeDefinitionBoolean.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Type property of AttributeDefinitionBoolean identifier:longname may not be null"));
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_Is_Null()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean()
+            {
+                Identifier = "identifier",
+                LongName = "longname"
+            };
+
+            Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Type property of AttributeDefinitionBoolean identifier:longname may not be null"));
+        }
+
+        [Test]
+        public void Verify_that_WriteXml_does_not_throw_exception()
+        {
+            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean
+            {
+                Identifier = "datatypeDefinitionBoolean"
+            };
+            
+            var attributeValueBoolean = new AttributeValueBoolean();
+            attributeValueBoolean.Definition = new AttributeDefinitionBoolean { Identifier = "default-identifier" };
+
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean
+            {
+                Identifier = "attributeDefinitionBoolean",
+                Type = datatypeDefinitionBoolean,
+                DefaultValue = attributeValueBoolean
+            };
+
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, ConformanceLevel = ConformanceLevel.Fragment});
+            writer.WriteStartElement("TEST");
+
+            Assert.That(() => attributeDefinitionBoolean.WriteXml(writer), Throws.Nothing);
+        }
+
+        [Test]
+        public async Task Verify_that_WriteXmlAsync_does_not_throw_exception()
+        {
+            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean
+            {
+                Identifier = "datatypeDefinitionBoolean"
+            };
+
+            var attributeValueBoolean = new AttributeValueBoolean();
+            attributeValueBoolean.Definition = new AttributeDefinitionBoolean { Identifier = "default-identifier" };
+
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean
+            {
+                Identifier = "attributeDefinitionBoolean",
+                Type = datatypeDefinitionBoolean,
+                DefaultValue = attributeValueBoolean
+            };
+
+            await using var memoryStream = new MemoryStream();
+            await using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, ConformanceLevel = ConformanceLevel.Fragment, Async = true});
+            await writer.WriteStartElementAsync(null, "TEST", null);
+
+            Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer), Throws.Nothing);
         }
     }
 }

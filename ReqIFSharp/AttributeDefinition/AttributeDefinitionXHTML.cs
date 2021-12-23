@@ -87,7 +87,7 @@ namespace ReqIFSharp
         {
             if (datatypeDefinition.GetType() != typeof(DatatypeDefinitionXHTML))
             {
-                throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionString");
+                throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionXHTML");
             }
 
             this.Type = (DatatypeDefinitionXHTML)datatypeDefinition;
