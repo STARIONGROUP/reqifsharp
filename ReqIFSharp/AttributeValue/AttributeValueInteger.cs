@@ -155,6 +155,32 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeValueInteger"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            var value = reader["THE-VALUE"];
+            this.TheValue = XmlConvert.ToInt64(value);
+
+            while (await reader.ReadAsync())
+            {
+                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-INTEGER-REF"))
+                {
+                    var reference = await reader.ReadElementContentAsStringAsync();
+
+                    this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionInteger>().SingleOrDefault(x => x.Identifier == reference);
+                    if (this.Definition == null)
+                    {
+                        throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeValueInteger"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

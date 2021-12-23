@@ -70,16 +70,21 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
+        public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueInteger = new AttributeValueInteger();
-                    Assert.Throws<SerializationException>(() => attributeValueInteger.WriteXml(writer));
-                }
-            }
+            using var fs = new FileStream("test.xml", FileMode.Create);
+            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
+            var attributeValueInteger = new AttributeValueInteger();
+            Assert.That(() => attributeValueInteger.WriteXml(writer), Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_Without_Definition_Set_Throws_SerializationException()
+        {
+            using var fs = new FileStream("test.xml", FileMode.Create);
+            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true, Async = true});
+            var attributeValueInteger = new AttributeValueInteger();
+            Assert.That(async () => await attributeValueInteger.WriteXmlAsync(writer), Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]

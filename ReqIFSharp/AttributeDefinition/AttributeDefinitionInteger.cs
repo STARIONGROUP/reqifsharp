@@ -134,6 +134,44 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinitionInteger"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            var alternativeId = new AlternativeId(this);
+                            await alternativeId.ReadXmlAsync(reader);
+                            break;
+                        case "DATATYPE-DEFINITION-INTEGER-REF":
+                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var datatypeDefinition = (DatatypeDefinitionInteger)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
+                            this.Type = datatypeDefinition;
+                            break;
+                        case "ATTRIBUTE-VALUE-INTEGER":
+                            this.DefaultValue = new AttributeValueInteger(this);
+                            using (var valueSubtree = reader.ReadSubtree())
+                            {
+                                await valueSubtree.MoveToContentAsync();
+                                await this.DefaultValue.ReadXmlAsync(valueSubtree);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinitionInteger"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

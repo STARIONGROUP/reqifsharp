@@ -123,6 +123,14 @@ namespace ReqIFSharp
         public abstract void ReadXml(XmlReader reader);
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeValue"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public abstract Task ReadXmlAsync(XmlReader reader);
+
+        /// <summary>
         /// Converts a <see cref="AttributeValue"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

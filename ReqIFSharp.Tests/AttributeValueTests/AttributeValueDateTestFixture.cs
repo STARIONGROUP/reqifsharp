@@ -70,16 +70,21 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
+        public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueDate = new AttributeValueDate();
-                    Assert.Throws<SerializationException>(() => attributeValueDate.WriteXml(writer));
-                }
-            }
+            using var fs = new FileStream("test.xml", FileMode.Create);
+            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
+            var attributeValueDate = new AttributeValueDate();
+            Assert.That(() => attributeValueDate.WriteXml(writer), Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_Without_Definition_Set_Throws_SerializationException()
+        {
+            using var fs = new FileStream("test.xml", FileMode.Create);
+            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
+            var attributeValueDate = new AttributeValueDate();
+            Assert.That(async () => await attributeValueDate.WriteXmlAsync(writer), Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]
@@ -91,6 +96,10 @@ namespace ReqIFSharp.Tests
             attributeValue.ObjectValue = date;
 
             Assert.That(attributeValue.TheValue, Is.EqualTo(date));
+
+            date = DateTime.Now;
+            attributeValue.TheValue = date;
+            Assert.That(attributeValue.ObjectValue, Is.EqualTo(date));
         }
 
         [Test]

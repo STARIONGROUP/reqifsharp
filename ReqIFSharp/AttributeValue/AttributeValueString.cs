@@ -143,6 +143,32 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeValueString"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            var value = reader["THE-VALUE"];
+            this.TheValue = value;
+
+            while (await reader.ReadAsync())
+            {
+                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-STRING-REF"))
+                {
+                    var reference = await reader.ReadElementContentAsStringAsync();
+
+                    this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionString>().SingleOrDefault(x => x.Identifier == reference);
+                    if (this.Definition == null)
+                    {
+                        throw new InvalidOperationException($"The attribute-definition String {reference} could not be found for the value.");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeValueString"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

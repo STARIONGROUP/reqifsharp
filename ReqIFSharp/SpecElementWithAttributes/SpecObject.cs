@@ -104,14 +104,39 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// The read hierarchy.
+        /// Asynchronously reads the <see cref="SpecType"/> which is specific to the <see cref="SpecObject"/> class.
         /// </summary>
         /// <param name="reader">
-        /// The reader.
+        /// an instance of <see cref="XmlReader"/>
         /// </param>
-        /// <exception cref="ArgumentException">
-        /// </exception>
+        protected override async Task ReadSpecTypeAsync(XmlReader reader)
+        {
+            if (reader.ReadToDescendant("SPEC-OBJECT-TYPE-REF"))
+            {
+                var reference = await reader.ReadElementContentAsStringAsync();
+                var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
+                this.Type = (SpecObjectType)specType;
+            }
+        }
+
+        /// <summary>
+        /// Reads the <see cref="SpecHierarchy"/> which is specific to the <see cref="Specification"/> class.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
         protected override void ReadHierarchy(XmlReader reader)
+        {
+            throw new InvalidOperationException("SpecRelation does not have a hierarchy");
+        }
+
+        /// <summary>
+        /// Asynchronously reads the <see cref="SpecHierarchy"/> which is specific to the <see cref="Specification"/> class.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected override Task ReadHierarchyAsync(XmlReader reader)
         {
             throw new InvalidOperationException("SpecRelation does not have a hierarchy");
         }

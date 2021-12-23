@@ -93,6 +93,23 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public virtual async Task ReadXmlAsync(XmlReader reader)
+        {
+            this.Identifier = reader.GetAttribute("IDENTIFIER");
+
+            var lastChange = reader.GetAttribute("LAST-CHANGE");
+            this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
+
+            this.Description = reader.GetAttribute("DESC");
+            this.LongName = reader.GetAttribute("LONG-NAME");
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

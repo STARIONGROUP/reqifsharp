@@ -85,6 +85,24 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="EmbeddedValue"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader)
+        {
+            var key = reader.GetAttribute("KEY");
+
+            if (key != null)
+            {
+                this.Key = XmlConvert.ToInt32(key);
+            }
+
+            this.OtherContent = reader.GetAttribute("OTHER-CONTENT");
+        }
+
+        /// <summary>
         /// Converts a <see cref="EmbeddedValue"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

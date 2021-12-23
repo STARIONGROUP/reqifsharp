@@ -171,6 +171,56 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously reads the concrete <see cref="SpecElementWithAttributes"/> elements
+        /// </summary>
+        /// <param name="reader">The current <see cref="XmlReader"/></param>
+        /// <remarks>
+        /// In this case, read the source, target and spec-relations
+        /// </remarks>
+        protected override async Task ReadObjectSpecificElementsAsync(XmlReader reader)
+        {
+            if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+            {
+                switch (reader.Name)
+                {
+                    case "SOURCE-SPECIFICATION":
+                        if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                        {
+                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
+                            this.SourceSpecification = specification
+                                                       ?? new Specification
+                                                       {
+                                                           Identifier = reference,
+                                                           Description = "This specification was not found in the source file."
+                                                       };
+                        }
+                        break;
+                    case "TARGET-SPECIFICATION":
+                        if (reader.ReadToDescendant("SPECIFICATION-REF"))
+                        {
+                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
+                            this.TargetSpecification = specification
+                                                       ?? new Specification
+                                                       {
+                                                           Identifier = reference,
+                                                           Description = "This specification was not found in the source file."
+                                                       };
+                        }
+                        break;
+                    case "SPEC-RELATIONS":
+                        reader.ReadStartElement();
+
+                        await this.DeserializeSpecRelationsAsync(reader);
+
+                        reader.ReadEndElement();
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Reads the <see cref="SpecType"/> which is specific to the <see cref="RelationGroup"/> class.
         /// </summary>
         /// <param name="reader">
@@ -187,18 +237,43 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// The read hierarchy.
+        /// Asynchronously reads the <see cref="SpecType"/> which is specific to the <see cref="RelationGroup"/> class.
         /// </summary>
         /// <param name="reader">
-        /// The reader.
+        /// an instance of <see cref="XmlReader"/>
         /// </param>
-        /// <exception cref="ArgumentException">
-        /// </exception>
+        protected override async Task ReadSpecTypeAsync(XmlReader reader)
+        {
+            if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF"))
+            {
+                var reference = await reader.ReadElementContentAsStringAsync();
+                var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
+                this.Type = (RelationGroupType)specType;
+            }
+        }
+
+        /// <summary>
+        /// Read the Hierarchy
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
         protected override void ReadHierarchy(XmlReader reader)
         {
             throw new InvalidOperationException("RelationGroup does not have a hierarchy");
         }
-        
+
+        /// <summary>
+        /// Asynchronously reads the Hierarchy
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected override Task ReadHierarchyAsync(XmlReader reader)
+        {
+            throw new InvalidOperationException("RelationGroup does not have a hierarchy");
+        }
+
         /// <summary>
         /// Deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
         /// </summary>
@@ -210,6 +285,25 @@ namespace ReqIFSharp
             while (reader.Read() && reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF"))
             {
                 var reference = reader.ReadElementContentAsString();
+                var specRelation = this.CoreContent.SpecRelations.SingleOrDefault(x => x.Identifier == reference);
+                if (specRelation != null)
+                {
+                    this.specRelations.Add(specRelation);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeSpecRelationsAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync() && await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF"))
+            {
+                var reference = await reader.ReadElementContentAsStringAsync();
                 var specRelation = this.CoreContent.SpecRelations.SingleOrDefault(x => x.Identifier == reference);
                 if (specRelation != null)
                 {

@@ -73,6 +73,23 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="DatatypeDefinitionReal"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            var value = reader.GetAttribute("MAX-LENGTH");
+            if (!string.IsNullOrEmpty(value))
+            {
+                this.MaxLength = XmlConvert.ToInt32(value);
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="DatatypeDefinitionReal"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

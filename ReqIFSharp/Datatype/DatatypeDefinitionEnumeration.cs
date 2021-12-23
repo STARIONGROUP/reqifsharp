@@ -94,6 +94,29 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="DatatypeDefinitionEnumeration"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE")
+                    {
+                        var enumvalue = new EnumValue(this);
+                        await enumvalue.ReadXmlAsync(subtree);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="DatatypeDefinitionEnumeration"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

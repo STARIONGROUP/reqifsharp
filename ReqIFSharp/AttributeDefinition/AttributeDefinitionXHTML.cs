@@ -132,6 +132,44 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinitionXHTML"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            var alternativeId = new AlternativeId(this);
+                            await alternativeId.ReadXmlAsync(reader);
+                            break;
+                        case "DATATYPE-DEFINITION-XHTML-REF":
+                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var datatypeDefinition = (DatatypeDefinitionXHTML)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
+                            this.Type = datatypeDefinition;
+                            break;
+                        case "ATTRIBUTE-VALUE-XHTML":
+                            this.DefaultValue = new AttributeValueXHTML(this);
+                            using (var valueSubtree = reader.ReadSubtree())
+                            {
+                                valueSubtree.MoveToContent();
+                                await this.DefaultValue.ReadXmlAsync(valueSubtree);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinitionXHTML"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

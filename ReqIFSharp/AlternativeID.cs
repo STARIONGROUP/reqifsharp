@@ -99,6 +99,17 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AlternativeId"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader)
+        {
+            this.Identifier = reader.GetAttribute("IDENTIFIER");
+        }
+
+        /// <summary>
         /// This method is reserved and should not be used.
         /// </summary>
         /// <returns>returns null</returns>

@@ -52,6 +52,23 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="ReqIFContent"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    this.InnerXml = await reader.ReadInnerXmlAsync();
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="ReqIFToolExtension"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

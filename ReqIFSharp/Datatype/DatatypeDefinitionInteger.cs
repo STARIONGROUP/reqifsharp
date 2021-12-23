@@ -86,6 +86,29 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            var maxValue = reader.GetAttribute("MAX");
+            if (!string.IsNullOrEmpty(maxValue))
+            {
+                this.Max = XmlConvert.ToInt64(maxValue);
+            }
+
+            var minValue = reader.GetAttribute("MIN");
+            if (!string.IsNullOrEmpty(minValue))
+            {
+                this.Min = XmlConvert.ToInt64(minValue);
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

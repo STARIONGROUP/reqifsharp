@@ -150,6 +150,49 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinitionEnumeration"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            if (reader.GetAttribute("MULTI-VALUED") == "true")
+            {
+                this.IsMultiValued = true;
+            }
+
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            var alternativeId = new AlternativeId(this);
+                            await alternativeId.ReadXmlAsync(reader);
+                            break;
+                        case "DATATYPE-DEFINITION-ENUMERATION-REF":
+                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var datatypeDefinition = (DatatypeDefinitionEnumeration)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
+                            this.Type = datatypeDefinition;
+                            break;
+                        case "ATTRIBUTE-VALUE-ENUMERATION":
+                            this.DefaultValue = new AttributeValueEnumeration(this);
+                            using (var valueSubtree = reader.ReadSubtree())
+                            {
+                                await valueSubtree.MoveToContentAsync();
+                                await this.DefaultValue.ReadXmlAsync(valueSubtree);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinitionEnumeration"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

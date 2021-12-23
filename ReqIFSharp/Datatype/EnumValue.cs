@@ -77,7 +77,30 @@ namespace ReqIFSharp
                         embeddedValue.ReadXml(subtree);
                     }
                 }
-            }            
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously generates a <see cref="EnumValue"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
+                    {
+                        var embeddedValue = new EmbeddedValue(this);
+                        await embeddedValue.ReadXmlAsync(subtree);
+                    }
+                }
+            }
         }
 
         /// <summary>

@@ -157,10 +157,26 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// The read hierarchy.
+        /// Asynchronously reads the <see cref="SpecType"/> which is specific to the <see cref="Specification"/> class.
         /// </summary>
         /// <param name="reader">
-        /// The reader.
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected override async Task ReadSpecTypeAsync(XmlReader reader)
+        {
+            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF"))
+            {
+                var reference = await reader.ReadElementContentAsStringAsync();
+                var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
+                this.Type = (SpecificationType)specType;
+            }
+        }
+
+        /// <summary>
+        /// Reads the <see cref="SpecHierarchy"/> which is specific to the <see cref="Specification"/> class.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
         /// </param>
         protected override void ReadHierarchy(XmlReader reader)
         {
@@ -174,6 +190,29 @@ namespace ReqIFSharp
 
                         var specHierarchy = new SpecHierarchy(this, this.ReqIFContent);
                         specHierarchy.ReadXml(subtree);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously reads the <see cref="SpecHierarchy"/> which is specific to the <see cref="Specification"/> class.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected override async Task ReadHierarchyAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
+                {
+                    using (var subtree = reader.ReadSubtree())
+                    {
+                        await subtree.MoveToContentAsync();
+
+                        var specHierarchy = new SpecHierarchy(this, this.ReqIFContent);
+                        await specHierarchy.ReadXmlAsync(subtree);
                     }
                 }
             }

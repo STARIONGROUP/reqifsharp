@@ -136,6 +136,67 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="ReqIF"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader)
+        {
+            this.Lang = reader.GetAttribute("xml:lang");
+
+            while (reader.MoveToNextAttribute())
+            {
+                if (reader.Name != "xml:lang")
+                {
+                    var xmlAttribute = new ReqIFSharp.XmlAttribute
+                    {
+                        Prefix = reader.Prefix,
+                        LocalName = reader.LocalName,
+                        Value = reader.Value
+                    };
+
+                    attributes.Add(xmlAttribute);
+                }
+            }
+
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "THE-HEADER":
+                            var headerSubTreeXmlReader = reader.ReadSubtree();
+                            this.TheHeader = new ReqIFHeader { DocumentRoot = this };
+                            await this.TheHeader.ReadXmlAsync(headerSubTreeXmlReader);
+                            break;
+                        case "CORE-CONTENT":
+                            var coreContentTreeXmlReader = reader.ReadSubtree();
+                            this.CoreContent = new ReqIFContent { DocumentRoot = this };
+                            await this.CoreContent.ReadXmlAsync(coreContentTreeXmlReader);
+                            break;
+                        case "TOOL-EXTENSIONS":
+                            var toolExtensionsXmlReader = reader.ReadSubtree();
+
+                            while (await toolExtensionsXmlReader.ReadAsync())
+                            {
+                                if (await toolExtensionsXmlReader.MoveToContentAsync() == XmlNodeType.Element && toolExtensionsXmlReader.LocalName == "REQ-IF-TOOL-EXTENSION")
+                                {
+                                    var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();
+
+                                    var reqIfToolExtension = new ReqIFToolExtension();
+                                    await reqIfToolExtension.ReadXmlAsync(reqIfToolExtensionSubTreeXmlReader);
+                                    this.ToolExtension.Add(reqIfToolExtension);
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="ReqIF"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

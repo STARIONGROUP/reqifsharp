@@ -221,6 +221,48 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeValueXHTML"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            var isSimplified = reader["IS-SIMPLIFIED"];
+            if (!string.IsNullOrEmpty(isSimplified))
+            {
+                this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
+            }
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
+                    {
+                        var reference = await reader.ReadElementContentAsStringAsync();
+                        this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionXHTML>().SingleOrDefault(x => x.Identifier == reference);
+                        if (this.Definition == null)
+                        {
+                            throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
+                        }
+                    }
+
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")
+                    {
+                        this.TheValue = (await subtree.ReadInnerXmlAsync()).Trim();
+
+                        if (this.TheValue.Contains("xhtml:object data"))
+                        {
+                            var externalObjects = this.CreateExternalObjects(this.TheValue);
+                            this.ExternalObjects.AddRange(externalObjects);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates <see cref="ExternalObject"/>s from provided XHTML
         /// </summary>
         /// <param name="xhtml">

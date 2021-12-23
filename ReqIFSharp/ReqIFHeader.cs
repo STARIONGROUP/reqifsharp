@@ -134,6 +134,49 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="ReqIFContent"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "REQ-IF-HEADER":
+                            this.Identifier = reader.GetAttribute("IDENTIFIER");
+                            break;
+                        case "COMMENT":
+                            this.Comment = await reader.ReadElementContentAsStringAsync();
+                            break;
+                        case "CREATION-TIME":
+                            this.CreationTime = XmlConvert.ToDateTime(await reader.ReadElementContentAsStringAsync(), XmlDateTimeSerializationMode.RoundtripKind);
+                            break;
+                        case "REPOSITORY-ID":
+                            this.RepositoryId = await reader.ReadElementContentAsStringAsync();
+                            break;
+                        case "REQ-IF-TOOL-ID":
+                            this.ReqIFToolId = await reader.ReadElementContentAsStringAsync();
+                            break;
+                        case "REQ-IF-VERSION":
+                            this.ReqIFVersion = await reader.ReadElementContentAsStringAsync();
+                            break;
+                        case "SOURCE-TOOL-ID":
+                            this.SourceToolId = await reader.ReadElementContentAsStringAsync();
+                            break;
+                        case "TITLE":
+                            this.Title = await reader.ReadElementContentAsStringAsync();
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="ReqIFContent"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

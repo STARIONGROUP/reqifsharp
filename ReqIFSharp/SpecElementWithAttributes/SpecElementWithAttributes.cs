@@ -207,10 +207,118 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="SpecElementWithAttributes"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            using (var specElementWithAttributesReader = reader.ReadSubtree())
+            {
+                while (await specElementWithAttributesReader.ReadAsync())
+                {
+                    if (await specElementWithAttributesReader.MoveToContentAsync() == XmlNodeType.Element)
+                    {
+                        switch (specElementWithAttributesReader.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                await alternativeId.ReadXmlAsync(specElementWithAttributesReader);
+                                break;
+                            case "TYPE":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    await this.ReadSpecTypeAsync(subtree);
+                                }
+                                break;
+                            case "CHILDREN":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    await this.ReadHierarchyAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-BOOLEAN":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueBoolean = new AttributeValueBoolean(this);
+                                    await attributeValueBoolean.ReadXmlAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-DATE":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueDate = new AttributeValueDate(this);
+                                    await attributeValueDate.ReadXmlAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-ENUMERATION":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueEnumeration = new AttributeValueEnumeration(this);
+                                    await attributeValueEnumeration.ReadXmlAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-INTEGER":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueInteger = new AttributeValueInteger(this);
+                                    await attributeValueInteger.ReadXmlAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-REAL":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueReal = new AttributeValueReal(this);
+                                    await attributeValueReal.ReadXmlAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-STRING":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueString = new AttributeValueString(this);
+                                    await attributeValueString.ReadXmlAsync(subtree);
+                                }
+                                break;
+                            case "ATTRIBUTE-VALUE-XHTML":
+                                using (var subtree = specElementWithAttributesReader.ReadSubtree())
+                                {
+                                    await subtree.MoveToContentAsync();
+                                    var attributeValueXhtml = new AttributeValueXHTML(this);
+                                    await attributeValueXhtml.ReadXmlAsync(subtree);
+                                }
+                                break;
+                        }
+                    }
+
+                    await this.ReadObjectSpecificElementsAsync(specElementWithAttributesReader);
+                }
+            }
+        }
+
+        /// <summary>
         /// Reads the concrete <see cref="SpecElementWithAttributes"/> elements
         /// </summary>
         /// <param name="reader">The current <see cref="XmlReader"/></param>
         protected virtual void ReadObjectSpecificElements(XmlReader reader)
+        {
+        }
+
+        /// <summary>
+        /// Asynchronously reads the concrete <see cref="SpecElementWithAttributes"/> elements
+        /// </summary>
+        /// <param name="reader">The current <see cref="XmlReader"/></param>
+        protected virtual async Task ReadObjectSpecificElementsAsync(XmlReader reader)
         {
         }
 
@@ -223,12 +331,28 @@ namespace ReqIFSharp
         protected abstract void ReadSpecType(XmlReader reader);
 
         /// <summary>
+        /// Asynchronously reads the <see cref="SpecType"/> which is specific to the <see cref="SpecElementWithAttributes"/> sub class
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected abstract Task ReadSpecTypeAsync(XmlReader reader);
+
+        /// <summary>
         /// Reads the <see cref="SpecType"/> which is specific to the <see cref="SpecElementWithAttributes"/> sub class
         /// </summary>
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
         protected abstract void ReadHierarchy(XmlReader reader);
+
+        /// <summary>
+        /// Asynchronously reads the <see cref="SpecType"/> which is specific to the <see cref="SpecElementWithAttributes"/> sub class
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected abstract Task ReadHierarchyAsync(XmlReader reader);
 
         /// <summary>
         /// Converts a <see cref="SpecElementWithAttributes"/> object into its XML representation.

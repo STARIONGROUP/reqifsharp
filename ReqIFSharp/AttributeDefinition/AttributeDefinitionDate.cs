@@ -132,6 +132,44 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinitionDate"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            var alternativeId = new AlternativeId(this);
+                            await alternativeId.ReadXmlAsync(reader);
+                            break;
+                        case "ATTRIBUTE-VALUE-DATE":
+                            this.DefaultValue = new AttributeValueDate(this);
+                            using (var valueSubtree = reader.ReadSubtree())
+                            {
+                                await valueSubtree.MoveToContentAsync();
+                                await this.DefaultValue.ReadXmlAsync(valueSubtree);
+                            }
+                            break;
+                        case "DATATYPE-DEFINITION-DATE-REF":
+                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
+                            this.Type = datatypeDefinition;
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinitionDate"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

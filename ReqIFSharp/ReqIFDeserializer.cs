@@ -27,6 +27,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Reflection;
     using System.Resources;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Schema;
 
@@ -97,6 +98,72 @@ namespace ReqIFSharp
             }
 
             return this.DeserializeReqIF(stream, validate, validationEventHandler);
+        }
+
+        /// <summary>
+        /// Asynchronously deserializes a <see cref="ReqIF"/> from a file
+        /// </summary>
+        /// <param name="xmlFilePath">
+        /// The Path of the <see cref="ReqIF"/> file to deserialize
+        /// </param>
+        /// <param name="validate">
+        /// a value indicating whether the XML document needs to be validated or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// </param>
+        /// <returns>
+        /// A fully de-referenced <see cref="ReqIF"/> object graph
+        /// </returns>
+        public async Task<IEnumerable<ReqIF>> DeserializeAsync(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        {
+            if (string.IsNullOrEmpty(xmlFilePath))
+            {
+                throw new ArgumentException("The xml file path may not be null or empty");
+            }
+            
+            using (var fileStream = File.OpenRead(xmlFilePath))
+            {
+                byte[] result = new byte[fileStream.Length];
+                await fileStream.ReadAsync(result, 0, (int)fileStream.Length);
+
+                return await this.DeserializeAsync(fileStream, validate, validationEventHandler);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously deserializes a <see cref="ReqIF"/> from a <see cref="Stream"/>.
+        /// </summary>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="validate">
+        /// a value indicating whether the XML document needs to be validated or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// </param>
+        /// <returns>
+        /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
+        /// </returns>
+        public Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        {
+            if (!validate && validationEventHandler != null)
+            {
+                throw new ArgumentException("validationEventHandler must be null when validate is false");
+            }
+
+            if (stream == null)
+            {
+                throw new ArgumentNullException(nameof(stream), $"The {nameof(stream)} may not be null");
+            }
+
+            if (stream.Length == 0)
+            {
+                throw new ArgumentException($"The {nameof(stream)} may not be empty", nameof(stream));
+            }
+
+            return this.DeserializeReqIFAsync(stream, validate, validationEventHandler);
         }
 
         /// <summary>
@@ -177,6 +244,83 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously deserialize the provided <see cref="Stream"/> to ReqIF
+        /// </summary>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="validate">
+        /// a value indicating whether the XML document needs to be validated or not
+        /// </param>
+        /// <param name="validationEventHandler">
+        /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
+        /// </param>
+        /// <returns>
+        /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
+        /// </returns>
+        private async Task<IEnumerable<ReqIF>> DeserializeReqIFAsync(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        {
+            XmlReader xmlReader;
+
+            var settings = this.CreateXmlReaderSettings(validate, validationEventHandler, true);
+
+            try
+            {
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
+                {
+                    var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
+                    if (reqIfEntries.Length == 0)
+                    {
+                        throw new FileNotFoundException($"No reqif file could be found in the archive.");
+                    }
+
+                    var reqifs = new List<ReqIF>();
+                    foreach (var zipArchiveEntry in reqIfEntries)
+                    {
+                        using (xmlReader = XmlReader.Create(zipArchiveEntry.Open(), settings))
+                        {
+                            while (await xmlReader.ReadAsync())
+                            {
+                                if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                                {
+                                    var reqif = new ReqIF();
+                                    await reqif.ReadXmlAsync(xmlReader);
+                                    reqifs.Add(reqif);
+                                }
+                            }
+                        }
+                    }
+
+                    return reqifs;
+                }
+            }
+            catch (Exception e)
+            {
+                if (e is InvalidDataException || e is NotSupportedException)
+                {
+                    using (xmlReader = XmlReader.Create(stream, settings))
+                    {
+                        var reqifs = new List<ReqIF>();
+
+                        while (await xmlReader.ReadAsync())
+                        {
+                            if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                            {
+                                var reqif = new ReqIF();
+                                await reqif.ReadXmlAsync(xmlReader);
+                                reqifs.Add(reqif);
+                            }
+                        }
+
+                        return reqifs;
+                    }
+                }
+
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Creates an instance of <see cref="XmlReaderSettings"/> with or without validation settings
         /// </summary>
         /// <param name="validate">
@@ -188,7 +332,7 @@ namespace ReqIFSharp
         /// <returns>
         /// An instance of <see cref="XmlReaderSettings"/>
         /// </returns>
-        private XmlReaderSettings CreateXmlReaderSettings(bool validate = false, ValidationEventHandler validationEventHandler = null)
+        private XmlReaderSettings CreateXmlReaderSettings(bool validate = false, ValidationEventHandler validationEventHandler = null, bool asynchronous = false)
         {
             XmlReaderSettings settings;
 
@@ -216,6 +360,8 @@ namespace ReqIFSharp
             {
                 settings = new XmlReaderSettings();
             }
+
+            settings.Async = asynchronous;
 
             return settings;
         }

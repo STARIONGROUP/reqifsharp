@@ -193,6 +193,67 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="ReqIFContent"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "DATATYPES":
+                            using (var dataTypesSubtree = reader.ReadSubtree())
+                            {
+                                await dataTypesSubtree.MoveToContentAsync();
+                                await this.DeserializeDataTypesAsync(dataTypesSubtree);
+                            }
+                            break;
+                        case "SPEC-TYPES":
+                            using (var specTypesSubtree = reader.ReadSubtree())
+                            {
+                                await specTypesSubtree.MoveToContentAsync();
+                                await this.DeserializeSpecTypesAsync(specTypesSubtree);
+                            }
+                            break;
+                        case "SPEC-OBJECTS":
+                            using (var specObjectsSubtree = reader.ReadSubtree())
+                            {
+                                await specObjectsSubtree.MoveToContentAsync();
+                                await this.DeserializeSpectObjectsAsync(specObjectsSubtree);
+                            }
+                            break;
+                        case "SPEC-RELATIONS":
+                            using (var specRelationsSubtree = reader.ReadSubtree())
+                            {
+                                await specRelationsSubtree.MoveToContentAsync();
+                                await this.DeserializeSpecRelationsAsync(specRelationsSubtree);
+                            }
+                            break;
+                        case "SPECIFICATIONS":
+                            using (var specificationsSubtree = reader.ReadSubtree())
+                            {
+                                await specificationsSubtree.MoveToContentAsync();
+                                await this.DeserializeSpecificationsAsync(specificationsSubtree);
+                            }
+                            break;
+                        case "SPEC-RELATION-GROUPS":
+                            using (var specRelationGroupsSubtree = reader.ReadSubtree())
+                            {
+                                await specRelationGroupsSubtree.MoveToContentAsync();
+                                await this.DeserializeRelationGroupsAsync(specRelationGroupsSubtree);
+                            }
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Deserialize the <see cref="DatatypeDefinition"/>s contained by the <code>DATATYPES</code> element.
         /// </summary>
         /// <param name="reader">
@@ -203,6 +264,24 @@ namespace ReqIFSharp
             while (reader.Read())
             {
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
+                {
+                    var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this);
+                    datatypeDefinition.ReadXml(reader);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously deserialize the <see cref="DatatypeDefinition"/>s contained by the <code>DATATYPES</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeDataTypesAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this);
                     datatypeDefinition.ReadXml(reader);
@@ -240,6 +319,35 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously deserialize the <see cref="SpecType"/>s contained by the <code>SPEC-TYPES</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeSpecTypesAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    var xmlname = reader.LocalName;
+
+                    if (xmlname == "SPEC-OBJECT-TYPE" || xmlname == "SPECIFICATION-TYPE"
+                                                      || xmlname == "SPEC-RELATION-TYPE" || xmlname == "RELATION-GROUP-TYPE")
+                    {
+                        using (var subtree = reader.ReadSubtree())
+                        {
+                            await subtree.MoveToContentAsync();
+
+                            var specType = ReqIfFactory.SpecTypeConstrcut(xmlname, this);
+                            await specType.ReadXmlAsync(subtree);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Deserialize the <see cref="SpecObject"/>s contained by the <code>SPEC-OBJECTS</code> element.
         /// </summary>
         /// <param name="reader">
@@ -258,6 +366,29 @@ namespace ReqIFSharp
                         var specObject = new SpecObject(this);
                         specObject.ReadXml(subtree);
                     }                                            
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously deserialize the <see cref="SpecObject"/>s contained by the <code>SPEC-OBJECTS</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeSpectObjectsAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECT")
+                {
+                    using (var subtree = reader.ReadSubtree())
+                    {
+                        await subtree.MoveToContentAsync();
+
+                        var specObject = new SpecObject(this);
+                        await specObject.ReadXmlAsync(subtree);
+                    }
                 }
             }
         }
@@ -286,6 +417,29 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeSpecRelationsAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION")
+                {
+                    using (var subtree = reader.ReadSubtree())
+                    {
+                        await subtree.MoveToContentAsync();
+
+                        var specRelation = new SpecRelation(this);
+                        await specRelation.ReadXmlAsync(subtree);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Deserialize the <see cref="Specification"/>s contained by the <code>SPECIFICATIONS</code> element.
         /// </summary>
         /// <param name="reader">
@@ -309,6 +463,29 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously deserialize the <see cref="Specification"/>s contained by the <code>SPECIFICATIONS</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeSpecificationsAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPECIFICATION")
+                {
+                    using (var subtree = reader.ReadSubtree())
+                    {
+                        await subtree.MoveToContentAsync();
+
+                        var specification = new Specification(this);
+                        await specification.ReadXmlAsync(subtree);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Deserialize the <see cref="RelationGroup"/>s contained by the <code>SPEC-RELATION-GROUPS</code> element.
         /// </summary>
         /// <param name="reader">
@@ -326,6 +503,29 @@ namespace ReqIFSharp
 
                         var relationGroup = new RelationGroup(this);
                         relationGroup.ReadXml(subtree);                        
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously deserialize the <see cref="RelationGroup"/>s contained by the <code>SPEC-RELATION-GROUPS</code> element.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private async Task DeserializeRelationGroupsAsync(XmlReader reader)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "RELATION-GROUP")
+                {
+                    using (var subtree = reader.ReadSubtree())
+                    {
+                        await subtree.MoveToContentAsync();
+
+                        var relationGroup = new RelationGroup(this);
+                        await relationGroup.ReadXmlAsync(subtree);
                     }
                 }
             }

@@ -73,14 +73,27 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        public void Verify_that_When_Type_is_null_WriteXml_throws_excepyion()
+        public void Verify_that_When_Type_is_null_WriteXml_throws_exception()
         {
             var stream = new MemoryStream();
             var writer = XmlWriter.Create(stream, this.settings);
 
-            var specHierarchy = new SpecHierarchy();
+            var specification = new Specification();
 
-            Assert.Throws<SerializationException>(() => specHierarchy.WriteXml(writer));
+            Assert.That( () => specification.WriteXml(writer),
+                Throws.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_that_When_Type_is_null_WriteXmlAsync_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specification = new Specification();
+
+            Assert.That(async () => await specification.WriteXmlAsync(writer),
+                Throws.TypeOf<SerializationException>());
         }
 
         [Test]
@@ -90,6 +103,21 @@ namespace ReqIFLib.Tests
             
             var specification = new Specification();
             Assert.Throws<ArgumentException>(() => specification.SpecType = specObjectType);
+        }
+
+        [Test]
+        public void Verify_that_When_Identifier_is_null_WriteXml_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var specificationType = new SpecificationType();
+            var specification = new Specification();
+            specification.Type = specificationType;
+
+            Assert.That(() => specification.WriteXml(writer),
+                Throws.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Identifier property of an Identifiable may not be null"));
         }
     }
 }

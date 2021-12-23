@@ -55,6 +55,23 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously generates a <see cref="AccessControlledElement"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+            var isEditable = reader.GetAttribute("IS-EDITABLE");
+
+            if (isEditable != null)
+            {
+                this.IsEditable = XmlConvert.ToBoolean(isEditable);
+            }
+        }
+
+        /// <summary>
         /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

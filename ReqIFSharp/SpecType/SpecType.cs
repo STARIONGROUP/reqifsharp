@@ -96,6 +96,33 @@ namespace ReqIFSharp
                 }
             }
         }
+        
+        /// <summary>
+        /// Asynchronously generates a <see cref="SpecType"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name == "SPEC-ATTRIBUTES")
+                {
+                    var specAttributesSubTree = reader.ReadSubtree();
+
+                    while (await specAttributesSubTree.ReadAsync())
+                    {
+                        if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
+                        {
+                            await this.CreateAttributeDefinitionAsync(reader, reader.LocalName);
+                        }
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Creates <see cref="AttributeDefinition"/> and adds it to the <see cref="SpecAttributes"/> list.
@@ -118,6 +145,30 @@ namespace ReqIFSharp
             {
                 attributeDefTree.MoveToContent();
                 attributeDefinition.ReadXml(attributeDefTree);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously creates <see cref="AttributeDefinition"/> and adds it to the <see cref="SpecAttributes"/> list.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        /// <param name="xmlname">
+        /// The XML Element name of the <see cref="AttributeDefinition"/>
+        /// </param>
+        private async Task CreateAttributeDefinitionAsync(XmlReader reader, string xmlname)
+        {
+            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this);
+            if (attributeDefinition == null)
+            {
+                return;
+            }
+
+            using (var attributeDefTree = reader.ReadSubtree())
+            {
+                await attributeDefTree.MoveToContentAsync();
+                await attributeDefinition.ReadXmlAsync(attributeDefTree);
             }
         }
 

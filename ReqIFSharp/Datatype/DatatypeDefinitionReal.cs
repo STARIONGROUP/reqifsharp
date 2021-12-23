@@ -73,10 +73,10 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            var accuraryvalue = reader.GetAttribute("ACCURACY");
-            if (!string.IsNullOrEmpty(accuraryvalue))
+            var accuracyValue = reader.GetAttribute("ACCURACY");
+            if (!string.IsNullOrEmpty(accuracyValue))
             {
-                this.Accuracy = XmlConvert.ToInt32(accuraryvalue);
+                this.Accuracy = XmlConvert.ToInt32(accuracyValue);
             }
 
             var maxValue = reader.GetAttribute("MAX");
@@ -88,6 +88,35 @@ namespace ReqIFSharp
             var minValue = reader.GetAttribute("MIN"); 
             if (!string.IsNullOrEmpty(minValue)) 
             { 
+                this.Min = XmlConvert.ToDouble(minValue);
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously generates a <see cref="AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader)
+        {
+            await base.ReadXmlAsync(reader);
+
+            var accuracyValue = reader.GetAttribute("ACCURACY");
+            if (!string.IsNullOrEmpty(accuracyValue))
+            {
+                this.Accuracy = XmlConvert.ToInt32(accuracyValue);
+            }
+
+            var maxValue = reader.GetAttribute("MAX");
+            if (!string.IsNullOrEmpty(maxValue))
+            {
+                this.Max = XmlConvert.ToDouble(maxValue);
+            }
+
+            var minValue = reader.GetAttribute("MIN");
+            if (!string.IsNullOrEmpty(minValue))
+            {
                 this.Min = XmlConvert.ToDouble(minValue);
             }
         }
