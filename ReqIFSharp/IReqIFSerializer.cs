@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.IO;
     using System.Security;
+    using System.Threading.Tasks;
     using System.Xml.Schema;
 
     /// <summary>
@@ -45,6 +46,20 @@ namespace ReqIFSharp
         void Serialize(ReqIF reqIf, string fileUri);
 
         /// <summary>
+        /// Async Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
+        /// </summary>
+        /// <param name="reqIf">The <see cref="ReqIF"/> object to serialize</param>
+        /// <param name="fileUri">The path of the output file</param>
+        /// <exception cref="XmlSchemaValidationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="SecurityException"></exception>
+        Task SerializeAsync(ReqIF reqIf, string fileUri);
+
+        /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
         /// <param name="reqIf">
@@ -61,5 +76,23 @@ namespace ReqIFSharp
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
         void Serialize(ReqIF reqIf, Stream stream);
+
+        /// <summary>
+        /// Async Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object to serialize
+        /// </param>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <exception cref="XmlSchemaValidationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="SecurityException"></exception>
+        Task SerializeAsync(ReqIF reqIf, Stream stream);
     }
 }

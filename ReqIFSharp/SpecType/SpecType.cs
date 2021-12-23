@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -134,6 +135,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously converts a <see cref="SpecType"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await base.WriteXmlAsync(writer);
+
+            await this.WriteSpecAttributesAsync(writer);
+        }
+
+        /// <summary>
         /// Writes the <see cref="AttributeDefinition"/> objects from the <see cref="SpecAttributes"/> list.
         /// </summary>
         /// <param name="writer">
@@ -157,6 +171,32 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="AttributeDefinition"/> objects from the <see cref="SpecAttributes"/> list.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSpecAttributesAsync(XmlWriter writer)
+        {
+            if (this.specAttributes.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPEC-ATTRIBUTES", null);
+
+            foreach (var attributeDefinition in this.specAttributes)
+            {
+                var xmlname = ReqIfFactory.XmlName(attributeDefinition);
+                await writer.WriteStartElementAsync(null, xmlname, null);
+                await attributeDefinition.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

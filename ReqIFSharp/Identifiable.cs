@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -57,7 +58,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the date and time of the last change of the information element. 
         /// This includes the creation of the information element. lastChange is of the XML Schema data type “dateTime” that specifies the time format as
-        /// <code>CCYY-MM-DDThh:mm:ss</code> with optional time zone indicator as a suffix <code>±hh:mm</code>.
+        /// <code>YY-MM-DDThh:mm:ss</code> with optional time zone indicator as a suffix <code>±hh:mm</code>.
         /// </summary>
         /// <example>
         /// date time formatting: 2005-03-04T10:24:18+01:00 (MET time zone).
@@ -126,6 +127,44 @@ namespace ReqIFSharp
                 writer.WriteStartElement("ALTERNATIVE-ID");
                 this.AlternativeId.WriteXml(writer);
                 writer.WriteEndElement();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinition"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Identifier"/> may not be null or empty
+        /// </exception>
+        public virtual async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (string.IsNullOrEmpty(this.Identifier))
+            {
+                throw new SerializationException("The Identifier property of an Identifiable may not be null");
+            }
+
+            if (!string.IsNullOrEmpty(this.Description))
+            {
+                await writer.WriteAttributeStringAsync(null,"DESC", null, this.Description);
+            }
+
+            await writer.WriteAttributeStringAsync(null, "IDENTIFIER", null, this.Identifier);
+
+            await writer.WriteAttributeStringAsync(null, "LAST-CHANGE",null, XmlConvert.ToString(this.LastChange, XmlDateTimeSerializationMode.RoundtripKind));
+
+            if (!string.IsNullOrEmpty(this.LongName))
+            {
+                await writer.WriteAttributeStringAsync(null, "LONG-NAME", null, this.LongName);
+            }
+
+            if (this.AlternativeId != null)
+            {
+                await writer.WriteStartElementAsync(null, "ALTERNATIVE-ID", null);
+                await this.AlternativeId.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
             }
         }
 

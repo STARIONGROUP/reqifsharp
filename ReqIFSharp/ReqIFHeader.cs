@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -158,6 +159,34 @@ namespace ReqIFSharp
             writer.WriteElementString("REQ-IF-VERSION", this.ReqIFVersion);
             writer.WriteElementString("SOURCE-TOOL-ID", this.SourceToolId);
             writer.WriteElementString("TITLE", this.Title);
+        }
+
+        /// <summary>
+        /// Asynchronously writes a <see cref="ReqIFContent"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await writer.WriteAttributeStringAsync(null,"IDENTIFIER", null, this.Identifier);
+
+            if (!string.IsNullOrEmpty(this.Comment))
+            {
+                await writer.WriteElementStringAsync(null, "COMMENT",null,  this.Comment);
+            }
+
+            await writer.WriteElementStringAsync(null, "CREATION-TIME", null ,XmlConvert.ToString(this.CreationTime, XmlDateTimeSerializationMode.RoundtripKind));
+
+            if (!string.IsNullOrEmpty(this.RepositoryId))
+            {
+                await writer.WriteElementStringAsync(null, "REPOSITORY-ID", null, this.RepositoryId);
+            }
+
+            await writer.WriteElementStringAsync(null, "REQ-IF-TOOL-ID", null, this.ReqIFToolId);
+            await writer.WriteElementStringAsync(null, "REQ-IF-VERSION", null, this.ReqIFVersion);
+            await writer.WriteElementStringAsync(null, "SOURCE-TOOL-ID", null, this.SourceToolId);
+            await writer.WriteElementStringAsync(null, "TITLE", null, this.Title);
         }
 
         /// <summary>

@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -96,6 +97,20 @@ namespace ReqIFSharp
             writer.WriteAttributeString("MAX", XmlConvert.ToString(this.Max));
 
             base.WriteXml(writer);
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinition"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await writer.WriteAttributeStringAsync(null, "MIN", null, XmlConvert.ToString(this.Min));
+            await writer.WriteAttributeStringAsync(null, "MAX",null, XmlConvert.ToString(this.Max));
+
+            await base.WriteXmlAsync(writer);
         }
     }
 }

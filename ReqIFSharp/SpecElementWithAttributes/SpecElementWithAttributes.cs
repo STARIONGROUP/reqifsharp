@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -243,6 +244,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously converts a <see cref="SpecElementWithAttributes"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await base.WriteXmlAsync(writer);
+
+            await this.WriteValuesAsync(writer);
+        }
+
+        /// <summary>
         /// Writes the <see cref="AttributeValue"/> objects from the <see cref="Values"/> list.
         /// </summary>
         /// <param name="writer">
@@ -310,6 +324,76 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="AttributeValue"/> objects from the <see cref="Values"/> list.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteValuesAsync(XmlWriter writer)
+        {
+            if (this.values.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null,"VALUES", null);
+
+            foreach (var attributeValue in this.values)
+            {
+                if (attributeValue is AttributeValueBoolean)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-BOOLEAN", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeValue is AttributeValueDate)
+                {
+                    await writer.WriteStartElementAsync(null,"ATTRIBUTE-VALUE-DATE", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeValue is AttributeValueEnumeration)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-ENUMERATION", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeValue is AttributeValueInteger)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-INTEGER", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeValue is AttributeValueReal)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-REAL", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeValue is AttributeValueString)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-STRING", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeValue is AttributeValueXHTML)
+                {
+                    await writer.WriteStartElementAsync(null,"ATTRIBUTE-VALUE-XHTML", null);
+                    await attributeValue.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

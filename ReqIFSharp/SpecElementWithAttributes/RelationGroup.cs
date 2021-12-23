@@ -24,6 +24,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -252,6 +253,40 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously converts a <see cref="RelationGroup"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The Object property may not be null.
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Type == null)
+            {
+                throw new SerializationException($"The Type property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            if (this.SourceSpecification == null)
+            {
+                throw new SerializationException($"The SourceSpecification property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            if (this.TargetSpecification == null)
+            {
+                throw new SerializationException($"The TargetSpecification property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer);
+
+            await this.WriteTypeAsync(writer);
+            await this.WriteSourceSpecificationAsync(writer);
+            await this.WriteTargetSpecificationAsync(writer);
+            await this.WriteSpecRelationsAsync(writer);
+        }
+
+        /// <summary>
         /// Writes the <see cref="Type"/>
         /// </summary>
         /// <param name="writer">
@@ -262,6 +297,19 @@ namespace ReqIFSharp
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("RELATION-GROUP-TYPE-REF", this.Type.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="Type"/>
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteTypeAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null,"TYPE", null);
+            await writer.WriteElementStringAsync(null, "RELATION-GROUP-TYPE-REF", null, this.Type.Identifier);
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -278,6 +326,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="SourceSpecification"/>
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSourceSpecificationAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "SOURCE-SPECIFICATION", null);
+            await writer.WriteElementStringAsync(null, "SPECIFICATION-REF",null, this.SourceSpecification.Identifier);
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Writes the <see cref="SourceSpecification"/>
         /// </summary>
         /// <param name="writer">
@@ -288,6 +349,19 @@ namespace ReqIFSharp
             writer.WriteStartElement("TARGET-SPECIFICATION");
             writer.WriteElementString("SPECIFICATION-REF", this.TargetSpecification.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="SourceSpecification"/>
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteTargetSpecificationAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "TARGET-SPECIFICATION", null);
+            await writer.WriteElementStringAsync(null, "SPECIFICATION-REF",null, this.TargetSpecification.Identifier);
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -311,6 +385,29 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="SpecRelation"/> in the <see cref="SpecRelations"/> list.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSpecRelationsAsync(XmlWriter writer)
+        {
+            if (this.SpecRelations.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPEC-RELATIONS", null);
+
+            foreach (var specRelation in this.SpecRelations)
+            {
+                await writer.WriteElementStringAsync(null, "SPEC-RELATION-REF", null, specRelation.Identifier);
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

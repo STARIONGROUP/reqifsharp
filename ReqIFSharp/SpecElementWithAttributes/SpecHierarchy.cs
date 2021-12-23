@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -205,6 +206,36 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinition"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The Object property may not be null.
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Object == null)
+            {
+                throw new SerializationException($"The Object property of SpecHierarchy {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer);
+
+            if (this.IsTableInternal)
+            {
+                await writer.WriteAttributeStringAsync(null, "IS-TABLE-INTERNAL",null, "true");
+            }
+
+            await this.WriteObjectAsync(writer);
+
+            await this.WriteEditableAttsAsync(writer);
+
+            await this.WriteChildrenAsync(writer);
+        }
+
+        /// <summary>
         /// The initialize.
         /// </summary>
         /// <param name="container">
@@ -280,6 +311,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="Object"/>.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteObjectAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "OBJECT", null);
+            await writer.WriteElementStringAsync(null,"SPEC-OBJECT-REF", null, this.Object.Identifier);
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Writes the <see cref="AttributeDefinition"/> objects from the <see cref="EditableAtts"/> list.
         /// </summary>
         /// <param name="writer">
@@ -350,6 +394,76 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="AttributeDefinition"/> objects from the <see cref="EditableAtts"/> list.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteEditableAttsAsync(XmlWriter writer)
+        {
+            if (this.editableAtts.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "EDITABLE-ATTS", null);
+
+            foreach (var attributeDefinition in this.editableAtts)
+            {
+                if (attributeDefinition is AttributeDefinitionBoolean)
+                {
+                    await writer.WriteStartElementAsync(null,"ATTRIBUTE-DEFINITION-BOOLEAN", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeDefinition is AttributeDefinitionDate)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-DEFINITION-DATE", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeDefinition is AttributeDefinitionEnumeration)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-DEFINITION-ENUMERATION", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeDefinition is AttributeDefinitionInteger)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-DEFINITION-INTEGER", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeDefinition is AttributeDefinitionReal)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-DEFINITION-REAL", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeDefinition is AttributeDefinitionString)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-DEFINITION-STRING", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+
+                if (attributeDefinition is AttributeDefinitionXHTML)
+                {
+                    await writer.WriteStartElementAsync(null, "ATTRIBUTE-DEFINITION-XHTML", null);
+                    await attributeDefinition.WriteXmlAsync(writer);
+                    await writer.WriteEndElementAsync();
+                }
+            }
+
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Writes the <see cref="SpecHierarchy"/> objects from the <see cref="Children"/> list.
         /// </summary>
         /// <param name="writer">
@@ -372,6 +486,31 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="SpecHierarchy"/> objects from the <see cref="Children"/> list.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteChildrenAsync(XmlWriter writer)
+        {
+            if (this.children.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "CHILDREN", null);
+
+            foreach (var specHierarchy in this.children)
+            {
+                await writer.WriteStartElementAsync(null, "SPEC-HIERARCHY", null);
+                await specHierarchy.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

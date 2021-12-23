@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -66,6 +67,22 @@ namespace ReqIFSharp
             if (this.IsEditable)
             {
                 writer.WriteAttributeString("IS-EDITABLE", "true");
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinition"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await base.WriteXmlAsync(writer);
+
+            if (this.IsEditable)
+            {
+                await writer.WriteAttributeStringAsync(null, "IS-EDITABLE", null, "true");
             }
         }
     }

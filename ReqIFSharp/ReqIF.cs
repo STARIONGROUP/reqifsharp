@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -32,6 +33,10 @@ namespace ReqIFSharp
     [Serializable]
     public class ReqIF : IXmlSerializable
     {
+        /// <summary>
+        /// an <see cref="IEnumerable{XmlAttribute}"/> that is stored when reading an xml reqif file so that when
+        /// the <see cref="ReqIF"/> object is serialized again, the original attributes and namespaces are serialized again
+        /// </summary>
         private List<XmlAttribute> attributes = new List<XmlAttribute>();
 
         /// <summary>
@@ -151,6 +156,26 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously converts a <see cref="ReqIF"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await this.WriteNameSpaceAttributesAsync(writer);
+
+            if (!string.IsNullOrEmpty(this.Lang))
+            {
+                await writer.WriteAttributeStringAsync(null, "lang", "xml",this.Lang );
+            }
+
+            await this.WriteTheHeaderAsync(writer);
+            await this.WriteCoreContentAsync(writer);
+            await this.WriteToolExtensionAsync(writer);
+        }
+
+        /// <summary>
         /// Writes the namespace attributes to the REQ-IF XML Element
         /// </summary>
         /// <param name="writer">
@@ -188,6 +213,43 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the namespace attributes to the REQ-IF XML Element
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteNameSpaceAttributesAsync(XmlWriter writer)
+        {
+            if (attributes.All(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
+            {
+                var xmlAttribute = DefaultXmlAttributeFactory.CreateXHTMLNameSpaceAttribute(this);
+                if (xmlAttribute != null)
+                {
+                    this.attributes.Add(xmlAttribute);
+                }
+            }
+
+            foreach (var xmlAttribute in this.attributes)
+            {
+                if (xmlAttribute.Prefix != string.Empty)
+                {
+                    if (xmlAttribute.Prefix == "xmlns")
+                    {
+                        await writer.WriteAttributeStringAsync(xmlAttribute.Prefix, xmlAttribute.LocalName, null, xmlAttribute.Value);
+                    }
+                    else
+                    {
+                        await writer.WriteAttributeStringAsync(null, xmlAttribute.LocalName, xmlAttribute.Prefix, xmlAttribute.Value);
+                    }
+                }
+                else
+                {
+                    await writer.WriteAttributeStringAsync(null, xmlAttribute.LocalName, null, xmlAttribute.Value);
+                }
+            }
+        }
+
+        /// <summary>
         /// Writes the <see cref="ReqIFHeader"/> 
         /// </summary>
         /// <param name="writer">
@@ -203,6 +265,21 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="ReqIFHeader"/> 
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteTheHeaderAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "THE-HEADER", null);
+            await writer.WriteStartElementAsync(null,"REQ-IF-HEADER", null);
+            await this.TheHeader.WriteXmlAsync(writer);
+            await writer.WriteEndElementAsync();
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Writes the <see cref="ReqIFContent"/> 
         /// </summary>
         /// <param name="writer">
@@ -215,6 +292,21 @@ namespace ReqIFSharp
             this.CoreContent.WriteXml(writer);
             writer.WriteEndElement();
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="ReqIFContent"/> 
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteCoreContentAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null,"CORE-CONTENT", null);
+            await writer.WriteStartElementAsync(null,"REQ-IF-CONTENT", null);
+            await this.CoreContent.WriteXmlAsync(writer);
+            await writer.WriteEndElementAsync();
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -238,6 +330,29 @@ namespace ReqIFSharp
                 writer.WriteEndElement();
             }
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="ReqIFToolExtension"/> 
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteToolExtensionAsync(XmlWriter writer)
+        {
+            if (this.ToolExtension.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "TOOL-EXTENSIONS", null);
+            foreach (var reqIfToolExtension in this.ToolExtension)
+            {
+                await writer.WriteStartElementAsync(null, "REQ-IF-TOOL-EXTENSION", null);
+                await reqIfToolExtension.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+            await writer.WriteEndElementAsync();
         }
     }
 }

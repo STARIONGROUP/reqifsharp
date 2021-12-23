@@ -20,6 +20,8 @@
 
 namespace ReqIFSharp
 {
+    using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -69,6 +71,20 @@ namespace ReqIFSharp
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("IDENTIFIER", this.Identifier);
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AlternativeId"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Identifier"/> may not be null or empty
+        /// </exception>
+        public async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await writer.WriteAttributeStringAsync(null, "IDENTIFIER", null, this.Identifier);
         }
 
         /// <summary>

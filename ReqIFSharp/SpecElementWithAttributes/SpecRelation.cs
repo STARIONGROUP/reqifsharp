@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -202,6 +203,47 @@ namespace ReqIFSharp
             writer.WriteStartElement("SOURCE");
             writer.WriteElementString("SPEC-OBJECT-REF", this.Source.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="SpecRelation"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The Type, Source and Target properties may not be null
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Type == null)
+            {
+                throw new SerializationException($"The Type of SpecRelation {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            if (this.Source == null)
+            {
+                throw new SerializationException($"The Source of SpecRelation {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            if (this.Target == null)
+            {
+                throw new SerializationException($"The Target of SpecRelation {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer);
+
+            await writer.WriteStartElementAsync(null, "TYPE", null);
+            await writer.WriteElementStringAsync(null, "SPEC-RELATION-TYPE-REF",null,  this.Type.Identifier);
+            await writer.WriteEndElementAsync();
+
+            await writer.WriteStartElementAsync(null, "TARGET", null);
+            await writer.WriteElementStringAsync(null, "SPEC-OBJECT-REF", null, this.Target.Identifier);
+            await writer.WriteEndElementAsync();
+
+            await writer.WriteStartElementAsync(null,"SOURCE", null);
+            await writer.WriteElementStringAsync(null,"SPEC-OBJECT-REF", null,this.Source.Identifier);
+            await writer.WriteEndElementAsync();
         }
     }
 }

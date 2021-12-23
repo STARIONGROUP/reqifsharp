@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests
     using System;
     using System.IO;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Xml;
 
     using NUnit.Framework;
@@ -35,6 +36,7 @@ namespace ReqIFSharp.Tests
         private ReqIF reqIF;
 
         private string resultFileUri;
+        private string asyncResultFileUri;
 
         private const string ReqIFNamespace = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
 
@@ -56,6 +58,7 @@ namespace ReqIFSharp.Tests
         public void SetUp()
         {
             this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.xml");
+            this.asyncResultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "async-result.xml");
 
             this.enumdatatype_id = "enumeration";
             this.enum_value_low_id = "enumlow";
@@ -100,7 +103,8 @@ namespace ReqIFSharp.Tests
         [TearDown]
         public void TearDown()
         {
-            File.Delete(this.resultFileUri); 
+            File.Delete(this.resultFileUri);
+            File.Delete(this.asyncResultFileUri);
         }
 
         /// <summary>
@@ -724,6 +728,29 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_That_ArgumentException_Is_Raised_OnAsyncSerialize_to_file()
+        {
+            var serializer = new ReqIFSerializer();
+
+            string filePath = null;
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(null, filePath),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The reqIf object cannot be null."));
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(this.reqIF, filePath),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The path of the file cannot be null."));
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(this.reqIF, string.Empty),
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
+                    .With.Message.Contains("The path of the file cannot be empty."));
+        }
+
+        [Test]
         public void Verify_That_ArgumentException_Is_Raised_On_Serialize_to_stream()
         {
             var serializer = new ReqIFSerializer();
@@ -742,6 +769,24 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public async Task Verify_That_ArgumentException_Is_Raised_On_Async_Serialize_to_stream()
+        {
+            var serializer = new ReqIFSerializer();
+
+            Stream stream = null;
+
+            Assert.That(
+                 async () => await serializer.SerializeAsync(null, stream),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The reqIf object cannot be null."));
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(this.reqIF, stream),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The stream cannot be null."));
+        }
+
+        [Test]
         public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_file_Without_Validation()
         {
             var serializer = new ReqIFSerializer();
@@ -751,12 +796,32 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public async Task Verify_That_The_ReqIfSerializer_Serializes_Async_a_ReqIf_Document_to_file_Without_Validation()
+        {
+            var serializer = new ReqIFSerializer();
+            await serializer.SerializeAsync(this.reqIF, this.asyncResultFileUri);
+
+            Assert.IsTrue(File.Exists(this.asyncResultFileUri));
+        }
+
+        [Test]
         public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_stream_Without_Validation()
         {
             var stream = new MemoryStream();
 
             var serializer = new ReqIFSerializer();
             serializer.Serialize(this.reqIF, stream);
+
+            Assert.That(stream.Length, Is.Not.Zero);
+        }
+
+        [Test]
+        public async Task Verify_That_The_ReqIfSerializer_Async_Serializes_a_ReqIf_Document_to_stream_Without_Validation()
+        {
+            var stream = new MemoryStream();
+
+            var serializer = new ReqIFSerializer();
+            await serializer.SerializeAsync(this.reqIF, stream);
 
             Assert.That(stream.Length, Is.Not.Zero);
         }

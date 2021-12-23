@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -136,6 +137,29 @@ namespace ReqIFSharp
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("SPEC-OBJECT-TYPE-REF", this.Type.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="SpecObject"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Type"/> property may not be null.
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Type == null)
+            {
+                throw new SerializationException($"The Type property of SpecObject {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer);
+
+            await writer.WriteStartElementAsync(null, "TYPE", null);
+            await writer.WriteElementStringAsync(null, "SPEC-OBJECT-TYPE-REF", null, this.Type.Identifier);
+            await writer.WriteEndElementAsync();
         }
     }
 }

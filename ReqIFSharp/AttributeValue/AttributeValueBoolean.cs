@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -169,6 +170,28 @@ namespace ReqIFSharp
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-BOOLEAN-REF", this.Definition.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeValueBoolean"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Definition"/> may not be null
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Definition == null)
+            {
+                throw new SerializationException("The Definition property of an AttributeValueBoolean may not be null");
+            }
+
+            await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.TheValue ? "true" : "false" );
+            await writer.WriteStartElementAsync(null, "DEFINITION", null);
+            await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-BOOLEAN-REF", null, this.Definition.Identifier);
+            await writer.WriteEndElementAsync();
         }
     }
 }

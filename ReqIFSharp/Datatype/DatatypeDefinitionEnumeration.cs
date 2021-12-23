@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -115,6 +116,31 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="DatatypeDefinitionEnumeration"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Type"/> may not be null
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await base.WriteXmlAsync(writer);
+
+            await writer.WriteStartElementAsync(null, "SPECIFIED-VALUES", null);
+
+            foreach (var specifiedValue in this.specifiedValues)
+            {
+                await writer.WriteStartElementAsync(null, "ENUM-VALUE", null);
+                await specifiedValue.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

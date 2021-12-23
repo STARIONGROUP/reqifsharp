@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -163,6 +164,41 @@ namespace ReqIFSharp
             writer.WriteStartElement("TYPE");
             writer.WriteElementString("DATATYPE-DEFINITION-BOOLEAN-REF", this.Type.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinitionBoolean"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Type"/> may not be null
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Type == null)
+            {
+                throw new SerializationException($"The Type property of AttributeDefinitionBoolean {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer);
+
+            if (this.DefaultValue != null)
+            {
+                await writer.WriteStartElementAsync(null,"DEFAULT-VALUE", null);
+                await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-BOOLEAN", null);
+                await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.DefaultValue.TheValue ? "true" : "false");
+                await writer.WriteStartElementAsync(null, "DEFINITION", null);
+                await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-BOOLEAN-REF", null, this.DefaultValue.Definition.Identifier);
+                await writer.WriteEndElementAsync();
+                await writer.WriteEndElementAsync();
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteStartElementAsync(null, "TYPE", null);
+            await writer.WriteElementStringAsync(null, "DATATYPE-DEFINITION-BOOLEAN-REF", null, this.Type.Identifier);
+            await writer.WriteEndElementAsync();
         }
     }
 }

@@ -24,6 +24,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -90,6 +91,26 @@ namespace ReqIFSharp
             this.WriteType(writer);
 
             this.WriteChildren(writer);
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="Specification"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Type == null)
+            {
+                throw new SerializationException($"The Type property of Specification {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer);
+
+            await this.WriteTypeAsync(writer);
+
+            await this.WriteChildrenAsync(writer);
         }
 
         /// <summary>
@@ -172,6 +193,19 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="Type"/>
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteTypeAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "TYPE", null);
+            await writer.WriteElementStringAsync(null, "SPECIFICATION-TYPE-REF",null, this.Type.Identifier);
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Writes the <see cref="SpecHierarchy"/> objects from the <see cref="Children"/> list.
         /// </summary>
         /// <param name="writer">
@@ -194,6 +228,31 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="SpecHierarchy"/> objects from the <see cref="Children"/> list.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteChildrenAsync(XmlWriter writer)
+        {
+            if (this.children.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "CHILDREN", null);
+
+            foreach (var specHierarchy in this.children)
+            {
+                await writer.WriteStartElementAsync(null, "SPEC-HIERARCHY", null);
+                await specHierarchy.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -128,7 +129,15 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
         public abstract void WriteXml(XmlWriter writer);
-        
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeValue"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public abstract Task WriteXmlAsync(XmlWriter writer);
+
         /// <summary>
         /// This method is reserved and should not be used.
         /// </summary>

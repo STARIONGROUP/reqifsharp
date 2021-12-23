@@ -26,6 +26,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -305,6 +306,43 @@ namespace ReqIFSharp
                 writer.WriteStartElement("THE-ORIGINAL-VALUE");
                 writer.WriteRaw(this.TheOriginalValue);
                 writer.WriteEndElement();
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeValueXHTML"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Definition"/> may not be null
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Definition == null)
+            {
+                throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
+            }
+
+            if (this.IsSimplified)
+            {
+                await writer.WriteAttributeStringAsync(null, "IS-SIMPLIFIED", null, "true");
+            }
+
+            await writer.WriteStartElementAsync(null, "DEFINITION", null);
+            await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-XHTML-REF", null, this.Definition.Identifier);
+            await writer.WriteEndElementAsync();
+
+            await writer.WriteStartElementAsync(null, "THE-VALUE", null);
+            await writer.WriteRawAsync(this.TheValue);
+            await writer.WriteEndElementAsync();
+
+            if (!string.IsNullOrEmpty(this.TheOriginalValue))
+            {
+                await writer.WriteStartElementAsync(null, "THE-ORIGINAL-VALUE", null);
+                await writer.WriteRawAsync(this.TheOriginalValue);
+                await writer.WriteEndElementAsync();
             }
         }
     }

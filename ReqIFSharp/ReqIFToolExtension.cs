@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
     
@@ -59,6 +60,17 @@ namespace ReqIFSharp
         public void WriteXml(XmlWriter writer)
         {
             writer.WriteRaw(this.InnerXml);
+        }
+
+        /// <summary>
+        /// Asynchronously writes a <see cref="ReqIFToolExtension"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await writer.WriteRawAsync(this.InnerXml);
         }
 
         /// <summary>

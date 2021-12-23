@@ -24,6 +24,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading.Tasks;
     using System.Xml;
 
     /// <summary>
@@ -197,6 +198,24 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously converts a <see cref="AttributeValueEnumeration"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            if (this.Definition == null)
+            {
+                throw new SerializationException("The Definition property of an AttributeValueEnumeration may not be null");
+            }
+
+            await this.WriteDefinitionAsync(writer);
+
+            await this.WriteValuesAsync(writer);
+        }
+
+        /// <summary>
         /// Writes the <see cref="Definition"/> object.
         /// </summary>
         /// <param name="writer">
@@ -207,6 +226,19 @@ namespace ReqIFSharp
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-ENUMERATION-REF", this.Definition.Identifier);
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="Definition"/> object.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteDefinitionAsync(XmlWriter writer)
+        {
+            await writer.WriteStartElementAsync(null, "DEFINITION", null);
+            await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-ENUMERATION-REF", null, this.Definition.Identifier);
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -230,6 +262,29 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="EnumValue"/> objects in the <see cref="Values"/> property.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteValuesAsync(XmlWriter writer)
+        {
+            if (this.values.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null,"VALUES", null);
+
+            foreach (var enumValue in this.values)
+            {
+                await writer.WriteElementStringAsync(null, "ENUM-VALUE-REF", null, enumValue.Identifier);
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }

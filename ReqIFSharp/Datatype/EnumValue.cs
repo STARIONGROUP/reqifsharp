@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading.Tasks;
     using System.Xml;
     
     /// <summary>
@@ -99,6 +100,28 @@ namespace ReqIFSharp
             this.Properties.WriteXml(writer);
             writer.WriteEndElement();
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinition"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await base.WriteXmlAsync(writer);
+
+            if (this.Properties == null)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "PROPERTIES", null);
+            await writer.WriteStartElementAsync(null, "EMBEDDED-VALUE", null);
+            await this.Properties.WriteXmlAsync(writer);
+            await writer.WriteEndElementAsync();
+            await writer.WriteEndElementAsync();
         }
     }
 }

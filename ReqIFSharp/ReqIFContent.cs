@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
 
@@ -329,7 +330,7 @@ namespace ReqIFSharp
                 }
             }
         }
-        
+
         /// <summary>
         /// Converts a <see cref="ReqIFContent"/> object into its XML representation.
         /// </summary>
@@ -344,6 +345,22 @@ namespace ReqIFSharp
             this.WriteSpecRelations(writer);
             this.WriteSpecifications(writer);
             this.WriteRelationGroup(writer);
+        }
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="ReqIFContent"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        public async Task WriteXmlAsync(XmlWriter writer)
+        {
+            await this.WriteDataDefinitionsAsync(writer);
+            await this.WriteSpecTypesAsync(writer);
+            await this.WriteSpecObjectsAsync(writer);
+            await this.WriteSpecRelationsAsync(writer);
+            await this.WriteSpecificationsAsync(writer);
+            await this.WriteRelationGroupAsync(writer);
         }
 
         /// <summary>
@@ -385,6 +402,32 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="DatatypeDefinition"/>s
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteDataDefinitionsAsync(XmlWriter writer)
+        {
+            if (this.dataTypes.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "DATATYPES", null);
+
+            foreach (var datatypeDefinition in this.dataTypes)
+            {
+                var xmlElementNAme = ReqIfFactory.XmlName(datatypeDefinition);
+                await writer.WriteStartElementAsync(null, xmlElementNAme, null);
+                await datatypeDefinition.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Write the <see cref="SpecType"/>s
         /// </summary>
         /// <param name="writer">
@@ -408,6 +451,32 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="SpecType"/>s
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSpecTypesAsync(XmlWriter writer)
+        {
+            if (this.specTypes.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPEC-TYPES", null);
+
+            foreach (var specType in this.specTypes)
+            {
+                var xmlElementNAme = ReqIfFactory.XmlName(specType);
+                await writer.WriteStartElementAsync(null, xmlElementNAme, null);
+                await specType.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -436,6 +505,31 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Asynchronously writes the <see cref="SpecObject"/>s
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSpecObjectsAsync(XmlWriter writer)
+        {
+            if (this.specObjects.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPEC-OBJECTS", null);
+
+            foreach (var specObject in this.specObjects)
+            {
+                await writer.WriteStartElementAsync(null, "SPEC-OBJECT", null);
+                await specObject.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
+        }
+
+        /// <summary>
         /// Write the <see cref="SpecRelation"/>s
         /// </summary>
         /// <param name="writer">
@@ -458,6 +552,31 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="SpecRelation"/>s
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSpecRelationsAsync(XmlWriter writer)
+        {
+            if (this.specRelations.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPEC-RELATIONS", null);
+
+            foreach (var specRelation in this.specRelations)
+            {
+                await writer.WriteStartElementAsync(null, "SPEC-RELATION", null);
+                await specRelation.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -484,7 +603,32 @@ namespace ReqIFSharp
 
             writer.WriteEndElement();
         }
-        
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="Specification"/>s
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteSpecificationsAsync(XmlWriter writer)
+        {
+            if (this.specifications.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPECIFICATIONS", null);
+
+            foreach (var specification in this.specifications)
+            {
+                await writer.WriteStartElementAsync(null, "SPECIFICATION", null);
+                await specification.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
+        }
+
         /// <summary>
         /// Write the <see cref="RelationGroup"/>s in the <see cref="SpecRelationGroups"/> property
         /// </summary>
@@ -508,6 +652,31 @@ namespace ReqIFSharp
             }
 
             writer.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Asynchronously writes the <see cref="RelationGroup"/>s in the <see cref="SpecRelationGroups"/> property
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        private async Task WriteRelationGroupAsync(XmlWriter writer)
+        {
+            if (this.specRelationGroups.Count == 0)
+            {
+                return;
+            }
+
+            await writer.WriteStartElementAsync(null, "SPEC-RELATION-GROUPS", null);
+
+            foreach (var relationGroup in this.specRelationGroups)
+            {
+                await writer.WriteStartElementAsync(null, "RELATION-GROUP", null);
+                await relationGroup.WriteXmlAsync(writer);
+                await writer.WriteEndElementAsync();
+            }
+
+            await writer.WriteEndElementAsync();
         }
     }
 }
