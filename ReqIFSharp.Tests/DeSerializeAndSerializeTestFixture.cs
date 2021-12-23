@@ -46,7 +46,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_That_ProR_Traceability_Template_reqif_file_can_deserialized_and_async_serialized_with_equivalent_output()
+        public void Verify_That_ProR_Traceability_Template_reqif_file_can_deserialized_and_async_serialized_with_equivalent_output()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
@@ -74,7 +74,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_That_Datatype_Demo_reqif_file_is_deserialized_and_async_serialized_with_equivalent_output()
+        public void Verify_That_Datatype_Demo_reqif_file_is_deserialized_and_async_serialized_with_equivalent_output()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
             var deserializer = new ReqIFDeserializer();

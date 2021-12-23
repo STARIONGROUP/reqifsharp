@@ -30,12 +30,12 @@ namespace ReqIFSharp
         /// <summary>
         /// The <see cref="ReqIF"/> schema Uri
         /// </summary>
-        public static string ReqIFSchemaUri = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
+        public const string ReqIFSchemaUri = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
 
         /// <summary>
         /// The XHTML schema uri
         /// </summary>
-        public static string XHTMLNameSpaceUri = @"http://www.w3.org/1999/xhtml";
+        public const string XHTMLNameSpaceUri = @"http://www.w3.org/1999/xhtml";
 
         /// <summary>
         /// Creates the XHTML namespace attribute in case the <see cref="ReqIF"/> document
@@ -52,14 +52,14 @@ namespace ReqIFSharp
             // only add the xhtml namespace if we have any xhtml data
             if (reqIf.CoreContent.DataTypes.OfType<DatatypeDefinitionXHTML>().Any())
             {
-                var xHTMLAttribute = new XmlAttribute
+                var xHtmlAttribute = new XmlAttribute
                 {
                     LocalName = "xhtml",
                     Prefix = "xmlns",
                     Value = XHTMLNameSpaceUri
                 };
 
-                return xHTMLAttribute;
+                return xHtmlAttribute;
             }
 
             return null;

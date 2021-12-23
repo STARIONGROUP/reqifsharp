@@ -18,6 +18,8 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using System.Net;
+
 namespace ReqIFSharp
 {
     using System;
@@ -68,41 +70,6 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Async Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
-        /// </summary>
-        /// <param name="reqIf">The <see cref="ReqIF"/> object to serialize</param>
-        /// <param name="fileUri">The path of the output file</param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public async Task SerializeAsync(ReqIF reqIf, string fileUri)
-        {
-            if (reqIf == null)
-            {
-                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
-            }
-
-            if (fileUri == null)
-            {
-                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
-            }
-
-            if (fileUri == string.Empty)
-            {
-                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
-            }
-
-            using (var writer = XmlWriter.Create(fileUri, this.CreateXmlWriterSettings(true)))
-            {
-                await this.WriteXmlAsync(writer, reqIf);
-            }
-        }
-
-        /// <summary>
         /// Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
         /// <param name="reqIf">
@@ -131,6 +98,42 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Async Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object to serialize
+        /// </param>
+        /// <param name="fileUri">
+        /// The path of the output file
+        /// </param>
+        /// <exception cref="XmlSchemaValidationException"></exception>
+        /// <exception cref="ArgumentException"></exception>
+        /// <exception cref="UnauthorizedAccessException"></exception>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="DirectoryNotFoundException"></exception>
+        /// <exception cref="IOException"></exception>
+        /// <exception cref="SecurityException"></exception>
+        public Task SerializeAsync(ReqIF reqIf, string fileUri)
+        {
+            if (reqIf == null)
+            {
+                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
+            }
+
+            if (fileUri == null)
+            {
+                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
+            }
+
+            if (fileUri == string.Empty)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
+            }
+
+            return this.WriteXmlToFileAsync(reqIf, fileUri);
+        }
+        
+        /// <summary>
         /// Async Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
         /// <param name="reqIf">
@@ -146,7 +149,7 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        public async Task SerializeAsync(ReqIF reqIf, Stream stream)
+        public Task SerializeAsync(ReqIF reqIf, Stream stream)
         {
             if (reqIf == null)
             {
@@ -158,6 +161,43 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(stream), "The stream cannot be null.");
             }
 
+            return this.WriteXmlToStreamAsync(reqIf, stream);
+        }
+
+        /// <summary>
+        /// write the contents of the <see cref="ReqIF"/> to a file
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object to serialize
+        /// </param>
+        /// <param name="fileUri">
+        /// The path of the output file
+        /// </param>
+        /// <returns>
+        /// an awaitable task
+        /// </returns>
+        private async Task WriteXmlToFileAsync(ReqIF reqIf, string fileUri)
+        {
+            using (var writer = XmlWriter.Create(fileUri, this.CreateXmlWriterSettings(true)))
+            {
+                await this.WriteXmlAsync(writer, reqIf);
+            }
+        }
+
+        /// <summary>
+        /// write the contents of the <see cref="ReqIF"/> to a file
+        /// </summary>
+        /// <param name="reqIf">
+        /// The <see cref="ReqIF"/> object to serialize
+        /// </param>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <returns>
+        /// an awaitable task
+        /// </returns>
+        private async Task WriteXmlToStreamAsync(ReqIF reqIf, Stream stream)
+        {
             using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings(true)))
             {
                 await this.WriteXmlAsync(writer, reqIf);
