@@ -90,15 +90,10 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
-
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
-
+            base.ReadXml(reader);
+            
             using (var subtree = reader.ReadSubtree())
             {
                 while (await subtree.ReadAsync())

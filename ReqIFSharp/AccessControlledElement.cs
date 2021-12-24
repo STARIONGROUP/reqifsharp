@@ -47,6 +47,7 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
+
             var isEditable = reader.GetAttribute("IS-EDITABLE");
 
             if (isEditable != null)
@@ -54,28 +55,7 @@ namespace ReqIFSharp
                 this.IsEditable = XmlConvert.ToBoolean(isEditable);
             }
         }
-
-        /// <summary>
-        /// Asynchronously generates a <see cref="AccessControlledElement"/> object from its XML representation.
-        /// </summary>
-        /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
-        /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
-        {
-            await base.ReadXmlAsync(reader, token);
-            
-            var isEditable = reader.GetAttribute("IS-EDITABLE");
-
-            if (isEditable != null)
-            {
-                this.IsEditable = XmlConvert.ToBoolean(isEditable);
-            }
-        }
-
+        
         /// <summary>
         /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
         /// </summary>

@@ -79,7 +79,7 @@ namespace ReqIFSharp.Tests
             Assert.That(() => deserializer.Deserialize(memoryStream),
                 Throws.Exception.TypeOf<ArgumentNullException>());
 
-            var validationEventHandler = new ValidationEventHandler(delegate (object? sender, ValidationEventArgs args) { });
+            var validationEventHandler = new ValidationEventHandler(ValidationEventHandler);
 
             Assert.That(() => deserializer.Deserialize(memoryStream, false, validationEventHandler),
                 Throws.Exception.TypeOf<ArgumentException>()
@@ -103,7 +103,7 @@ namespace ReqIFSharp.Tests
             Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>());
 
-            var validationEventHandler = new ValidationEventHandler(delegate (object? sender, ValidationEventArgs args) { });
+            var validationEventHandler = new ValidationEventHandler(ValidationEventHandler);
 
             Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token, false, validationEventHandler),
                 Throws.Exception.TypeOf<ArgumentException>()
@@ -114,6 +114,8 @@ namespace ReqIFSharp.Tests
             Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentException>());
         }
+
+       
 
         [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_Without_Validation()

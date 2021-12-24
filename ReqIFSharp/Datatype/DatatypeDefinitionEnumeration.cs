@@ -114,24 +114,29 @@ namespace ReqIFSharp
         /// </param>
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
-
             if (token.IsCancellationRequested)
             {
                 token.ThrowIfCancellationRequested();
             }
 
+            base.ReadXml(reader);
+
             using (var subtree = reader.ReadSubtree())
             {
                 while (await subtree.ReadAsync())
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
                         switch (subtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
                                 var alternativeId = new AlternativeId(this);
-                                await alternativeId.ReadXmlAsync(subtree, token);
+                                alternativeId.ReadXml(reader);
                                 break;
                             case "ENUM-VALUE":
                                 var enumValue = new EnumValue(this);

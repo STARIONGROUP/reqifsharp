@@ -158,7 +158,7 @@ namespace ReqIFSharp
         /// </param>
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
+            base.ReadXml(reader);
 
             if (reader.GetAttribute("MULTI-VALUED") == "true")
             {
@@ -167,9 +167,9 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (reader.GetAttribute("MULTI-VALUED") == "true")
+                if (token.IsCancellationRequested)
                 {
-                    this.IsMultiValued = true;
+                    token.ThrowIfCancellationRequested();
                 }
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
@@ -178,7 +178,7 @@ namespace ReqIFSharp
                     {
                         case "ALTERNATIVE-ID":
                             var alternativeId = new AlternativeId(this);
-                            await alternativeId.ReadXmlAsync(reader, token);
+                            alternativeId.ReadXml(reader);
                             break;
                         case "DATATYPE-DEFINITION-ENUMERATION-REF":
                             var reference = await reader.ReadElementContentAsStringAsync();
@@ -186,11 +186,6 @@ namespace ReqIFSharp
                             this.Type = datatypeDefinition;
                             break;
                         case "ATTRIBUTE-VALUE-ENUMERATION":
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             this.DefaultValue = new AttributeValueEnumeration(this);
                             using (var valueSubtree = reader.ReadSubtree())
                             {

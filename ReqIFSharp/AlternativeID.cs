@@ -106,26 +106,7 @@ namespace ReqIFSharp
         {
             this.Identifier = reader.GetAttribute("IDENTIFIER");
         }
-
-        /// <summary>
-        /// Asynchronously generates a <see cref="AlternativeId"/> object from its XML representation.
-        /// </summary>
-        /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
-        /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
-        {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
-
-            this.Identifier = reader.GetAttribute("IDENTIFIER");
-        }
-
+        
         /// <summary>
         /// This method is reserved and should not be used.
         /// </summary>

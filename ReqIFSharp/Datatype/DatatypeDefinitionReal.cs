@@ -121,7 +121,7 @@ namespace ReqIFSharp
         /// </param>
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
+            base.ReadXml(reader);
 
             var accuracyValue = reader.GetAttribute("ACCURACY");
             if (!string.IsNullOrEmpty(accuracyValue))
@@ -145,13 +145,18 @@ namespace ReqIFSharp
             {
                 while (await subtree.ReadAsync())
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
                         switch (subtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
                                 var alternativeId = new AlternativeId(this);
-                                await alternativeId.ReadXmlAsync(subtree, token);
+                                alternativeId.ReadXml(reader);
                                 break;
                         }
                     }
@@ -185,11 +190,6 @@ namespace ReqIFSharp
         /// </param>
         public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
-
             await writer.WriteAttributeStringAsync(null,"ACCURACY", null, XmlConvert.ToString(this.Accuracy));
             await writer.WriteAttributeStringAsync(null, "MIN", null, XmlConvert.ToString(this.Min));
             await writer.WriteAttributeStringAsync(null, "MAX", null, XmlConvert.ToString(this.Max));

@@ -143,7 +143,7 @@ namespace ReqIFSharp
         /// </param>
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
+            base.ReadXml(reader);
 
             while (await reader.ReadAsync())
             {
@@ -158,15 +158,9 @@ namespace ReqIFSharp
                     {
                         case "ALTERNATIVE-ID":
                             var alternativeId = new AlternativeId(this);
-                            await alternativeId.ReadXmlAsync(reader, token);
+                            alternativeId.ReadXml(reader);
                             break;
                         case "ATTRIBUTE-VALUE-DATE":
-                            
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-                            
                             this.DefaultValue = new AttributeValueDate(this);
                             using (var valueSubtree = reader.ReadSubtree())
                             {

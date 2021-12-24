@@ -216,15 +216,10 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
-
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
-
+            base.ReadXml(reader);
+            
             using (var specElementWithAttributesReader = reader.ReadSubtree())
             {
                 while (await specElementWithAttributesReader.ReadAsync())
@@ -240,15 +235,9 @@ namespace ReqIFSharp
                         {
                             case "ALTERNATIVE-ID":
                                 var alternativeId = new AlternativeId(this);
-                                await alternativeId.ReadXmlAsync(specElementWithAttributesReader, token);
+                                alternativeId.ReadXml(reader);
                                 break;
                             case "TYPE":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -256,12 +245,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "CHILDREN":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -269,12 +252,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-BOOLEAN":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -283,12 +260,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-DATE":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -297,12 +268,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-ENUMERATION":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -311,12 +276,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-INTEGER":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -325,12 +284,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-REAL":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -339,12 +292,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-STRING":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
@@ -353,12 +300,6 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-XHTML":
-
-                                if (token.IsCancellationRequested)
-                                {
-                                    token.ThrowIfCancellationRequested();
-                                }
-
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();

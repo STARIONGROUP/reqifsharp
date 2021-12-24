@@ -127,9 +127,9 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
+            base.ReadXml(reader);
 
             while (await reader.ReadAsync())
             {
@@ -147,7 +147,7 @@ namespace ReqIFSharp
                             {
                                 var alternativeId = new AlternativeId(this);
                                 await subtree.MoveToContentAsync();
-                                await alternativeId.ReadXmlAsync(subtree, token);
+                                alternativeId.ReadXml(reader);
                             }
 
                             break;

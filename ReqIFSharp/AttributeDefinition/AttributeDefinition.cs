@@ -18,6 +18,10 @@
 // </copyright>
 // -------------------------------------------------------------------------------------------------
 
+using System.Threading;
+using System.Threading.Tasks;
+using System.Xml;
+
 namespace ReqIFSharp
 {
     /// <summary>
@@ -85,5 +89,16 @@ namespace ReqIFSharp
         /// The instance of <see cref="DatatypeDefinition"/> that is to be set.
         /// </param>
         protected abstract void SetDatatypeDefinition(DatatypeDefinition datatypeDefinition);
+
+        /// <summary>
+        /// Asynchronously generates a <see cref="ReqIFSharp.AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
     }
 }

@@ -20,6 +20,10 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml;
+
     /// <summary>
     /// The <see cref="DatatypeDefinition"/> is the base class for all data types available to the Exchange Document.
     /// </summary>
@@ -43,6 +47,8 @@ namespace ReqIFSharp
             this.ReqIFContent = reqIfContent;
             reqIfContent.DataTypes.Add(this);
         }
+
+        public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Gets or sets the owning <see cref="ReqIFContent"/>

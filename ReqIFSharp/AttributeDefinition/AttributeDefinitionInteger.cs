@@ -145,7 +145,7 @@ namespace ReqIFSharp
         /// </param>
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
+            base.ReadXml(reader);
 
             while (await reader.ReadAsync())
             {
@@ -160,7 +160,7 @@ namespace ReqIFSharp
                     {
                         case "ALTERNATIVE-ID":
                             var alternativeId = new AlternativeId(this);
-                            await alternativeId.ReadXmlAsync(reader, token);
+                            alternativeId.ReadXml(reader);
                             break;
                         case "DATATYPE-DEFINITION-INTEGER-REF":
                             var reference = await reader.ReadElementContentAsStringAsync();
@@ -168,11 +168,6 @@ namespace ReqIFSharp
                             this.Type = datatypeDefinition;
                             break;
                         case "ATTRIBUTE-VALUE-INTEGER":
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             this.DefaultValue = new AttributeValueInteger(this);
                             using (var valueSubtree = reader.ReadSubtree())
                             {

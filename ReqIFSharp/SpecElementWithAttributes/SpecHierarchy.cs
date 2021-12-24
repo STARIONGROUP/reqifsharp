@@ -200,9 +200,9 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader, token);
+            base.ReadXml(reader);
 
             while (await reader.ReadAsync())
             {
@@ -216,26 +216,15 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var subtree = reader.ReadSubtree())
                             {
                                 var alternativeId = new AlternativeId(this);
                                 await subtree.MoveToContentAsync();
-                                await alternativeId.ReadXmlAsync(subtree, token);
+                                alternativeId.ReadXml(reader);
                             }
                             break;
 
                         case "OBJECT":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var subtree = reader.ReadSubtree())
                             {
                                 await subtree.MoveToContentAsync();
@@ -243,12 +232,6 @@ namespace ReqIFSharp
                             }
                             break;
                         case "CHILDREN":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var subtree = reader.ReadSubtree())
                             {
                                 await subtree.MoveToContentAsync();
