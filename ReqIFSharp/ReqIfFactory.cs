@@ -125,56 +125,7 @@ namespace ReqIFSharp
 
             throw new ArgumentException($"The {datatypeDefinition.GetType()} type cannot be converted to an XML element name");
         }
-
-        /// <summary>
-        /// returns the XML element name of the specified <see cref="AttributeValue"/>.
-        /// </summary>
-        /// <param name="attributeValue">
-        /// an instance of <see cref="AttributeValue"/>.
-        /// </param>
-        /// <returns>
-        /// a string that contains the XML element name.
-        /// </returns>
-        internal static string XmlName(AttributeValue attributeValue)
-        {
-            if (attributeValue is AttributeValueBoolean)
-            {
-                return "ATTRIBUTE-VALUE-BOOLEAN";
-            }
-
-            if (attributeValue is AttributeValueDate)
-            {
-                return "ATTRIBUTE-VALUE-DATE";
-            }
-
-            if (attributeValue is AttributeValueEnumeration)
-            {
-                return "ATTRIBUTE-VALUE-ENUMERATION";
-            }
-
-            if (attributeValue is AttributeValueInteger)
-            {
-                return "ATTRIBUTE-VALUE-INTEGER";
-            }
-
-            if (attributeValue is AttributeValueReal)
-            {
-                return "ATTRIBUTE-VALUE-REAL";
-            }
-
-            if (attributeValue is AttributeValueString)
-            {
-                return "ATTRIBUTE-VALUE-STRING";
-            }
-
-            if (attributeValue is AttributeValueXHTML)
-            {
-                return "ATTRIBUTE-VALUE-XHTML";
-            }
-
-            throw new ArgumentException($"The {attributeValue.GetType()} type cannot be converted to an XML element name");
-        }
-
+        
         /// <summary>
         /// returns the XML element name of the specified <see cref="SpecType"/>.
         /// </summary>
@@ -284,45 +235,7 @@ namespace ReqIFSharp
                     throw new ArgumentException($"{xmlname} is not a vaild DatatypeDefinition name");
             }
         }
-
-        /// <summary>
-        /// Constructs a new instance <see cref="AttributeValue"/> based on the XML Name
-        /// </summary>
-        /// <param name="xmlname">
-        /// The XML name of the <see cref="AttributeValue"/> that is to be constructed
-        /// </param>
-        /// <param name="specElementWithAttributes">
-        /// The owning <see cref="SpecElementWithAttributes"/> object.
-        /// </param>
-        /// <returns>
-        /// an instance of <see cref="AttributeValue"/>
-        /// </returns>
-        /// <exception cref="ArgumentException">
-        /// Thrown when an invalid <paramref name="xmlname"/> is provided
-        /// </exception>
-        internal static AttributeValue AttributeValueConstruct(string xmlname, SpecElementWithAttributes specElementWithAttributes)
-        {
-            switch (xmlname)
-            {
-                case "ATTRIBUTE-VALUE-BOOLEAN":
-                    return new AttributeValueBoolean(specElementWithAttributes);
-                case "ATTRIBUTE-VALUE-DATE":
-                    return new AttributeValueDate(specElementWithAttributes);
-                case "ATTRIBUTE-VALUE-ENUMERATION":
-                    return new AttributeValueEnumeration(specElementWithAttributes);
-                case "ATTRIBUTE-VALUE-INTEGER":
-                    return new AttributeValueInteger(specElementWithAttributes);
-                case "ATTRIBUTE-VALUE-REAL":
-                    return new AttributeValueReal(specElementWithAttributes);
-                case "ATTRIBUTE-VALUE-STRING":
-                    return new AttributeValueString(specElementWithAttributes);
-                case "ATTRIBUTE-VALUE-XHTML":
-                    return new AttributeValueXHTML(specElementWithAttributes);
-                default:
-                    throw new ArgumentException($"{xmlname} is not a vaild AttributeValue name");
-            }
-        }
-
+        
         /// <summary>
         /// Constructs a new instance <see cref="SpecType"/> based on the XML Name
         /// </summary>
@@ -338,7 +251,7 @@ namespace ReqIFSharp
         /// <exception cref="ArgumentException">
         /// Thrown when an invalid <paramref name="xmlname"/> is provided
         /// </exception>
-        internal static SpecType SpecTypeConstrcut(string xmlname, ReqIFContent reqIfContent)
+        internal static SpecType SpecTypeConstruct(string xmlname, ReqIFContent reqIfContent)
         {
             switch (xmlname)
             {

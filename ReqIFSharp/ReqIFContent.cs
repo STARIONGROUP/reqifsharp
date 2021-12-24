@@ -216,12 +216,6 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "DATATYPES":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var dataTypesSubtree = reader.ReadSubtree())
                             {
                                 await dataTypesSubtree.MoveToContentAsync();
@@ -229,12 +223,6 @@ namespace ReqIFSharp
                             }
                             break;
                         case "SPEC-TYPES":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var specTypesSubtree = reader.ReadSubtree())
                             {
                                 await specTypesSubtree.MoveToContentAsync();
@@ -242,12 +230,6 @@ namespace ReqIFSharp
                             }
                             break;
                         case "SPEC-OBJECTS":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var specObjectsSubtree = reader.ReadSubtree())
                             {
                                 await specObjectsSubtree.MoveToContentAsync();
@@ -255,12 +237,6 @@ namespace ReqIFSharp
                             }
                             break;
                         case "SPEC-RELATIONS":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var specRelationsSubtree = reader.ReadSubtree())
                             {
                                 await specRelationsSubtree.MoveToContentAsync();
@@ -268,12 +244,6 @@ namespace ReqIFSharp
                             }
                             break;
                         case "SPECIFICATIONS":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var specificationsSubtree = reader.ReadSubtree())
                             {
                                 await specificationsSubtree.MoveToContentAsync();
@@ -281,12 +251,6 @@ namespace ReqIFSharp
                             }
                             break;
                         case "SPEC-RELATION-GROUPS":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             using (var specRelationGroupsSubtree = reader.ReadSubtree())
                             {
                                 await specRelationGroupsSubtree.MoveToContentAsync();
@@ -363,7 +327,7 @@ namespace ReqIFSharp
                         {
                             subtree.MoveToContent();
 
-                            var specType = ReqIfFactory.SpecTypeConstrcut(xmlname, this);
+                            var specType = ReqIfFactory.SpecTypeConstruct(xmlname, this);
                             specType.ReadXml(subtree);
                         }
                     }
@@ -396,16 +360,11 @@ namespace ReqIFSharp
                     if (xmlname == "SPEC-OBJECT-TYPE" || xmlname == "SPECIFICATION-TYPE"
                                                       || xmlname == "SPEC-RELATION-TYPE" || xmlname == "RELATION-GROUP-TYPE")
                     {
-                        if (token.IsCancellationRequested)
-                        {
-                            token.ThrowIfCancellationRequested();
-                        }
-
                         using (var subtree = reader.ReadSubtree())
                         {
                             await subtree.MoveToContentAsync();
 
-                            var specType = ReqIfFactory.SpecTypeConstrcut(xmlname, this);
+                            var specType = ReqIfFactory.SpecTypeConstruct(xmlname, this);
                             await specType.ReadXmlAsync(subtree, token);
                         }
                     }
@@ -456,11 +415,6 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECT")
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
@@ -515,11 +469,6 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION")
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
@@ -574,11 +523,6 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPECIFICATION")
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
@@ -633,11 +577,6 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "RELATION-GROUP")
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();

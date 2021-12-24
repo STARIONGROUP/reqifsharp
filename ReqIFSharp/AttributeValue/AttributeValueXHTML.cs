@@ -237,12 +237,7 @@ namespace ReqIFSharp
             {
                 this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
             }
-
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
-
+            
             using (var subtree = reader.ReadSubtree())
             {
                 while (await subtree.ReadAsync())

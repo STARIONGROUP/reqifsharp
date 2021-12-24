@@ -181,34 +181,16 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "THE-HEADER":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             var headerSubTreeXmlReader = reader.ReadSubtree();
                             this.TheHeader = new ReqIFHeader { DocumentRoot = this };
                             await this.TheHeader.ReadXmlAsync(headerSubTreeXmlReader, token);
                             break;
                         case "CORE-CONTENT":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             var coreContentTreeXmlReader = reader.ReadSubtree();
                             this.CoreContent = new ReqIFContent { DocumentRoot = this };
                             await this.CoreContent.ReadXmlAsync(coreContentTreeXmlReader, token);
                             break;
                         case "TOOL-EXTENSIONS":
-
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
-
                             var toolExtensionsXmlReader = reader.ReadSubtree();
 
                             while (await toolExtensionsXmlReader.ReadAsync())

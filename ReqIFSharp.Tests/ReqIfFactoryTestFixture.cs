@@ -77,28 +77,5 @@ namespace ReqIFSharp.Tests
             string unknownName = "RHEA";
             Assert.Throws<ArgumentException>(() => ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent));
         }
-
-        [Test]
-        public void VerifyThatXmlElementNameReturnsAttributeValueBoolean()
-        {
-            var specObject = new SpecObject();
-
-            Assert.IsInstanceOf<AttributeValueBoolean>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-BOOLEAN", specObject));
-            Assert.IsInstanceOf<AttributeValueDate>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-DATE", specObject));
-            Assert.IsInstanceOf<AttributeValueEnumeration>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-ENUMERATION", specObject));
-            Assert.IsInstanceOf<AttributeValueInteger>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-INTEGER", specObject));
-            Assert.IsInstanceOf<AttributeValueReal>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-REAL", specObject));
-            Assert.IsInstanceOf<AttributeValueString>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-STRING", specObject));
-            Assert.IsInstanceOf<AttributeValueXHTML>(ReqIfFactory.AttributeValueConstruct("ATTRIBUTE-VALUE-XHTML", specObject));
-        }
-
-        [Test]
-        public void VerifyThatUnkownElementAttributeValueThrowsArgumentException()
-        {
-            var specObject = new SpecObject();
-
-            string unknownName = "RHEA";
-            Assert.Throws<ArgumentException>(() => ReqIfFactory.AttributeValueConstruct(unknownName, specObject));
-        }
     }
 }
