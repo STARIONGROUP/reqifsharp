@@ -64,7 +64,7 @@ namespace ReqIFSharp
 
         /// <summary>
         /// Gets or sets the data type.
-        /// </summary>                
+        /// </summary>
         public DatatypeDefinitionBoolean Type { get; set; }
 
         /// <summary>
@@ -121,10 +121,10 @@ namespace ReqIFSharp
                             break;
                         case "ATTRIBUTE-VALUE-BOOLEAN":
                             this.DefaultValue = new AttributeValueBoolean(this);
-                            using (var valuesubtree = reader.ReadSubtree())
+                            using (var valueSubtree = reader.ReadSubtree())
                             {
-                                valuesubtree.MoveToContent();
-                                this.DefaultValue.ReadXml(valuesubtree);
+                                valueSubtree.MoveToContent();
+                                this.DefaultValue.ReadXml(valueSubtree);
                             }
                             break;
                     }

@@ -337,7 +337,7 @@ namespace ReqIFSharp
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this);
-                    datatypeDefinition.ReadXml(reader);
+                    await datatypeDefinition.ReadXmlAsync(reader, token);
                 }
             }
         }

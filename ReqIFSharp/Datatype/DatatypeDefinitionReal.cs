@@ -91,6 +91,23 @@ namespace ReqIFSharp
             { 
                 this.Min = XmlConvert.ToDouble(minValue);
             }
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (subtree.Read())
+                {
+                    if (subtree.MoveToContent() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(subtree);
+                                break;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -122,6 +139,23 @@ namespace ReqIFSharp
             if (!string.IsNullOrEmpty(minValue))
             {
                 this.Min = XmlConvert.ToDouble(minValue);
+            }
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                await alternativeId.ReadXmlAsync(subtree, token);
+                                break;
+                        }
+                    }
+                }
             }
         }
 

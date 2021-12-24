@@ -85,15 +85,24 @@ namespace ReqIFSharp
             {
                 while (subtree.Read())
                 {
-                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE")
+                    if (subtree.MoveToContent() == XmlNodeType.Element)
                     {
-                        var enumvalue = new EnumValue(this);
-                        enumvalue.ReadXml(subtree);
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(subtree);
+                                break;
+                            case "ENUM-VALUE":
+                                var enumValue = new EnumValue(this);
+                                enumValue.ReadXml(subtree);
+                                break;
+                        }
                     }
                 }
             }
         }
-
+        
         /// <summary>
         /// Asynchronously generates a <see cref="DatatypeDefinitionEnumeration"/> object from its XML representation.
         /// </summary>
@@ -116,15 +125,19 @@ namespace ReqIFSharp
             {
                 while (await subtree.ReadAsync())
                 {
-                    if (token.IsCancellationRequested)
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
-                        token.ThrowIfCancellationRequested();
-                    }
-
-                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE")
-                    {
-                        var enumvalue = new EnumValue(this);
-                        await enumvalue.ReadXmlAsync(subtree, token);
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                await alternativeId.ReadXmlAsync(subtree, token);
+                                break;
+                            case "ENUM-VALUE":
+                                var enumValue = new EnumValue(this);
+                                await enumValue.ReadXmlAsync(subtree, token);
+                                break;
+                        }
                     }
                 }
             }

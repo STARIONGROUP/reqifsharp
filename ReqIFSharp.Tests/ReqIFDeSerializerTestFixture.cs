@@ -48,6 +48,74 @@ namespace ReqIFSharp.Tests
         private const int AmountOfSpecRelationGroups = 2;
 
         [Test]
+        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_file()
+        {
+            var deserializer = new ReqIFDeserializer();
+            
+            Assert.That(() => deserializer.Deserialize(""), 
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("The xml file path may not be null or empty"));
+        }
+
+        [Test]
+        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_file_async()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var deserializer = new ReqIFDeserializer();
+
+            Assert.That(async () => await deserializer.DeserializeAsync("", cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("The xml file path may not be null or empty"));
+        }
+
+        [Test]
+        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_stream()
+        {
+            var deserializer = new ReqIFDeserializer();
+
+            MemoryStream memoryStream = null;
+
+            Assert.That(() => deserializer.Deserialize(memoryStream),
+                Throws.Exception.TypeOf<ArgumentNullException>());
+
+            var validationEventHandler = new ValidationEventHandler(delegate (object? sender, ValidationEventArgs args) { });
+
+            Assert.That(() => deserializer.Deserialize(memoryStream, false, validationEventHandler),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("validationEventHandler must be null when validate is false"));
+
+            memoryStream = new MemoryStream();
+
+            Assert.That(() => deserializer.Deserialize(memoryStream),
+                Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_stream_async()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var deserializer = new ReqIFDeserializer();
+
+            MemoryStream memoryStream = null;
+
+            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentNullException>());
+
+            var validationEventHandler = new ValidationEventHandler(delegate (object? sender, ValidationEventArgs args) { });
+
+            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token, false, validationEventHandler),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("validationEventHandler must be null when validate is false"));
+
+            memoryStream = new MemoryStream();
+
+            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_Without_Validation()
         {
             var deserializer = new ReqIFDeserializer();

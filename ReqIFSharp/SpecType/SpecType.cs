@@ -86,16 +86,33 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.Name == "SPEC-ATTRIBUTES")
+                if (reader.MoveToContent() == XmlNodeType.Element)
                 {
-                    var specAttributesSubTree = reader.ReadSubtree();
-                    
-                    while (specAttributesSubTree.Read())
+                    switch (reader.LocalName)
                     {
-                        if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
-                        {
-                            this.CreateAttributeDefinition(reader, reader.LocalName);
-                        }
+                        case "ALTERNATIVE-ID":
+                            using (var subtree = reader.ReadSubtree())
+                            {
+                                var alternativeId = new AlternativeId(this);
+                                subtree.MoveToContent();
+                                alternativeId.ReadXml(subtree);
+                            }
+
+                            break;
+                        case "SPEC-ATTRIBUTES":
+
+                            using (var specAttributesSubTree = reader.ReadSubtree())
+                            {
+                                while (specAttributesSubTree.Read())
+                                {
+                                    if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
+                                    {
+                                        this.CreateAttributeDefinition(reader, reader.LocalName);
+                                    }
+                                }
+                            }
+
+                            break;
                     }
                 }
             }
@@ -121,26 +138,38 @@ namespace ReqIFSharp
                     token.ThrowIfCancellationRequested();
                 }
 
-                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name == "SPEC-ATTRIBUTES")
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
-                    if (token.IsCancellationRequested)
+                    switch (reader.LocalName)
                     {
-                        token.ThrowIfCancellationRequested();
-                    }
+                        case "ALTERNATIVE-ID":
+                            using (var subtree = reader.ReadSubtree())
+                            {
+                                var alternativeId = new AlternativeId(this);
+                                await subtree.MoveToContentAsync();
+                                await alternativeId.ReadXmlAsync(subtree, token);
+                            }
 
-                    var specAttributesSubTree = reader.ReadSubtree();
+                            break;
+                        case "SPEC-ATTRIBUTES":
 
-                    while (await specAttributesSubTree.ReadAsync())
-                    {
-                        if (token.IsCancellationRequested)
-                        {
-                            token.ThrowIfCancellationRequested();
-                        }
+                            using (var specAttributesSubTree = reader.ReadSubtree())
+                            {
+                                while (await specAttributesSubTree.ReadAsync())
+                                {
+                                    if (token.IsCancellationRequested)
+                                    {
+                                        token.ThrowIfCancellationRequested();
+                                    }
 
-                        if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
-                        {
-                            await this.CreateAttributeDefinitionAsync(reader, reader.LocalName, token);
-                        }
+                                    if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
+                                    {
+                                        await this.CreateAttributeDefinitionAsync(reader, reader.LocalName, token);
+                                    }
+                                }
+                            }
+
+                            break;
                     }
                 }
             }

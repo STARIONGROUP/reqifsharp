@@ -21,7 +21,10 @@
 namespace ReqIFSharp
 {
     using System;
-    
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml;
+
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the <see cref="DateTime"/> data type
     /// </summary>
@@ -47,6 +50,62 @@ namespace ReqIFSharp
             : base(reqIfContent)            
         {
             this.ReqIFContent = reqIfContent;
+        }
+
+        /// <summary>
+        /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override void ReadXml(XmlReader reader)
+        {
+            base.ReadXml(reader);
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (subtree.Read())
+                {
+                    if (subtree.MoveToContent() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(subtree);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        {
+            await base.ReadXmlAsync(reader, token);
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                await alternativeId.ReadXmlAsync(subtree, token);
+                                break;
+                        }
+                    }
+                }
+            }
         }
     }
 }

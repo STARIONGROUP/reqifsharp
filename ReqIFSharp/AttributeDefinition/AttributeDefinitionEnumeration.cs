@@ -167,9 +167,10 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                /// <param name="token">
-                /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-                /// </param>
+                if (reader.GetAttribute("MULTI-VALUED") == "true")
+                {
+                    this.IsMultiValued = true;
+                }
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {

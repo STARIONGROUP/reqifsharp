@@ -121,10 +121,10 @@ namespace ReqIFSharp
                             break;
                         case "ATTRIBUTE-VALUE-XHTML":
                             this.DefaultValue = new AttributeValueXHTML(this);
-                            using (var valuesubtree = reader.ReadSubtree())
+                            using (var valueSubtree = reader.ReadSubtree())
                             {
-                                valuesubtree.MoveToContent();
-                                this.DefaultValue.ReadXml(valuesubtree);
+                                valueSubtree.MoveToContent();
+                                this.DefaultValue.ReadXml(valueSubtree);
                             }
                             break;
                     }
@@ -174,7 +174,7 @@ namespace ReqIFSharp
                             this.DefaultValue = new AttributeValueXHTML(this);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
-                                valueSubtree.MoveToContent();
+                                await valueSubtree.MoveToContentAsync();
                                 await this.DefaultValue.ReadXmlAsync(valueSubtree, token);
                             }
                             break;

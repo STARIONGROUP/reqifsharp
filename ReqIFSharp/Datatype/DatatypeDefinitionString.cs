@@ -65,11 +65,28 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         { 
             base.ReadXml(reader);
-            
+
             var value = reader.GetAttribute("MAX-LENGTH"); 
             if ( !string.IsNullOrEmpty(value)) 
             { 
                 this.MaxLength = XmlConvert.ToInt32(value);
+            }
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (subtree.Read())
+                {
+                    if (subtree.MoveToContent() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(subtree);
+                                break;
+                        }
+                    }
+                }
             }
         }
 
@@ -90,6 +107,23 @@ namespace ReqIFSharp
             if (!string.IsNullOrEmpty(value))
             {
                 this.MaxLength = XmlConvert.ToInt32(value);
+            }
+
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                await alternativeId.ReadXmlAsync(subtree, token);
+                                break;
+                        }
+                    }
+                }
             }
         }
 

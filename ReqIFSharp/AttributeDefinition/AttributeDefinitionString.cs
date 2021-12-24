@@ -121,10 +121,10 @@ namespace ReqIFSharp
                             break;
                         case "ATTRIBUTE-VALUE-STRING":
                             this.DefaultValue = new AttributeValueString(this);
-                            using (var valuesubtree = reader.ReadSubtree())
+                            using (var valueSubtree = reader.ReadSubtree())
                             {
-                                valuesubtree.MoveToContent();
-                                this.DefaultValue.ReadXml(valuesubtree);
+                                valueSubtree.MoveToContent();
+                                this.DefaultValue.ReadXml(valueSubtree);
                             }
                             break;
                     }

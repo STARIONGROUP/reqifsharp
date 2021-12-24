@@ -151,26 +151,41 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            while (reader.Read())
+            using (var speccHierarchySubtree = reader.ReadSubtree())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element)
+                while (speccHierarchySubtree.Read())
                 {
-                    switch (reader.LocalName)
+                    if (speccHierarchySubtree.MoveToContent() == XmlNodeType.Element)
                     {
-                        case "OBJECT":
-                            using (var subtree = reader.ReadSubtree())
-                            {
-                                subtree.MoveToContent();
-                                this.DeserializeObject(subtree);
-                            }
-                            break;
-                        case "CHILDREN":
-                            using (var subtree = reader.ReadSubtree())
-                            {
-                                subtree.MoveToContent();
-                                this.DeserializeSpecHierarchy(subtree);
-                            }
-                            break;
+                        switch (speccHierarchySubtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                using (var subtree = speccHierarchySubtree.ReadSubtree())
+                                {
+                                    var alternativeId = new AlternativeId(this);
+                                    subtree.MoveToContent();
+                                    alternativeId.ReadXml(subtree);
+                                }
+
+                                break;
+
+                            case "OBJECT":
+                                using (var subtree = speccHierarchySubtree.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    this.DeserializeObject(subtree);
+                                }
+
+                                break;
+                            case "CHILDREN":
+                                using (var subtree = speccHierarchySubtree.ReadSubtree())
+                                {
+                                    subtree.MoveToContent();
+                                    this.DeserializeSpecHierarchy(subtree);
+                                }
+
+                                break;
+                        }
                     }
                 }
             }
@@ -200,6 +215,20 @@ namespace ReqIFSharp
                 {
                     switch (reader.LocalName)
                     {
+                        case "ALTERNATIVE-ID":
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
+                            using (var subtree = reader.ReadSubtree())
+                            {
+                                var alternativeId = new AlternativeId(this);
+                                await subtree.MoveToContentAsync();
+                                await alternativeId.ReadXmlAsync(subtree, token);
+                            }
+                            break;
+
                         case "OBJECT":
 
                             if (token.IsCancellationRequested)
