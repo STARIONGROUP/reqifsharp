@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
@@ -141,12 +142,20 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             this.Lang = reader.GetAttribute("xml:lang");
 
             while (reader.MoveToNextAttribute())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (reader.Name != "xml:lang")
                 {
                     var xmlAttribute = new ReqIFSharp.XmlAttribute
@@ -162,21 +171,44 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
                     switch (reader.LocalName)
                     {
                         case "THE-HEADER":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             var headerSubTreeXmlReader = reader.ReadSubtree();
                             this.TheHeader = new ReqIFHeader { DocumentRoot = this };
-                            await this.TheHeader.ReadXmlAsync(headerSubTreeXmlReader);
+                            await this.TheHeader.ReadXmlAsync(headerSubTreeXmlReader, token);
                             break;
                         case "CORE-CONTENT":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             var coreContentTreeXmlReader = reader.ReadSubtree();
                             this.CoreContent = new ReqIFContent { DocumentRoot = this };
-                            await this.CoreContent.ReadXmlAsync(coreContentTreeXmlReader);
+                            await this.CoreContent.ReadXmlAsync(coreContentTreeXmlReader, token);
                             break;
                         case "TOOL-EXTENSIONS":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             var toolExtensionsXmlReader = reader.ReadSubtree();
 
                             while (await toolExtensionsXmlReader.ReadAsync())

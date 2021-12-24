@@ -24,6 +24,7 @@ namespace ReqIFSharp
     using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -160,13 +161,21 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             var value = reader["THE-VALUE"];
             this.TheValue = XmlConvert.ToInt64(value);
 
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-INTEGER-REF"))
                 {
                     var reference = await reader.ReadElementContentAsStringAsync();

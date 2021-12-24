@@ -21,9 +21,10 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
     /// <summary>
     /// Contains a set of attribute definitions. By using an instance of a subclass of <see cref="SpecType"/>, multiple elements can be
     /// associated with the same set of attribute definitions (attribute names, default values, data types, etc.).
@@ -76,6 +77,9 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         public override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
@@ -96,28 +100,46 @@ namespace ReqIFSharp
                 }
             }
         }
-        
+
         /// <summary>
         /// Asynchronously generates a <see cref="SpecType"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader);
+            await base.ReadXmlAsync(reader, token);
 
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.Name == "SPEC-ATTRIBUTES")
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     var specAttributesSubTree = reader.ReadSubtree();
 
                     while (await specAttributesSubTree.ReadAsync())
                     {
+                        if (token.IsCancellationRequested)
+                        {
+                            token.ThrowIfCancellationRequested();
+                        }
+
                         if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
                         {
-                            await this.CreateAttributeDefinitionAsync(reader, reader.LocalName);
+                            await this.CreateAttributeDefinitionAsync(reader, reader.LocalName, token);
                         }
                     }
                 }
@@ -157,7 +179,10 @@ namespace ReqIFSharp
         /// <param name="xmlname">
         /// The XML Element name of the <see cref="AttributeDefinition"/>
         /// </param>
-        private async Task CreateAttributeDefinitionAsync(XmlReader reader, string xmlname)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task CreateAttributeDefinitionAsync(XmlReader reader, string xmlname, CancellationToken token)
         {
             var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this);
             if (attributeDefinition == null)
@@ -165,10 +190,15 @@ namespace ReqIFSharp
                 return;
             }
 
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             using (var attributeDefTree = reader.ReadSubtree())
             {
                 await attributeDefTree.MoveToContentAsync();
-                await attributeDefinition.ReadXmlAsync(attributeDefTree);
+                await attributeDefinition.ReadXmlAsync(attributeDefTree, token);
             }
         }
 

@@ -18,14 +18,14 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.Threading.Tasks;
-
 namespace ReqIFSharp.Tests
 {
     using System;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml.Schema;
 
     using NUnit.Framework;
@@ -81,8 +81,10 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_A_ReqIF_XML_Document_Can_Be_DeserializedAsync_Without_Validation()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var deserializer = new ReqIFDeserializer();
-            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"))).First();
+            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), cancellationTokenSource.Token)).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -150,10 +152,16 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_the_Tool_Extensions_are_DeserializedAsync_from_ProR_Traceability_template()
         {
+            var sw = Stopwatch.StartNew();
+
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = (await deserializer.DeserializeAsync(reqifPath)).First();
+            var reqIf = (await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token)).First();
+
+            Console.WriteLine(sw.ElapsedMilliseconds);
 
             Assert.That(reqIf.TheHeader.Identifier, Is.EqualTo("_o7scMadbEeafNduaIhMwQg"));
             Assert.That(reqIf.TheHeader.Comment, Is.EqualTo("Download this template and others at https://reqif.academy"));
@@ -183,6 +191,18 @@ namespace ReqIFSharp.Tests
 
             var toolExtension = reqIf.ToolExtension.First();
             Assert.That(toolExtension.InnerXml, Is.Not.Empty);
+        }
+
+        [Test]
+        public void Verify_that_the_Tool_Extensions_are_DeserializedAsync_from_ProR_Traceability_template_And_Cancelled()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(10);
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+            var deserializer = new ReqIFDeserializer();
+
+            Assert.That(async() => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Exception.TypeOf<OperationCanceledException>());
         }
 
         [Test]
@@ -220,7 +240,9 @@ namespace ReqIFSharp.Tests
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = (await deserializer.DeserializeAsync(reqifPath)).First();
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var reqIf = (await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token)).First();
 
             foreach (var specObject in reqIf.CoreContent.SpecObjects)
             {
@@ -258,8 +280,10 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_A_ReqIF_XML_Document_Can_Be_DeserializedAsync_With_Validation()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var deserializer = new ReqIFDeserializer();
-            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), true, this.ValidationEventHandler)).First();
+            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), cancellationTokenSource.Token,true, this.ValidationEventHandler)).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -284,11 +308,13 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_when_schema_is_not_available_A_ReqIF_file_Can_Be_DeserializedAsync_With_Validation_and_that_schemavalidationexception_is_thrown()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
 
             var deserializer = new ReqIFDeserializer();
 
-            Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, true, this.ValidationEventHandler), Throws.Exception.TypeOf<XmlSchemaValidationException>());
+            Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true, this.ValidationEventHandler), Throws.Exception.TypeOf<XmlSchemaValidationException>());
         }
 
         [Test]
@@ -309,8 +335,10 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_XHTML_attributes_can_de_DeserializedAsync()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var deserializer = new ReqIFDeserializer();
-            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif"))).First();
+            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif"), cancellationTokenSource.Token)).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -348,8 +376,10 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_A_ReqIF_Archive_Can_Be_DeserializedAsync_Without_Validation()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var deserializer = new ReqIFDeserializer();
-            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz"))).First();
+            var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz"), cancellationTokenSource.Token)).First();
 
             Assert.AreEqual("en", reqIf.Lang);
 
@@ -386,14 +416,16 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_A_ReqIF_Archive_Can_Be_DeserializedAsync_With_Validation()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
             var deserializer = new ReqIFDeserializer();
-            Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, true, this.ValidationEventHandler), Throws.Nothing);
+            Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true, this.ValidationEventHandler), Throws.Nothing);
 
             using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
             {
-                Assert.That(async () => await deserializer.DeserializeAsync(sourceStream), Throws.Nothing);
+                Assert.That(async () => await deserializer.DeserializeAsync(sourceStream, cancellationTokenSource.Token), Throws.Nothing);
             }
         }
 
@@ -426,12 +458,14 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_when_ValidationEventHandler_is_not_null_exception_is_thrown_async()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
             var deserializer = new ReqIFDeserializer();
 
             Assert.That(
-                async () => await deserializer.DeserializeAsync(path, false, this.ValidationEventHandler),
+                async () => await deserializer.DeserializeAsync(path, cancellationTokenSource.Token, false, this.ValidationEventHandler),
                 Throws.Exception.TypeOf<ArgumentException>()
                     .With.Message.Contains("validationEventHandler must be null when validate is false"));
         }
@@ -470,8 +504,10 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_that_ReqIF_can_be_DeserializaedAsync_from_stream()
+        public async Task Verify_that_ReqIF_can_be_DeserializedAsync_from_stream()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var deserializer = new ReqIFDeserializer();
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
@@ -480,7 +516,7 @@ namespace ReqIFSharp.Tests
             {
                 var sw = Stopwatch.StartNew();
 
-                var reqif = (await deserializer.DeserializeAsync(fileStream, false, null)).First();
+                var reqif = (await deserializer.DeserializeAsync(fileStream, cancellationTokenSource.Token, false, null)).First();
 
                 Console.WriteLine($"async deserialization done in: {sw.ElapsedMilliseconds} [ms]");
 

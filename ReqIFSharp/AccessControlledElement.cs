@@ -20,9 +20,10 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
     /// <summary>
     /// The <see cref="AccessControlledElement"/> is the base class for classes that may restrict user access to their information.
     /// </summary>
@@ -60,9 +61,13 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader);
+            await base.ReadXmlAsync(reader, token);
+            
             var isEditable = reader.GetAttribute("IS-EDITABLE");
 
             if (isEditable != null)

@@ -22,6 +22,7 @@ namespace ReqIFSharp.Tests
 {
     using System.IO;
     using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
 
     using NUnit.Framework;
@@ -48,10 +49,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_ProR_Traceability_Template_reqif_file_can_deserialized_and_async_serialized_with_equivalent_output()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+            
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIfs = await deserializer.DeserializeAsync(reqifPath);
+            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
             var reqIf = reqIfs.First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-async-reserialize.reqif");
@@ -77,10 +80,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_Datatype_Demo_reqif_file_is_deserialized_and_async_serialized_with_equivalent_output()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIfs = await deserializer.DeserializeAsync(reqifPath);
+            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
             var reqIf = reqIfs.First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-async-reserialize.reqif");
@@ -120,10 +125,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_DefaultValueDemo_file_is_deserialized_and_async_serialized_with_equivalent_output()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "DefaultValueDemo.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIfs = await deserializer.DeserializeAsync(reqifPath);
+            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
             var reqIf = reqIfs.First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "DefaultValueDemo-async-reserialize.reqif");

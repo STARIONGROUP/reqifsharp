@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -137,19 +138,27 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader);
+            await base.ReadXmlAsync(reader, token);
 
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
                             var alternativeId = new AlternativeId(this);
-                            await alternativeId.ReadXmlAsync(reader);
+                            await alternativeId.ReadXmlAsync(reader, token);
                             break;
                         case "DATATYPE-DEFINITION-REAL-REF":
                             var reference = await reader.ReadElementContentAsStringAsync();
@@ -157,11 +166,16 @@ namespace ReqIFSharp
                             this.Type = datatypeDefinition;
                             break;
                         case "ATTRIBUTE-VALUE-REAL":
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             this.DefaultValue = new AttributeValueReal(this);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 await valueSubtree.MoveToContentAsync();
-                                await this.DefaultValue.ReadXmlAsync(valueSubtree);
+                                await this.DefaultValue.ReadXmlAsync(valueSubtree, token);
                             }
                             break;
                     }

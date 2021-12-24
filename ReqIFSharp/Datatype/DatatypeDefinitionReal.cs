@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -98,9 +99,12 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader);
+            await base.ReadXmlAsync(reader, token);
 
             var accuracyValue = reader.GetAttribute("ACCURACY");
             if (!string.IsNullOrEmpty(accuracyValue))

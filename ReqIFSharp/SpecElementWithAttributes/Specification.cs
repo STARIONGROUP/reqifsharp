@@ -24,6 +24,7 @@ namespace ReqIFSharp
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     
@@ -162,8 +163,16 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected override async Task ReadSpecTypeAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected override async Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF"))
             {
                 var reference = await reader.ReadElementContentAsStringAsync();
@@ -201,18 +210,31 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected override async Task ReadHierarchyAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected override async Task ReadHierarchyAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
 
                         var specHierarchy = new SpecHierarchy(this, this.ReqIFContent);
-                        await specHierarchy.ReadXmlAsync(subtree);
+                        await specHierarchy.ReadXmlAsync(subtree, token);
                     }
                 }
             }

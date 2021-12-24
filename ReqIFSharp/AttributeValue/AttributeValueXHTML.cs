@@ -26,6 +26,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -226,7 +227,10 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             var isSimplified = reader["IS-SIMPLIFIED"];
             if (!string.IsNullOrEmpty(isSimplified))
@@ -234,10 +238,20 @@ namespace ReqIFSharp
                 this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
             }
 
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             using (var subtree = reader.ReadSubtree())
             {
                 while (await subtree.ReadAsync())
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
                     {
                         var reference = await reader.ReadElementContentAsStringAsync();

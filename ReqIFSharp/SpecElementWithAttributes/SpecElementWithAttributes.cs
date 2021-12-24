@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -212,96 +213,163 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader);
+            await base.ReadXmlAsync(reader, token);
+
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
 
             using (var specElementWithAttributesReader = reader.ReadSubtree())
             {
                 while (await specElementWithAttributesReader.ReadAsync())
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     if (await specElementWithAttributesReader.MoveToContentAsync() == XmlNodeType.Element)
                     {
                         switch (specElementWithAttributesReader.LocalName)
                         {
                             case "ALTERNATIVE-ID":
                                 var alternativeId = new AlternativeId(this);
-                                await alternativeId.ReadXmlAsync(specElementWithAttributesReader);
+                                await alternativeId.ReadXmlAsync(specElementWithAttributesReader, token);
                                 break;
                             case "TYPE":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    await this.ReadSpecTypeAsync(subtree);
+                                    await this.ReadSpecTypeAsync(subtree, token);
                                 }
                                 break;
                             case "CHILDREN":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    await this.ReadHierarchyAsync(subtree);
+                                    await this.ReadHierarchyAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-BOOLEAN":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueBoolean = new AttributeValueBoolean(this);
-                                    await attributeValueBoolean.ReadXmlAsync(subtree);
+                                    await attributeValueBoolean.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-DATE":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueDate = new AttributeValueDate(this);
-                                    await attributeValueDate.ReadXmlAsync(subtree);
+                                    await attributeValueDate.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-ENUMERATION":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueEnumeration = new AttributeValueEnumeration(this);
-                                    await attributeValueEnumeration.ReadXmlAsync(subtree);
+                                    await attributeValueEnumeration.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-INTEGER":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueInteger = new AttributeValueInteger(this);
-                                    await attributeValueInteger.ReadXmlAsync(subtree);
+                                    await attributeValueInteger.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-REAL":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueReal = new AttributeValueReal(this);
-                                    await attributeValueReal.ReadXmlAsync(subtree);
+                                    await attributeValueReal.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-STRING":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueString = new AttributeValueString(this);
-                                    await attributeValueString.ReadXmlAsync(subtree);
+                                    await attributeValueString.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                             case "ATTRIBUTE-VALUE-XHTML":
+
+                                if (token.IsCancellationRequested)
+                                {
+                                    token.ThrowIfCancellationRequested();
+                                }
+
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
                                     var attributeValueXhtml = new AttributeValueXHTML(this);
-                                    await attributeValueXhtml.ReadXmlAsync(subtree);
+                                    await attributeValueXhtml.ReadXmlAsync(subtree, token);
                                 }
                                 break;
                         }
                     }
 
-                    await this.ReadObjectSpecificElementsAsync(specElementWithAttributesReader);
+                    await this.ReadObjectSpecificElementsAsync(specElementWithAttributesReader, token);
                 }
             }
         }
@@ -317,8 +385,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Asynchronously reads the concrete <see cref="SpecElementWithAttributes"/> elements
         /// </summary>
-        /// <param name="reader">The current <see cref="XmlReader"/></param>
-        protected virtual async Task ReadObjectSpecificElementsAsync(XmlReader reader)
+        /// <param name="reader">
+        /// The current <see cref="XmlReader"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected virtual async Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
         {
         }
 
@@ -336,7 +409,10 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected abstract Task ReadSpecTypeAsync(XmlReader reader);
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected abstract Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Reads the <see cref="SpecType"/> which is specific to the <see cref="SpecElementWithAttributes"/> sub class
@@ -352,7 +428,10 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected abstract Task ReadHierarchyAsync(XmlReader reader);
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected abstract Task ReadHierarchyAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Converts a <see cref="SpecElementWithAttributes"/> object into its XML representation.

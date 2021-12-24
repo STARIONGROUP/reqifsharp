@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
@@ -198,54 +199,98 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
                     switch (reader.LocalName)
                     {
                         case "DATATYPES":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             using (var dataTypesSubtree = reader.ReadSubtree())
                             {
                                 await dataTypesSubtree.MoveToContentAsync();
-                                await this.DeserializeDataTypesAsync(dataTypesSubtree);
+                                await this.DeserializeDataTypesAsync(dataTypesSubtree, token);
                             }
                             break;
                         case "SPEC-TYPES":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             using (var specTypesSubtree = reader.ReadSubtree())
                             {
                                 await specTypesSubtree.MoveToContentAsync();
-                                await this.DeserializeSpecTypesAsync(specTypesSubtree);
+                                await this.DeserializeSpecTypesAsync(specTypesSubtree, token);
                             }
                             break;
                         case "SPEC-OBJECTS":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             using (var specObjectsSubtree = reader.ReadSubtree())
                             {
                                 await specObjectsSubtree.MoveToContentAsync();
-                                await this.DeserializeSpectObjectsAsync(specObjectsSubtree);
+                                await this.DeserializeSpectObjectsAsync(specObjectsSubtree, token);
                             }
                             break;
                         case "SPEC-RELATIONS":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             using (var specRelationsSubtree = reader.ReadSubtree())
                             {
                                 await specRelationsSubtree.MoveToContentAsync();
-                                await this.DeserializeSpecRelationsAsync(specRelationsSubtree);
+                                await this.DeserializeSpecRelationsAsync(specRelationsSubtree, token);
                             }
                             break;
                         case "SPECIFICATIONS":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             using (var specificationsSubtree = reader.ReadSubtree())
                             {
                                 await specificationsSubtree.MoveToContentAsync();
-                                await this.DeserializeSpecificationsAsync(specificationsSubtree);
+                                await this.DeserializeSpecificationsAsync(specificationsSubtree, token);
                             }
                             break;
                         case "SPEC-RELATION-GROUPS":
+
+                            if (token.IsCancellationRequested)
+                            {
+                                token.ThrowIfCancellationRequested();
+                            }
+
                             using (var specRelationGroupsSubtree = reader.ReadSubtree())
                             {
                                 await specRelationGroupsSubtree.MoveToContentAsync();
-                                await this.DeserializeRelationGroupsAsync(specRelationGroupsSubtree);
+                                await this.DeserializeRelationGroupsAsync(specRelationGroupsSubtree, token);
                             }
                             break;
                     }
@@ -277,10 +322,18 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task DeserializeDataTypesAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task DeserializeDataTypesAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this);
@@ -324,10 +377,18 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task DeserializeSpecTypesAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task DeserializeSpecTypesAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
                     var xmlname = reader.LocalName;
@@ -335,12 +396,17 @@ namespace ReqIFSharp
                     if (xmlname == "SPEC-OBJECT-TYPE" || xmlname == "SPECIFICATION-TYPE"
                                                       || xmlname == "SPEC-RELATION-TYPE" || xmlname == "RELATION-GROUP-TYPE")
                     {
+                        if (token.IsCancellationRequested)
+                        {
+                            token.ThrowIfCancellationRequested();
+                        }
+
                         using (var subtree = reader.ReadSubtree())
                         {
                             await subtree.MoveToContentAsync();
 
                             var specType = ReqIfFactory.SpecTypeConstrcut(xmlname, this);
-                            await specType.ReadXmlAsync(subtree);
+                            await specType.ReadXmlAsync(subtree, token);
                         }
                     }
                 }
@@ -376,18 +442,31 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task DeserializeSpectObjectsAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task DeserializeSpectObjectsAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECT")
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
 
                         var specObject = new SpecObject(this);
-                        await specObject.ReadXmlAsync(subtree);
+                        await specObject.ReadXmlAsync(subtree, token);
                     }
                 }
             }
@@ -422,18 +501,31 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task DeserializeSpecRelationsAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task DeserializeSpecRelationsAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION")
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
 
                         var specRelation = new SpecRelation(this);
-                        await specRelation.ReadXmlAsync(subtree);
+                        await specRelation.ReadXmlAsync(subtree, token);
                     }
                 }
             }
@@ -468,18 +560,31 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task DeserializeSpecificationsAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task DeserializeSpecificationsAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPECIFICATION")
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
 
                         var specification = new Specification(this);
-                        await specification.ReadXmlAsync(subtree);
+                        await specification.ReadXmlAsync(subtree, token);
                     }
                 }
             }
@@ -514,18 +619,31 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task DeserializeRelationGroupsAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task DeserializeRelationGroupsAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
+                if (token.IsCancellationRequested)
+                {
+                    token.ThrowIfCancellationRequested();
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "RELATION-GROUP")
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
 
                         var relationGroup = new RelationGroup(this);
-                        await relationGroup.ReadXmlAsync(subtree);
+                        await relationGroup.ReadXmlAsync(subtree, token);
                     }
                 }
             }

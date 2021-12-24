@@ -27,6 +27,7 @@ namespace ReqIFSharp
     using System.Linq;
     using System.Reflection;
     using System.Resources;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Schema;
@@ -106,6 +107,9 @@ namespace ReqIFSharp
         /// <param name="xmlFilePath">
         /// The Path of the <see cref="ReqIF"/> file to deserialize
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <param name="validate">
         /// a value indicating whether the XML document needs to be validated or not
         /// </param>
@@ -115,7 +119,7 @@ namespace ReqIFSharp
         /// <returns>
         /// A fully de-referenced <see cref="ReqIF"/> object graph
         /// </returns>
-        public async Task<IEnumerable<ReqIF>> DeserializeAsync(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        public async Task<IEnumerable<ReqIF>> DeserializeAsync(string xmlFilePath, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
             if (string.IsNullOrEmpty(xmlFilePath))
             {
@@ -127,7 +131,7 @@ namespace ReqIFSharp
                 byte[] result = new byte[fileStream.Length];
                 await fileStream.ReadAsync(result, 0, (int)fileStream.Length);
 
-                return await this.DeserializeAsync(fileStream, validate, validationEventHandler);
+                return await this.DeserializeAsync(fileStream, token, validate, validationEventHandler);
             }
         }
 
@@ -136,6 +140,9 @@ namespace ReqIFSharp
         /// </summary>
         /// <param name="stream">
         /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         /// <param name="validate">
         /// a value indicating whether the XML document needs to be validated or not
@@ -146,7 +153,7 @@ namespace ReqIFSharp
         /// <returns>
         /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
         /// </returns>
-        public Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        public Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
             if (!validate && validationEventHandler != null)
             {
@@ -163,7 +170,7 @@ namespace ReqIFSharp
                 throw new ArgumentException($"The {nameof(stream)} may not be empty", nameof(stream));
             }
 
-            return this.DeserializeReqIFAsync(stream, validate, validationEventHandler);
+            return this.DeserializeReqIFAsync(stream, token, validate, validationEventHandler);
         }
 
         /// <summary>
@@ -249,6 +256,9 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> that contains the reqifz file to deserialize
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <param name="validate">
         /// a value indicating whether the XML document needs to be validated or not
         /// </param>
@@ -258,7 +268,7 @@ namespace ReqIFSharp
         /// <returns>
         /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
         /// </returns>
-        private async Task<IEnumerable<ReqIF>> DeserializeReqIFAsync(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        private async Task<IEnumerable<ReqIF>> DeserializeReqIFAsync(Stream stream, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
             XmlReader xmlReader;
 
@@ -274,6 +284,11 @@ namespace ReqIFSharp
                         throw new FileNotFoundException($"No reqif file could be found in the archive.");
                     }
 
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     var reqifs = new List<ReqIF>();
                     foreach (var zipArchiveEntry in reqIfEntries)
                     {
@@ -284,10 +299,15 @@ namespace ReqIFSharp
                                 if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
                                 {
                                     var reqif = new ReqIF();
-                                    await reqif.ReadXmlAsync(xmlReader);
+                                    await reqif.ReadXmlAsync(xmlReader, token);
                                     reqifs.Add(reqif);
                                 }
                             }
+                        }
+
+                        if (token.IsCancellationRequested)
+                        {
+                            token.ThrowIfCancellationRequested();
                         }
                     }
 
@@ -307,7 +327,7 @@ namespace ReqIFSharp
                             if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
                             {
                                 var reqif = new ReqIF();
-                                await reqif.ReadXmlAsync(xmlReader);
+                                await reqif.ReadXmlAsync(xmlReader, token);
                                 reqifs.Add(reqif);
                             }
                         }

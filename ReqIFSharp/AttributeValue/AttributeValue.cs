@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Serialization;
@@ -128,7 +129,10 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public abstract Task ReadXmlAsync(XmlReader reader);
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Converts a <see cref="AttributeValue"/> object into its XML representation.

@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.Linq;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     
@@ -109,8 +110,16 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected override async Task ReadSpecTypeAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected override async Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (reader.ReadToDescendant("SPEC-OBJECT-TYPE-REF"))
             {
                 var reference = await reader.ReadElementContentAsStringAsync();
@@ -136,7 +145,10 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected override Task ReadHierarchyAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected override Task ReadHierarchyAsync(XmlReader reader, CancellationToken token)
         {
             throw new InvalidOperationException("SpecRelation does not have a hierarchy");
         }

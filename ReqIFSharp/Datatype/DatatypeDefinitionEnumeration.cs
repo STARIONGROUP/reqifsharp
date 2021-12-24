@@ -23,9 +23,10 @@ namespace ReqIFSharp
     using System;
     using System.Collections.Generic;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionEnumeration"/> class is to define enumeration types.
     /// </summary>
@@ -99,18 +100,31 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            await base.ReadXmlAsync(reader);
+            await base.ReadXmlAsync(reader, token);
+
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
 
             using (var subtree = reader.ReadSubtree())
             {
                 while (await subtree.ReadAsync())
                 {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ENUM-VALUE")
                     {
                         var enumvalue = new EnumValue(this);
-                        await enumvalue.ReadXmlAsync(subtree);
+                        await enumvalue.ReadXmlAsync(subtree, token);
                     }
                 }
             }

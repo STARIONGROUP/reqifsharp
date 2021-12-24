@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Schema;
     
@@ -70,6 +71,9 @@ namespace ReqIFSharp
         /// <param name="xmlFilePath">
         /// The Path of the <see cref="ReqIF"/> file to deserialize
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <param name="validate">
         /// a value indicating whether the XML document needs to be validated or not
         /// </param>
@@ -79,13 +83,16 @@ namespace ReqIFSharp
         /// <returns>
         /// A fully de-referenced <see cref="ReqIF"/> object graph
         /// </returns>
-        Task<IEnumerable<ReqIF>> DeserializeAsync(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
+        Task<IEnumerable<ReqIF>> DeserializeAsync(string xmlFilePath, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null);
 
         /// <summary>
         /// Asynchronously deserializes a <see cref="ReqIF"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">
         /// The <see cref="Stream"/> that contains the reqifz file to deserialize
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         /// <param name="validate">
         /// a value indicating whether the XML document needs to be validated or not
@@ -96,6 +103,6 @@ namespace ReqIFSharp
         /// <returns>
         /// Fully de-referenced <see cref="IEnumerable{ReqIF}"/> object graphs
         /// </returns>
-        Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null);
+        Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null);
     }
 }
