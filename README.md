@@ -8,7 +8,6 @@ ReqIFSharp is a C# library for reading and writing ReqIF documents. ReqIFSharp i
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Reliability Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=reliability_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
