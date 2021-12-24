@@ -332,8 +332,9 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        protected virtual async Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
+        protected virtual Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
         {
+            return Task.CompletedTask;
         }
 
         /// <summary>
