@@ -62,22 +62,7 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            using (var subtree = reader.ReadSubtree())
-            {
-                while (subtree.Read())
-                {
-                    if (subtree.MoveToContent() == XmlNodeType.Element)
-                    {
-                        switch (subtree.LocalName)
-                        {
-                            case "ALTERNATIVE-ID":
-                                var alternativeId = new AlternativeId(this);
-                                alternativeId.ReadXml(subtree);
-                                break;
-                        }
-                    }
-                }
-            }
+            this.ReadAlternativeId(reader);
         }
 
         /// <summary>
@@ -86,31 +71,14 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
-            using (var subtree = reader.ReadSubtree())
-            {
-                while (await subtree.ReadAsync())
-                {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
-                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
-                    {
-                        switch (subtree.LocalName)
-                        {
-                            case "ALTERNATIVE-ID":
-                                var alternativeId = new AlternativeId(this);
-                                alternativeId.ReadXml(reader);
-                                break;
-                        }
-                    }
-                }
-            }
+            await this.ReadAlternativeIdAsync(reader, token);
         }
     }
 }

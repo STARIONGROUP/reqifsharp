@@ -85,22 +85,7 @@ namespace ReqIFSharp
                 this.Min = XmlConvert.ToInt64(minValue);
             }
 
-            using (var subtree = reader.ReadSubtree())
-            {
-                while (subtree.Read())
-                {
-                    if (subtree.MoveToContent() == XmlNodeType.Element)
-                    {
-                        switch (subtree.LocalName)
-                        {
-                            case "ALTERNATIVE-ID":
-                                var alternativeId = new AlternativeId(this);
-                                alternativeId.ReadXml(subtree);
-                                break;
-                        }
-                    }
-                }
-            }
+            this.ReadAlternativeId(reader);
         }
 
         /// <summary>
@@ -128,27 +113,7 @@ namespace ReqIFSharp
                 this.Min = XmlConvert.ToInt64(minValue);
             }
 
-            using (var subtree = reader.ReadSubtree())
-            {
-                while (await subtree.ReadAsync())
-                {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
-
-                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
-                    {
-                        switch (subtree.LocalName)
-                        {
-                            case "ALTERNATIVE-ID":
-                                var alternativeId = new AlternativeId(this);
-                                alternativeId.ReadXml(reader);
-                                break;
-                        }
-                    }
-                }
-            }
+            await this.ReadAlternativeIdAsync(reader, token);
         }
 
         /// <summary>

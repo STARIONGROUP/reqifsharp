@@ -54,5 +54,65 @@ namespace ReqIFSharp
         /// Gets or sets the owning <see cref="ReqIFContent"/>
         /// </summary>
         public ReqIFContent ReqIFContent { get; set; }
+
+        /// <summary>
+        /// Asynchronously read the <see cref="AlternativeId"/> from the <see cref="XmlReader"/>
+        /// </summary>
+        /// <param name="reader">
+        /// The reader to read from
+        /// </param>
+        protected void ReadAlternativeId(XmlReader reader)
+        {
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (subtree.Read())
+                {
+                    if (subtree.MoveToContent() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(subtree);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously read the <see cref="AlternativeId"/> from the <see cref="XmlReader"/>
+        /// </summary>
+        /// <param name="reader">
+        /// The reader to read from
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected async Task ReadAlternativeIdAsync(XmlReader reader, CancellationToken token)
+        {
+            using (var subtree = reader.ReadSubtree())
+            {
+                while (await subtree.ReadAsync())
+                {
+                    if (token.IsCancellationRequested)
+                    {
+                        token.ThrowIfCancellationRequested();
+                    }
+
+                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
+                    {
+                        switch (subtree.LocalName)
+                        {
+                            case "ALTERNATIVE-ID":
+                                var alternativeId = new AlternativeId(this);
+                                alternativeId.ReadXml(reader);
+                                break;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
