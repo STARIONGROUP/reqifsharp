@@ -197,7 +197,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_the_Tool_Extensions_are_DeserializedAsync_from_ProR_Traceability_template_And_Cancelled()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            cancellationTokenSource.CancelAfter(10);
+            cancellationTokenSource.CancelAfter(1);
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
