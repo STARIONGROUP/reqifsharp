@@ -145,9 +145,12 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
             if (this.Properties == null)
             {
@@ -156,7 +159,7 @@ namespace ReqIFSharp
 
             await writer.WriteStartElementAsync(null, "PROPERTIES", null);
             await writer.WriteStartElementAsync(null, "EMBEDDED-VALUE", null);
-            await this.Properties.WriteXmlAsync(writer);
+            await this.Properties.WriteXmlAsync(writer, token);
             await writer.WriteEndElementAsync();
             await writer.WriteEndElementAsync();
         }

@@ -185,14 +185,17 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> property may not be null.
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {
                 throw new SerializationException($"The Type property of SpecObject {this.Identifier}:{this.LongName} may not be null");
             }
 
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
             await writer.WriteStartElementAsync(null, "TYPE", null);
             await writer.WriteElementStringAsync(null, "SPEC-OBJECT-TYPE-REF", null, this.Type.Identifier);

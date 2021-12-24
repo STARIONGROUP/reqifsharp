@@ -250,10 +250,13 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {
@@ -262,7 +265,7 @@ namespace ReqIFSharp
 
             await writer.WriteAttributeStringAsync(null,"MULTI-VALUED", null, this.IsMultiValued ? "true" : "false");
 
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
             if (this.DefaultValue != null)
             {

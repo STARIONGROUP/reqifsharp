@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -81,10 +82,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_WriteXmlAsync_Without_Definition_Set_Throws_SerializationException()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             using var fs = new FileStream("test.xml", FileMode.Create);
             using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
             var attributeValueDate = new AttributeValueDate();
-            Assert.That(async () => await attributeValueDate.WriteXmlAsync(writer), Throws.Exception.TypeOf<SerializationException>());
+            Assert.That(async () => await attributeValueDate.WriteXmlAsync(writer, cancellationTokenSource.Token), Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]

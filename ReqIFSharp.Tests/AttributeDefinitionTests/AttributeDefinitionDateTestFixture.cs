@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -91,6 +92,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_Is_Null()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             using var memoryStream = new MemoryStream();
             using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
             var attributeDefinitionDate = new AttributeDefinitionDate()
@@ -99,7 +102,7 @@ namespace ReqIFSharp.Tests
                 LongName = "longname"
             };
 
-            Assert.That(async () => await attributeDefinitionDate.WriteXmlAsync(writer),
+            Assert.That(async () => await attributeDefinitionDate.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>()
                     .With.Message.Contains("The Type property of AttributeDefinitionDate identifier:longname may not be null"));
         }
@@ -133,6 +136,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_WriteXmlAsync_does_not_throw_exception()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var datatypeDefinitionDate = new DatatypeDefinitionDate
             {
                 Identifier = "datatypeDefinitionDate"
@@ -152,7 +157,7 @@ namespace ReqIFSharp.Tests
             await using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, ConformanceLevel = ConformanceLevel.Fragment, Async = true});
             await writer.WriteStartElementAsync(null, "TEST", null);
 
-            Assert.That(async () => await attributeDefinitionDate.WriteXmlAsync(writer),
+            Assert.That(async () => await attributeDefinitionDate.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Nothing);
         }
     }

@@ -165,8 +165,16 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Identifier"/> may not be null or empty
         /// </exception>
-        public virtual async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public virtual async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (string.IsNullOrEmpty(this.Identifier))
             {
                 throw new SerializationException("The Identifier property of an Identifiable may not be null");
@@ -189,7 +197,7 @@ namespace ReqIFSharp
             if (this.AlternativeId != null)
             {
                 await writer.WriteStartElementAsync(null, "ALTERNATIVE-ID", null);
-                await this.AlternativeId.WriteXmlAsync(writer);
+                await this.AlternativeId.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
         }

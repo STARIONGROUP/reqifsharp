@@ -23,6 +23,7 @@ namespace ReqIFLib.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -87,12 +88,14 @@ namespace ReqIFLib.Tests
         [Test]
         public void Verify_that_When_Type_is_null_WriteXmlAsync_throws_exception()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var stream = new MemoryStream();
             var writer = XmlWriter.Create(stream, this.settings);
 
             var specification = new Specification();
 
-            Assert.That(async () => await specification.WriteXmlAsync(writer),
+            Assert.That(async () => await specification.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.TypeOf<SerializationException>());
         }
 

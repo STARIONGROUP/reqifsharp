@@ -50,7 +50,7 @@ namespace ReqIFSharp.Tests
         public async Task Verify_That_ProR_Traceability_Template_reqif_file_can_deserialized_and_async_serialized_with_equivalent_output()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            
+
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
 
@@ -60,7 +60,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIf, resultFileUri));
+            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIf, resultFileUri, cancellationTokenSource.Token));
         }
 
         [Test]
@@ -91,7 +91,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIf, resultFileUri));
+            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIf, resultFileUri, cancellationTokenSource.Token));
         }
 
         [Test]
@@ -136,7 +136,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "DefaultValueDemo-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            await serializer.SerializeAsync(reqIf, resultFileUri);
+            await serializer.SerializeAsync(reqIf, resultFileUri, cancellationTokenSource.Token);
 
             var reqIf2 = deserializer.Deserialize(resultFileUri).First();
 

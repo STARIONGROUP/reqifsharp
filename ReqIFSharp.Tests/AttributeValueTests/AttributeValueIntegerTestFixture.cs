@@ -22,6 +22,7 @@ namespace ReqIFLib.Tests
 {
     using System;
     using System.IO;
+    using System.Threading;
     using System.Runtime.Serialization;
     using System.Xml;
 
@@ -81,10 +82,12 @@ namespace ReqIFLib.Tests
         [Test]
         public void Verify_That_WriteXmlAsync_Without_Definition_Set_Throws_SerializationException()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             using var fs = new FileStream("test.xml", FileMode.Create);
             using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true, Async = true});
             var attributeValueInteger = new AttributeValueInteger();
-            Assert.That(async () => await attributeValueInteger.WriteXmlAsync(writer), Throws.Exception.TypeOf<SerializationException>());
+            Assert.That(async () => await attributeValueInteger.WriteXmlAsync(writer, cancellationTokenSource.Token), Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]

@@ -18,14 +18,13 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.Net;
-
 namespace ReqIFSharp
 {
     using System;
     using System.IO;
     using System.Security;
     using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
     using System.Xml.Schema;
@@ -106,6 +105,9 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <exception cref="XmlSchemaValidationException"></exception>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="UnauthorizedAccessException"></exception>
@@ -113,7 +115,7 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        public Task SerializeAsync(ReqIF reqIf, string fileUri)
+        public Task SerializeAsync(ReqIF reqIf, string fileUri, CancellationToken token)
         {
             if (reqIf == null)
             {
@@ -130,9 +132,9 @@ namespace ReqIFSharp
                 throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
             }
 
-            return this.WriteXmlToFileAsync(reqIf, fileUri);
+            return this.WriteXmlToFileAsync(reqIf, fileUri, token);
         }
-        
+
         /// <summary>
         /// Async Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
@@ -142,6 +144,9 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <exception cref="XmlSchemaValidationException"></exception>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="UnauthorizedAccessException"></exception>
@@ -149,7 +154,7 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        public Task SerializeAsync(ReqIF reqIf, Stream stream)
+        public Task SerializeAsync(ReqIF reqIf, Stream stream, CancellationToken token)
         {
             if (reqIf == null)
             {
@@ -161,7 +166,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(stream), "The stream cannot be null.");
             }
 
-            return this.WriteXmlToStreamAsync(reqIf, stream);
+            return this.WriteXmlToStreamAsync(reqIf, stream, token);
         }
 
         /// <summary>
@@ -173,14 +178,22 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <returns>
         /// an awaitable task
         /// </returns>
-        private async Task WriteXmlToFileAsync(ReqIF reqIf, string fileUri)
+        private async Task WriteXmlToFileAsync(ReqIF reqIf, string fileUri, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             using (var writer = XmlWriter.Create(fileUri, this.CreateXmlWriterSettings(true)))
             {
-                await this.WriteXmlAsync(writer, reqIf);
+                await this.WriteXmlAsync(writer, reqIf, token);
             }
         }
 
@@ -193,14 +206,22 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <returns>
         /// an awaitable task
         /// </returns>
-        private async Task WriteXmlToStreamAsync(ReqIF reqIf, Stream stream)
+        private async Task WriteXmlToStreamAsync(ReqIF reqIf, Stream stream, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings(true)))
             {
-                await this.WriteXmlAsync(writer, reqIf);
+                await this.WriteXmlAsync(writer, reqIf, token);
             }
         }
 
@@ -248,11 +269,19 @@ namespace ReqIFSharp
         /// <param name="reqIf">
         /// The <see cref="ReqIF"/> object that is to be serialized
         /// </param>
-        private async Task WriteXmlAsync(XmlWriter xmlWriter, ReqIF reqIf)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteXmlAsync(XmlWriter xmlWriter, ReqIF reqIf, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await xmlWriter.WriteStartDocumentAsync();
             await xmlWriter.WriteStartElementAsync(null,"REQ-IF", DefaultXmlAttributeFactory.ReqIFSchemaUri);
-            await reqIf.WriteXmlAsync(xmlWriter);
+            await reqIf.WriteXmlAsync(xmlWriter, token);
             await xmlWriter.WriteEndElementAsync();
             await xmlWriter.WriteEndDocumentAsync();
         }

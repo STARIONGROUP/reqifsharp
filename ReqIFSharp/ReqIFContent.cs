@@ -671,14 +671,22 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            await this.WriteDataDefinitionsAsync(writer);
-            await this.WriteSpecTypesAsync(writer);
-            await this.WriteSpecObjectsAsync(writer);
-            await this.WriteSpecRelationsAsync(writer);
-            await this.WriteSpecificationsAsync(writer);
-            await this.WriteRelationGroupAsync(writer);
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
+            await this.WriteDataDefinitionsAsync(writer, token);
+            await this.WriteSpecTypesAsync(writer, token);
+            await this.WriteSpecObjectsAsync(writer, token);
+            await this.WriteSpecRelationsAsync(writer, token);
+            await this.WriteSpecificationsAsync(writer, token);
+            await this.WriteRelationGroupAsync(writer, token);
         }
 
         /// <summary>
@@ -725,8 +733,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteDataDefinitionsAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteDataDefinitionsAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.dataTypes.Count == 0)
             {
                 return;
@@ -738,7 +754,7 @@ namespace ReqIFSharp
             {
                 var xmlElementNAme = ReqIfFactory.XmlName(datatypeDefinition);
                 await writer.WriteStartElementAsync(null, xmlElementNAme, null);
-                await datatypeDefinition.WriteXmlAsync(writer);
+                await datatypeDefinition.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 
@@ -777,8 +793,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSpecTypesAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSpecTypesAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.specTypes.Count == 0)
             {
                 return;
@@ -790,7 +814,7 @@ namespace ReqIFSharp
             {
                 var xmlElementNAme = ReqIfFactory.XmlName(specType);
                 await writer.WriteStartElementAsync(null, xmlElementNAme, null);
-                await specType.WriteXmlAsync(writer);
+                await specType.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 
@@ -828,8 +852,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSpecObjectsAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSpecObjectsAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.specObjects.Count == 0)
             {
                 return;
@@ -840,7 +872,7 @@ namespace ReqIFSharp
             foreach (var specObject in this.specObjects)
             {
                 await writer.WriteStartElementAsync(null, "SPEC-OBJECT", null);
-                await specObject.WriteXmlAsync(writer);
+                await specObject.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 
@@ -878,8 +910,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSpecRelationsAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSpecRelationsAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.specRelations.Count == 0)
             {
                 return;
@@ -890,7 +930,7 @@ namespace ReqIFSharp
             foreach (var specRelation in this.specRelations)
             {
                 await writer.WriteStartElementAsync(null, "SPEC-RELATION", null);
-                await specRelation.WriteXmlAsync(writer);
+                await specRelation.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 
@@ -928,8 +968,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSpecificationsAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSpecificationsAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.specifications.Count == 0)
             {
                 return;
@@ -940,7 +988,7 @@ namespace ReqIFSharp
             foreach (var specification in this.specifications)
             {
                 await writer.WriteStartElementAsync(null, "SPECIFICATION", null);
-                await specification.WriteXmlAsync(writer);
+                await specification.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 
@@ -978,8 +1026,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteRelationGroupAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteRelationGroupAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.specRelationGroups.Count == 0)
             {
                 return;
@@ -990,7 +1046,7 @@ namespace ReqIFSharp
             foreach (var relationGroup in this.specRelationGroups)
             {
                 await writer.WriteStartElementAsync(null, "RELATION-GROUP", null);
-                await relationGroup.WriteXmlAsync(writer);
+                await relationGroup.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 

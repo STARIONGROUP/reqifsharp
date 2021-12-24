@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -82,6 +83,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_Is_Null()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             var relationGroup = new RelationGroup();
 
             // Type is not set
@@ -89,7 +92,7 @@ namespace ReqIFSharp.Tests
             {
                 using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
                 {
-                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer),
+                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer, cancellationTokenSource.Token),
                         Throws.TypeOf<SerializationException>()
                             .With.Message.EqualTo("The Type property of RelationGroup : may not be null"));
                 }
@@ -102,7 +105,7 @@ namespace ReqIFSharp.Tests
             {
                 using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
                 {
-                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer),
+                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer, cancellationTokenSource.Token),
                         Throws.TypeOf<SerializationException>()
                             .With.Message.EqualTo("The SourceSpecification property of RelationGroup : may not be null"));
                 }
@@ -116,7 +119,7 @@ namespace ReqIFSharp.Tests
             {
                 using (var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true }))
                 {
-                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer),
+                    Assert.That(async () => await relationGroup.WriteXmlAsync(writer, cancellationTokenSource.Token),
                         Throws.TypeOf<SerializationException>()
                             .With.Message.EqualTo("The TargetSpecification property of RelationGroup : may not be null"));
                 }

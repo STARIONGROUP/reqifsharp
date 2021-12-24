@@ -22,6 +22,7 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
 {
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -61,6 +62,8 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
         [Test]
         public void Verify_that_When_Object_is_null_WriteXmlAsync_throws_exception()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             this.settings.Async = true;
 
             var stream = new MemoryStream();
@@ -73,7 +76,7 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
             };
 
             Assert.That(
-                async () => await specHierarchy.WriteXmlAsync(writer),
+                async () => await specHierarchy.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>()
                     .With.Message.Contains("The Object property of SpecHierarchy identifier:longname may not be null"));
         }

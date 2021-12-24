@@ -221,11 +221,14 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            await base.WriteXmlAsync(writer);
-
-            await this.WriteSpecAttributesAsync(writer);
+            await base.WriteXmlAsync(writer, token);
+            
+            await this.WriteSpecAttributesAsync(writer, token);
         }
 
         /// <summary>
@@ -260,7 +263,10 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSpecAttributesAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSpecAttributesAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.specAttributes.Count == 0)
             {
@@ -273,7 +279,7 @@ namespace ReqIFSharp
             {
                 var xmlname = ReqIfFactory.XmlName(attributeDefinition);
                 await writer.WriteStartElementAsync(null, xmlname, null);
-                await attributeDefinition.WriteXmlAsync(writer);
+                await attributeDefinition.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 

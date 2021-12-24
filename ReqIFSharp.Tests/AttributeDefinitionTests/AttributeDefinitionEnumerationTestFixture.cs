@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -83,11 +84,13 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_I_sNull()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             using var memoryStream = new MemoryStream();
             using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, Async = true});
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
 
-            Assert.That(async () => await attributeDefinitionEnumeration.WriteXmlAsync(writer),
+            Assert.That(async () => await attributeDefinitionEnumeration.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>());
         }
     }

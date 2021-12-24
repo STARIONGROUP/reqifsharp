@@ -220,11 +220,19 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Definition"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Definition == null)
             {
                 throw new SerializationException("The Definition property of an AttributeValueInteger may not be null");
+            }
+
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
             }
 
             await writer.WriteAttributeStringAsync(null,"THE-VALUE",null, this.TheValue.ToString(NumberFormatInfo.InvariantInfo));

@@ -452,11 +452,14 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
-            await this.WriteValuesAsync(writer);
+            await this.WriteValuesAsync(writer, token);
         }
 
         /// <summary>
@@ -535,7 +538,10 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteValuesAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteValuesAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.values.Count == 0)
             {
@@ -549,49 +555,49 @@ namespace ReqIFSharp
                 if (attributeValue is AttributeValueBoolean)
                 {
                     await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-BOOLEAN", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
 
                 if (attributeValue is AttributeValueDate)
                 {
                     await writer.WriteStartElementAsync(null,"ATTRIBUTE-VALUE-DATE", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
 
                 if (attributeValue is AttributeValueEnumeration)
                 {
                     await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-ENUMERATION", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
 
                 if (attributeValue is AttributeValueInteger)
                 {
                     await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-INTEGER", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
 
                 if (attributeValue is AttributeValueReal)
                 {
                     await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-REAL", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
 
                 if (attributeValue is AttributeValueString)
                 {
                     await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-STRING", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
 
                 if (attributeValue is AttributeValueXHTML)
                 {
                     await writer.WriteStartElementAsync(null,"ATTRIBUTE-VALUE-XHTML", null);
-                    await attributeValue.WriteXmlAsync(writer);
+                    await attributeValue.WriteXmlAsync(writer, token);
                     await writer.WriteEndElementAsync();
                 }
             }

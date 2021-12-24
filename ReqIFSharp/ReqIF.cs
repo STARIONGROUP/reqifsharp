@@ -254,8 +254,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await this.WriteNameSpaceAttributesAsync(writer);
 
             if (!string.IsNullOrEmpty(this.Lang))
@@ -263,9 +271,9 @@ namespace ReqIFSharp
                 await writer.WriteAttributeStringAsync(null, "lang", "xml",this.Lang );
             }
 
-            await this.WriteTheHeaderAsync(writer);
-            await this.WriteCoreContentAsync(writer);
-            await this.WriteToolExtensionAsync(writer);
+            await this.WriteTheHeaderAsync(writer, token);
+            await this.WriteCoreContentAsync(writer, token);
+            await this.WriteToolExtensionAsync(writer, token);
         }
 
         /// <summary>
@@ -363,11 +371,19 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteTheHeaderAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteTheHeaderAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await writer.WriteStartElementAsync(null, "THE-HEADER", null);
             await writer.WriteStartElementAsync(null,"REQ-IF-HEADER", null);
-            await this.TheHeader.WriteXmlAsync(writer);
+            await this.TheHeader.WriteXmlAsync(writer, token);
             await writer.WriteEndElementAsync();
             await writer.WriteEndElementAsync();
         }
@@ -393,11 +409,19 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteCoreContentAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteCoreContentAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await writer.WriteStartElementAsync(null,"CORE-CONTENT", null);
             await writer.WriteStartElementAsync(null,"REQ-IF-CONTENT", null);
-            await this.CoreContent.WriteXmlAsync(writer);
+            await this.CoreContent.WriteXmlAsync(writer, token);
             await writer.WriteEndElementAsync();
             await writer.WriteEndElementAsync();
         }
@@ -431,8 +455,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteToolExtensionAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteToolExtensionAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.ToolExtension.Count == 0)
             {
                 return;
@@ -442,7 +474,7 @@ namespace ReqIFSharp
             foreach (var reqIfToolExtension in this.ToolExtension)
             {
                 await writer.WriteStartElementAsync(null, "REQ-IF-TOOL-EXTENSION", null);
-                await reqIfToolExtension.WriteXmlAsync(writer);
+                await reqIfToolExtension.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
             await writer.WriteEndElementAsync();

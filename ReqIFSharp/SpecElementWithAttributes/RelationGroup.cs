@@ -383,7 +383,10 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The Object property may not be null.
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {
@@ -400,12 +403,12 @@ namespace ReqIFSharp
                 throw new SerializationException($"The TargetSpecification property of RelationGroup {this.Identifier}:{this.LongName} may not be null");
             }
 
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
-            await this.WriteTypeAsync(writer);
-            await this.WriteSourceSpecificationAsync(writer);
-            await this.WriteTargetSpecificationAsync(writer);
-            await this.WriteSpecRelationsAsync(writer);
+            await this.WriteTypeAsync(writer, token);
+            await this.WriteSourceSpecificationAsync(writer, token);
+            await this.WriteTargetSpecificationAsync(writer, token);
+            await this.WriteSpecRelationsAsync(writer, token);
         }
 
         /// <summary>
@@ -427,8 +430,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteTypeAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteTypeAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await writer.WriteStartElementAsync(null,"TYPE", null);
             await writer.WriteElementStringAsync(null, "RELATION-GROUP-TYPE-REF", null, this.Type.Identifier);
             await writer.WriteEndElementAsync();
@@ -453,8 +464,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSourceSpecificationAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSourceSpecificationAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await writer.WriteStartElementAsync(null, "SOURCE-SPECIFICATION", null);
             await writer.WriteElementStringAsync(null, "SPECIFICATION-REF",null, this.SourceSpecification.Identifier);
             await writer.WriteEndElementAsync();
@@ -479,8 +498,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteTargetSpecificationAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteTargetSpecificationAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await writer.WriteStartElementAsync(null, "TARGET-SPECIFICATION", null);
             await writer.WriteElementStringAsync(null, "SPECIFICATION-REF",null, this.TargetSpecification.Identifier);
             await writer.WriteEndElementAsync();
@@ -515,8 +542,16 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        private async Task WriteSpecRelationsAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task WriteSpecRelationsAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             if (this.SpecRelations.Count == 0)
             {
                 return;

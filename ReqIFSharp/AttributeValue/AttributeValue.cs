@@ -148,7 +148,10 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public abstract Task WriteXmlAsync(XmlWriter writer);
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public abstract Task WriteXmlAsync(XmlWriter writer, CancellationToken token);
 
         /// <summary>
         /// This method is reserved and should not be used.

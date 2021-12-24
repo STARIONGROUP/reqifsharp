@@ -247,18 +247,26 @@ namespace ReqIFSharp
 
             this.WriteValues(writer);
         }
-
+        
         /// <summary>
         /// Asynchronously converts a <see cref="AttributeValueEnumeration"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Definition == null)
             {
                 throw new SerializationException("The Definition property of an AttributeValueEnumeration may not be null");
+            }
+
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
             }
 
             await this.WriteDefinitionAsync(writer);

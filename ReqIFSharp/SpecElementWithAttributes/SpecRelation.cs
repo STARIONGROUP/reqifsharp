@@ -302,7 +302,10 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The Type, Source and Target properties may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {
@@ -319,7 +322,7 @@ namespace ReqIFSharp
                 throw new SerializationException($"The Target of SpecRelation {this.Identifier}:{this.LongName} may not be null");
             }
 
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
             await writer.WriteStartElementAsync(null, "TYPE", null);
             await writer.WriteElementStringAsync(null, "SPEC-RELATION-TYPE-REF",null,  this.Type.Identifier);

@@ -23,6 +23,7 @@ namespace ReqIFSharp
     using System;
     using System.IO;
     using System.Security;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Schema;
 
@@ -68,6 +69,9 @@ namespace ReqIFSharp
         /// </summary>
         /// <param name="reqIf">The <see cref="ReqIF"/> object to serialize</param>
         /// <param name="fileUri">The path of the output file</param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <exception cref="XmlSchemaValidationException"></exception>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="UnauthorizedAccessException"></exception>
@@ -75,7 +79,7 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        Task SerializeAsync(ReqIF reqIf, string fileUri);
+        Task SerializeAsync(ReqIF reqIf, string fileUri, CancellationToken token);
 
         /// <summary>
         /// Async Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
@@ -86,6 +90,9 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <exception cref="XmlSchemaValidationException"></exception>
         /// <exception cref="ArgumentException"></exception>
         /// <exception cref="UnauthorizedAccessException"></exception>
@@ -93,6 +100,6 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        Task SerializeAsync(ReqIF reqIf, Stream stream);
+        Task SerializeAsync(ReqIF reqIf, Stream stream, CancellationToken token);
     }
 }

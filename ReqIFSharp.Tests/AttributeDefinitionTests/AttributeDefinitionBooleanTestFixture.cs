@@ -18,6 +18,8 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using System.Threading;
+
 namespace ReqIFSharp.Tests
 {
     using System;
@@ -89,6 +91,8 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_WriteXmlAsync_Throws_Exception_When_Type_Is_Null()
         {
+            var cancellationTokenSource = new CancellationTokenSource();
+
             using var memoryStream = new MemoryStream();
             using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean()
@@ -97,7 +101,7 @@ namespace ReqIFSharp.Tests
                 LongName = "longname"
             };
 
-            Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer),
+            Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>()
                     .With.Message.Contains("The Type property of AttributeDefinitionBoolean identifier:longname may not be null"));
         }
@@ -149,7 +153,8 @@ namespace ReqIFSharp.Tests
             await using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, ConformanceLevel = ConformanceLevel.Fragment, Async = true});
             await writer.WriteStartElementAsync(null, "TEST", null);
 
-            Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer), Throws.Nothing);
+            var cancellationTokenSource = new CancellationTokenSource();
+            Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer, cancellationTokenSource.Token), Throws.Nothing);
         }
     }
 }

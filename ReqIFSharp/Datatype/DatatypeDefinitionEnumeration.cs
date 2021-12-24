@@ -161,19 +161,22 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer)
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            await base.WriteXmlAsync(writer);
+            await base.WriteXmlAsync(writer, token);
 
             await writer.WriteStartElementAsync(null, "SPECIFIED-VALUES", null);
 
             foreach (var specifiedValue in this.specifiedValues)
             {
                 await writer.WriteStartElementAsync(null, "ENUM-VALUE", null);
-                await specifiedValue.WriteXmlAsync(writer);
+                await specifiedValue.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
 
