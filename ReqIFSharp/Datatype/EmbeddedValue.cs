@@ -84,33 +84,7 @@ namespace ReqIFSharp
 
             this.OtherContent = reader.GetAttribute("OTHER-CONTENT");
         }
-
-        /// <summary>
-        /// Asynchronously generates a <see cref="EmbeddedValue"/> object from its XML representation.
-        /// </summary>
-        /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
-        /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
-        {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
-
-            var key = reader.GetAttribute("KEY");
-
-            if (key != null)
-            {
-                this.Key = XmlConvert.ToInt32(key);
-            }
-
-            this.OtherContent = reader.GetAttribute("OTHER-CONTENT");
-        }
-
+        
         /// <summary>
         /// Converts a <see cref="EmbeddedValue"/> object into its XML representation.
         /// </summary>

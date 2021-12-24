@@ -106,7 +106,7 @@ namespace ReqIFSharp
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
                     {
                         var embeddedValue = new EmbeddedValue(this);
-                        await embeddedValue.ReadXmlAsync(subtree, token);
+                        embeddedValue.ReadXml(subtree);
                     }
                 }
             }

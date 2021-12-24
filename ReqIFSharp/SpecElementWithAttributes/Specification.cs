@@ -267,6 +267,11 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteTypeAsync(XmlWriter writer, CancellationToken token)
         {
+            if (token.IsCancellationRequested)
+            {
+                token.ThrowIfCancellationRequested();
+            }
+
             await writer.WriteStartElementAsync(null, "TYPE", null);
             await writer.WriteElementStringAsync(null, "SPECIFICATION-TYPE-REF",null, this.Type.Identifier);
             await writer.WriteEndElementAsync();
