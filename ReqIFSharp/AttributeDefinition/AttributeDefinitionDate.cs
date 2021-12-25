@@ -227,11 +227,6 @@ namespace ReqIFSharp
         /// </exception>
         public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (this.Type == null)
-            {
-                throw new SerializationException($"The Type property of AttributeDefinitionDate {this.Identifier}:{this.LongName} may not be null");
-            }
-
             await base.WriteXmlAsync(writer, token);
 
             if (this.DefaultValue != null)

@@ -209,11 +209,6 @@ namespace ReqIFSharp
         /// </exception>
         public override void WriteXml(XmlWriter writer)
         {
-            if (this.Type == null)
-            {
-                throw new SerializationException($"The Type property of AttributeDefinitionEnumeration {this.Identifier}:{this.LongName} may not be null");
-            }
-
             writer.WriteAttributeString("MULTI-VALUED", this.IsMultiValued ? "true" : "false");
 
             base.WriteXml(writer);
@@ -254,11 +249,6 @@ namespace ReqIFSharp
         /// </exception>
         public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (this.Type == null)
-            {
-                throw new SerializationException($"The Type property of AttributeDefinitionEnumeration {this.Identifier}:{this.LongName} may not be null");
-            }
-
             await writer.WriteAttributeStringAsync(null,"MULTI-VALUED", null, this.IsMultiValued ? "true" : "false");
 
             await base.WriteXmlAsync(writer, token);

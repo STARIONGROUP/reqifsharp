@@ -18,12 +18,14 @@
 // </copyright>
 // -------------------------------------------------------------------------------------------------
 
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-
 namespace ReqIFSharp
 {
+    using System;
+    using System.Runtime.Serialization;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml;
+
     /// <summary>
     /// The <see cref="AttributeDefinition"/> is the base class for attribute definitions.
     /// </summary>
@@ -100,5 +102,47 @@ namespace ReqIFSharp
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
+
+        /// <summary>
+        /// Converts a <see cref="AttributeDefinitionBoolean"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Type"/> may not be null
+        /// </exception>
+        public override void WriteXml(XmlWriter writer)
+        {
+            if (this.GetDatatypeDefinition() == null)
+            {
+                throw new SerializationException($"The Type property of {this.GetType().Name} {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            base.WriteXml(writer);
+        }
+
+
+        /// <summary>
+        /// Asynchronously converts a <see cref="AttributeDefinitionXHTML"/> object into its XML representation.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        /// <exception cref="SerializationException">
+        /// The <see cref="Type"/> may not be null
+        /// </exception>
+        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        {
+            if (this.GetDatatypeDefinition() == null)
+            {
+                throw new SerializationException($"The Type property of {this.GetType().Name} {this.Identifier}:{this.LongName} may not be null");
+            }
+
+            await base.WriteXmlAsync(writer, token);
+        }
     }
 }

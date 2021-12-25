@@ -189,11 +189,6 @@ namespace ReqIFSharp
         /// </exception>
         public override void WriteXml(XmlWriter writer)
         {
-            if (this.Type == null)
-            {
-                throw new SerializationException($"The Type property of AttributeDefinitionXHTML {this.Identifier}:{this.LongName} may not be null");
-            }
-
             base.WriteXml(writer);
 
             if (this.DefaultValue != null)
@@ -229,11 +224,6 @@ namespace ReqIFSharp
         /// </exception>
         public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (this.Type == null)
-            {
-                throw new SerializationException($"The Type property of AttributeDefinitionXHTML {this.Identifier}:{this.LongName} may not be null");
-            }
-
             await base.WriteXmlAsync(writer, token);
 
             if (this.DefaultValue != null)

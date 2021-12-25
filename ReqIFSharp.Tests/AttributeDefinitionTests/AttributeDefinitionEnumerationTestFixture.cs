@@ -74,7 +74,7 @@ namespace ReqIFSharp.Tests
         public void Verify_That_WriteXml_Throws_Exception_When_Type_I_sNull()
         {
             using var memoryStream = new MemoryStream();
-            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, ConformanceLevel = ConformanceLevel.Fragment });
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
 
             Assert.That(() => attributeDefinitionEnumeration.WriteXml(writer),
@@ -87,7 +87,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             using var memoryStream = new MemoryStream();
-            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, Async = true});
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true, Async = true, ConformanceLevel = ConformanceLevel.Fragment});
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
 
             Assert.That(async () => await attributeDefinitionEnumeration.WriteXmlAsync(writer, cancellationTokenSource.Token),
