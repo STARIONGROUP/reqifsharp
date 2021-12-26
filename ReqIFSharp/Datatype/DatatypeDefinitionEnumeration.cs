@@ -63,13 +63,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the owned enumeration literals
         /// </summary>
-        public List<EnumValue> SpecifiedValues 
-        {
-            get
-            {
-                return this.specifiedValues;
-            }
-        }
+        public List<EnumValue> SpecifiedValues => this.specifiedValues;
 
         /// <summary>
         /// Generates a <see cref="DatatypeDefinitionEnumeration"/> object from its XML representation.

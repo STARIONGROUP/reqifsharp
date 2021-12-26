@@ -80,15 +80,9 @@ namespace ReqIFSharp
         /// </summary>
         public AttributeDefinition AttributeDefinition 
         {
-            get
-            {
-                return this.GetAttributeDefinition();
-            }
+            get => this.GetAttributeDefinition();
 
-            set
-            {
-                this.SetAttributeDefinition(value);
-            }
+            set => this.SetAttributeDefinition(value);
         }
 
         /// <summary>

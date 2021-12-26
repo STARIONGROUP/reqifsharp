@@ -40,7 +40,7 @@ namespace ReqIFSharp
         /// </param>
         protected AttributeDefinitionSimple(SpecType specType) 
             : base(specType)
-        {            
+        {
         }
     }
 }

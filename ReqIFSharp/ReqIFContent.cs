@@ -64,68 +64,32 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the <see cref="DatatypeDefinition"/>s
         /// </summary>        
-        public List<DatatypeDefinition> DataTypes 
-        {
-                get
-                {
-                    return this.dataTypes;
-                }
-        }
+        public List<DatatypeDefinition> DataTypes => this.dataTypes;
 
         /// <summary>
         /// Gets the <see cref="SpecType"/>s
         /// </summary>        
-        public List<SpecType> SpecTypes 
-        {
-            get
-            {
-                return this.specTypes;
-            }
-        }
+        public List<SpecType> SpecTypes => this.specTypes;
 
         /// <summary>
         /// Gets the <see cref="SpecObject"/>
         /// </summary>
-        public List<SpecObject> SpecObjects 
-        {
-            get
-            {
-                return this.specObjects;
-            }
-        }
+        public List<SpecObject> SpecObjects => this.specObjects;
 
         /// <summary>
         /// Gets the <see cref="SpecRelation"/>
         /// </summary>
-        public List<SpecRelation> SpecRelations 
-        {
-            get
-            {
-                return this.specRelations;
-            }
-        }
+        public List<SpecRelation> SpecRelations => this.specRelations;
 
         /// <summary>
         /// Gets the <see cref="Specification"/>
         /// </summary>
-        public List<Specification> Specifications 
-        {
-            get
-            {
-                return this.specifications;
-            } 
-        }
+        public List<Specification> Specifications => this.specifications;
 
         /// <summary>
         /// Gets the <see cref="RelationGroup"/>
         /// </summary>
-        public List<RelationGroup> SpecRelationGroups 
-        {
-            get
-            {
-                return this.specRelationGroups;
-            }
-        }
+        public List<RelationGroup> SpecRelationGroups => this.specRelationGroups;
 
         /// <summary>
         /// Gets or sets the document root element.

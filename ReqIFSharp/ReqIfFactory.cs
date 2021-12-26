@@ -21,7 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
-    
+
     /// <summary>
     /// The purpose of the <see cref="ReqIfFactory"/> is to create new instances of concrete classes
     /// that are defined in the <see cref="ReqIF"/> namespace.

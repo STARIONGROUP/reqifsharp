@@ -27,7 +27,7 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
     /// <summary>
     /// Represents a hierarchically structured requirements specification.
     /// It is the root node of the tree that hierarchically structures <see cref="SpecObject"/> instances.
@@ -61,13 +61,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the links to next level of owned SpecHierarchy.
         /// </summary>
-        public List<SpecHierarchy> Children 
-        {
-            get
-            {
-                return this.children;
-            }
-        }
+        public List<SpecHierarchy> Children => this.children;
 
         /// <summary>
         /// Gets or sets the <see cref="SpecificationType"/> reference.

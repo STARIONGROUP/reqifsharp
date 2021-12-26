@@ -62,13 +62,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the values of the attributes owned by the element.
         /// </summary>
-        public List<AttributeValue> Values
-        {
-            get
-            {
-                return this.values;
-            }
-        }
+        public List<AttributeValue> Values => this.values;
 
         /// <summary>
         /// Gets or sets the owning <see cref="ReqIFContent"/>
@@ -80,15 +74,9 @@ namespace ReqIFSharp
         /// </summary>
         public SpecType SpecType 
         {
-            get
-            {
-                return this.GetSpecType();
-            }
+            get => this.GetSpecType();
 
-            set
-            {
-                this.SetSpecType(value);
-            }
+            set => this.SetSpecType(value);
         }
 
         /// <summary>

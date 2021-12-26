@@ -65,15 +65,9 @@ namespace ReqIFSharp
         /// </summary>
         public DatatypeDefinition DatatypeDefinition 
         {
-            get
-            {
-                return this.GetDatatypeDefinition();
-            }
+            get => this.GetDatatypeDefinition();
 
-            set
-            {
-                this.SetDatatypeDefinition(value);
-            }
+            set => this.SetDatatypeDefinition(value);
         }
 
         /// <summary>

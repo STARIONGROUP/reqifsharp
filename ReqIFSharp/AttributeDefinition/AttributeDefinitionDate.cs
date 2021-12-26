@@ -53,7 +53,7 @@ namespace ReqIFSharp
         /// </param>
         internal AttributeDefinitionDate(SpecType specType) 
             : base(specType)
-        {            
+        {
         }
 
         /// <summary>

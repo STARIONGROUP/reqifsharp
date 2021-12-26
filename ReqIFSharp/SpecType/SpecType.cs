@@ -58,13 +58,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the set of attribute definitions.
         /// </summary>        
-        public List<AttributeDefinition> SpecAttributes 
-        {
-            get
-            {
-                return this.specAttributes;
-            }
-        }
+        public List<AttributeDefinition> SpecAttributes => this.specAttributes;
 
         /// <summary>
         /// Gets or sets the owning <see cref="ReqIFContent"/> object.

@@ -26,7 +26,7 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
     /// <summary>
     /// Constitutes an identifiable requirements object that can be associated with various attributes. 
     /// This is the smallest granularity by which requirements are referenced.

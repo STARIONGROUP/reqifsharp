@@ -95,24 +95,12 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the Down links to next level of owned SpecHierarchy.
         /// </summary>
-        public List<SpecHierarchy> Children 
-        {
-            get
-            {
-                return this.children;
-            }
-        }
+        public List<SpecHierarchy> Children => this.children;
 
         /// <summary>
         /// Gets the attributes whose values are editable for the <see cref="SpecHierarchy"/> by a tool user
         /// </summary>
-        public List<AttributeDefinition> EditableAtts 
-        {
-            get
-            {
-                return this.editableAtts;
-            }
-        }
+        public List<AttributeDefinition> EditableAtts => this.editableAtts;
 
         /// <summary>
         /// Gets or sets the reference to the associated <see cref="SpecObject"/>

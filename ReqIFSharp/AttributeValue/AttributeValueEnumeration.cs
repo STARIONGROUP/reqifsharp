@@ -72,13 +72,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets <see cref="EnumValue"/>s that are chosen from a set of specified values
         /// </summary>
-        public List<EnumValue> Values 
-        {
-            get
-            {
-                return this.values;
-            }
-        }
+        public List<EnumValue> Values => this.values;
 
         /// <summary>
         /// Gets or sets the value of this <see cref="AttributeValue"/>

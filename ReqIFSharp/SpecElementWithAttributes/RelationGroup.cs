@@ -27,7 +27,7 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
     /// <summary>
     /// The <see cref="RelationGroup"/> class represents a group of relations.
     /// </summary>
@@ -81,13 +81,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the grouped <see cref="SpecRelation"/>s
         /// </summary>
-        public List<SpecRelation> SpecRelations 
-        {
-            get
-            {
-                return this.specRelations;
-            }
-        }
+        public List<SpecRelation> SpecRelations => this.specRelations;
 
         /// <summary>
         /// Gets or sets the owning <see cref="ReqIFContent"/> element.

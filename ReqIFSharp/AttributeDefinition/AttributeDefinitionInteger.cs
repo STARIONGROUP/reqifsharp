@@ -55,7 +55,7 @@ namespace ReqIFSharp
         /// </param>
         internal AttributeDefinitionInteger(SpecType specType) 
             : base(specType)
-        {            
+        {
         }
 
         /// <summary>

@@ -25,7 +25,7 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml.Schema;
-    
+
     /// <summary>
     /// Specifies the <see cref="IReqIFDeSerializer"/> 
     /// </summary>

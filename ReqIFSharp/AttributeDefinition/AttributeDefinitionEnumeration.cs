@@ -53,7 +53,7 @@ namespace ReqIFSharp
         /// </param>
         internal AttributeDefinitionEnumeration(SpecType specType) 
             : base(specType)
-        {            
+        {
         }
 
         /// <summary>
