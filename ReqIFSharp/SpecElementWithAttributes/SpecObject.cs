@@ -58,7 +58,7 @@ namespace ReqIFSharp
 
         /// <summary>
         /// Gets or sets the <see cref="SpecObject"/> reference.
-        /// </summary>        
+        /// </summary>
         public SpecObjectType Type { get; set; }
 
         /// <summary>
