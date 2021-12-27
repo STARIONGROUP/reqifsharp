@@ -106,7 +106,7 @@ namespace ReqIFSharp
         {
             this.Identifier = reader.GetAttribute("IDENTIFIER");
         }
-        
+
         /// <summary>
         /// This method is reserved and should not be used.
         /// </summary>
