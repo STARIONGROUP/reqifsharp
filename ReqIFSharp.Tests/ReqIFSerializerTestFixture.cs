@@ -688,6 +688,13 @@ namespace ReqIFSharp.Tests
             attributeValueXhtml.Definition = (AttributeDefinitionXHTML)specType.SpecAttributes.SingleOrDefault(x => x.GetType() == typeof(AttributeDefinitionXHTML));
             attributeValueXhtml.TheValue = this.xhtmlcontent;
             specElementWithAttributes.Values.Add(attributeValueXhtml);
+            
+            var simplifiedAttributeValueXhtml = new AttributeValueXHTML();
+            simplifiedAttributeValueXhtml.Definition = (AttributeDefinitionXHTML)specType.SpecAttributes.SingleOrDefault(x => x.GetType() == typeof(AttributeDefinitionXHTML));
+            simplifiedAttributeValueXhtml.IsSimplified = true;
+            simplifiedAttributeValueXhtml.TheValue = "simplified content";
+            simplifiedAttributeValueXhtml.TheOriginalValue= this.xhtmlcontent;
+            specElementWithAttributes.Values.Add(simplifiedAttributeValueXhtml);
         }
 
         /// <summary>

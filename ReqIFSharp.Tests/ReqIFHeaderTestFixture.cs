@@ -68,10 +68,11 @@ namespace ReqIFSharp.Tests
             var reqIfHeader = new ReqIFHeader();
 
             var cts = new CancellationTokenSource();
+            cts.Cancel();
 
             Assert.That(
                 async () => await reqIfHeader.WriteXmlAsync(writer, cts.Token),
-                Throws.Exception.TypeOf<InvalidOperationException>());
+                Throws.Exception.TypeOf<OperationCanceledException>());
         }
     }
 }
