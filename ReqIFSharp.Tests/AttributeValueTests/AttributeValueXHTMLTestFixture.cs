@@ -23,6 +23,7 @@ namespace ReqIFLib.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -36,7 +37,7 @@ namespace ReqIFLib.Tests
     public class AttributeValueXHTMLTestFixture
     {
         [Test]
-        public void VerifyThatTheAttributeDefinitionCanBeSetOrGet()
+        public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
 
@@ -53,7 +54,7 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
+        public void Verify_That_Exception_Is_Raised_When_Invalid_AttributeDefinition_Is_Set()
         {
             var attributeDefinitionString = new AttributeDefinitionReal();
             var attributeValueXhtml = new AttributeValueXHTML();
@@ -70,20 +71,52 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
+        public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueXhtml = new AttributeValueXHTML();
-                    Assert.Throws<SerializationException>(() => attributeValueXhtml.WriteXml(writer));
-                }
-            }     
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
+            var attributeValueXhtml = new AttributeValueXHTML();
+
+            Assert.That(() => attributeValueXhtml.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]
-        public void VerifyConvenienceValueProperty()
+        public void Verify_That_WriteXmlAsync_Without_Definition_Set_Throws_SerializationException()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
+            var attributeValueXhtml = new AttributeValueXHTML();
+
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            Assert.That(() => attributeValueXhtml.WriteXmlAsync(writer, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_Throws_Exception_when_cancelled()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
+            var attributeValueXhtml = new AttributeValueXHTML
+            {
+                Definition = new AttributeDefinitionXHTML()
+            };
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            Assert.That(
+                async () => await attributeValueXhtml.WriteXmlAsync(writer, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_Convenience_Value_Property()
         {
             var attributeValue = new AttributeValueXHTML();
 
@@ -91,6 +124,7 @@ namespace ReqIFLib.Tests
             attributeValue.ObjectValue = val;
 
             Assert.AreEqual(attributeValue.TheValue, val);
+            Assert.AreEqual(attributeValue.ObjectValue, val);
         }
 
         [Test]

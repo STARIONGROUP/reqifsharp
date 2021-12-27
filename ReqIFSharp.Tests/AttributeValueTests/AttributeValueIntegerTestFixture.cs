@@ -37,7 +37,7 @@ namespace ReqIFLib.Tests
     public class AttributeValueIntegerTestFixture
     {
         [Test]
-        public void VerifyThatTheAttributeDefinitionCanBeSetOrGet()
+        public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
             var attributeDefinitionInteger = new AttributeDefinitionInteger();
 
@@ -54,7 +54,7 @@ namespace ReqIFLib.Tests
         }
 
         [Test]
-        public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
+        public void Verify_That_Exception_Is_Raised_When_Invalid_AttributeDefinition_Is_Set()
         {
             var attributeDefinitionString = new AttributeDefinitionString();
             var attributeValueInteger = new AttributeValueInteger();
@@ -73,10 +73,12 @@ namespace ReqIFLib.Tests
         [Test]
         public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
-            using var fs = new FileStream("test.xml", FileMode.Create);
-            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
             var attributeValueInteger = new AttributeValueInteger();
-            Assert.That(() => attributeValueInteger.WriteXml(writer), Throws.Exception.TypeOf<SerializationException>());
+            Assert.That(() => attributeValueInteger.WriteXml(writer), 
+                Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]
@@ -84,14 +86,36 @@ namespace ReqIFLib.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            using var fs = new FileStream("test.xml", FileMode.Create);
-            using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true, Async = true});
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
             var attributeValueInteger = new AttributeValueInteger();
-            Assert.That(async () => await attributeValueInteger.WriteXmlAsync(writer, cancellationTokenSource.Token), Throws.Exception.TypeOf<SerializationException>());
+
+            Assert.That(async () => await attributeValueInteger.WriteXmlAsync(writer, cancellationTokenSource.Token), 
+                Throws.Exception.TypeOf<SerializationException>());
         }
 
         [Test]
-        public void VerifyConvenienceValueProperty()
+        public void Verify_That_WriteXmlAsync_Throws_Exception_when_cancelled()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
+            var attributeValueInteger = new AttributeValueInteger
+            {
+                Definition = new AttributeDefinitionInteger()
+            };
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            Assert.That(
+                async () => await attributeValueInteger.WriteXmlAsync(writer, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_Convenience_Value_Property()
         {
             var attributeValue = new AttributeValueInteger();
 
@@ -99,6 +123,7 @@ namespace ReqIFLib.Tests
             attributeValue.ObjectValue = val;
 
             Assert.That(attributeValue.TheValue, Is.EqualTo(val));
+            Assert.That(attributeValue.ObjectValue, Is.EqualTo(val));
         }
 
         [Test]
@@ -110,6 +135,23 @@ namespace ReqIFLib.Tests
                 () => attributeValue.ObjectValue = "true",
                 Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("Cannot use true as value for this AttributeValueInteger."));
+        }
+
+        [Test]
+        public void Verify_that_ReadXmlAsync_throws_exception_when_cancelled()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            using var fileStream = File.OpenRead(reqifPath);
+            using var xmlReader = XmlReader.Create(fileStream, new XmlReaderSettings { Async = true });
+
+            var attributeValueInteger = new AttributeValueInteger();
+
+            Assert.That(async () => await attributeValueInteger.ReadXmlAsync(xmlReader, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="ReqIF.cs" company="RHEA System S.A.">
+// <copyright file="ReqIfTestFixture.cs" company="RHEA System S.A.">
 //
 //   Copyright 2017 RHEA System S.A.
 //
@@ -22,10 +22,12 @@ namespace ReqIFSharp.Tests
 {
     using NUnit.Framework;
 
+    /// <summary>
+    /// Suite of tests for the <see cref="ReqIF"/> class
+    /// </summary>
     [TestFixture]
     public class ReqIfTestFixture
     {
-
         [Test]
         public void Verify_that_GetSchema_returns_null()
         {

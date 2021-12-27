@@ -48,7 +48,7 @@ namespace ReqIFSharp.Tests
         private const int AmountOfSpecRelationGroups = 2;
 
         [Test]
-        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_file()
+        public void Verify_that_ArgumentException_Are_thrown_on_read_from_file()
         {
             var deserializer = new ReqIFDeserializer();
             
@@ -58,7 +58,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_file_async()
+        public void Verify_that_ArgumentException_Are_thrown_on_read_from_file_async()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -70,7 +70,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_stream()
+        public void Verify_that_ArgumentException_Are_thrown_on_read_from_stream()
         {
             var deserializer = new ReqIFDeserializer();
 
@@ -92,7 +92,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_argument_exceptionsAre_thrown_on_read_from_stream_async()
+        public void Verify_that_ArgumentException_Are_thrown_on_read_from_stream_async()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -114,9 +114,7 @@ namespace ReqIFSharp.Tests
             Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentException>());
         }
-
-       
-
+        
         [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_Without_Validation()
         {
@@ -139,6 +137,8 @@ namespace ReqIFSharp.Tests
             Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
             Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
             Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
+
+            Assert.That(reqIf.TheHeader.DocumentRoot, Is.EqualTo(reqIf));
 
             var unknownSpecRel = reqIf.CoreContent.SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
             Assert.IsNotNull(unknownSpecRel.Target);

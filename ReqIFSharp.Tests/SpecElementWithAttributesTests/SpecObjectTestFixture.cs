@@ -23,6 +23,7 @@ namespace ReqIFLib.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -86,6 +87,26 @@ namespace ReqIFLib.Tests
             
             Assert.That(
                 () => spectObject.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Type property of SpecObject SpectObjectIdentifier:SpectObjectLongName may not be null"));
+        }
+
+        [Test]
+        public void Verify_that_When_Type_is_null_WriteXmlAsync_throws_exception()
+        {
+            var stream = new MemoryStream();
+            var writer = XmlWriter.Create(stream, this.settings);
+
+            var spectObject = new SpecObject
+            {
+                Identifier = "SpectObjectIdentifier",
+                LongName = "SpectObjectLongName"
+            };
+
+            var cts = new CancellationTokenSource();
+
+            Assert.That(
+                () => spectObject.WriteXmlAsync(writer, cts.Token),
                 Throws.Exception.TypeOf<SerializationException>()
                     .With.Message.Contains("The Type property of SpecObject SpectObjectIdentifier:SpectObjectLongName may not be null"));
         }

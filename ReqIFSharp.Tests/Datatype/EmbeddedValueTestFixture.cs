@@ -20,6 +20,11 @@
 
 namespace ReqIFLib.Tests
 {
+    using System;
+    using System.IO;
+    using System.Threading;
+    using System.Xml;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
@@ -42,6 +47,22 @@ namespace ReqIFLib.Tests
         {
             var embeddedValue = new EmbeddedValue();
             Assert.That(embeddedValue.GetSchema(), Is.Null);
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_throws_exception_when_cancelled()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
+            var embeddedValue = new EmbeddedValue();
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            Assert.That(
+                async () => await embeddedValue.WriteXmlAsync(writer, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
         }
     }
 }

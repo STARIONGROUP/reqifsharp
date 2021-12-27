@@ -21,6 +21,9 @@
 namespace ReqIFSharp.Tests
 {
     using System;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml;
 
     using NUnit.Framework;
 
@@ -33,7 +36,7 @@ namespace ReqIFSharp.Tests
     public class ReqIfFactoryTestFixture
     {
         [Test]
-        public void VerifyThatXmlElementNameReturnsAttributeDefinition()
+        public void Verify_That_XmlElementName_Returns_AttributeDefinition()
         {
             var spectType = new SpecObjectType();
 
@@ -47,7 +50,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatUnkownElementAttributeDefinitionThrowsArgumentException()
+        public void Verify_That_Unkown_Element_AttributeDefinition_Throws_ArgumentException()
         {
             var spectType = new SpecObjectType();
 
@@ -56,7 +59,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatXmlElementNameReturnsDataTypeDefinition()
+        public void Verify_That_XmlElementName_Returns_DataTypeDefinition()
         {
             var reqIfContent = new ReqIFContent();
 
@@ -69,13 +72,76 @@ namespace ReqIFSharp.Tests
             Assert.IsInstanceOf<DatatypeDefinitionXHTML>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-XHTML", reqIfContent));
         }
 
-        [Test]        
-        public void VerifyThatUnkownElementDataTypeDefinitionThrowsArgumentException()
+        [Test]
+        public void Verify_That_Unkown_Element_DataTypeDefinition_Throws_ArgumentException()
         {
             var reqIfContent = new ReqIFContent();
 
             string unknownName = "RHEA";
-            Assert.Throws<ArgumentException>(() => ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent));
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent), Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Verify_that_unknown_SpecTypeName_throws_exception()
+        {
+            var reqIfContent = new ReqIFContent();
+
+            string unknownName = "RHEA";
+            Assert.That(() => ReqIfFactory.SpecTypeConstruct(unknownName, reqIfContent), Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Verify_that_AttributeDefinition_XmlName_throws_exception_for_unsupported_type()
+        {
+            var testAttributeDefinition = new TestAttributeDefinition();
+
+            Assert.That(() => ReqIfFactory.XmlName(testAttributeDefinition), Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Verify_that_DatatypeDefinition_XmlName_throws_exception_for_unsupported_type()
+        {
+            var testDatatypeDefinition = new TestDatatypeDefinition();
+
+            Assert.That(() => ReqIfFactory.XmlName(testDatatypeDefinition), Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        [Test]
+        public void Verify_that_SpecType_XmlName_throws_exception_for_unsupported_type()
+        {
+            var specType = new TestSpecType();
+
+            Assert.That(() => ReqIfFactory.XmlName(specType), Throws.Exception.TypeOf<ArgumentException>());
+        }
+
+        private class TestAttributeDefinition : AttributeDefinition
+        {
+            protected override DatatypeDefinition GetDatatypeDefinition()
+            {
+                throw new NotImplementedException();
+            }
+
+            protected override void SetDatatypeDefinition(DatatypeDefinition datatypeDefinition)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class TestDatatypeDefinition : DatatypeDefinition
+        {
+            public override Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class TestSpecType : SpecType
+        {
         }
     }
 }

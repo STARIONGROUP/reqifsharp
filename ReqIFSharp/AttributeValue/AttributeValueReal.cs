@@ -134,7 +134,11 @@ namespace ReqIFSharp
         public override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToDouble(value);
+
+            if (value != null)
+            {
+                this.TheValue = XmlConvert.ToDouble(value);
+            }
 
             while (reader.Read())
             {
@@ -163,7 +167,11 @@ namespace ReqIFSharp
         public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             var value = reader["THE-VALUE"];
-            this.TheValue = XmlConvert.ToDouble(value);
+
+            if (value != null)
+            {
+                this.TheValue = XmlConvert.ToDouble(value);
+            }
 
             while (await reader.ReadAsync())
             {

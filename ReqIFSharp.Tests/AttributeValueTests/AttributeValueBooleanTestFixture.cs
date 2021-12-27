@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
 
     using NUnit.Framework;
@@ -36,7 +37,7 @@ namespace ReqIFSharp.Tests
     public class AttributeValueBooleanTestFixture
     {
         [Test]
-        public void VerifyThatTheAttributeDefinitionCanBeSetOrGet()
+        public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
             var atrAttributeDefinitionBoolean = new AttributeDefinitionBoolean();
 
@@ -53,7 +54,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifytThatExceptionIsRaisedWhenInvalidAttributeDefinitionIsSet()
+        public void Verify_That_Exception_Is_Raised_When_Invalid_AttributeDefinition_Is_Set()
         {
             var attributeDefinitionString = new AttributeDefinitionString();
             var attributeValueBoolean = new AttributeValueBoolean();
@@ -70,29 +71,60 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void VerifyThatWriteXmlWithoutDefinitionSetThrowsSerializationException()
+        public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
-            using (var fs = new FileStream("test.xml", FileMode.Create))
-            {
-                using (var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true }))
-                {
-                    var attributeValueReal = new AttributeValueBoolean();
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+            var attributeValueReal = new AttributeValueBoolean();
 
-                    Assert.That(
-                        () => attributeValueReal.WriteXml(writer),
-                        Throws.Exception.TypeOf<SerializationException>()
-                            .With.Message.Contains("The Definition property of an AttributeValueBoolean may not be null"));
-                }
-            }
+            Assert.That(
+                () => attributeValueReal.WriteXml(writer),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Definition property of an AttributeValueBoolean may not be null"));
         }
-        
+
         [Test]
-        public void VerifyConvenienceValueProperty()
+        public void Verify_That_WriteXmlAsync_Without_Definition_Set_Throws_SerializationException()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+            var attributeValueReal = new AttributeValueBoolean();
+
+            var cts = new CancellationTokenSource();
+
+            Assert.That(
+                async () => await attributeValueReal.WriteXmlAsync(writer, cts.Token),
+                Throws.Exception.TypeOf<SerializationException>()
+                    .With.Message.Contains("The Definition property of an AttributeValueBoolean may not be null"));
+        }
+
+        [Test]
+        public void Verify_That_WriteXmlAsync_Throws_Exception_when_cancelled()
+        {
+            using var memoryStream = new MemoryStream();
+            using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
+
+            var attributeValueReal = new AttributeValueBoolean
+            {
+                Definition = new AttributeDefinitionBoolean()
+            };
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            Assert.That(
+                async () => await attributeValueReal.WriteXmlAsync(writer, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_Convenience_Value_Property()
         {
             var attributeValueBoolean = new AttributeValueBoolean();
             attributeValueBoolean.ObjectValue = true;
 
             Assert.That(attributeValueBoolean.TheValue, Is.True);
+            Assert.That(attributeValueBoolean.ObjectValue, Is.True);
         }
 
         [Test]
@@ -104,6 +136,23 @@ namespace ReqIFSharp.Tests
                 () => attributeValueBoolean.ObjectValue = "true",
                 Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("Cannot use true as value for this AttributeValueBoolean."));
+        }
+
+        [Test]
+        public void Verify_that_ReadXmlAsync_throws_exception_when_cancelled()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            using var fileStream = File.OpenRead(reqifPath);
+            using var xmlReader = XmlReader.Create(fileStream, new XmlReaderSettings { Async = true });
+
+            var attributeValueBoolean = new AttributeValueBoolean();
+
+            Assert.That(async () => await attributeValueBoolean.ReadXmlAsync(xmlReader, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="AlternativeIdTestFixture.cs" company="RHEA System S.A.">
+// <copyright file="ReqIFHeaderTestFixture.cs" company="RHEA System S.A.">
 //
 //   Copyright 2017 RHEA System S.A.
 //
@@ -26,31 +26,37 @@ namespace ReqIFSharp.Tests
     using System.Xml;
 
     using NUnit.Framework;
+    using System.Runtime.Serialization;
 
     /// <summary>
-    /// Suite of tests for the <see cref="AlternativeId"/> class
+    /// Suite of tests for the <see cref="ReqIFHeader"/> class
     /// </summary>
     [TestFixture]
-    public class AlternativeIdTestFixture
+    public class ReqIFHeaderTestFixture
     {
-        [Test]
-        public void Verify_that_constructor_works_as_expected()
-        {
-            var specObject = new SpecObject();
-
-            var alternativeId = new AlternativeId(specObject);
-
-            Assert.That(specObject.AlternativeId, Is.EqualTo(alternativeId));
-
-            Assert.That(alternativeId.Ident, Is.EqualTo(specObject));
-        }
-
         [Test]
         public void Verify_that_GetSchema_returns_null()
         {
-            var alternativeId = new AlternativeId();
+            var reqIfHeader = new ReqIFHeader();
 
-            Assert.That(alternativeId.GetSchema(), Is.Null); 
+            Assert.That(reqIfHeader.GetSchema(), Is.Null);
+        }
+
+        [Test]
+        public void Verify_that_ReadXmlAsync_throws_exception_when_cancelled()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            using var fileStream = File.OpenRead(reqifPath);
+            using var xmlReader = XmlReader.Create(fileStream, new XmlReaderSettings { Async = true });
+            
+            var reqIfHeader = new ReqIFHeader();
+
+            Assert.That( async () => await reqIfHeader.ReadXmlAsync(xmlReader, cts.Token),
+                Throws.Exception.TypeOf<OperationCanceledException>());
         }
 
         [Test]
@@ -59,14 +65,13 @@ namespace ReqIFSharp.Tests
             using var memoryStream = new MemoryStream();
             using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
 
-            var alternativeId = new AlternativeId();
+            var reqIfHeader = new ReqIFHeader();
 
             var cts = new CancellationTokenSource();
-            cts.Cancel();
 
             Assert.That(
-                async () => await alternativeId.WriteXmlAsync(writer, cts.Token),
-                Throws.Exception.TypeOf<OperationCanceledException>());
+                async () => await reqIfHeader.WriteXmlAsync(writer, cts.Token),
+                Throws.Exception.TypeOf<InvalidOperationException>());
         }
     }
 }
