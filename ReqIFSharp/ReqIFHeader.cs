@@ -24,7 +24,9 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIFHeader"/> class holds metadata relevant to a ReqIF Exchange Document content.
@@ -32,8 +34,32 @@ namespace ReqIFSharp
     /// <remarks>
     /// Meta-information held in the <see cref="ReqIFHeader"/> element is applicable to the Exchange Document as a whole.
     /// </remarks>
-    public class ReqIFHeader : IXmlSerializable
+    public class ReqIFHeader
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ReqIFHeader> logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFHeader"/> class
+        /// </summary>
+        public ReqIFHeader()
+        {
+            this.logger = NullLogger<ReqIFHeader>.Instance;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFHeader"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal ReqIFHeader(ILoggerFactory loggerFactory)
+        {
+            this.logger = loggerFactory == null ? NullLogger<ReqIFHeader>.Instance : loggerFactory.CreateLogger<ReqIFHeader>();
+        }
+
         /// <summary>
         /// Gets or sets an optional comment associated with the Exchange Document as a whole
         /// </summary>
@@ -247,18 +273,6 @@ namespace ReqIFSharp
             await writer.WriteElementStringAsync(null, "REQ-IF-VERSION", null, this.ReqIFVersion);
             await writer.WriteElementStringAsync(null, "SOURCE-TOOL-ID", null, this.SourceToolId);
             await writer.WriteElementStringAsync(null, "TITLE", null, this.Title);
-        }
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
         }
     }
 }

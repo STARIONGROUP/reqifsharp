@@ -64,13 +64,6 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_GetSchema_returns_null()
-        {
-            var attributeValue = new AttributeValueBoolean();
-            Assert.That(attributeValue.GetSchema(), Is.Null);
-        }
-
-        [Test]
         public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
             using var memoryStream = new MemoryStream();

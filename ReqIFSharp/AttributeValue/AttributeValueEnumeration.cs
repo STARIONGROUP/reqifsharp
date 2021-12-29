@@ -28,11 +28,18 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueEnumeration"/> class is to define an enumeration attribute value.
     /// </summary>
     public class AttributeValueEnumeration : AttributeValue
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueEnumeration> logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueEnumeration"/> class.
         /// </summary>
@@ -47,8 +54,11 @@ namespace ReqIFSharp
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionEnumeration"/>
         /// </remarks>
-        internal AttributeValueEnumeration(AttributeDefinitionEnumeration attributeDefinition)
-            : base(attributeDefinition)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueEnumeration(AttributeDefinitionEnumeration attributeDefinition, ILoggerFactory loggerFactory)
+            : base(attributeDefinition, loggerFactory)
         {
             this.OwningDefinition = attributeDefinition;
         }
@@ -59,8 +69,11 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        internal AttributeValueEnumeration(SpecElementWithAttributes specElAt)
-            : base(specElAt)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueEnumeration(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
+            : base(specElAt, loggerFactory)
         {
         }
 
@@ -138,7 +151,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             using (var subtree = reader.ReadSubtree())
             {
@@ -183,7 +196,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             using (var subtree = reader.ReadSubtree())
             {
@@ -230,7 +243,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Definition == null)
             {
@@ -241,7 +254,7 @@ namespace ReqIFSharp
 
             this.WriteValues(writer);
         }
-        
+
         /// <summary>
         /// Asynchronously converts a <see cref="AttributeValueEnumeration"/> object into its XML representation.
         /// </summary>
@@ -251,7 +264,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Definition == null)
             {

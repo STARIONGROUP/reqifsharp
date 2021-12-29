@@ -24,13 +24,25 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIFContent"/> class represents the mandatory content of a ReqIF Exchange Document.
     /// </summary>
-    public class ReqIFContent : IXmlSerializable
+    public class ReqIFContent
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ReqIFContent> logger;
+
         /// <summary>
         /// Backing field for the <see cref="DataTypes"/> property.
         /// </summary>
@@ -60,6 +72,27 @@ namespace ReqIFSharp
         /// Backing field for the <see cref="SpecRelationGroups"/> property.
         /// </summary>
         private readonly List<RelationGroup> specRelationGroups = new List<RelationGroup>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFContent"/> class
+        /// </summary>
+        public ReqIFContent()
+        {
+            this.logger = NullLogger<ReqIFContent>.Instance;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFContent"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal ReqIFContent(ILoggerFactory loggerFactory)
+        {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<ReqIFContent>.Instance : this.loggerFactory.CreateLogger<ReqIFContent>();
+        }
 
         /// <summary>
         /// Gets the <see cref="DatatypeDefinition"/>s
@@ -102,7 +135,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public void ReadXml(XmlReader reader)
+        internal void ReadXml(XmlReader reader)
         {
             while (reader.Read())
             {
@@ -166,7 +199,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
@@ -238,7 +271,7 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
                 {
-                    var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this);
+                    var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this, this.loggerFactory);
                     datatypeDefinition.ReadXml(reader);
                 }
             }
@@ -264,7 +297,7 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
                 {
-                    var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this);
+                    var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this, this.loggerFactory);
                     await datatypeDefinition.ReadXmlAsync(reader, token);
                 }
             }
@@ -291,7 +324,7 @@ namespace ReqIFSharp
                         {
                             subtree.MoveToContent();
 
-                            var specType = ReqIfFactory.SpecTypeConstruct(xmlname, this);
+                            var specType = ReqIfFactory.SpecTypeConstruct(xmlname, this, this.loggerFactory);
                             specType.ReadXml(subtree);
                         }
                     }
@@ -328,7 +361,7 @@ namespace ReqIFSharp
                         {
                             await subtree.MoveToContentAsync();
 
-                            var specType = ReqIfFactory.SpecTypeConstruct(xmlname, this);
+                            var specType = ReqIfFactory.SpecTypeConstruct(xmlname, this, this.loggerFactory);
                             await specType.ReadXmlAsync(subtree, token);
                         }
                     }
@@ -352,9 +385,9 @@ namespace ReqIFSharp
                     {
                         subtree.MoveToContent();
 
-                        var specObject = new SpecObject(this);
+                        var specObject = new SpecObject(this, this.loggerFactory);
                         specObject.ReadXml(subtree);
-                    }                                            
+                    }
                 }
             }
         }
@@ -383,7 +416,7 @@ namespace ReqIFSharp
                     {
                         await subtree.MoveToContentAsync();
 
-                        var specObject = new SpecObject(this);
+                        var specObject = new SpecObject(this, this.loggerFactory);
                         await specObject.ReadXmlAsync(subtree, token);
                     }
                 }
@@ -406,9 +439,9 @@ namespace ReqIFSharp
                     {
                         subtree.MoveToContent();
 
-                        var specRelation = new SpecRelation(this);
+                        var specRelation = new SpecRelation(this, this.loggerFactory);
                         specRelation.ReadXml(subtree);
-                    }                        
+                    }
                 }
             }
         }
@@ -437,7 +470,7 @@ namespace ReqIFSharp
                     {
                         await subtree.MoveToContentAsync();
 
-                        var specRelation = new SpecRelation(this);
+                        var specRelation = new SpecRelation(this, this.loggerFactory);
                         await specRelation.ReadXmlAsync(subtree, token);
                     }
                 }
@@ -460,7 +493,7 @@ namespace ReqIFSharp
                     {
                         subtree.MoveToContent();
 
-                        var specification = new Specification(this);
+                        var specification = new Specification(this, this.loggerFactory);
                         specification.ReadXml(subtree);                        
                     }                        
                 }
@@ -491,7 +524,7 @@ namespace ReqIFSharp
                     {
                         await subtree.MoveToContentAsync();
 
-                        var specification = new Specification(this);
+                        var specification = new Specification(this, this.loggerFactory);
                         await specification.ReadXmlAsync(subtree, token);
                     }
                 }
@@ -514,7 +547,7 @@ namespace ReqIFSharp
                     {
                         subtree.MoveToContent();
 
-                        var relationGroup = new RelationGroup(this);
+                        var relationGroup = new RelationGroup(this, this.loggerFactory);
                         relationGroup.ReadXml(subtree);                        
                     }
                 }
@@ -545,7 +578,7 @@ namespace ReqIFSharp
                     {
                         await subtree.MoveToContentAsync();
 
-                        var relationGroup = new RelationGroup(this);
+                        var relationGroup = new RelationGroup(this, this.loggerFactory);
                         await relationGroup.ReadXmlAsync(subtree, token);
                     }
                 }
@@ -558,7 +591,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public void WriteXml(XmlWriter writer)
+        internal void WriteXml(XmlWriter writer)
         {
             this.WriteDataDefinitions(writer);
             this.WriteSpecTypes(writer);
@@ -577,7 +610,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {
@@ -590,18 +623,6 @@ namespace ReqIFSharp
             await this.WriteSpecRelationsAsync(writer, token);
             await this.WriteSpecificationsAsync(writer, token);
             await this.WriteRelationGroupAsync(writer, token);
-        }
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
         }
 
         /// <summary>

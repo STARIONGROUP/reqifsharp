@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.Linq;
     using System.Runtime.Serialization;
@@ -30,12 +31,19 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueXHTML"/> class is to define an attribute value with XHTML contents.
     /// </summary>
-    [Serializable]
     public class AttributeValueXHTML : AttributeValue
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueXHTML> logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueXHTML"/> class.
         /// </summary>
@@ -50,9 +58,14 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        internal AttributeValueXHTML(SpecElementWithAttributes specElAt)
-            : base(specElAt)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueXHTML(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
+            : base(specElAt, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueXHTML>.Instance : this.loggerFactory.CreateLogger<AttributeValueXHTML>();
+
             this.ExternalObjects = new List<ExternalObject>();
         }
 
@@ -63,9 +76,14 @@ namespace ReqIFSharp
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionXHTML"/>
         /// </remarks>
-        internal AttributeValueXHTML(AttributeDefinitionXHTML attributeDefinition)
-            : base(attributeDefinition)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueXHTML(AttributeDefinitionXHTML attributeDefinition, ILoggerFactory loggerFactory)
+            : base(attributeDefinition, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueXHTML>.Instance : this.loggerFactory.CreateLogger<AttributeValueXHTML>();
+
             this.ExternalObjects = new List<ExternalObject>();
 
             this.OwningDefinition = attributeDefinition;
@@ -185,7 +203,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             var isSimplified = reader["IS-SIMPLIFIED"];
             if (!string.IsNullOrEmpty(isSimplified))
@@ -230,7 +248,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             var isSimplified = reader["IS-SIMPLIFIED"];
             if (!string.IsNullOrEmpty(isSimplified))
@@ -282,6 +300,8 @@ namespace ReqIFSharp
         /// </returns>
         private IEnumerable<ExternalObject> CreateExternalObjects(string xhtml)
         {
+            var sw = Stopwatch.StartNew();
+
             var result = new List<ExternalObject>();
 
             var xmlDocument = new XmlDocument();
@@ -320,6 +340,8 @@ namespace ReqIFSharp
                 result.Add(externalObject);
             }
 
+            this.logger.LogTrace("a total of {count} ExternalObjects have been created in {time} [sw]", result.Count, sw.ElapsedMilliseconds);
+
             return result;
         }
 
@@ -332,7 +354,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Definition"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Definition == null)
             {
@@ -372,7 +394,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Definition == null)
             {

@@ -19,7 +19,9 @@
 // -------------------------------------------------------------------------------------------------
 
 namespace ReqIFSharp
-{ 
+{
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The <see cref="DatatypeDefinitionSimple"/> is the base class from which all primitive data types, except enumeration, are derived.
     /// </summary>
@@ -38,8 +40,11 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        protected DatatypeDefinitionSimple(ReqIFContent reqIfContent)            
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal DatatypeDefinitionSimple(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
         }
     }

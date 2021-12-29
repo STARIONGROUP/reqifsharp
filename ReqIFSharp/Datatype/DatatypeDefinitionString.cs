@@ -24,6 +24,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="string"/> data type
     /// </summary>
@@ -45,10 +47,12 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionString(ReqIFContent reqIfContent) 
-            : base(reqIfContent)
-        { 
-            this.ReqIFContent = reqIfContent;
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal DatatypeDefinitionString(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
+        {
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         { 
             base.ReadXml(reader);
 
@@ -84,7 +88,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -103,7 +107,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         { 
             writer.WriteAttributeString("MAX-LENGTH", XmlConvert.ToString(this.MaxLength));
 
@@ -119,7 +123,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await writer.WriteAttributeStringAsync(null, "MAX-LENGTH", null, XmlConvert.ToString(this.MaxLength));
 

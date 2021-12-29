@@ -28,6 +28,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Represents a hierarchically structured requirements specification.
     /// It is the root node of the tree that hierarchically structures <see cref="SpecObject"/> instances.
@@ -52,8 +54,11 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>
-        internal Specification(ReqIFContent reqIfContent)
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal Specification(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
             this.ReqIFContent.Specifications.Add(this);
         }
@@ -74,7 +79,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Type == null)
             {
@@ -97,7 +102,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {
@@ -194,7 +199,7 @@ namespace ReqIFSharp
                     {
                         subtree.MoveToContent();
 
-                        var specHierarchy = new SpecHierarchy(this, this.ReqIFContent);
+                        var specHierarchy = new SpecHierarchy(this, this.ReqIFContent, this.loggerFactory);
                         specHierarchy.ReadXml(subtree);
                     }
                 }
@@ -230,7 +235,7 @@ namespace ReqIFSharp
                     {
                         await subtree.MoveToContentAsync();
 
-                        var specHierarchy = new SpecHierarchy(this, this.ReqIFContent);
+                        var specHierarchy = new SpecHierarchy(this, this.ReqIFContent, this.loggerFactory);
                         await specHierarchy.ReadXmlAsync(subtree, token);
                     }
                 }

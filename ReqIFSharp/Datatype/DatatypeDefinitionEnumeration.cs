@@ -27,6 +27,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionEnumeration"/> class is to define enumeration types.
     /// </summary>
@@ -54,10 +56,12 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionEnumeration(ReqIFContent reqIfContent) 
-            : base(reqIfContent)            
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal DatatypeDefinitionEnumeration(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
-            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -71,7 +75,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -88,7 +92,7 @@ namespace ReqIFSharp
                                 alternativeId.ReadXml(subtree);
                                 break;
                             case "ENUM-VALUE":
-                                var enumValue = new EnumValue(this);
+                                var enumValue = new EnumValue(this, this.loggerFactory);
                                 enumValue.ReadXml(subtree);
                                 break;
                         }
@@ -96,7 +100,7 @@ namespace ReqIFSharp
                 }
             }
         }
-        
+
         /// <summary>
         /// Asynchronously generates a <see cref="DatatypeDefinitionEnumeration"/> object from its XML representation.
         /// </summary>
@@ -106,7 +110,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {
@@ -133,7 +137,7 @@ namespace ReqIFSharp
                                 alternativeId.ReadXml(reader);
                                 break;
                             case "ENUM-VALUE":
-                                var enumValue = new EnumValue(this);
+                                var enumValue = new EnumValue(this, this.loggerFactory);
                                 await enumValue.ReadXmlAsync(subtree, token);
                                 break;
                         }
@@ -151,7 +155,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -179,7 +183,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

@@ -26,6 +26,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The <see cref="AttributeDefinition"/> is the base class for attribute definitions.
     /// </summary>
@@ -34,7 +36,7 @@ namespace ReqIFSharp
     /// type. In <see cref="ReqIF"/>, each attribute value (<see cref="AttributeValue"/> element) is related to its data type (<see cref="DatatypeDefinition"/>  element) via
     /// an attribute definition (<see cref="AttributeDefinition"/> element).
     /// </remarks>
-    public abstract class AttributeDefinition : AccessControlledElement 
+    public abstract class AttributeDefinition : AccessControlledElement
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinition"/> class.
@@ -49,7 +51,11 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        protected AttributeDefinition(SpecType specType)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal AttributeDefinition(SpecType specType, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             this.SpecType = specType;
             specType.SpecAttributes.Add(this);
@@ -95,7 +101,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
+        internal abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Converts a <see cref="AttributeDefinitionBoolean"/> object into its XML representation.
@@ -106,7 +112,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.GetDatatypeDefinition() == null)
             {
@@ -129,7 +135,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.GetDatatypeDefinition() == null)
             {

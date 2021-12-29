@@ -22,6 +22,8 @@ namespace ReqIFSharp
 {
     using System;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="ReqIfFactory"/> is to create new instances of concrete classes
     /// that are defined in the <see cref="ReqIF"/> namespace.
@@ -169,35 +171,38 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>
         /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
         /// <returns>
         /// an instance of <see cref="AttributeDefinition"/>
         /// </returns>
         /// <exception cref="ArgumentException">
         /// Thrown when an invalid <paramref name="xmlname"/> is provided
         /// </exception>
-        internal static AttributeDefinition AttributeDefinitionConstruct(string xmlname, SpecType specType)
+        internal static AttributeDefinition AttributeDefinitionConstruct(string xmlname, SpecType specType, ILoggerFactory loggerFactory)
         {
             switch (xmlname)
             {
                 case "ATTRIBUTE-DEFINITION-BOOLEAN":
-                    return new AttributeDefinitionBoolean(specType);
+                    return new AttributeDefinitionBoolean(specType, loggerFactory);
                 case "ATTRIBUTE-DEFINITION-DATE":
-                    return new AttributeDefinitionDate(specType);
+                    return new AttributeDefinitionDate(specType, loggerFactory);
                 case "ATTRIBUTE-DEFINITION-ENUMERATION":
-                    return new AttributeDefinitionEnumeration(specType);
+                    return new AttributeDefinitionEnumeration(specType, loggerFactory);
                 case "ATTRIBUTE-DEFINITION-INTEGER":
-                    return new AttributeDefinitionInteger(specType);
+                    return new AttributeDefinitionInteger(specType, loggerFactory);
                 case "ATTRIBUTE-DEFINITION-REAL":
-                    return new AttributeDefinitionReal(specType);
+                    return new AttributeDefinitionReal(specType, loggerFactory);
                 case "ATTRIBUTE-DEFINITION-STRING":
-                    return new AttributeDefinitionString(specType);
+                    return new AttributeDefinitionString(specType, loggerFactory);
                 case "ATTRIBUTE-DEFINITION-XHTML":
-                    return new AttributeDefinitionXHTML(specType);
+                    return new AttributeDefinitionXHTML(specType, loggerFactory);
                 default:
                     return null;
             }
         }
-        
+
         /// <summary>
         /// Constructs a new instance <see cref="DatatypeDefinition"/> based on the XML Name
         /// </summary>
@@ -207,35 +212,38 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="ReqIFContent"/>
         /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
         /// <returns>
         /// an instance of <see cref="DatatypeDefinition"/>
         /// </returns>
         /// <exception cref="ArgumentException">
         /// Thrown when an invalid <paramref name="xmlname"/> is provided
         /// </exception>
-        internal static DatatypeDefinition DatatypeDefinitionConstruct(string xmlname, ReqIFContent reqIfContent)
+        internal static DatatypeDefinition DatatypeDefinitionConstruct(string xmlname, ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
         {
             switch (xmlname)
             {
                 case "DATATYPE-DEFINITION-BOOLEAN":
-                    return new DatatypeDefinitionBoolean(reqIfContent);
+                    return new DatatypeDefinitionBoolean(reqIfContent, loggerFactory);
                 case "DATATYPE-DEFINITION-DATE":
-                    return new DatatypeDefinitionDate(reqIfContent);
+                    return new DatatypeDefinitionDate(reqIfContent, loggerFactory);
                 case "DATATYPE-DEFINITION-ENUMERATION":
-                    return new DatatypeDefinitionEnumeration(reqIfContent);
+                    return new DatatypeDefinitionEnumeration(reqIfContent, loggerFactory);
                 case "DATATYPE-DEFINITION-INTEGER":
-                    return new DatatypeDefinitionInteger(reqIfContent);
+                    return new DatatypeDefinitionInteger(reqIfContent, loggerFactory);
                 case "DATATYPE-DEFINITION-REAL":
-                    return new DatatypeDefinitionReal(reqIfContent);
+                    return new DatatypeDefinitionReal(reqIfContent, loggerFactory);
                 case "DATATYPE-DEFINITION-STRING":
-                    return new DatatypeDefinitionString(reqIfContent);
+                    return new DatatypeDefinitionString(reqIfContent, loggerFactory);
                 case "DATATYPE-DEFINITION-XHTML":
-                    return new DatatypeDefinitionXHTML(reqIfContent);
+                    return new DatatypeDefinitionXHTML(reqIfContent, loggerFactory);
                 default:
                     throw new ArgumentException($"{xmlname} is not a vaild DatatypeDefinition name");
             }
         }
-        
+
         /// <summary>
         /// Constructs a new instance <see cref="SpecType"/> based on the XML Name
         /// </summary>
@@ -245,24 +253,27 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="ReqIFContent"/> object.
         /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
         /// <returns>
         /// an instance of <see cref="SpecType"/>
         /// </returns>
         /// <exception cref="ArgumentException">
         /// Thrown when an invalid <paramref name="xmlname"/> is provided
         /// </exception>
-        internal static SpecType SpecTypeConstruct(string xmlname, ReqIFContent reqIfContent)
+        internal static SpecType SpecTypeConstruct(string xmlname, ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
         {
             switch (xmlname)
             {
                 case "SPEC-OBJECT-TYPE":
-                    return new SpecObjectType(reqIfContent);
+                    return new SpecObjectType(reqIfContent, loggerFactory);
                 case "SPECIFICATION-TYPE":
-                    return new SpecificationType(reqIfContent);
+                    return new SpecificationType(reqIfContent, loggerFactory);
                 case "SPEC-RELATION-TYPE":
-                    return new SpecRelationType(reqIfContent);
+                    return new SpecRelationType(reqIfContent, loggerFactory);
                 case "RELATION-GROUP-TYPE":
-                    return new RelationGroupType(reqIfContent);
+                    return new RelationGroupType(reqIfContent, loggerFactory);
                 default:
                     throw new ArgumentException($"{xmlname} is not a vaild SpecType name");
             }

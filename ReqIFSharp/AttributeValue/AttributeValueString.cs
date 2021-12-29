@@ -27,6 +27,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueString"/> class is to define a <see cref="string"/> attribute value.
     /// </summary>
@@ -46,8 +48,11 @@ namespace ReqIFSharp
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionString"/>
         /// </remarks>
-        internal AttributeValueString(AttributeDefinitionString attributeDefinition)
-            : base(attributeDefinition)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueString(AttributeDefinitionString attributeDefinition, ILoggerFactory loggerFactory)
+            : base(attributeDefinition, loggerFactory)
         {
             this.OwningDefinition = attributeDefinition;
         }
@@ -58,8 +63,11 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        internal AttributeValueString(SpecElementWithAttributes specElAt)
-            : base(specElAt)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueString(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
+            : base(specElAt, loggerFactory)
         {
         }
 
@@ -123,7 +131,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
             this.TheValue = value;
@@ -152,7 +160,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             var value = reader["THE-VALUE"];
             this.TheValue = value;
@@ -186,7 +194,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Definition"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Definition == null)
             {
@@ -211,7 +219,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Definition == null)
             {

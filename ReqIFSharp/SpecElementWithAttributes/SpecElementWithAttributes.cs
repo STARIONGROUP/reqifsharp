@@ -25,6 +25,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// An abstract super class for elements that can own attributes.
     /// </summary>
@@ -54,7 +56,11 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>
-        protected SpecElementWithAttributes(ReqIFContent reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal SpecElementWithAttributes(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             this.ReqIFContent = reqIfContent;
         }
@@ -101,7 +107,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -135,7 +141,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueBoolean = new AttributeValueBoolean(this);
+                                    var attributeValueBoolean = new AttributeValueBoolean(this, this.loggerFactory);
                                     attributeValueBoolean.ReadXml(subtree);
                                 }
                                 break;
@@ -143,7 +149,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueDate = new AttributeValueDate(this);
+                                    var attributeValueDate = new AttributeValueDate(this, this.loggerFactory);
                                     attributeValueDate.ReadXml(subtree);
                                 }
                                 break;
@@ -151,7 +157,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueEnumeration = new AttributeValueEnumeration(this);
+                                    var attributeValueEnumeration = new AttributeValueEnumeration(this, this.loggerFactory);
                                     attributeValueEnumeration.ReadXml(subtree);
                                 }
                                 break;
@@ -159,7 +165,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueInteger = new AttributeValueInteger(this);
+                                    var attributeValueInteger = new AttributeValueInteger(this, this.loggerFactory);
                                     attributeValueInteger.ReadXml(subtree);
                                 }
                                 break;
@@ -167,7 +173,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueReal = new AttributeValueReal(this);
+                                    var attributeValueReal = new AttributeValueReal(this, this.loggerFactory);
                                     attributeValueReal.ReadXml(subtree);
                                 }
                                 break;
@@ -175,7 +181,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueString = new AttributeValueString(this);
+                                    var attributeValueString = new AttributeValueString(this, this.loggerFactory);
                                     attributeValueString.ReadXml(subtree);
                                 }
                                 break;
@@ -183,7 +189,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
-                                    var attributeValueXhtml = new AttributeValueXHTML(this);
+                                    var attributeValueXhtml = new AttributeValueXHTML(this, this.loggerFactory);
                                     attributeValueXhtml.ReadXml(subtree);
                                 }
                                 break;
@@ -204,7 +210,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
             
@@ -243,7 +249,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueBoolean = new AttributeValueBoolean(this);
+                                    var attributeValueBoolean = new AttributeValueBoolean(this, this.loggerFactory);
                                     await attributeValueBoolean.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -251,7 +257,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueDate = new AttributeValueDate(this);
+                                    var attributeValueDate = new AttributeValueDate(this, this.loggerFactory);
                                     await attributeValueDate.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -259,7 +265,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueEnumeration = new AttributeValueEnumeration(this);
+                                    var attributeValueEnumeration = new AttributeValueEnumeration(this, this.loggerFactory);
                                     await attributeValueEnumeration.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -267,7 +273,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueInteger = new AttributeValueInteger(this);
+                                    var attributeValueInteger = new AttributeValueInteger(this, this.loggerFactory);
                                     await attributeValueInteger.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -275,7 +281,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueReal = new AttributeValueReal(this);
+                                    var attributeValueReal = new AttributeValueReal(this, this.loggerFactory);
                                     await attributeValueReal.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -283,7 +289,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueString = new AttributeValueString(this);
+                                    var attributeValueString = new AttributeValueString(this, this.loggerFactory);
                                     await attributeValueString.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -291,7 +297,7 @@ namespace ReqIFSharp
                                 using (var subtree = specElementWithAttributesReader.ReadSubtree())
                                 {
                                     await subtree.MoveToContentAsync();
-                                    var attributeValueXhtml = new AttributeValueXHTML(this);
+                                    var attributeValueXhtml = new AttributeValueXHTML(this, this.loggerFactory);
                                     await attributeValueXhtml.ReadXmlAsync(subtree, token);
                                 }
                                 break;
@@ -369,7 +375,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -385,7 +391,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

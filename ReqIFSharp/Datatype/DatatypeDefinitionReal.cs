@@ -24,6 +24,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// This element defines a data type for the representation of Real data values in the Exchange Document.
     /// </summary>
@@ -34,7 +36,6 @@ namespace ReqIFSharp
         /// </summary>
         public DatatypeDefinitionReal()
         {
-
         }
 
         /// <summary>
@@ -43,10 +44,12 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionReal(ReqIFContent reqIfContent) 
-            : base(reqIfContent)
-        { 
-            this.ReqIFContent = reqIfContent;
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal DatatypeDefinitionReal(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
+        {
         }
 
         /// <summary>
@@ -70,7 +73,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -104,7 +107,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -135,7 +138,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("ACCURACY", XmlConvert.ToString(this.Accuracy));
             writer.WriteAttributeString("MIN", XmlConvert.ToString(this.Min));
@@ -153,7 +156,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await writer.WriteAttributeStringAsync(null,"ACCURACY", null, XmlConvert.ToString(this.Accuracy));
             await writer.WriteAttributeStringAsync(null, "MIN", null, XmlConvert.ToString(this.Min));

@@ -22,6 +22,7 @@ namespace ReqIFSharp
 {
     using System;
     using System.Collections.Generic;
+    using System.Diagnostics;
     using System.IO;
     using System.IO.Compression;
     using System.Linq;
@@ -32,12 +33,38 @@ namespace ReqIFSharp
     using System.Xml;
     using System.Xml.Schema;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The purpose of the <see cref="ReqIFDeserializer"/> is to deserialize a <see cref="ReqIF"/> XML document
     /// and to dereference it to a <see cref="ReqIF"/> complete object graph.
     /// </summary>
     public class ReqIFDeserializer : IReqIFDeSerializer
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ReqIFDeserializer> logger;
+        
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFDeserializer"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public ReqIFDeserializer(ILoggerFactory loggerFactory = null)
+        {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<ReqIFDeserializer>.Instance : this.loggerFactory.CreateLogger<ReqIFDeserializer>();
+        }
+
         /// <summary>
         /// Deserializes a <see cref="ReqIF"/> XML document.
         /// </summary>
@@ -59,10 +86,18 @@ namespace ReqIFSharp
             {
                 throw new ArgumentException("The xml file path may not be null or empty");
             }
-
+            
             using (var fileStream = File.OpenRead(xmlFilePath))
             {
-                return this.Deserialize(fileStream, validate, validationEventHandler);
+                var sw = Stopwatch.StartNew();
+
+                this.logger.LogTrace("start deserializing from {path}", xmlFilePath);
+
+                var result = this.Deserialize(fileStream, validate, validationEventHandler);
+
+                this.logger.LogTrace("File {path} deserialized in {time} [ms]", xmlFilePath, sw.ElapsedMilliseconds);
+
+                return result;
             }
         }
 
@@ -128,8 +163,14 @@ namespace ReqIFSharp
             
             using (var fileStream = File.OpenRead(xmlFilePath))
             {
+                var sw = Stopwatch.StartNew();
+                
+                this.logger.LogTrace("start deserializing from {path}", xmlFilePath);
+
                 byte[] result = new byte[fileStream.Length];
-                await fileStream.ReadAsync(result, 0, (int)fileStream.Length);
+                await fileStream.ReadAsync(result, 0, (int)fileStream.Length, token);
+
+                this.logger.LogTrace("File {path} deserialized in {time} [ms]", xmlFilePath, sw.ElapsedMilliseconds);
 
                 return await this.DeserializeAsync(fileStream, token, validate, validationEventHandler);
             }
@@ -198,26 +239,40 @@ namespace ReqIFSharp
             {
                 using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
+                    this.logger.LogTrace("reading from reqifz archive");
+
+                    var sw = Stopwatch.StartNew();
+
                     var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
                     if (reqIfEntries.Length == 0)
                     {
                         throw new FileNotFoundException($"No reqif file could be found in the archive.");
                     }
 
+                    this.logger.LogTrace("found {entries} in the reqif zip archive in {time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
+                    sw.Stop();
+
                     var reqifs = new List<ReqIF>();
                     foreach (var zipArchiveEntry in reqIfEntries)
                     {
                         using (xmlReader = XmlReader.Create(zipArchiveEntry.Open(), settings))
                         {
+                            sw.Start();
+
+                            this.logger.LogTrace("starting to read xml");
+
                             while (xmlReader.Read())
                             {
                                 if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
                                 {
-                                    var reqif = new ReqIF();
+                                    var reqif = new ReqIF(this.loggerFactory);
                                     reqif.ReadXml(xmlReader);
                                     reqifs.Add(reqif);
                                 }
                             }
+
+                            this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                            sw.Stop();
                         }
                     }
 
@@ -228,19 +283,28 @@ namespace ReqIFSharp
             {
                 if (e is InvalidDataException || e is NotSupportedException)
                 {
+                    this.logger.LogTrace("reading from reqif file");
+
                     using (xmlReader = XmlReader.Create(stream, settings))
                     {
+                        var sw = Stopwatch.StartNew();
+
                         var reqifs = new List<ReqIF>();
+
+                        this.logger.LogTrace("starting to read xml");
 
                         while (xmlReader.Read())
                         {
                             if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
                             {
-                                var reqif = new ReqIF();
+                                var reqif = new ReqIF(this.loggerFactory);
                                 reqif.ReadXml(xmlReader);
                                 reqifs.Add(reqif);
                             }
                         }
+
+                        this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                        sw.Stop();
 
                         return reqifs;
                     }
@@ -278,11 +342,18 @@ namespace ReqIFSharp
             {
                 using (var archive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
+                    this.logger.LogTrace("reading from reqifz archive");
+
+                    var sw = Stopwatch.StartNew();
+
                     var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
                     if (reqIfEntries.Length == 0)
                     {
                         throw new FileNotFoundException($"No reqif file could be found in the archive.");
                     }
+
+                    this.logger.LogTrace("found {entries} in the reqif zip archive in {time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
+                    sw.Stop();
 
                     if (token.IsCancellationRequested)
                     {
@@ -292,18 +363,25 @@ namespace ReqIFSharp
                     var reqifs = new List<ReqIF>();
                     foreach (var zipArchiveEntry in reqIfEntries)
                     {
+                        sw.Start();
+
+                        this.logger.LogTrace("starting to read xml");
+
                         using (xmlReader = XmlReader.Create(zipArchiveEntry.Open(), settings))
                         {
                             while (await xmlReader.ReadAsync())
                             {
                                 if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
                                 {
-                                    var reqif = new ReqIF();
+                                    var reqif = new ReqIF(loggerFactory);
                                     await reqif.ReadXmlAsync(xmlReader, token);
                                     reqifs.Add(reqif);
                                 }
                             }
                         }
+
+                        this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                        sw.Stop();
 
                         if (token.IsCancellationRequested)
                         {
@@ -318,6 +396,10 @@ namespace ReqIFSharp
             {
                 if (e is InvalidDataException || e is NotSupportedException)
                 {
+                    var sw = Stopwatch.StartNew();
+
+                    this.logger.LogTrace("reading from reqif file");
+
                     using (xmlReader = XmlReader.Create(stream, settings))
                     {
                         var reqifs = new List<ReqIF>();
@@ -326,11 +408,14 @@ namespace ReqIFSharp
                         {
                             if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
                             {
-                                var reqif = new ReqIF();
+                                var reqif = new ReqIF(loggerFactory);
                                 await reqif.ReadXmlAsync(xmlReader, token);
                                 reqifs.Add(reqif);
                             }
                         }
+
+                        this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                        sw.Stop();
 
                         return reqifs;
                     }

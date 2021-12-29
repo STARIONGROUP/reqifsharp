@@ -27,6 +27,9 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The <see cref="SpecHierarchy"/> class represents a node in a hierarchically structured requirements specification.
     /// </summary>
@@ -37,6 +40,11 @@ namespace ReqIFSharp
     /// </remarks>
     public class SpecHierarchy : AccessControlledElement
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<SpecHierarchy> logger;
+
         /// <summary>
         /// Backing field for the <see cref="Children"/> property.
         /// </summary>
@@ -52,6 +60,7 @@ namespace ReqIFSharp
         /// </summary>
         public SpecHierarchy()
         {
+            this.logger = NullLogger<SpecHierarchy>.Instance;
         }
 
         /// <summary>
@@ -63,8 +72,14 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The requirement core information content.
         /// </param>
-        internal SpecHierarchy(Specification root, ReqIFContent reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal SpecHierarchy(Specification root, ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<SpecHierarchy>.Instance : this.loggerFactory.CreateLogger<SpecHierarchy>();
+
             this.Initialize(null, root, reqIfContent);
             this.Root.Children.Add(this);
         }
@@ -81,8 +96,14 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The requirement core information content.
         /// </param>
-        internal SpecHierarchy(SpecHierarchy container, Specification root, ReqIFContent reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal SpecHierarchy(SpecHierarchy container, Specification root, ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<SpecHierarchy>.Instance : this.loggerFactory.CreateLogger<SpecHierarchy>();
+
             this.Initialize(container, root, reqIfContent);
             this.Container.Children.Add(this);
         }
@@ -135,7 +156,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -188,7 +209,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -240,7 +261,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The Object property may not be null.
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Object == null)
             {
@@ -270,7 +291,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The Object property may not be null.
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Object == null)
             {
@@ -323,6 +344,11 @@ namespace ReqIFSharp
                 var reference = reader.ReadElementContentAsString();
                 var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                 this.Object = specObject;
+
+                if (specObject == null)
+                {
+                    this.logger.LogTrace("The SpecObject:{reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -347,6 +373,11 @@ namespace ReqIFSharp
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                 this.Object = specObject;
+
+                if (specObject == null)
+                {
+                    this.logger.LogTrace("The SpecObject:{reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -370,7 +401,7 @@ namespace ReqIFSharp
                     using (var subtree = reader.ReadSubtree())
                     {
                         subtree.MoveToContent();
-                        var specHierarchy = new SpecHierarchy(this, this.Root, this.ReqIfContent);
+                        var specHierarchy = new SpecHierarchy(this, this.Root, this.ReqIfContent, this.loggerFactory);
                         specHierarchy.ReadXml(subtree);
                     }
                 }
@@ -410,7 +441,7 @@ namespace ReqIFSharp
                     using (var subtree = reader.ReadSubtree())
                     {
                         await subtree.MoveToContentAsync();
-                        var specHierarchy = new SpecHierarchy(this, this.Root, this.ReqIfContent);
+                        var specHierarchy = new SpecHierarchy(this, this.Root, this.ReqIfContent, this.loggerFactory);
                         await specHierarchy.ReadXmlAsync(subtree, token);
                     }
                 }
@@ -437,7 +468,7 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
         /// <param name="token">
-            /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         private async Task WriteObjectAsync(XmlWriter writer, CancellationToken token)
         {

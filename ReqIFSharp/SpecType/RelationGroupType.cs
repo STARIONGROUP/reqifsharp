@@ -20,6 +20,8 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="RelationGroupType"/> is to contain a set of attribute definitions for a <see cref="RelationGroup"/> element.    
     /// </summary>
@@ -42,8 +44,11 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="ReqIFContent"/>
         /// </param>
-        internal RelationGroupType(ReqIFContent reqIfContent)
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal RelationGroupType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
         }
     }

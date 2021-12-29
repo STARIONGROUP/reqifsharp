@@ -20,6 +20,9 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Contains a set of attribute definitions for a Specification element.
     /// Inherits a set of attribute definitions from SpecType. By using SpecificationType elements, multiple specifications can be
@@ -40,8 +43,11 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="ReqIFContent"/>
         /// </param>
-        internal SpecificationType(ReqIFContent reqIfContent)
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal SpecificationType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
         }
     }

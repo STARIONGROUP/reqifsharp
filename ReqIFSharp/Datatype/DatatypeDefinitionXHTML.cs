@@ -24,6 +24,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionXHTML"/> class is to define XHTML formatted data.
     /// </summary>
@@ -42,10 +44,12 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        internal DatatypeDefinitionXHTML(ReqIFContent reqIfContent) 
-            : base(reqIfContent)            
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal DatatypeDefinitionXHTML(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
-            this.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -54,7 +58,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -67,7 +71,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 

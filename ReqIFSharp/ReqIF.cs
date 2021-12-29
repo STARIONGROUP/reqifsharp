@@ -20,25 +20,56 @@
 
 namespace ReqIFSharp
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIF"/> class constitutes the root element of a ReqIF Exchange Document.
     /// </summary>
-    [Serializable]
-    public class ReqIF : IXmlSerializable
+    public class ReqIF
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </summary>
+        private readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ReqIF> logger;
+
         /// <summary>
         /// an <see cref="IEnumerable{XmlAttribute}"/> that is stored when reading an xml reqif file so that when
         /// the <see cref="ReqIF"/> object is serialized again, the original attributes and namespaces are serialized again
         /// </summary>
         private List<XmlAttribute> attributes = new List<XmlAttribute>();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIF"/> class
+        /// </summary>
+        public ReqIF()
+        {
+            this.logger = NullLogger<ReqIF>.Instance;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIF"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal ReqIF(ILoggerFactory loggerFactory)
+        {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<ReqIF>.Instance : this.loggerFactory.CreateLogger<ReqIF>();
+        }
 
         /// <summary>
         /// Gets the mandatory Exchange Document header, which contains metadata relevant for this exchange.
@@ -64,24 +95,12 @@ namespace ReqIFSharp
         public string Lang { get; set; }
 
         /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Generates a <see cref="ReqIF"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public void ReadXml(XmlReader reader)
+        internal void ReadXml(XmlReader reader)
         {
             this.Lang = reader.GetAttribute("xml:lang");
 
@@ -108,12 +127,12 @@ namespace ReqIFSharp
                     {
                         case "THE-HEADER":
                             var headerSubTreeXmlReader = reader.ReadSubtree();
-                            this.TheHeader = new ReqIFHeader { DocumentRoot = this };
+                            this.TheHeader = new ReqIFHeader(this.loggerFactory) { DocumentRoot = this };
                             this.TheHeader.ReadXml(headerSubTreeXmlReader);
                             break;
                         case "CORE-CONTENT":
                             var coreContentTreeXmlReader = reader.ReadSubtree();
-                            this.CoreContent = new ReqIFContent { DocumentRoot = this };
+                            this.CoreContent = new ReqIFContent(this.loggerFactory) { DocumentRoot = this };
                             this.CoreContent.ReadXml(coreContentTreeXmlReader);
                             break;
                         case "TOOL-EXTENSIONS":
@@ -125,7 +144,7 @@ namespace ReqIFSharp
                                 {
                                     var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();
 
-                                    var reqIfToolExtension = new ReqIFToolExtension();
+                                    var reqIfToolExtension = new ReqIFToolExtension(this.loggerFactory);
                                     reqIfToolExtension.ReadXml(reqIfToolExtensionSubTreeXmlReader);
                                     this.ToolExtension.Add(reqIfToolExtension);
                                 }
@@ -145,7 +164,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             this.Lang = reader.GetAttribute("xml:lang");
 
@@ -182,12 +201,12 @@ namespace ReqIFSharp
                     {
                         case "THE-HEADER":
                             var headerSubTreeXmlReader = reader.ReadSubtree();
-                            this.TheHeader = new ReqIFHeader { DocumentRoot = this };
+                            this.TheHeader = new ReqIFHeader(this.loggerFactory) { DocumentRoot = this };
                             await this.TheHeader.ReadXmlAsync(headerSubTreeXmlReader, token);
                             break;
                         case "CORE-CONTENT":
                             var coreContentTreeXmlReader = reader.ReadSubtree();
-                            this.CoreContent = new ReqIFContent { DocumentRoot = this };
+                            this.CoreContent = new ReqIFContent(this.loggerFactory) { DocumentRoot = this };
                             await this.CoreContent.ReadXmlAsync(coreContentTreeXmlReader, token);
                             break;
                         case "TOOL-EXTENSIONS":
@@ -199,7 +218,7 @@ namespace ReqIFSharp
                                 {
                                     var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();
 
-                                    var reqIfToolExtension = new ReqIFToolExtension();
+                                    var reqIfToolExtension = new ReqIFToolExtension(this.loggerFactory);
                                     await reqIfToolExtension.ReadXmlAsync(reqIfToolExtensionSubTreeXmlReader);
                                     this.ToolExtension.Add(reqIfToolExtension);
                                 }
@@ -216,7 +235,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public void WriteXml(XmlWriter writer)
+        internal void WriteXml(XmlWriter writer)
         {
             this.WriteNameSpaceAttributes(writer);
 
@@ -239,7 +258,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {

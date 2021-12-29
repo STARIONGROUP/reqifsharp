@@ -24,12 +24,11 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
 
     /// <summary>
     /// The purpose of the <see cref="AlternativeId"/> class is to provide an alternative, tool-specific identification.
     /// </summary>
-    public class AlternativeId : IXmlSerializable
+    public class AlternativeId
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="AlternativeId"/> class.
@@ -69,7 +68,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Identifier"/> may not be null or empty
         /// </exception>
-        public void WriteXml(XmlWriter writer)
+        internal void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("IDENTIFIER", this.Identifier);
         }
@@ -86,7 +85,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {
@@ -102,21 +101,9 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public void ReadXml(XmlReader reader)
+        internal void ReadXml(XmlReader reader)
         {
             this.Identifier = reader.GetAttribute("IDENTIFIER");
-        }
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
         }
     }
 }

@@ -24,11 +24,31 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The <see cref="AccessControlledElement"/> is the base class for classes that may restrict user access to their information.
     /// </summary>
     public abstract class AccessControlledElement : Identifiable
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccessControlledElement"/> class
+        /// </summary>
+        protected AccessControlledElement()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccessControlledElement"/> class
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal AccessControlledElement(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+        }
+
         /// <summary>
         /// Gets or sets a value indicating whether this <see cref="AccessControlledElement"/> is editable
         /// </summary>
@@ -44,7 +64,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -55,14 +75,14 @@ namespace ReqIFSharp
                 this.IsEditable = XmlConvert.ToBoolean(isEditable);
             }
         }
-        
+
         /// <summary>
         /// Converts a <see cref="AttributeDefinition"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -81,7 +101,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

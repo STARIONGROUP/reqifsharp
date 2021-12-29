@@ -27,6 +27,9 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeDefinitionInteger"/> class is to define an attribute with Real data type.
     /// </summary>
@@ -39,21 +42,31 @@ namespace ReqIFSharp
     public class AttributeDefinitionReal : AttributeDefinitionSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeDefinitionReal> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionReal"/> class.
         /// </summary>
         public AttributeDefinitionReal()
         {
+            this.logger = NullLogger<AttributeDefinitionReal>.Instance;
         }
-    
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionReal"/> class.
         /// </summary>
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionReal(SpecType specType) 
-            : base(specType)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeDefinitionReal(SpecType specType, ILoggerFactory loggerFactory)
+            : base(specType, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionReal>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionReal>();
         }
 
         /// <summary>
@@ -100,7 +113,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -118,9 +131,15 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var datatypeDefinition = (DatatypeDefinitionReal)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionReal:{reference} could not be found and has been set to null on AttributeDefinitionReal:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                         case "ATTRIBUTE-VALUE-REAL":
-                            this.DefaultValue = new AttributeValueReal(this);
+                            this.DefaultValue = new AttributeValueReal(this, this.loggerFactory);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 valueSubtree.MoveToContent();
@@ -141,7 +160,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -164,9 +183,15 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var datatypeDefinition = (DatatypeDefinitionReal)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionReal:{reference} could not be found and has been set to null on AttributeDefinitionReal:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                         case "ATTRIBUTE-VALUE-REAL":
-                            this.DefaultValue = new AttributeValueReal(this);
+                            this.DefaultValue = new AttributeValueReal(this, this.loggerFactory);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 await valueSubtree.MoveToContentAsync();
@@ -187,7 +212,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -220,7 +245,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

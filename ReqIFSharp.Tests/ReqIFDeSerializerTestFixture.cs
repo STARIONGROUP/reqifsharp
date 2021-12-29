@@ -28,6 +28,8 @@ namespace ReqIFSharp.Tests
     using System.Threading.Tasks;
     using System.Xml.Schema;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
@@ -38,15 +40,14 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class ReqIFDeSerializerTestFixture
     {
-        private const int AmountOfDataTypes = 7;
-        private const int AmountOfSpecTypes = 4;
-        private const int AmountOfSpecObjects = 3;
-        private const int AmountOfSpecRelations = 2;
-        private const int AmountOfSpecifications = 2;
-        private const int AmountOfSpecificationChildren = 1;
-        private const int AmountOfSpecificationSubChildren = 2;
-        private const int AmountOfSpecRelationGroups = 2;
+        private ILoggerFactory loggerFactory;
 
+        [SetUp]
+        public void SetUp()
+        {
+            this.loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        }
+        
         [Test]
         public void Verify_that_ArgumentException_Are_thrown_on_read_from_file()
         {
@@ -118,7 +119,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_Without_Validation()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif")).First();
 
             Assert.AreEqual("en", reqIf.Lang);
@@ -129,14 +130,14 @@ namespace ReqIFSharp.Tests
             Assert.IsNotEmpty(xhtmlAttribute.TheValue);
             Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
 
             Assert.That(reqIf.TheHeader.DocumentRoot, Is.EqualTo(reqIf));
 
@@ -164,14 +165,14 @@ namespace ReqIFSharp.Tests
             Assert.IsNotEmpty(xhtmlAttribute.TheValue);
             Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
 
             var unknownSpecRel = reqIf.CoreContent.SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
             Assert.IsNotNull(unknownSpecRel.Target);
@@ -339,12 +340,12 @@ namespace ReqIFSharp.Tests
 
             Assert.AreEqual("en", reqIf.Lang);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 
         [Test]
@@ -357,12 +358,12 @@ namespace ReqIFSharp.Tests
 
             Assert.AreEqual("en", reqIf.Lang);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(AmountOfSpecRelations, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecRelationGroups, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
+            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 
         [Test]
@@ -433,13 +434,13 @@ namespace ReqIFSharp.Tests
             Assert.IsNotEmpty(xhtmlAttribute.TheValue);
             Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(3, reqIf.CoreContent.SpecObjects.Count);
             Assert.AreEqual(1, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
             Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 
@@ -459,13 +460,13 @@ namespace ReqIFSharp.Tests
             Assert.IsNotEmpty(xhtmlAttribute.TheValue);
             Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
 
-            Assert.AreEqual(AmountOfDataTypes, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(AmountOfSpecTypes, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(AmountOfSpecObjects, reqIf.CoreContent.SpecObjects.Count);
+            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
+            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
+            Assert.AreEqual(3, reqIf.CoreContent.SpecObjects.Count);
             Assert.AreEqual(1, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(AmountOfSpecifications, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(AmountOfSpecificationChildren, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(AmountOfSpecificationSubChildren, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.Specifications.Count);
+            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
+            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
             Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
         }
 

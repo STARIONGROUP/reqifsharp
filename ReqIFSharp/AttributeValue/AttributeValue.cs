@@ -23,13 +23,19 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
+
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The <see cref="AttributeDefinition"/> is the base class for attribute values.
     /// </summary>
-    public abstract class AttributeValue : IXmlSerializable
+    public abstract class AttributeValue
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </summary>
+        protected readonly ILoggerFactory loggerFactory;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValue"/> class.
         /// </summary>
@@ -46,7 +52,10 @@ namespace ReqIFSharp
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinition"/>
         /// </remarks>
-        protected AttributeValue(AttributeDefinition attributeDefinition)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected AttributeValue(AttributeDefinition attributeDefinition, ILoggerFactory loggerFactory)
         {
             this.AttributeDefinition = attributeDefinition;
             this.ReqIFContent = this.AttributeDefinition.SpecType.ReqIFContent;
@@ -58,7 +67,10 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        protected AttributeValue(SpecElementWithAttributes specElAt)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected AttributeValue(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
         {
             this.SpecElAt = specElAt;
             this.SpecElAt.Values.Add(this);
@@ -115,7 +127,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public abstract void ReadXml(XmlReader reader);
+        internal abstract void ReadXml(XmlReader reader);
 
         /// <summary>
         /// Asynchronously generates a <see cref="AttributeValue"/> object from its XML representation.
@@ -126,7 +138,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
+        internal abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Converts a <see cref="AttributeValue"/> object into its XML representation.
@@ -134,7 +146,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public abstract void WriteXml(XmlWriter writer);
+        internal abstract void WriteXml(XmlWriter writer);
 
         /// <summary>
         /// Asynchronously converts a <see cref="AttributeValue"/> object into its XML representation.
@@ -145,18 +157,6 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public abstract Task WriteXmlAsync(XmlWriter writer, CancellationToken token);
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
-        }
+        internal abstract Task WriteXmlAsync(XmlWriter writer, CancellationToken token);
     }
 }

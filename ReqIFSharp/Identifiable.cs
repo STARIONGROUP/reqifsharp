@@ -25,13 +25,25 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="Identifiable"/> Abstract base class provides an identification concept for <see cref="ReqIF"/> elements.
     /// </summary>
-    public abstract class Identifiable : IXmlSerializable
+    public abstract class Identifiable
     {
+        /// <summary>
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </summary>
+        protected readonly ILoggerFactory loggerFactory;
+
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private ILogger<Identifiable> logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Identifiable"/> class.
         /// </summary>
@@ -40,7 +52,26 @@ namespace ReqIFSharp
         /// </remarks>
         protected Identifiable()
         {
+            this.logger = NullLogger<Identifiable>.Instance;
+
             this.LastChange = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Identifiable"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        /// <remarks>
+        /// The <see cref="LastChange"/> property is set to the current time.
+        /// </remarks>
+        protected internal Identifiable(ILoggerFactory loggerFactory)
+            : this()
+        {
+            this.loggerFactory = loggerFactory;
+
+            this.logger = this.loggerFactory == null ? NullLogger<Identifiable>.Instance : this.loggerFactory.CreateLogger<Identifiable>();
         }
 
         /// <summary>
@@ -82,9 +113,11 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public virtual void ReadXml(XmlReader reader)
+        internal virtual void ReadXml(XmlReader reader)
         {
             this.Identifier = reader.GetAttribute("IDENTIFIER");
+
+            this.logger.LogTrace("read xml of {typename}:{identifier}", this.GetType().Name, this.Identifier);
 
             var lastChange = reader.GetAttribute("LAST-CHANGE");
             this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
@@ -102,7 +135,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Identifier"/> may not be null or empty
         /// </exception>
-        public virtual void WriteXml(XmlWriter writer)
+        internal virtual void WriteXml(XmlWriter writer)
         {
             if (string.IsNullOrEmpty(this.Identifier))
             {
@@ -143,7 +176,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public virtual async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal virtual async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {
@@ -175,18 +208,6 @@ namespace ReqIFSharp
                 await this.AlternativeId.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
-        }
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
         }
     }
 }

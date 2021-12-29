@@ -26,6 +26,8 @@ namespace ReqIFLib.Tests
     using System.Threading;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
@@ -36,6 +38,14 @@ namespace ReqIFLib.Tests
     [TestFixture]
     public class AttributeValueRealTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        }
+
         [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
@@ -58,20 +68,13 @@ namespace ReqIFLib.Tests
         {
             var reqIFContent = new ReqIFContent();
 
-            var specObjectType = new SpecObjectType(reqIFContent);
+            var specObjectType = new SpecObjectType(reqIFContent, this.loggerFactory);
 
-            var attributeDefinitionReal = new AttributeDefinitionReal(specObjectType);
+            var attributeDefinitionReal = new AttributeDefinitionReal(specObjectType, this.loggerFactory);
 
-            var attributeValueReal = new AttributeValueReal(attributeDefinitionReal);
+            var attributeValueReal = new AttributeValueReal(attributeDefinitionReal, this.loggerFactory);
 
             Assert.That(attributeValueReal.OwningDefinition, Is.EqualTo(attributeDefinitionReal));
-        }
-
-        [Test]
-        public void Verify_that_GetSchema_returns_null()
-        {
-            var attributeValue = new AttributeValueReal();
-            Assert.That(attributeValue.GetSchema(), Is.Null);
         }
 
         [Test]

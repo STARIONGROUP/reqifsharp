@@ -27,6 +27,9 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Constitutes an identifiable requirements object that can be associated with various attributes. 
     /// This is the smallest granularity by which requirements are referenced.
@@ -38,10 +41,16 @@ namespace ReqIFSharp
     public class SpecObject : SpecElementWithAttributes
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<SpecObject> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SpecObject"/> class.
         /// </summary>
         public SpecObject()
         {
+            this.logger = NullLogger<SpecObject>.Instance;
         }
 
         /// <summary>
@@ -50,12 +59,17 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>
-        internal SpecObject(ReqIFContent reqIfContent)
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal SpecObject(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<SpecObject>.Instance : loggerFactory.CreateLogger<SpecObject>();
+
             this.ReqIFContent.SpecObjects.Add(this);
         }
-
+        
         /// <summary>
         /// Gets or sets the <see cref="SpecObject"/> reference.
         /// </summary>
@@ -100,7 +114,12 @@ namespace ReqIFSharp
             {
                 var reference = reader.ReadElementContentAsString();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
-                this.Type = (SpecObjectType)specType;                    
+                this.Type = (SpecObjectType)specType;
+
+                if (specType == null)
+                {
+                    this.logger.LogTrace("The SpecObjectType:{reference} could not be found and has been set to null on SpecObject:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -125,6 +144,11 @@ namespace ReqIFSharp
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecObjectType)specType;
+
+                if (specType == null)
+                {
+                    this.logger.LogTrace("The SpecObjectType:{reference} could not be found and has been set to null on SpecObject:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -162,7 +186,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> property may not be null.
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Type == null)
             {
@@ -188,7 +212,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {

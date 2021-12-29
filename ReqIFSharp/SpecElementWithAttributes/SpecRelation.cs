@@ -27,16 +27,25 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// Defines relations (links) between two <see cref="SpecObject"/> instances.
     /// </summary>
     public class SpecRelation : SpecElementWithAttributes
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<SpecRelation> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="SpecRelation"/> class.
         /// </summary>
         public SpecRelation()
         {
+            this.logger = NullLogger<SpecRelation>.Instance;
         }
 
         /// <summary>
@@ -45,9 +54,14 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>
-        internal SpecRelation(ReqIFContent reqIfContent)
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal SpecRelation(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<SpecRelation>.Instance : this.loggerFactory.CreateLogger<SpecRelation>();
+
             this.ReqIFContent.SpecRelations.Add(this);
         }
 
@@ -85,11 +99,16 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                             this.Source = specObject
-                                          ?? new SpecObject
+                                          ?? new SpecObject(this.ReqIFContent, this.loggerFactory)
                                           {
                                               Identifier = reference,
                                               Description = "This spec-object was not found in the source file."
                                           };
+
+                            if (specObject == null)
+                            {
+                                this.logger.LogTrace("The source SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as source for SpecRelation:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                     case "TARGET":
@@ -98,11 +117,16 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                             this.Target = specObject
-                                          ?? new SpecObject
+                                          ?? new SpecObject(this.ReqIFContent, this.loggerFactory)
                                           {
                                               Identifier = reference,
                                               Description = "This spec-object was not found in the source file."
                                           };
+
+                            if (specObject == null)
+                            {
+                                this.logger.LogTrace("The target SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                 }
@@ -136,11 +160,16 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                             this.Source = specObject
-                                          ?? new SpecObject
+                                          ?? new SpecObject(this.ReqIFContent, this.loggerFactory)
                                           {
                                               Identifier = reference,
                                               Description = "This spec-object was not found in the source file."
                                           };
+
+                            if (specObject == null)
+                            {
+                                this.logger.LogTrace("The source SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as source for SpecRelation:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                     case "TARGET":
@@ -149,11 +178,16 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                             this.Target = specObject
-                                          ?? new SpecObject
+                                          ?? new SpecObject(this.ReqIFContent, this.loggerFactory)
                                           {
                                               Identifier = reference,
                                               Description = "This spec-object was not found in the source file."
                                           };
+
+                            if (specObject == null)
+                            {
+                                this.logger.LogTrace("The target SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                 }
@@ -200,6 +234,11 @@ namespace ReqIFSharp
                 var reference = reader.ReadElementContentAsString();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecRelationType)specType;
+
+                if (specType == null)
+                {
+                    this.logger.LogTrace("The SpecRelationType:{reference} could not be found and has been set to null on SpecRelation:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -224,6 +263,11 @@ namespace ReqIFSharp
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecRelationType)specType;
+
+                if (specType == null)
+                {
+                    this.logger.LogTrace("The SpecRelationType:{reference} could not be found and has been set to null on SpecRelation:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -261,7 +305,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The Type, Source and Target properties may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Type == null)
             {
@@ -305,7 +349,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {

@@ -27,6 +27,9 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeDefinitionEnumeration"/> class is to define a enumeration attribute.
     /// </summary>
@@ -39,10 +42,16 @@ namespace ReqIFSharp
     public class AttributeDefinitionEnumeration : AttributeDefinition
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeDefinitionEnumeration> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionEnumeration"/> class.
         /// </summary>
         public AttributeDefinitionEnumeration()
         {
+            this.logger = NullLogger<AttributeDefinitionEnumeration>.Instance;
         }
 
         /// <summary>
@@ -51,9 +60,13 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionEnumeration(SpecType specType) 
-            : base(specType)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeDefinitionEnumeration(SpecType specType, ILoggerFactory loggerFactory)
+            : base(specType, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionEnumeration>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionEnumeration>();
         }
 
         /// <summary>
@@ -113,7 +126,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -136,9 +149,15 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var datatypeDefinition = (DatatypeDefinitionEnumeration)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionEnumeration:{reference} could not be found and has been set to null on AttributeDefinitionEnumeration:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                         case "ATTRIBUTE-VALUE-ENUMERATION":
-                            this.DefaultValue = new AttributeValueEnumeration(this);
+                            this.DefaultValue = new AttributeValueEnumeration(this, this.loggerFactory);
                             using (var valuesubtree = reader.ReadSubtree())
                             {
                                 valuesubtree.MoveToContent();
@@ -156,7 +175,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -184,9 +203,15 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var datatypeDefinition = (DatatypeDefinitionEnumeration)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionEnumeration:{reference} could not be found and has been set to null on AttributeDefinitionEnumeration:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                         case "ATTRIBUTE-VALUE-ENUMERATION":
-                            this.DefaultValue = new AttributeValueEnumeration(this);
+                            this.DefaultValue = new AttributeValueEnumeration(this, this.loggerFactory);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 await valueSubtree.MoveToContentAsync();
@@ -207,7 +232,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("MULTI-VALUED", this.IsMultiValued ? "true" : "false");
 
@@ -247,7 +272,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await writer.WriteAttributeStringAsync(null,"MULTI-VALUED", null, this.IsMultiValued ? "true" : "false");
 

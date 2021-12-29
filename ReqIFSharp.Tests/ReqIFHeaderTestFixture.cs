@@ -35,14 +35,6 @@ namespace ReqIFSharp.Tests
     public class ReqIFHeaderTestFixture
     {
         [Test]
-        public void Verify_that_GetSchema_returns_null()
-        {
-            var reqIfHeader = new ReqIFHeader();
-
-            Assert.That(reqIfHeader.GetSchema(), Is.Null);
-        }
-
-        [Test]
         public void Verify_that_ReadXmlAsync_throws_exception_when_cancelled()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");

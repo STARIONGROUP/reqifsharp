@@ -28,6 +28,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeValueInteger"/> class is to define an Integer attribute value.
     /// </summary>
@@ -36,6 +38,11 @@ namespace ReqIFSharp
     /// </remarks>
     public class AttributeValueInteger : AttributeValueSimple
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueInteger> logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueInteger"/> class.
         /// </summary>
@@ -50,8 +57,11 @@ namespace ReqIFSharp
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionInteger"/>
         /// </remarks>
-        internal AttributeValueInteger(AttributeDefinitionInteger attributeDefinition)
-            : base(attributeDefinition)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueInteger(AttributeDefinitionInteger attributeDefinition, ILoggerFactory loggerFactory)
+            : base(attributeDefinition, loggerFactory)
         {
             this.OwningDefinition = attributeDefinition;
         }
@@ -62,8 +72,11 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        internal AttributeValueInteger(SpecElementWithAttributes specElAt)
-            : base(specElAt)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeValueInteger(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
+            : base(specElAt, loggerFactory)
         {
         }
 
@@ -135,7 +148,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             var value = reader["THE-VALUE"];
 
@@ -168,7 +181,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             var value = reader["THE-VALUE"];
 
@@ -206,7 +219,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Definition"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Definition == null)
             {
@@ -231,7 +244,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Definition == null)
             {

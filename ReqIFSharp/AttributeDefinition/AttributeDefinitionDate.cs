@@ -26,7 +26,10 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeDefinitionBoolean"/> class is to define a <see cref="DateTime"/> attribute.
     /// </summary>
@@ -39,10 +42,16 @@ namespace ReqIFSharp
     public class AttributeDefinitionDate : AttributeDefinitionSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeDefinitionDate> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionDate"/> class.
         /// </summary>
         public AttributeDefinitionDate()
         {
+            this.logger = NullLogger<AttributeDefinitionDate>.Instance;
         }
 
         /// <summary>
@@ -51,9 +60,13 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionDate(SpecType specType) 
-            : base(specType)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeDefinitionDate(SpecType specType, ILoggerFactory loggerFactory)
+            : base(specType, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionDate>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionDate>();
         }
 
         /// <summary>
@@ -100,7 +113,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -115,7 +128,7 @@ namespace ReqIFSharp
                             alternativeId.ReadXml(reader);
                             break;
                         case "ATTRIBUTE-VALUE-DATE":
-                            this.DefaultValue = new AttributeValueDate(this);
+                            this.DefaultValue = new AttributeValueDate(this, this.loggerFactory);
                             using (var valuesubtree = reader.ReadSubtree())
                             {
                                 valuesubtree.MoveToContent();
@@ -126,6 +139,12 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionDate:{reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                     }
                 }
@@ -141,7 +160,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -161,7 +180,7 @@ namespace ReqIFSharp
                             alternativeId.ReadXml(reader);
                             break;
                         case "ATTRIBUTE-VALUE-DATE":
-                            this.DefaultValue = new AttributeValueDate(this);
+                            this.DefaultValue = new AttributeValueDate(this, this.loggerFactory);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 await valueSubtree.MoveToContentAsync();
@@ -172,6 +191,12 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionDate:{reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                     }
                 }
@@ -187,7 +212,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Type == null)
             {
@@ -225,7 +250,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

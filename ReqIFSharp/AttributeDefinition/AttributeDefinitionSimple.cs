@@ -20,6 +20,8 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The <see cref="AttributeDefinitionSimple"/> is the base class for simple type attributes.
     /// </summary>
@@ -38,8 +40,11 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        protected AttributeDefinitionSimple(SpecType specType) 
-            : base(specType)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal AttributeDefinitionSimple(SpecType specType, ILoggerFactory loggerFactory) 
+            : base(specType, loggerFactory)
         {
         }
     }

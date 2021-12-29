@@ -20,6 +20,8 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The <see cref="AttributeValueSimple"/> is the base class for simple type attribute values.
     /// </summary>
@@ -36,11 +38,14 @@ namespace ReqIFSharp
         /// Instantiated a new instance of the <see cref="AttributeValueSimple"/> class
         /// </summary>
         /// <param name="attributeDefinition">The <see cref="AttributeDefinitionSimple"/> for which this is the default value</param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionSimple"/>
         /// </remarks>
-        protected AttributeValueSimple(AttributeDefinitionSimple attributeDefinition)
-            : base(attributeDefinition)
+        protected internal AttributeValueSimple(AttributeDefinitionSimple attributeDefinition, ILoggerFactory loggerFactory)
+            : base(attributeDefinition, loggerFactory)
         {
         }
 
@@ -50,8 +55,11 @@ namespace ReqIFSharp
         /// <param name="specElAt">
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
-        protected AttributeValueSimple(SpecElementWithAttributes specElAt)
-            : base(specElAt)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal AttributeValueSimple(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
+            : base(specElAt, loggerFactory)
         {
         }
     }

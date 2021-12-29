@@ -24,6 +24,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The class <see cref="EnumValue"/> represents enumeration literals.
     /// </summary>
@@ -35,14 +37,18 @@ namespace ReqIFSharp
         public EnumValue()
         {
         }
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumValue"/> class.
         /// </summary>
         /// <param name="datatypeDefinitionEnumeration">
         /// The owning <see cref="DatatypeDefinitionEnumeration"/>
         /// </param>
-        internal EnumValue(DatatypeDefinitionEnumeration datatypeDefinitionEnumeration)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal EnumValue(DatatypeDefinitionEnumeration datatypeDefinitionEnumeration, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             this.DataTpeDefEnum = datatypeDefinitionEnumeration;
             this.DataTpeDefEnum.SpecifiedValues.Add(this);
@@ -64,7 +70,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -74,7 +80,7 @@ namespace ReqIFSharp
                 {
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
                     {
-                        var embeddedValue = new EmbeddedValue(this);
+                        var embeddedValue = new EmbeddedValue(this, this.loggerFactory);
                         embeddedValue.ReadXml(subtree);
                     }
                 }
@@ -90,7 +96,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
             
@@ -105,7 +111,7 @@ namespace ReqIFSharp
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
                     {
-                        var embeddedValue = new EmbeddedValue(this);
+                        var embeddedValue = new EmbeddedValue(this, this.loggerFactory);
                         embeddedValue.ReadXml(subtree);
                     }
                 }
@@ -118,7 +124,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -143,7 +149,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

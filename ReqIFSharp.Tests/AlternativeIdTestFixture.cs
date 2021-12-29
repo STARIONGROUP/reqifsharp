@@ -46,14 +46,6 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_GetSchema_returns_null()
-        {
-            var alternativeId = new AlternativeId();
-
-            Assert.That(alternativeId.GetSchema(), Is.Null); 
-        }
-
-        [Test]
         public void Verify_That_WriteXmlAsync_throws_exception_when_cancelled()
         {
             using var memoryStream = new MemoryStream();

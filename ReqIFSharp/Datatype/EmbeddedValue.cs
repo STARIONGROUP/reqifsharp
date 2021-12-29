@@ -23,12 +23,13 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
+
+    using Microsoft.Extensions.Logging;
 
     /// <summary>
     /// The <see cref="EmbeddedValue"/> class represents additional information related to enumeration literals.
     /// </summary>
-    public class EmbeddedValue : IXmlSerializable
+    public class EmbeddedValue
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="EmbeddedValue"/> class.
@@ -43,10 +44,13 @@ namespace ReqIFSharp
         /// <param name="enumValue">
         /// The owning <see cref="EnumValue"/>
         /// </param>
-        internal EmbeddedValue(EnumValue enumValue)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal EmbeddedValue(EnumValue enumValue, ILoggerFactory loggerFactory)
         {
             this.EnumValue = enumValue;
-            this.EnumValue.Properties = this;            
+            this.EnumValue.Properties = this;
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public void ReadXml(XmlReader reader)
+        internal void ReadXml(XmlReader reader)
         {
             var key = reader.GetAttribute("KEY");
 
@@ -84,14 +88,14 @@ namespace ReqIFSharp
 
             this.OtherContent = reader.GetAttribute("OTHER-CONTENT");
         }
-        
+
         /// <summary>
         /// Converts a <see cref="EmbeddedValue"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public void WriteXml(XmlWriter writer)
+        internal void WriteXml(XmlWriter writer)
         {
             writer.WriteAttributeString("KEY", XmlConvert.ToString(this.Key));
             writer.WriteAttributeString("OTHER-CONTENT", this.OtherContent);
@@ -106,7 +110,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {
@@ -115,18 +119,6 @@ namespace ReqIFSharp
 
             await writer.WriteAttributeStringAsync(null,"KEY", null, XmlConvert.ToString(this.Key));
             await writer.WriteAttributeStringAsync(null, "OTHER-CONTENT", null, this.OtherContent);
-        }
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
         }
     }
 }

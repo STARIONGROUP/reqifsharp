@@ -23,13 +23,39 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Serialization;
-    
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The <see cref="ReqIFToolExtension"/> class allows the optional inclusion of tool-specific information into a ReqIF Exchange Document.
     /// </summary>
-    public class ReqIFToolExtension : IXmlSerializable
+    public class ReqIFToolExtension
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private ILogger<ReqIFToolExtension> logger;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFToolExtension"/> class
+        /// </summary>
+        public ReqIFToolExtension()
+        {
+            this.logger = NullLogger<ReqIFToolExtension>.Instance;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReqIFToolExtension"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal ReqIFToolExtension(ILoggerFactory loggerFactory)
+        {
+            this.logger = loggerFactory == null ? NullLogger<ReqIFToolExtension>.Instance : loggerFactory.CreateLogger<ReqIFToolExtension>();
+        }
+
         /// <summary>
         /// Gets or sets the InnerXml of the <see cref="ReqIFToolExtension"/>
         /// </summary>
@@ -41,7 +67,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public void ReadXml(XmlReader reader)
+        internal void ReadXml(XmlReader reader)
         {
             while (reader.Read())
             {
@@ -58,7 +84,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader)
+        internal async Task ReadXmlAsync(XmlReader reader)
         {
             while (await reader.ReadAsync())
             {
@@ -75,7 +101,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public void WriteXml(XmlWriter writer)
+        internal void WriteXml(XmlWriter writer)
         {
             writer.WriteRaw(this.InnerXml);
         }
@@ -89,7 +115,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {
@@ -97,18 +123,6 @@ namespace ReqIFSharp
             }
 
             await writer.WriteRawAsync(this.InnerXml);
-        }
-
-        /// <summary>
-        /// This method is reserved and should not be used.
-        /// </summary>
-        /// <returns>returns null</returns>
-        /// <remarks>
-        /// When implementing the IXmlSerializable interface, you should return null
-        /// </remarks>
-        public System.Xml.Schema.XmlSchema GetSchema()
-        {
-            return null;
         }
     }
 }

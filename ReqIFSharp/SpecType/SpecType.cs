@@ -25,6 +25,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Contains a set of attribute definitions. By using an instance of a subclass of <see cref="SpecType"/>, multiple elements can be
     /// associated with the same set of attribute definitions (attribute names, default values, data types, etc.).
@@ -49,7 +51,8 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        protected SpecType(ReqIFContent reqIfContent)
+        protected internal SpecType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             this.ReqIFContent = reqIfContent;
             reqIfContent.SpecTypes.Add(this);
@@ -74,7 +77,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -121,7 +124,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -180,7 +183,7 @@ namespace ReqIFSharp
         /// </param>
         private void CreateAttributeDefinition(XmlReader reader, string xmlname)
         {
-            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this);
+            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this, this.loggerFactory);
             if (attributeDefinition == null)
             {
                 return;
@@ -207,7 +210,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task CreateAttributeDefinitionAsync(XmlReader reader, string xmlname, CancellationToken token)
         {
-            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this);
+            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this, this.loggerFactory);
             if (attributeDefinition == null)
             {
                 return;
@@ -231,7 +234,7 @@ namespace ReqIFSharp
         /// <param name="writer">
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -247,7 +250,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
             

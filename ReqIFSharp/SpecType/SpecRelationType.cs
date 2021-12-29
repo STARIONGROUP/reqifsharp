@@ -20,6 +20,8 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// Contains a set of attribute definitions for a SpecRelation element.
     /// Inherits a set of attribute definitions from SpecType. By using SpecObjectType elements, multiple requirements can be
@@ -40,8 +42,11 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="ReqIFContent"/>
         /// </param>
-        internal SpecRelationType(ReqIFContent reqIfContent)
-            : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal SpecRelationType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(reqIfContent, loggerFactory)
         {
         }
     }

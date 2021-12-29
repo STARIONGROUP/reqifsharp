@@ -28,6 +28,9 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The purpose of the <see cref="AttributeDefinitionInteger"/> class is to define an Integer attribute.
     /// </summary>
@@ -41,10 +44,16 @@ namespace ReqIFSharp
     public class AttributeDefinitionInteger : AttributeDefinitionSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeDefinitionInteger> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionInteger"/> class.
         /// </summary>
         public AttributeDefinitionInteger()
         {
+            this.logger = NullLogger<AttributeDefinitionInteger>.Instance;
         }
 
         /// <summary>
@@ -53,9 +62,13 @@ namespace ReqIFSharp
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>
-        internal AttributeDefinitionInteger(SpecType specType) 
-            : base(specType)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal AttributeDefinitionInteger(SpecType specType, ILoggerFactory loggerFactory)
+            : base(specType, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionInteger>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionInteger>();
         }
 
         /// <summary>
@@ -102,7 +115,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        public override void ReadXml(XmlReader reader)
+        internal override void ReadXml(XmlReader reader)
         {
             base.ReadXml(reader);
 
@@ -120,9 +133,15 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var datatypeDefinition = (DatatypeDefinitionInteger)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionInteger:{reference} could not be found and has been set to null on AttributeDefinitionInteger:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                         case "ATTRIBUTE-VALUE-INTEGER":
-                            this.DefaultValue = new AttributeValueInteger(this);
+                            this.DefaultValue = new AttributeValueInteger(this, this.loggerFactory);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 valueSubtree.MoveToContent();
@@ -143,7 +162,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             base.ReadXml(reader);
 
@@ -166,9 +185,15 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var datatypeDefinition = (DatatypeDefinitionInteger)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
+
+                            if (datatypeDefinition == null)
+                            {
+                                this.logger.LogTrace("The DatatypeDefinitionInteger:{reference} could not be found and has been set to null on AttributeDefinitionInteger:{Identifier}", reference, Identifier);
+                            }
+
                             break;
                         case "ATTRIBUTE-VALUE-INTEGER":
-                            this.DefaultValue = new AttributeValueInteger(this);
+                            this.DefaultValue = new AttributeValueInteger(this, this.loggerFactory);
                             using (var valueSubtree = reader.ReadSubtree())
                             {
                                 await valueSubtree.MoveToContentAsync();
@@ -189,7 +214,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             base.WriteXml(writer);
 
@@ -222,7 +247,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The <see cref="Type"/> may not be null
         /// </exception>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             await base.WriteXmlAsync(writer, token);
 

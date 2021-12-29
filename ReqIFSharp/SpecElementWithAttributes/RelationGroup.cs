@@ -28,6 +28,9 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+
     /// <summary>
     /// The <see cref="RelationGroup"/> class represents a group of relations.
     /// </summary>
@@ -40,6 +43,11 @@ namespace ReqIFSharp
     public class RelationGroup : SpecElementWithAttributes
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<RelationGroup> logger;
+
+        /// <summary>
         /// Backing field for the <see cref="SpecRelations"/> property
         /// </summary>
         private readonly List<SpecRelation> specRelations = new List<SpecRelation>();
@@ -49,6 +57,7 @@ namespace ReqIFSharp
         /// </summary>
         public RelationGroup()
         {
+            this.logger = NullLogger<RelationGroup>.Instance;
         }
 
         /// <summary>
@@ -57,8 +66,14 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>
-        internal RelationGroup(ReqIFContent reqIfContent) : base(reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        internal RelationGroup(ReqIFContent reqIfContent, ILoggerFactory loggerFactory) 
+            : base(reqIfContent, loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<RelationGroup>.Instance : loggerFactory.CreateLogger<RelationGroup>();
+
             this.CoreContent = reqIfContent;
             this.CoreContent.SpecRelationGroups.Add(this);
         }
@@ -134,11 +149,16 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.SourceSpecification = specification
-                                                       ?? new Specification
+                                                       ?? new Specification(this.ReqIFContent, this.loggerFactory)
                                                        {
                                                            Identifier = reference,
                                                            Description = "This specification was not found in the source file."
                                                        };
+
+                            if (specification == null)
+                            {
+                                this.logger.LogTrace("The source specification:{reference} was not found, a new specification with the same identifier has been created and set as source for RelationGroup:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                     case "TARGET-SPECIFICATION":
@@ -147,11 +167,16 @@ namespace ReqIFSharp
                             var reference = reader.ReadElementContentAsString();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.TargetSpecification = specification
-                                                       ?? new Specification
+                                                       ?? new Specification(this.ReqIFContent, this.loggerFactory)
                                                        {
                                                            Identifier = reference,
                                                            Description = "This specification was not found in the source file."
                                                        };
+
+                            if (specification == null)
+                            {
+                                this.logger.LogTrace("The target specification:{reference} was not found, a new specification with the same identifier has been created and set as target for RelationGroup:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                     case "SPEC-RELATIONS":
@@ -192,11 +217,15 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.SourceSpecification = specification
-                                                       ?? new Specification
+                                                       ?? new Specification(this.ReqIFContent, this.loggerFactory)
                                                        {
                                                            Identifier = reference,
                                                            Description = "This specification was not found in the source file."
                                                        };
+                            if (specification == null)
+                            {
+                                this.logger.LogTrace("The source specification:{reference} was not found, a new specification with the same identifier has been created and set as source for RelationGroup:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                     case "TARGET-SPECIFICATION":
@@ -205,11 +234,15 @@ namespace ReqIFSharp
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.TargetSpecification = specification
-                                                       ?? new Specification
+                                                       ?? new Specification(this.ReqIFContent, this.loggerFactory)
                                                        {
                                                            Identifier = reference,
                                                            Description = "This specification was not found in the source file."
                                                        };
+                            if (specification == null)
+                            {
+                                this.logger.LogTrace("The target specification:{reference} was not found, a new specification with the same identifier has been created and set as target for RelationGroup:{Identifier}", reference, Identifier);
+                            }
                         }
                         break;
                     case "SPEC-RELATIONS":
@@ -236,6 +269,11 @@ namespace ReqIFSharp
                 var reference = reader.ReadElementContentAsString();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (RelationGroupType)specType;
+
+                if (specType == null)
+                {
+                    this.logger.LogTrace("The RelationGroupType:{reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -260,6 +298,11 @@ namespace ReqIFSharp
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (RelationGroupType)specType;
+
+                if (specType == null)
+                {
+                    this.logger.LogTrace("The RelationGroupType:{reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -304,6 +347,10 @@ namespace ReqIFSharp
                 {
                     this.specRelations.Add(specRelation);
                 }
+                else
+                {
+                    this.logger.LogTrace("The SpecRelation:{reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -331,6 +378,10 @@ namespace ReqIFSharp
                 {
                     this.specRelations.Add(specRelation);
                 }
+                else
+                {
+                    this.logger.LogTrace("The SpecRelation:{reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
+                }
             }
         }
 
@@ -343,7 +394,7 @@ namespace ReqIFSharp
         /// <exception cref="SerializationException">
         /// The Object property may not be null.
         /// </exception>
-        public override void WriteXml(XmlWriter writer)
+        internal override void WriteXml(XmlWriter writer)
         {
             if (this.Type == null)
             {
@@ -380,7 +431,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
+        internal override async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
             if (this.Type == null)
             {

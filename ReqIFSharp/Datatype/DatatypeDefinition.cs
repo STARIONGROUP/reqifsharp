@@ -24,6 +24,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The <see cref="DatatypeDefinition"/> is the base class for all data types available to the Exchange Document.
     /// </summary>
@@ -42,13 +44,26 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        protected DatatypeDefinition(ReqIFContent reqIfContent)
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected internal DatatypeDefinition(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+            : base(loggerFactory)
         {
             this.ReqIFContent = reqIfContent;
             reqIfContent.DataTypes.Add(this);
         }
 
-        public abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
+        /// <summary>
+        /// Generates a <see cref="DatatypeDefinition"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        internal abstract Task ReadXmlAsync(XmlReader reader, CancellationToken token);
 
         /// <summary>
         /// Gets or sets the owning <see cref="ReqIFContent"/>
