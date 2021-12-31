@@ -42,7 +42,7 @@ namespace ReqIFSharp
         /// <summary>
         /// The <see cref="ILogger"/> used to log
         /// </summary>
-        private ILogger<Identifiable> logger;
+        private readonly ILogger<Identifiable> logger;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Identifiable"/> class.
@@ -66,7 +66,7 @@ namespace ReqIFSharp
         /// <remarks>
         /// The <see cref="LastChange"/> property is set to the current time.
         /// </remarks>
-        protected internal Identifiable(ILoggerFactory loggerFactory)
+        protected Identifiable(ILoggerFactory loggerFactory)
             : this()
         {
             this.loggerFactory = loggerFactory;

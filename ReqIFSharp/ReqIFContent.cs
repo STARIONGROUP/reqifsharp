@@ -26,7 +26,6 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIFContent"/> class represents the mandatory content of a ReqIF Exchange Document.
@@ -37,11 +36,6 @@ namespace ReqIFSharp
         /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
         /// </summary>
         private readonly ILoggerFactory loggerFactory;
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used to log
-        /// </summary>
-        private readonly ILogger<ReqIFContent> logger;
 
         /// <summary>
         /// Backing field for the <see cref="DataTypes"/> property.
@@ -78,7 +72,6 @@ namespace ReqIFSharp
         /// </summary>
         public ReqIFContent()
         {
-            this.logger = NullLogger<ReqIFContent>.Instance;
         }
 
         /// <summary>
@@ -90,8 +83,6 @@ namespace ReqIFSharp
         internal ReqIFContent(ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
-
-            this.logger = this.loggerFactory == null ? NullLogger<ReqIFContent>.Instance : this.loggerFactory.CreateLogger<ReqIFContent>();
         }
 
         /// <summary>

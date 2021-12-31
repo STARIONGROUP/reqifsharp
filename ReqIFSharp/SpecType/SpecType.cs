@@ -51,7 +51,7 @@ namespace ReqIFSharp
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
         /// </param>
-        protected internal SpecType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+        protected SpecType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
             this.ReqIFContent = reqIfContent;

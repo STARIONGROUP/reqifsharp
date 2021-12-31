@@ -36,11 +36,6 @@ namespace ReqIFSharp
     public class AttributeValueEnumeration : AttributeValue
     {
         /// <summary>
-        /// The <see cref="ILogger"/> used to log
-        /// </summary>
-        private readonly ILogger<AttributeValueEnumeration> logger;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueEnumeration"/> class.
         /// </summary>
         public AttributeValueEnumeration()

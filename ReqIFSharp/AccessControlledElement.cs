@@ -44,7 +44,7 @@ namespace ReqIFSharp
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
         /// </param>
-        protected internal AccessControlledElement(ILoggerFactory loggerFactory)
+        protected AccessControlledElement(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
         }

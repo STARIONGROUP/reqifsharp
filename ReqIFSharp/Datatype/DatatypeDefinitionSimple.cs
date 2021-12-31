@@ -43,7 +43,7 @@ namespace ReqIFSharp
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
         /// </param>
-        protected internal DatatypeDefinitionSimple(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
+        protected DatatypeDefinitionSimple(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
         {
         }

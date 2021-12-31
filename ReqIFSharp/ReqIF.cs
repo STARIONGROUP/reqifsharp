@@ -27,7 +27,6 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIF"/> class constitutes the root element of a ReqIF Exchange Document.
@@ -38,12 +37,7 @@ namespace ReqIFSharp
         /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
         /// </summary>
         private readonly ILoggerFactory loggerFactory;
-
-        /// <summary>
-        /// The <see cref="ILogger"/> used to log
-        /// </summary>
-        private readonly ILogger<ReqIF> logger;
-
+        
         /// <summary>
         /// an <see cref="IEnumerable{XmlAttribute}"/> that is stored when reading an xml reqif file so that when
         /// the <see cref="ReqIF"/> object is serialized again, the original attributes and namespaces are serialized again
@@ -55,7 +49,6 @@ namespace ReqIFSharp
         /// </summary>
         public ReqIF()
         {
-            this.logger = NullLogger<ReqIF>.Instance;
         }
 
         /// <summary>
@@ -67,8 +60,6 @@ namespace ReqIFSharp
         internal ReqIF(ILoggerFactory loggerFactory)
         {
             this.loggerFactory = loggerFactory;
-
-            this.logger = this.loggerFactory == null ? NullLogger<ReqIF>.Instance : this.loggerFactory.CreateLogger<ReqIF>();
         }
 
         /// <summary>

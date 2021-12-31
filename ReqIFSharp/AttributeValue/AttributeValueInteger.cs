@@ -39,11 +39,6 @@ namespace ReqIFSharp
     public class AttributeValueInteger : AttributeValueSimple
     {
         /// <summary>
-        /// The <see cref="ILogger"/> used to log
-        /// </summary>
-        private readonly ILogger<AttributeValueInteger> logger;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueInteger"/> class.
         /// </summary>
         public AttributeValueInteger()

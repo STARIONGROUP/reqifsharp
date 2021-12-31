@@ -25,7 +25,6 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIFToolExtension"/> class allows the optional inclusion of tool-specific information into a ReqIF Exchange Document.
@@ -33,16 +32,10 @@ namespace ReqIFSharp
     public class ReqIFToolExtension
     {
         /// <summary>
-        /// The <see cref="ILogger"/> used to log
-        /// </summary>
-        private ILogger<ReqIFToolExtension> logger;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="ReqIFToolExtension"/> class
         /// </summary>
         public ReqIFToolExtension()
         {
-            this.logger = NullLogger<ReqIFToolExtension>.Instance;
         }
 
         /// <summary>
@@ -53,7 +46,6 @@ namespace ReqIFSharp
         /// </param>
         internal ReqIFToolExtension(ILoggerFactory loggerFactory)
         {
-            this.logger = loggerFactory == null ? NullLogger<ReqIFToolExtension>.Instance : loggerFactory.CreateLogger<ReqIFToolExtension>();
         }
 
         /// <summary>
