@@ -333,6 +333,47 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void performance_test_of_read_ExternalObjects()
+        {
+            var sw = Stopwatch.StartNew();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
+
+            var deserializer = new ReqIFDeserializer();
+            
+            for (int i = 10 - 1; i >= 0; i--)
+            {
+                var singleReadStopwatch = Stopwatch.StartNew();
+                Assert.That(() => deserializer.Deserialize(reqifPath), Throws.Nothing);
+                Console.WriteLine($"{i} - {singleReadStopwatch.ElapsedMilliseconds}");
+            }
+
+            Console.WriteLine(sw.ElapsedMilliseconds);
+        }
+
+        [Test]
+        public void performance_test_of_read_ExternalObjects_async()
+        {
+            var sw = Stopwatch.StartNew();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
+
+            var deserializer = new ReqIFDeserializer();
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            for (int i = 10 - 1; i >= 0; i--)
+            {
+                var singleReadStopwatch = Stopwatch.StartNew();
+                
+                Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Nothing);
+
+                Console.WriteLine($"{i} - {singleReadStopwatch.ElapsedMilliseconds}");
+            }
+            
+            Console.WriteLine(sw.ElapsedMilliseconds);
+        }
+
+        [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_With_Validation()
         {
             var deserializer = new ReqIFDeserializer();

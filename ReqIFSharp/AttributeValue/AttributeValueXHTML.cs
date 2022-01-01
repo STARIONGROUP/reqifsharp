@@ -281,7 +281,7 @@ namespace ReqIFSharp
 
                         if (this.TheValue.Contains("xhtml:object data"))
                         {
-                            var externalObjects = this.CreateExternalObjects(this.TheValue);
+                            var externalObjects =  await this.CreateExternalObjectsAsync(this.TheValue);
                             this.ExternalObjects.AddRange(externalObjects);
                         }
                     }
@@ -304,42 +304,106 @@ namespace ReqIFSharp
 
             var result = new List<ExternalObject>();
 
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xhtml);
-
-            var xmlNodeList = xmlDocument.GetElementsByTagName("xhtml:object").OfType<XmlElement>() ;
-            
-            foreach (var xmlElement in xmlNodeList)
+            var settings = new XmlReaderSettings
             {
-                var mimeTypeAttribute = xmlElement.GetAttribute("type");
-                var uriAttribute = xmlElement.GetAttribute("data");
-                if (!string.IsNullOrEmpty(uriAttribute))
+                Async = true,
+                ConformanceLevel = ConformanceLevel.Fragment
+            };
+
+            var xmlReader = XmlReader.Create(new StringReader(xhtml), settings);
+            while (xmlReader.Read())
+            {
+                if (xmlReader.MoveToContent() == XmlNodeType.Element && xmlReader.LocalName == "object")
                 {
-                    uriAttribute = Uri.UnescapeDataString(uriAttribute);
+                    var mimeTypeAttribute = xmlReader.GetAttribute("type");
+                    var uriAttribute = xmlReader.GetAttribute("data");
+                    if (!string.IsNullOrEmpty(uriAttribute))
+                    {
+                        uriAttribute = Uri.UnescapeDataString(uriAttribute);
+                    }
+                    var heightAttribute = xmlReader.GetAttribute("height");
+                    var widthAttribute = xmlReader.GetAttribute("width");
+
+                    var externalObject = new ExternalObject(this)
+                    {
+                        MimeType = mimeTypeAttribute,
+                        Uri = uriAttribute
+                    };
+
+                    if (!string.IsNullOrEmpty(heightAttribute) && int.TryParse(heightAttribute, out int height))
+                    {
+                        externalObject.Height = height;
+                    }
+
+                    if (!string.IsNullOrEmpty(widthAttribute) && int.TryParse(widthAttribute, out int width))
+                    {
+                        externalObject.Width = width;
+                    }
+
+                    result.Add(externalObject);
                 }
-
-                var heightAttribute = xmlElement.GetAttribute("height");
-                var widthAttribute = xmlElement.GetAttribute("width");
-                
-                var externalObject = new ExternalObject(this)
-                {
-                    MimeType = mimeTypeAttribute, 
-                    Uri = uriAttribute
-                };
-
-                if (!string.IsNullOrEmpty(heightAttribute) && int.TryParse(heightAttribute, out int height))
-                {
-                    externalObject.Height = height;
-                }
-
-                if (!string.IsNullOrEmpty(widthAttribute) && int.TryParse(widthAttribute, out int width))
-                {
-                    externalObject.Width = width;
-                }
-
-                result.Add(externalObject);
             }
 
+            this.logger.LogTrace("a total of {count} ExternalObjects have been created in {time} [sw]", result.Count, sw.ElapsedMilliseconds);
+
+            return result;
+        }
+
+        /// <summary>
+        /// Creates <see cref="ExternalObject"/>s from provided XHTML
+        /// </summary>
+        /// <param name="xhtml">
+        /// The XHTML that may contain <see cref="ExternalObject"/>
+        /// </param>
+        /// <returns>
+        /// An <see cref="IEnumerable{ExternalObject}"/> which may be empty
+        /// </returns>
+        private async Task<IEnumerable<ExternalObject>> CreateExternalObjectsAsync(string xhtml)
+        {
+            var sw = Stopwatch.StartNew();
+
+            var result = new List<ExternalObject>();
+
+            var settings = new XmlReaderSettings
+            {
+                Async = true,
+                ConformanceLevel = ConformanceLevel.Fragment
+            };
+
+            var xmlReader = XmlReader.Create(new StringReader(xhtml), settings);
+            while (xmlReader.Read())
+            {
+                if (await xmlReader.MoveToContentAsync() == XmlNodeType.Element && xmlReader.LocalName == "object")
+                {
+                    var mimeTypeAttribute = xmlReader.GetAttribute("type");
+                    var uriAttribute = xmlReader.GetAttribute("data");
+                    if (!string.IsNullOrEmpty(uriAttribute))
+                    {
+                        uriAttribute = Uri.UnescapeDataString(uriAttribute);
+                    }
+                    var heightAttribute = xmlReader.GetAttribute("height");
+                    var widthAttribute = xmlReader.GetAttribute("width");
+                    
+                    var externalObject = new ExternalObject(this)
+                    {
+                        MimeType = mimeTypeAttribute,
+                        Uri = uriAttribute
+                    };
+
+                    if (!string.IsNullOrEmpty(heightAttribute) && int.TryParse(heightAttribute, out int height))
+                    {
+                        externalObject.Height = height;
+                    }
+
+                    if (!string.IsNullOrEmpty(widthAttribute) && int.TryParse(widthAttribute, out int width))
+                    {
+                        externalObject.Width = width;
+                    }
+
+                    result.Add(externalObject);
+                }
+            }
+            
             this.logger.LogTrace("a total of {count} ExternalObjects have been created in {time} [sw]", result.Count, sw.ElapsedMilliseconds);
 
             return result;
