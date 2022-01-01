@@ -265,18 +265,6 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_the_Tool_Extensions_are_DeserializedAsync_from_ProR_Traceability_template_And_Cancelled()
-        {
-            var cancellationTokenSource = new CancellationTokenSource();
-            cancellationTokenSource.CancelAfter(1);
-
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
-            var deserializer = new ReqIFDeserializer();
-
-            Assert.That(async() => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Exception.TypeOf<OperationCanceledException>());
-        }
-
-        [Test]
         public void Verify_that_ExternalObjects_are_created_and_that_local_data_can_be_queried()
         {
             var sw = Stopwatch.StartNew();
@@ -331,48 +319,7 @@ namespace ReqIFSharp.Tests
 
             Console.WriteLine(sw.ElapsedMilliseconds);
         }
-
-        [Test]
-        public void performance_test_of_read_ExternalObjects()
-        {
-            var sw = Stopwatch.StartNew();
-
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
-
-            var deserializer = new ReqIFDeserializer();
-            
-            for (int i = 10 - 1; i >= 0; i--)
-            {
-                var singleReadStopwatch = Stopwatch.StartNew();
-                Assert.That(() => deserializer.Deserialize(reqifPath), Throws.Nothing);
-                Console.WriteLine($"{i} - {singleReadStopwatch.ElapsedMilliseconds}");
-            }
-
-            Console.WriteLine(sw.ElapsedMilliseconds);
-        }
-
-        [Test]
-        public void performance_test_of_read_ExternalObjects_async()
-        {
-            var sw = Stopwatch.StartNew();
-
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
-
-            var deserializer = new ReqIFDeserializer();
-            var cancellationTokenSource = new CancellationTokenSource();
-
-            for (int i = 10 - 1; i >= 0; i--)
-            {
-                var singleReadStopwatch = Stopwatch.StartNew();
-                
-                Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Nothing);
-
-                Console.WriteLine($"{i} - {singleReadStopwatch.ElapsedMilliseconds}");
-            }
-            
-            Console.WriteLine(sw.ElapsedMilliseconds);
-        }
-
+        
         [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_With_Validation()
         {
