@@ -68,6 +68,9 @@
     <None Update="TestData\sample_debug.reqif">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="TestData\Spielwiese.reqifz">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="TestData\test-multiple-reqif.reqifz">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

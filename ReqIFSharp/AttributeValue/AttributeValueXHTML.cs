@@ -229,7 +229,7 @@ namespace ReqIFSharp
                     {
                         this.TheValue = subtree.ReadInnerXml().Trim();
 
-                        if (this.TheValue.Contains("xhtml:object data"))
+                        if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
                         {
                             var externalObjects = this.CreateExternalObjects(this.TheValue);
                             this.ExternalObjects.AddRange(externalObjects);
@@ -279,7 +279,7 @@ namespace ReqIFSharp
                     {
                         this.TheValue = (await subtree.ReadInnerXmlAsync()).Trim();
 
-                        if (this.TheValue.Contains("xhtml:object data"))
+                        if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
                         {
                             var externalObjects =  await this.CreateExternalObjectsAsync(this.TheValue);
                             this.ExternalObjects.AddRange(externalObjects);
