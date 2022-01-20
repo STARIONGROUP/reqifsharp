@@ -3,7 +3,7 @@
  
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>5.0.0</Version>
+    <Version>5.0.1</Version>
     <Description>ReqIF library that contains ReqIF classes and a specific serializer.</Description>
     <PackageId>ReqIFSharp</PackageId>
     <Company>RHEA System S.A.</Company>
@@ -18,18 +18,7 @@
     <Authors>Sam Gerene, Naron Phou</Authors>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageReleaseNotes>
-      [Add] metod to deserialze from a stream, refactor ExternalObject.QueryLocalData; fixes #22
-      [Add] async Deserialization capability; fixes #24
-      [Add] ExtractUnformattedTextFromValue to extract unformatted text from XHTML attribute; fixes #25
-      [Add] Serialization to stream; fixes #29
-      [Add] DeSerialization from Strream method to IReqIFDeSerializer interface
-      [Refactor] ReqIFSerializer - remove xmlSerializer and do all work with XmlReader and XmlWriter; fixes #30
-      [Add] asynchronous serialization; fixes #31
-      [Fix] Deserialize of AlternativeId for DatatypeDefinitions, SpecHierarchy and SpecType; fixes #33
-      [Add] Microsoft.Extensions.Logging.Abstractions and Logging; fixes #36
-      [Remove] validation features from IReqIFSerializer and ReqIFSerializer
-      [Refactor] CreateExternalObjects to use an XmlReader and add CreateExternalObjectsAsync
-      [Remove] usage of IXmlSerializable, remove GetSchema() method. Refactor public read/write (async) xml to internal methods (these should not be exposed to API users)
+      [Fix] deserialization of External Objects; fixes #39
     </PackageReleaseNotes>
   </PropertyGroup>
 
