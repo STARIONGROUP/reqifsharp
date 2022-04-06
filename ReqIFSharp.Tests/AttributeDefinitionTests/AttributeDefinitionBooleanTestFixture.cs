@@ -18,13 +18,12 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.Threading;
-
 namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 

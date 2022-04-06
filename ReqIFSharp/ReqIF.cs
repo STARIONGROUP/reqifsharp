@@ -42,7 +42,7 @@ namespace ReqIFSharp
         /// an <see cref="IEnumerable{XmlAttribute}"/> that is stored when reading an xml reqif file so that when
         /// the <see cref="ReqIF"/> object is serialized again, the original attributes and namespaces are serialized again
         /// </summary>
-        private List<XmlAttribute> attributes = new List<XmlAttribute>();
+        private readonly List<XmlAttribute> attributes = new List<XmlAttribute>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ReqIF"/> class

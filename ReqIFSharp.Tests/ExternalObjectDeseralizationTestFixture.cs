@@ -18,15 +18,11 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using System.Threading;
-
 namespace ReqIFSharp.Tests
 {
-    using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.IO;
-    using System.Text;
+    using System.Threading;
     using System.Threading.Tasks;
     
     using NUnit.Framework;
@@ -52,7 +48,7 @@ namespace ReqIFSharp.Tests
             var reqIf = deserializer.Deserialize(this.reqiffile).First();
 
             var specObjects = reqIf.CoreContent.SpecObjects;
-            Assert.That(specObjects.Count(), Is.EqualTo(4));
+            Assert.That(specObjects.Count, Is.EqualTo(4));
 
             var specObjectWithExternalObjects = specObjects.Single(x => x.Identifier == "_5_b23d3568-8478-401c-8ee3-3246da83641d");
             
@@ -70,7 +66,7 @@ namespace ReqIFSharp.Tests
             var reqIf = await deserializer.DeserializeAsync(this.reqiffile, CancellationToken.None);
 
             var specObjects = reqIf.First().CoreContent.SpecObjects;
-            Assert.That(specObjects.Count(), Is.EqualTo(4));
+            Assert.That(specObjects.Count, Is.EqualTo(4));
 
             var specObjectWithExternalObjects = specObjects.Single(x => x.Identifier == "_5_b23d3568-8478-401c-8ee3-3246da83641d");
             

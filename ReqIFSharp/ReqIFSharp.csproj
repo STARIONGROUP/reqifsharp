@@ -3,7 +3,7 @@
  
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>5.0.1</Version>
+    <Version>5.0.2</Version>
     <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
     <PackageId>ReqIFSharp</PackageId>
     <Company>RHEA System S.A.</Company>
@@ -18,8 +18,8 @@
     <Authors>Sam Gerene, Naron Phou</Authors>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageReleaseNotes>
-      [Fix] deserialization of External Objects; fixes #39
-    </PackageReleaseNotes>
+		[Improve] code quality ReqIF class as per SonarQube suggestions
+	</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">

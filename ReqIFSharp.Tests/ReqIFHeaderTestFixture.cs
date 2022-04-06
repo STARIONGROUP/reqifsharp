@@ -26,7 +26,6 @@ namespace ReqIFSharp.Tests
     using System.Xml;
 
     using NUnit.Framework;
-    using System.Runtime.Serialization;
 
     /// <summary>
     /// Suite of tests for the <see cref="ReqIFHeader"/> class
