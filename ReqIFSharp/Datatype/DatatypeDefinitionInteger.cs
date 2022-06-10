@@ -27,7 +27,7 @@ namespace ReqIFSharp
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive Integer data type
+    /// The purpose of the <see cref="DatatypeDefinitionInteger"/> class is to define the primitive Integer data type
     /// </summary>
     /// <remarks>
     /// This element defines a data type for the representation of Integer data values in the Exchange Document.

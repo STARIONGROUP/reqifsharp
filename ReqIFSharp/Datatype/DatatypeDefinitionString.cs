@@ -27,7 +27,7 @@ namespace ReqIFSharp
     using Microsoft.Extensions.Logging;
 
     /// <summary>
-    /// The purpose of the <see cref="DatatypeDefinitionBoolean"/> class is to define the primitive <see cref="string"/> data type
+    /// The purpose of the <see cref="DatatypeDefinitionString"/> class is to define the primitive <see cref="string"/> data type
     /// </summary>
     /// <remarks>
     /// This element defines a data type for the representation of String data values in the Exchange Document.
