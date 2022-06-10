@@ -1,0 +1,959 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<REQ-IF xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" xmlns:configuration="http://eclipse.org/rmf/pror/toolextensions/1.0" xmlns:id="http://pror.org/presentation/id" xmlns:linkmanagement="http://formalmind.com/pror/presentation/linkmanagement" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <THE-HEADER>
+    <REQ-IF-HEADER IDENTIFIER="_o7scMadbEeafNduaIhMwQg">
+      <COMMENT>Download this template and others at https://reqif.academy</COMMENT>
+      <CREATION-TIME>2016-11-10T16:37:50.954+01:00</CREATION-TIME>
+      <REQ-IF-TOOL-ID>fmStudio (http://formalmind.com/studio)</REQ-IF-TOOL-ID>
+      <REQ-IF-VERSION>1.0</REQ-IF-VERSION>
+      <SOURCE-TOOL-ID>fmStudio (http://formalmind.com/studio)</SOURCE-TOOL-ID>
+      <TITLE>Traceability Template</TITLE>
+    </REQ-IF-HEADER>
+  </THE-HEADER>
+  <CORE-CONTENT>
+    <REQ-IF-CONTENT>
+      <DATATYPES>
+        <DATATYPE-DEFINITION-STRING IDENTIFIER="_o7scM6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_String32k" MAX-LENGTH="32000"/>
+        <DATATYPE-DEFINITION-STRING IDENTIFIER="_o7scNKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_String32k_SO_ForeignId" MAX-LENGTH="32000"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_o7scNadbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_Xhtml_SO_ChapterName"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_o7scNqdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_Xhtml_SO_Text"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_o7scN6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_Xhtml_Spec_Description"/>
+        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_o7scOKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_Xhtml_SR_Description"/>
+        <DATATYPE-DEFINITION-STRING IDENTIFIER="_o7scOadbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="T_String32k_SR_ForeignId" MAX-LENGTH="32000"/>
+        <DATATYPE-DEFINITION-BOOLEAN IDENTIFIER="_GnTekKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:55:25.383+01:00" LONG-NAME="T_SuspectLinks"/>
+      </DATATYPES>
+      <SPEC-TYPES>
+        <SPEC-OBJECT-TYPE IDENTIFIER="_o7scOqdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="Requirement Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_o7scO6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="ReqIF.ForeignID">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>_o7scNKdbEeafNduaIhMwQg</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_o7scPKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="ReqIF.ChapterName">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_o7scNadbEeafNduaIhMwQg</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_o7scPadbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="ReqIF.Text">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_o7scNqdbEeafNduaIhMwQg</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPEC-OBJECT-TYPE>
+        <SPECIFICATION-TYPE IDENTIFIER="_o7scPqdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="Specification Type">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_o7scP6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="ReqIF.Name">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_o7scN6dbEeafNduaIhMwQg</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPECIFICATION-TYPE>
+        <SPEC-RELATION-TYPE IDENTIFIER="_o7scQKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="realizes">
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_o7scQqdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00" LONG-NAME="ReqIF.ForeignID">
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>_o7scOadbEeafNduaIhMwQg</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_K4SyoKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:55:55.115+01:00" LONG-NAME="S">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>_GnTekKdeEeafNduaIhMwQg</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_M-u6sKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:56:07.494+01:00" LONG-NAME="T">
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>_GnTekKdeEeafNduaIhMwQg</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_-PMAQKdhEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:23:05.964+01:00" LONG-NAME="ReqIF.Name">
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>_o7scOKdbEeafNduaIhMwQg</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPEC-RELATION-TYPE>
+      </SPEC-TYPES>
+      <SPEC-OBJECTS>
+        <SPEC-OBJECT IDENTIFIER="_o7scQ6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:39:20.832+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPKdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div>Stakeholder Requirements</xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_o7scR6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:45:46.475+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div>This is a simple template that demonstrates the traceability capabilities of ReqIF Studio.</xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-2">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_67DkwKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:49:24.729+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-3">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">You can quickly recognize whether outgoing traces exist by looking into the right-most column (called Link).</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_B6CwIKdcEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:40:38.818+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-4">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPKdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Change Management</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_ELVdUKdcEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:40:54.053+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-5">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Further, this ReqIF file is configured for change management. The SpecRelations (traces) contain a flag, indicating whether source or target has changed.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_DqMpsKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:48:00.075+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-6">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Simply delete these instructions in the Stakeholder Requirements and System Requirements, and you are good to go.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_IdD7wKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:48:32.252+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-7">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPKdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Traceability Basics</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_QfoEAKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:50:06.309+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-8">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:span><xhtml:span style="font-family: 'Segoe UI';">Example:<xhtml:span style="font-weight: normal;"> </xhtml:span></xhtml:span><xhtml:span style="font-family: ''; font-weight: normal;">The following depicts one incoming and two outoging links:<xhtml:br/></xhtml:span></xhtml:span><xhtml:span style="font-weight: normal;"><xhtml:span style="font-family: 'Segoe UI';">1 </xhtml:span>▷ Ⓡ ▷ 2</xhtml:span></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_X5hpwKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:50:15.900+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-9">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Traces are by default folded in. To see them, either (1) double-click on the symbol in the link column, or (2) use the toolbar button to unfold all links.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_ubJckKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:53:36.996+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-10">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">You can reset the flag by double-clicking on the warning sign ⚠</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_3Uqa8KddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:53:46.783+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-11">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">As soon as any attribute of the source or target changes, the warning flag is set again.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_6onfAKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:54:09.008+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-12">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">You can also manually set the flag by double-clicking the link's attribute.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_Trhi0KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:56:54.036+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-13">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPKdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">System Requirements</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_WNvn8KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:57:11.783+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-14">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">You can use this document (Specification) to record your system requirements.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_Zv78UKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:57:37.813+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-15">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">To demonstrate the traceability feature, you find counterparts to the elements in the Stakeholder Requirements here.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_ebBycKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:58:09.175+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-16">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">To use this template, simply delete them.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_gpUO8KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:03:33.232+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-17">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPKdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p><xhtml:span style="font-family: '';">Link Elements (for demonstration)</xhtml:span></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_niFdkKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:00:31.607+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-18">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Explain the use of the template</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_D-a7UKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:02:21.189+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-19">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Explain the GUI elements.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_RPQfQKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:03:50.196+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-20">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Explain the Traceability Presentation's functionality.</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="_bpmP0KdiEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:26:25.333+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-21">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scO6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scPadbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">Download this template and more at <xhtml:a href="https://reqif.academy">reqif.academy</xhtml:a></xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>_o7scOqdbEeafNduaIhMwQg</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+      </SPEC-OBJECTS>
+      <SPEC-RELATIONS>
+        <SPEC-RELATION IDENTIFIER="_4yHa8KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:25:01.825+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_o7scR6dbEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_niFdkKdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_4y3o4KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:25:03.177+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-2">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_DqMpsKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_niFdkKdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_JLkVoKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:52.490+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-3">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_QfoEAKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_D-a7UKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_JMOc8KdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:53.905+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-4">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_67DkwKdbEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_D-a7UKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_JMqh0KdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:53.089+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-5">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_X5hpwKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_D-a7UKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_VHc40KdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:51.401+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-6">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_ubJckKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_RPQfQKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_VID80KdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:50.680+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-7">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_ELVdUKdcEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_RPQfQKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_VIgowKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:49.976+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-8">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_6onfAKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_RPQfQKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+        <SPEC-RELATION IDENTIFIER="_VI9UsKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:24:49.240+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="LNK-9">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>_o7scQqdbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_M-u6sKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="false">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_K4SyoKdeEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+          </VALUES>
+          <TARGET>
+            <SPEC-OBJECT-REF>_3Uqa8KddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>_RPQfQKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+          </SOURCE>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>_o7scQKdbEeafNduaIhMwQg</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+        </SPEC-RELATION>
+      </SPEC-RELATIONS>
+      <SPECIFICATIONS>
+        <SPECIFICATION IDENTIFIER="_o7scS6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:38:49.823+01:00" LONG-NAME="Requirements Document">
+          <VALUES>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scP6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div>Stakeholder Requirements</xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>_o7scPqdbEeafNduaIhMwQg</SPECIFICATION-TYPE-REF>
+          </TYPE>
+          <CHILDREN>
+            <SPEC-HIERARCHY IDENTIFIER="_o7scT6dbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:37:50.954+01:00">
+              <OBJECT>
+                <SPEC-OBJECT-REF>_o7scQ6dbEeafNduaIhMwQg</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="_bqNT0KdiEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:30:59.079+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_bpmP0KdiEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_o7scUKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:49:11.472+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_o7scR6dbEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_Dqp8sKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:49:11.472+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_DqMpsKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+            <SPEC-HIERARCHY IDENTIFIER="_IdhOwKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:48:32.252+01:00">
+              <OBJECT>
+                <SPEC-OBJECT-REF>_IdD7wKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="_67gQsKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:49:14.367+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_67DkwKdbEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_QgEv8KddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:49:26.208+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_QfoEAKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_X5_j0KddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:50:15.900+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_X5hpwKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+            <SPEC-HIERARCHY IDENTIFIER="_B6gDIKdcEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:40:38.818+01:00">
+              <OBJECT>
+                <SPEC-OBJECT-REF>_B6CwIKdcEeafNduaIhMwQg</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="_EL0lgKdcEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:51:11.894+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_ELVdUKdcEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_ubmvkKddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:52:47.065+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_ubJckKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_3VHG4KddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:53:46.783+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_3Uqa8KddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_6pEK8KddEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:54:09.008+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_6onfAKddEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+          </CHILDREN>
+        </SPECIFICATION>
+        <SPECIFICATION IDENTIFIER="_zCEPQKdbEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:38:52.601+01:00">
+          <VALUES>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>_o7scP6dbEeafNduaIhMwQg</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE>
+                <xhtml:div><xhtml:p style="">System Requirements</xhtml:p></xhtml:div>
+              </THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>_o7scPqdbEeafNduaIhMwQg</SPECIFICATION-TYPE-REF>
+          </TYPE>
+          <CHILDREN>
+            <SPEC-HIERARCHY IDENTIFIER="_TsJ08KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:56:54.036+01:00">
+              <OBJECT>
+                <SPEC-OBJECT-REF>_Trhi0KdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="_WOYhIKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:57:11.783+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_WNvn8KdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_ZwZPUKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:57:37.813+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_Zv78UKdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_ebfFcKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:58:09.175+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_ebBycKdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+            <SPEC-HIERARCHY IDENTIFIER="_gpw64KdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:58:24.095+01:00">
+              <OBJECT>
+                <SPEC-OBJECT-REF>_gpUO8KdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="_nixaEKdeEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T16:59:06.205+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_niFdkKdeEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_D-4OUKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:02:21.189+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_D-a7UKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="_RPtyQKdfEeafNduaIhMwQg" LAST-CHANGE="2016-11-10T17:03:50.196+01:00">
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>_RPQfQKdfEeafNduaIhMwQg</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+          </CHILDREN>
+        </SPECIFICATION>
+      </SPECIFICATIONS>
+    </REQ-IF-CONTENT>
+  </CORE-CONTENT>
+  <TOOL-EXTENSIONS>
+    <REQ-IF-TOOL-EXTENSION>
+      <configuration:ProrToolExtension>
+        <configuration:specViewConfigurations>
+          <configuration:ProrSpecViewConfiguration specification="_o7scS6dbEeafNduaIhMwQg">
+            <configuration:columns>
+              <configuration:Column label="ReqIF.ForeignID" width="77"/>
+              <configuration:UnifiedColumn label="Main" width="305"/>
+              <configuration:Column label="S" width="29"/>
+              <configuration:Column label="T" width="29"/>
+            </configuration:columns>
+            <configuration:leftHeaderColumn>
+              <configuration:Column label="Lead Header Column" width="30"/>
+            </configuration:leftHeaderColumn>
+          </configuration:ProrSpecViewConfiguration>
+          <configuration:ProrSpecViewConfiguration specification="_zCEPQKdbEeafNduaIhMwQg">
+            <configuration:columns>
+              <configuration:Column label="ReqIF.ForeignID" width="100"/>
+              <configuration:UnifiedColumn label="Main" width="277"/>
+              <configuration:Column label="S" width="32"/>
+              <configuration:Column label="T" width="33"/>
+            </configuration:columns>
+            <configuration:leftHeaderColumn>
+              <configuration:Column label="Lead Header Column" width="30"/>
+            </configuration:leftHeaderColumn>
+          </configuration:ProrSpecViewConfiguration>
+        </configuration:specViewConfigurations>
+        <configuration:generalConfiguration>
+          <configuration:ProrGeneralConfiguration>
+            <configuration:labelConfiguration>
+              <configuration:LabelConfiguration>
+                <defaultLabel>ReqIF.ChapterName</defaultLabel>
+                <defaultLabel>ReqIF.Name</defaultLabel>
+                <defaultLabel>ReqIF.ForeignID</defaultLabel>
+                <defaultLabel>ReqIF.Text</defaultLabel>
+              </configuration:LabelConfiguration>
+            </configuration:labelConfiguration>
+          </configuration:ProrGeneralConfiguration>
+        </configuration:generalConfiguration>
+        <configuration:presentationConfigurations>
+          <configuration:ProrPresentationConfigurations>
+            <configuration:presentationConfigurations>
+              <id:IdConfiguration datatype="_o7scNKdbEeafNduaIhMwQg" prefix="REQ-" count="21"/>
+              <id:IdConfiguration datatype="_o7scOadbEeafNduaIhMwQg" prefix="LNK-" count="9"/>
+              <linkmanagement:LinkmanagementConfiguration datatype="_GnTekKdeEeafNduaIhMwQg" linkRelationType="_o7scQKdbEeafNduaIhMwQg" sourceStatus="_K4SyoKdeEeafNduaIhMwQg" targetStatus="_M-u6sKdeEeafNduaIhMwQg"/>
+            </configuration:presentationConfigurations>
+          </configuration:ProrPresentationConfigurations>
+        </configuration:presentationConfigurations>
+      </configuration:ProrToolExtension>
+    </REQ-IF-TOOL-EXTENSION>
+  </TOOL-EXTENSIONS>
+</REQ-IF>

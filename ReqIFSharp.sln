@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31313.79
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReqIFSharp", "ReqIFSharp\ReqIFSharp.csproj", "{CBA3678F-B574-4EDF-A217-B6A609966FA0}"
 EndProject
@@ -10,8 +10,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FCF6768D-232D-46FC-8CB5-E01B7495826E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
+		CODE_OF_CONDUCT.md = CODE_OF_CONDUCT.md
 		coverlet.runsettings = coverlet.runsettings
 		LICENSE = LICENSE
 		Nuget.Config = Nuget.Config
@@ -25,6 +25,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		.github\workflows\CodeQuality.yml = .github\workflows\CodeQuality.yml
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReqIFSharp.Extensions", "ReqIFSharp.Extensions\ReqIFSharp.Extensions.csproj", "{93D5132D-F20B-480A-930B-637996AF0E07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReqIFSharp.Extensions.Tests", "ReqIFSharp.Extensions.Tests\ReqIFSharp.Extensions.Tests.csproj", "{2D407AC8-5681-4C66-9959-0FC41046C6CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +44,14 @@ Global
 		{3C405392-0B50-4023-BFB8-6F730675D856}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C405392-0B50-4023-BFB8-6F730675D856}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C405392-0B50-4023-BFB8-6F730675D856}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93D5132D-F20B-480A-930B-637996AF0E07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93D5132D-F20B-480A-930B-637996AF0E07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93D5132D-F20B-480A-930B-637996AF0E07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93D5132D-F20B-480A-930B-637996AF0E07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D407AC8-5681-4C66-9959-0FC41046C6CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D407AC8-5681-4C66-9959-0FC41046C6CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D407AC8-5681-4C66-9959-0FC41046C6CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D407AC8-5681-4C66-9959-0FC41046C6CF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

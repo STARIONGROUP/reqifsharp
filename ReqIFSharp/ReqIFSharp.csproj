@@ -3,7 +3,7 @@
  
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>5.0.2</Version>
+    <Version>5.0.3</Version>
     <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
     <PackageId>ReqIFSharp</PackageId>
     <Company>RHEA System S.A.</Company>
@@ -18,7 +18,7 @@
     <Authors>Sam Gerene, Naron Phou</Authors>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageReleaseNotes>
-		[Improve] code quality ReqIF class as per SonarQube suggestions
+		[Improve] xml docs
 	</PackageReleaseNotes>
   </PropertyGroup>
 
@@ -80,8 +80,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Folder Include="images\" />
-    <None Include="images\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
+	  <None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
   </ItemGroup>
   
   <ItemGroup>
