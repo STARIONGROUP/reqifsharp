@@ -582,5 +582,89 @@ namespace ReqIFSharp.Tests
                 Assert.That(reqif, Is.Not.Null);
             }
         }
+
+        [Test]
+        public void Verify_that_AlternativeId_can_be_deserialized()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
+            var deserializer = new ReqIFDeserializer();
+
+            var reqif = deserializer.Deserialize(reqifPath, false).Single();
+
+            var specObjectType = reqif.CoreContent.SpecTypes.OfType<SpecObjectType>().Single(x => x.Identifier == "_jgCytAfNEeeAO8RifBaE-g");
+
+            foreach (var attributeDefinition in specObjectType.SpecAttributes)
+            {
+                Assert.That(attributeDefinition.AlternativeId.Identifier, Is.EqualTo(attributeDefinition.Identifier));
+            }
+
+            foreach (var datatypeDefinition in reqif.CoreContent.DataTypes)
+            {
+                Assert.That(datatypeDefinition.AlternativeId.Identifier, Is.EqualTo(datatypeDefinition.Identifier));
+            }
+
+            foreach (var specType in reqif.CoreContent.SpecTypes)
+            {
+                Assert.That(specType.AlternativeId.Identifier, Is.EqualTo(specType.Identifier));
+            }
+
+            foreach (var specObject in reqif.CoreContent.SpecObjects)
+            {
+                Assert.That(specObject.AlternativeId.Identifier, Is.EqualTo(specObject.Identifier));
+            }
+
+            foreach (var specification in reqif.CoreContent.Specifications)
+            {
+                Assert.That(specification.AlternativeId.Identifier, Is.EqualTo(specification.Identifier));
+
+                foreach (var specHierarchy in specification.Children)
+                {
+                    Assert.That(specHierarchy.AlternativeId.Identifier, Is.EqualTo(specHierarchy.Identifier));
+                }
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_AlternativeId_can_be_deserialized_async()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
+            var deserializer = new ReqIFDeserializer();
+
+            var reqif = (await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, false)).Single();
+
+            var specObjectType = reqif.CoreContent.SpecTypes.OfType<SpecObjectType>().Single(x => x.Identifier == "_jgCytAfNEeeAO8RifBaE-g");
+
+            foreach (var attributeDefinition in specObjectType.SpecAttributes)
+            {
+                Assert.That(attributeDefinition.AlternativeId.Identifier, Is.EqualTo(attributeDefinition.Identifier));
+            }
+
+            foreach (var datatypeDefinition in reqif.CoreContent.DataTypes)
+            {
+                Assert.That(datatypeDefinition.AlternativeId.Identifier, Is.EqualTo(datatypeDefinition.Identifier));
+            }
+
+            foreach (var specType in reqif.CoreContent.SpecTypes)
+            {
+                Assert.That(specType.AlternativeId.Identifier, Is.EqualTo(specType.Identifier));
+            }
+
+            foreach (var specObject in reqif.CoreContent.SpecObjects)
+            {
+                Assert.That(specObject.AlternativeId.Identifier, Is.EqualTo(specObject.Identifier));
+            }
+
+            foreach (var specification in reqif.CoreContent.Specifications)
+            {
+                Assert.That(specification.AlternativeId.Identifier, Is.EqualTo(specification.Identifier));
+
+                foreach (var specHierarchy in specification.Children)
+                {
+                    Assert.That(specHierarchy.AlternativeId.Identifier, Is.EqualTo(specHierarchy.Identifier));
+                }
+            }
+        }
     }
 }
