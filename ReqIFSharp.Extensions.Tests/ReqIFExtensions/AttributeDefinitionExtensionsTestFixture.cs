@@ -23,7 +23,6 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
     using NUnit.Framework;
 
     using ReqIFSharp;
-    using ReqIFSharp.Extensions;
     using ReqIFSharp.Extensions.ReqIFExtensions;
     using ReqIFSharp.Extensions.Tests.TestData;
 
