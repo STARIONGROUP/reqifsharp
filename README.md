@@ -28,13 +28,6 @@ Branch | Build Status
 Master | ![Build Status](https://github.com/RHEAGROUP/reqifsharp/actions/workflows/CodeQuality.yml/badge.svg?branch=master)
 Development | ![Build Status](https://github.com/RHEAGROUP/reqifsharp/actions/workflows/CodeQuality.yml/badge.svg?branch=development)
 
-# CodeCov - Code Coverage
-
-Branch      | Build Status
------------ | ------------
-Master      | [![codecov](https://codecov.io/gh/RHEAGROUP/reqifsharp/branch/master/graph/badge.svg?token=2kfZrIOUtI)](https://codecov.io/gh/RHEAGROUP/reqifsharp)
-Development | [![codecov](https://codecov.io/gh/RHEAGROUP/reqifsharp/branch/development/graph/badge.svg?token=2kfZrIOUtI)](https://codecov.io/gh/RHEAGROUP/reqifsharp)
-
 # License
 
 The reqifsharp library is provided to the community under the Apache License 2.0.
