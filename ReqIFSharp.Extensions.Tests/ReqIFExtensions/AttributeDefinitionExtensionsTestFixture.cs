@@ -25,6 +25,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
     using ReqIFSharp;
     using ReqIFSharp.Extensions;
     using ReqIFSharp.Extensions.ReqIFExtensions;
+    using ReqIFSharp.Extensions.Tests.TestData;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionExtensions"/> class
@@ -55,6 +56,36 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
             Assert.That(attributeDefinitionXhtml.QueryDatatypeName(), Is.EqualTo("XHTML"));
+        }
+
+        [Test]
+        public void Verify_that_QueryDefaultValueAsFormattedString_returns_expected_results()
+        {
+            var testDataCreator = new ReqIFTestDataCreator();
+            var reqif = testDataCreator.Create();
+
+            var specType = reqif.CoreContent.SpecTypes.Single(x => x.Identifier == "requirement");
+
+            var attributeDefinitionBoolean = (AttributeDefinitionBoolean)specType.SpecAttributes.Single(x => x.Identifier == "requirement-boolean-attribute");
+            Assert.That(attributeDefinitionBoolean.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+
+            var attributeDefinitionDate = (AttributeDefinitionDate)specType.SpecAttributes.Single(x => x.Identifier == "requirement-date-attribute");
+            Assert.That(attributeDefinitionDate.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+
+            var attributeDefinitionEnumeration = (AttributeDefinitionEnumeration)specType.SpecAttributes.Single(x => x.Identifier == "requirement-enumeration-attribute");
+            Assert.That(attributeDefinitionEnumeration.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+
+            var attributeDefinitionInteger = (AttributeDefinitionInteger)specType.SpecAttributes.Single(x => x.Identifier == "requirement-integer-attribute");
+            Assert.That(attributeDefinitionInteger.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+
+            var attributeDefinitionReal = (AttributeDefinitionReal)specType.SpecAttributes.Single(x => x.Identifier == "requirement-real-attribute");
+            Assert.That(attributeDefinitionReal.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+
+            var attributeDefinitionString = (AttributeDefinitionString)specType.SpecAttributes.Single(x => x.Identifier == "requirement-string-attribute");
+            Assert.That(attributeDefinitionString.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+
+            var attributeDefinitionXHTML = (AttributeDefinitionXHTML)specType.SpecAttributes.Single(x => x.Identifier == "requirement-xhtml-attribute");
+            Assert.That(attributeDefinitionXHTML.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
         }
     }
 }

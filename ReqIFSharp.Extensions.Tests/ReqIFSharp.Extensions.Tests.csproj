@@ -26,9 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="TestData\" />
 	  <Folder Include="Services\" />
-	  <Folder Include="ReqIFExtensions\" />
 	</ItemGroup>
 
 	<ItemGroup>

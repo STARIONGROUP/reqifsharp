@@ -24,6 +24,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
     using ReqIFSharp;
     using ReqIFSharp.Extensions.ReqIFExtensions;
+    using ReqIFSharp.Extensions.Tests.TestData;
 
     /// <summary>
     /// Suite of tests for the <see cref="DatatypeDefinitionExtensions"/> class
@@ -54,6 +55,23 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var datatypeDefinitionXhtml = new DatatypeDefinitionXHTML();
             Assert.That(datatypeDefinitionXhtml.QueryDatatypeName(), Is.EqualTo("XHTML"));
+        }
+
+        [Test]
+        public void Verify_that_QueryReferencingAttributeDefinitions_returns_expected_results()
+        {
+            var testDataCreator = new ReqIFTestDataCreator();
+            var reqif = testDataCreator.Create();
+
+            var datatypeDefinitionBoolean = (DatatypeDefinitionBoolean)reqif.CoreContent.DataTypes.Single(x => x.Identifier == "boolean");
+
+            var attributeDefinitions = datatypeDefinitionBoolean.QueryReferencingAttributeDefinitions();
+
+            Assert.That(attributeDefinitions.Count(), Is.EqualTo(4));
+
+            var attributeDefinition = attributeDefinitions.Single(x => x.Identifier == "specification-boolean-attribute");
+
+            Assert.That(attributeDefinition.LongName, Is.EqualTo("boolean attribute"));
         }
     }
 }
