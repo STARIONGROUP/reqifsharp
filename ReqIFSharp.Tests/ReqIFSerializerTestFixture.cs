@@ -38,7 +38,9 @@ namespace ReqIFSharp.Tests
         private ReqIF reqIF;
 
         private string resultFileUri;
+        private string resultFileUriÀrchive;
         private string asyncResultFileUri;
+        private string asyncResultFileUriArchive;
 
         private const string ReqIFNamespace = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
 
@@ -60,7 +62,11 @@ namespace ReqIFSharp.Tests
         public void SetUp()
         {
             this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.reqif");
+            this.resultFileUriÀrchive = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.reqifz");
             this.asyncResultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "async-result.reqif");
+            this.asyncResultFileUriArchive = Path.Combine(TestContext.CurrentContext.TestDirectory, "async-result.reqifz");
+
+            this.CleanUpFiles();
 
             this.enumdatatype_id = "enumeration";
             this.enum_value_low_id = "enumlow";
@@ -105,8 +111,18 @@ namespace ReqIFSharp.Tests
         [TearDown]
         public void TearDown()
         {
+            this.CleanUpFiles();
+        }
+
+        /// <summary>
+        /// Clean up generated reqif and reqifz files
+        /// </summary>
+        private void CleanUpFiles()
+        {
             File.Delete(this.resultFileUri);
+            File.Delete(this.resultFileUriÀrchive);
             File.Delete(this.asyncResultFileUri);
+            File.Delete(this.asyncResultFileUriArchive);
         }
 
         /// <summary>
@@ -743,7 +759,7 @@ namespace ReqIFSharp.Tests
                 Throws.Exception.TypeOf<ArgumentException>()
                     .With.Message.Contains("One and only one ReqIF object can be serialized to a reqif file. If multiple ReqIF objects need to be serialized, please make use of the reqifz format."));
 
-            filePath = Path.ChangeExtension(filePath, "reqifz");
+            filePath = this.resultFileUriÀrchive;
 
             Assert.That(() => serializer.Serialize(reqifs, filePath),
                 Throws.Exception.TypeOf<ArgumentException>()
@@ -899,6 +915,32 @@ namespace ReqIFSharp.Tests
             await serializer.SerializeAsync(reqifs, stream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token);
 
             Assert.That(stream.Length, Is.Not.Zero);
+        }
+
+        [Test]
+        public void Verify_that_multiple_ReqIF_objects_can_be_serialized_to_archive_file_based()
+        {
+            var reqifs = new List<ReqIF> { this.reqIF, this.reqIF };
+
+            var serializer = new ReqIFSerializer();
+
+            serializer.Serialize(reqifs, this.resultFileUriÀrchive);
+
+            Assert.IsTrue(File.Exists(this.resultFileUriÀrchive));
+        }
+
+        [Test]
+        public async Task Verify_that_multiple_ReqIF_objects_can_be_serialized_to_archive_file_based_Async()
+        {
+            var reqifs = new List<ReqIF> { this.reqIF, this.reqIF };
+
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var serializer = new ReqIFSerializer();
+
+            await serializer.SerializeAsync(reqifs, this.asyncResultFileUriArchive, cancellationTokenSource.Token);
+
+            Assert.IsTrue(File.Exists(this.asyncResultFileUriArchive));
         }
     }
 }

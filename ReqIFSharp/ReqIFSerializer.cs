@@ -23,13 +23,12 @@ namespace ReqIFSharp
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.Compression;
     using System.Linq;
-    using System.Security;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Schema;
 
     /// <summary>
     /// The <see cref="ReqIF"/> Serializer class
@@ -51,11 +50,11 @@ namespace ReqIFSharp
         {
             this.FileBasedSerializerArgumentValidation(fileUri);
 
-            var extensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
+            var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
             using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
             {
-                this.Serialize(reqIfs, fileStream, extensionKind);
+                this.Serialize(reqIfs, fileStream, fileExtensionKind);
             }
         }
 
@@ -68,12 +67,42 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
-        /// <exception cref="ArgumentNullException"></exception>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
+        /// contains the reqif file or a zip-archive of reqif files
+        /// </param>
         public void Serialize(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind)
         {
             this.StreamBasedSerializerArgumentValidation(reqIfs, stream, fileExtensionKind);
 
-            this.WriteXmlToStream(reqIfs.First(), stream);
+            switch (fileExtensionKind)
+            {
+                case SupportedFileExtensionKind.Reqif:
+
+                    this.WriteXmlToStream(reqIfs.First(), stream);
+
+                    break;
+                case SupportedFileExtensionKind.Reqifz:
+                    
+                    using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+                    {
+                        var i = 0;
+
+                        foreach (var reqIf in reqIfs)
+                        {
+                            var reqifEntryName =  $"{i++}_{reqIf.TheHeader.Identifier}.reqif";
+
+                            var reqifEntry = archive.CreateEntry(reqifEntryName, CompressionLevel.Optimal);
+
+                            using (var reqifEntryStream = reqifEntry.Open())
+                            {
+                                this.WriteXmlToStream(reqIf, reqifEntryStream);
+                            }
+                        }
+                    }
+
+                    break;
+            }
         }
 
         /// <summary>
@@ -88,22 +117,15 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
         public async Task SerializeAsync(IEnumerable<ReqIF> reqIfs, string fileUri, CancellationToken token)
         {
             this.FileBasedSerializerArgumentValidation(fileUri);
 
-            var extensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
+            var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
             using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
             {
-                await this.SerializeAsync(reqIfs, fileStream, extensionKind, token);
+                await this.SerializeAsync(reqIfs, fileStream, fileExtensionKind, token);
             }
         }
 
@@ -116,21 +138,49 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
+        /// contains the reqif file or a zip-archive of reqif files
+        /// </param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        public async Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
             this.StreamBasedSerializerArgumentValidation(reqIfs, stream, fileExtensionKind);
+            
+            switch (fileExtensionKind)
+            {
+                case SupportedFileExtensionKind.Reqif:
 
-            return this.WriteXmlToStreamAsync(reqIfs.First(), stream, token);
+                    await this.WriteXmlToStreamAsync(reqIfs.First(), stream, token);
+                    break;
+
+                case SupportedFileExtensionKind.Reqifz:
+
+                    using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+                    {
+                        var i = 0;
+                        var tasks = new List<Task>();
+
+                        foreach (var reqIf in reqIfs)
+                        {
+                            var reqifEntryName = $"{i++}_{reqIf.TheHeader.Identifier}.reqif";
+
+                            var reqifEntry = archive.CreateEntry(reqifEntryName, CompressionLevel.Optimal);
+
+                            using (var reqifEntryStream = reqifEntry.Open())
+                            {
+                                tasks.Add( this.WriteXmlToStreamAsync(reqIf, reqifEntryStream, token));
+                            }
+                        }
+
+                        await Task.WhenAll(tasks);
+                        break;
+                    }
+                default:
+                    throw new ArgumentException("only .reqif and .reqifz are supported file extensions.", nameof(fileExtensionKind));
+            }
         }
 
         /// <summary>
@@ -139,8 +189,6 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
         private void FileBasedSerializerArgumentValidation(string fileUri)
         {
             if (fileUri == null)
@@ -167,8 +215,7 @@ namespace ReqIFSharp
         /// The <see cref="SupportedFileExtensionKind"/> that determines whether the data is serialied to
         /// an xml file or a (zip) archive
         /// </param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentException"></exception>
+
         private void StreamBasedSerializerArgumentValidation(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind extensionKind)
         {
             if (reqIfs == null)
@@ -221,6 +268,7 @@ namespace ReqIFSharp
             using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings(true)))
             {
                 this.WriteXml(writer, reqIf);
+                writer.Flush();
             }
         }
 
