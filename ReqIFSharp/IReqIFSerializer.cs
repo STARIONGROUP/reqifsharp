@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Security;
     using System.Threading;
@@ -33,9 +34,9 @@ namespace ReqIFSharp
     public interface IReqIFSerializer
     {
         /// <summary>
-        /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
+        /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIf">The <see cref="ReqIF"/> object to serialize</param>
+        /// <param name="reqIfs">The <see cref="ReqIF"/> object to serialize</param>
         /// <param name="fileUri">The path of the output file</param>
         /// <exception cref="XmlSchemaValidationException"></exception>
         /// <exception cref="ArgumentException"></exception>
@@ -44,12 +45,12 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        void Serialize(ReqIF reqIf, string fileUri);
+        void Serialize(IEnumerable<ReqIF> reqIfs, string fileUri);
 
         /// <summary>
-        /// Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIf">
+        /// <param name="reqIfs">
         /// The <see cref="ReqIF"/> object to serialize
         /// </param>
         /// <param name="stream">
@@ -62,12 +63,12 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        void Serialize(ReqIF reqIf, Stream stream);
+        void Serialize(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind);
 
         /// <summary>
-        /// Async Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
+        /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIf">The <see cref="ReqIF"/> object to serialize</param>
+        /// <param name="reqIfs">The <see cref="ReqIF"/> object to serialize</param>
         /// <param name="fileUri">The path of the output file</param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
@@ -79,12 +80,12 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        Task SerializeAsync(ReqIF reqIf, string fileUri, CancellationToken token);
+        Task SerializeAsync(IEnumerable<ReqIF> reqIfs, string fileUri, CancellationToken token);
 
         /// <summary>
-        /// Async Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIf">
+        /// <param name="reqIfs">
         /// The <see cref="ReqIF"/> object to serialize
         /// </param>
         /// <param name="stream">
@@ -100,6 +101,6 @@ namespace ReqIFSharp
         /// <exception cref="DirectoryNotFoundException"></exception>
         /// <exception cref="IOException"></exception>
         /// <exception cref="SecurityException"></exception>
-        Task SerializeAsync(ReqIF reqIf, Stream stream, CancellationToken token);
+        Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
     }
 }
