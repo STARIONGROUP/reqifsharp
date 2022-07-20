@@ -11,6 +11,7 @@
     <PackageIconUrl>https://reqifsharp.org/assets/images/reqifsharp-logo.png</PackageIconUrl>
     <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
+	<Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
