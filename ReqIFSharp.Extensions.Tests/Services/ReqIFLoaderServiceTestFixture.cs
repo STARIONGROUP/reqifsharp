@@ -37,6 +37,7 @@ namespace ReqIFSharp.Extensions.Tests.Services
     /// <summary>
     /// Suite of tests for the <see cref="ReqIFLoaderService"/> class
     /// </summary>
+    [TestFixture]
     public class ReqIFLoaderServiceTestFixture
     {
         private ReqIFLoaderService reqIfLoaderService;

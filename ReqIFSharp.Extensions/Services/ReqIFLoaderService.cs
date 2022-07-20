@@ -44,6 +44,9 @@ namespace ReqIFSharp.Extensions.Services
         /// </summary>
         private Stream sourceStream;
 
+        /// <summary>
+        /// The (injected) <see cref="IReqIFDeSerializer"/>
+        /// </summary>
         private readonly IReqIFDeSerializer reqIfDeSerializer;
 
         /// <summary>
