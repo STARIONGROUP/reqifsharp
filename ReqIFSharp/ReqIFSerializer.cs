@@ -21,13 +21,14 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
-    using System.Security;
+    using System.IO.Compression;
+    using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-    using System.Xml.Schema;
 
     /// <summary>
     /// The <see cref="ReqIF"/> Serializer class
@@ -35,72 +36,80 @@ namespace ReqIFSharp
     public class ReqIFSerializer : IReqIFSerializer
     {
         /// <summary>
-        /// Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
+        /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object to serialize
+        /// <param name="reqIfs">
+        /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
         /// <exception cref="ArgumentNullException"></exception>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
-        public void Serialize(ReqIF reqIf, string fileUri)
+        public void Serialize(IEnumerable<ReqIF> reqIfs, string fileUri)
         {
-            if (reqIf == null)
-            {
-                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
-            }
+            this.FileBasedSerializerArgumentValidation(fileUri);
 
-            if (fileUri == null)
-            {
-                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
-            }
+            var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
-            if (fileUri == string.Empty)
+            using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
             {
-                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
-            }
-            
-            using (var writer = XmlWriter.Create(fileUri, this.CreateXmlWriterSettings()))
-            {
-                this.WriteXml(writer, reqIf);
+                this.Serialize(reqIfs, fileStream, fileExtensionKind);
             }
         }
 
         /// <summary>
-        /// Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object to serialize
+        /// <param name="reqIfs">
+        /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
-        /// <exception cref="ArgumentNullException"></exception>
-        public void Serialize(ReqIF reqIf, Stream stream)
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
+        /// contains the reqif file or a zip-archive of reqif files
+        /// </param>
+        public void Serialize(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind)
         {
-            if (reqIf == null)
-            {
-                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
-            }
+            this.StreamBasedSerializerArgumentValidation(reqIfs, stream, fileExtensionKind);
 
-            if (stream == null)
+            switch (fileExtensionKind)
             {
-                throw new ArgumentNullException(nameof(stream), "The stream cannot be null.");
-            }
-            
-            using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings()))
-            {
-                this.WriteXml(writer, reqIf);
+                case SupportedFileExtensionKind.Reqif:
+
+                    this.WriteXmlToStream(reqIfs.First(), stream);
+
+                    break;
+                case SupportedFileExtensionKind.Reqifz:
+                    
+                    using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+                    {
+                        var i = 0;
+
+                        foreach (var reqIf in reqIfs)
+                        {
+                            var reqifEntryName =  $"{i++}_{reqIf.TheHeader.Identifier}.reqif";
+
+                            var reqifEntry = archive.CreateEntry(reqifEntryName, CompressionLevel.Optimal);
+
+                            using (var reqifEntryStream = reqifEntry.Open())
+                            {
+                                this.WriteXmlToStream(reqIf, reqifEntryStream);
+                            }
+                        }
+                    }
+
+                    break;
             }
         }
 
         /// <summary>
-        /// Async Serialize a <see cref="ReqIF"/> object and write its content in an XML-file in the corresponding path
+        /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object to serialize
+        /// <param name="reqIfs">
+        /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="fileUri">
         /// The path of the output file
@@ -108,20 +117,80 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public Task SerializeAsync(ReqIF reqIf, string fileUri, CancellationToken token)
+        public async Task SerializeAsync(IEnumerable<ReqIF> reqIfs, string fileUri, CancellationToken token)
         {
-            if (reqIf == null)
-            {
-                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
-            }
+            this.FileBasedSerializerArgumentValidation(fileUri);
 
+            var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
+
+            using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
+            {
+                await this.SerializeAsync(reqIfs, fileStream, fileExtensionKind, token);
+            }
+        }
+
+        /// <summary>
+        /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
+        /// </summary>
+        /// <param name="reqIfs">
+        /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
+        /// </param>
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
+        /// contains the reqif file or a zip-archive of reqif files
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        public async Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        {
+            this.StreamBasedSerializerArgumentValidation(reqIfs, stream, fileExtensionKind);
+            
+            switch (fileExtensionKind)
+            {
+                case SupportedFileExtensionKind.Reqif:
+
+                    await this.WriteXmlToStreamAsync(reqIfs.First(), stream, token);
+                    break;
+
+                case SupportedFileExtensionKind.Reqifz:
+
+                    using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
+                    {
+                        var i = 0;
+                        var tasks = new List<Task>();
+
+                        foreach (var reqIf in reqIfs)
+                        {
+                            var reqifEntryName = $"{i++}_{reqIf.TheHeader.Identifier}.reqif";
+
+                            var reqifEntry = archive.CreateEntry(reqifEntryName, CompressionLevel.Optimal);
+
+                            using (var reqifEntryStream = reqifEntry.Open())
+                            {
+                                tasks.Add( this.WriteXmlToStreamAsync(reqIf, reqifEntryStream, token));
+                            }
+                        }
+
+                        await Task.WhenAll(tasks);
+                        break;
+                    }
+                default:
+                    throw new ArgumentException("only .reqif and .reqifz are supported file extensions.", nameof(fileExtensionKind));
+            }
+        }
+
+        /// <summary>
+        /// Argument validation for file based operations
+        /// </summary>
+        /// <param name="fileUri">
+        /// The path of the output file
+        /// </param>
+        private void FileBasedSerializerArgumentValidation(string fileUri)
+        {
             if (fileUri == null)
             {
                 throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
@@ -131,42 +200,55 @@ namespace ReqIFSharp
             {
                 throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
             }
-
-            return this.WriteXmlToFileAsync(reqIf, fileUri, token);
         }
 
         /// <summary>
-        /// Async Serialize a <see cref="ReqIF"/> object and write its content to the provided <see cref="Stream"/>
+        /// Argument validation for stream based operations
         /// </summary>
-        /// <param name="reqIf">
-        /// The <see cref="ReqIF"/> object to serialize
+        /// <param name="reqIfs">
+        /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// <param name="extensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that determines whether the data is serialied to
+        /// an xml file or a (zip) archive
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
-        public Task SerializeAsync(ReqIF reqIf, Stream stream, CancellationToken token)
-        {
-            if (reqIf == null)
-            {
-                throw new ArgumentNullException(nameof(reqIf), "The reqIf object cannot be null.");
-            }
 
+        private void StreamBasedSerializerArgumentValidation(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind extensionKind)
+        {
+            if (reqIfs == null)
+            {
+                throw new ArgumentNullException(nameof(reqIfs), "The reqIfs object cannot be null.");
+            }
+            
             if (stream == null)
             {
                 throw new ArgumentNullException(nameof(stream), "The stream cannot be null.");
             }
 
-            return this.WriteXmlToStreamAsync(reqIf, stream, token);
+            switch (extensionKind)
+            {
+                case SupportedFileExtensionKind.Reqif:
+
+                    if (reqIfs.Count() != 1)
+                    {
+                        throw new ArgumentException("One and only one ReqIF object can be serialized to a reqif file. If multiple ReqIF objects need to be serialized, please make use of the reqifz format.", nameof(extensionKind));
+                    }
+
+                    break;
+                case SupportedFileExtensionKind.Reqifz:
+
+                    if (!reqIfs.Any())
+                    {
+                        throw new ArgumentException("At least one ReqIF object must be serialized.", nameof(extensionKind));
+                    }
+
+                    break;
+                default:
+                    throw new ArgumentException("only .reqif and .reqifz are supported file extensions.", nameof(extensionKind));
+            }
         }
 
         /// <summary>
@@ -175,25 +257,18 @@ namespace ReqIFSharp
         /// <param name="reqIf">
         /// The <see cref="ReqIF"/> object to serialize
         /// </param>
-        /// <param name="fileUri">
-        /// The path of the output file
-        /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// <param name="stream">
+        /// The <see cref="Stream"/> to serialize to
         /// </param>
         /// <returns>
         /// an awaitable task
         /// </returns>
-        private async Task WriteXmlToFileAsync(ReqIF reqIf, string fileUri, CancellationToken token)
+        private void WriteXmlToStream(ReqIF reqIf, Stream stream)
         {
-            if (token.IsCancellationRequested)
+            using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings(true)))
             {
-                token.ThrowIfCancellationRequested();
-            }
-
-            using (var writer = XmlWriter.Create(fileUri, this.CreateXmlWriterSettings(true)))
-            {
-                await this.WriteXmlAsync(writer, reqIf, token);
+                this.WriteXml(writer, reqIf);
+                writer.Flush();
             }
         }
 

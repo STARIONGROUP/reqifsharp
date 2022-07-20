@@ -21,6 +21,7 @@
 namespace ReqIFSharp.Tests.Datatype
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     
@@ -66,10 +67,12 @@ namespace ReqIFSharp.Tests.Datatype
 
             document.CoreContent.DataTypes.Add(dateDefinition);
 
-            this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.xml");
+            var documents = new List<ReqIF> { document };
+
+            this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "test-result.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.That(() => serializer.Serialize(document, this.resultFileUri), Throws.Nothing);
+            Assert.That(() => serializer.Serialize(documents, this.resultFileUri), Throws.Nothing);
 
             var deserializer = new ReqIFDeserializer();
 

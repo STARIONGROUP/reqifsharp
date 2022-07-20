@@ -38,12 +38,12 @@ namespace ReqIFSharp.Tests
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = deserializer.Deserialize(reqifPath).First();
+            var reqIfs = deserializer.Deserialize(reqifPath);
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrow(() => serializer.Serialize(reqIf, resultFileUri));
+            Assert.DoesNotThrow(() => serializer.Serialize(reqIfs, resultFileUri));
         }
 
         [Test]
@@ -54,13 +54,12 @@ namespace ReqIFSharp.Tests
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
-            var reqIf = reqIfs.First();
+            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token); var reqIf = reqIfs.First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIf, resultFileUri, cancellationTokenSource.Token));
+            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token));
         }
 
         [Test]
@@ -69,12 +68,12 @@ namespace ReqIFSharp.Tests
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = deserializer.Deserialize(reqifPath).First();
+            var reqIfS = deserializer.Deserialize(reqifPath);
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrow(() => serializer.Serialize(reqIf, resultFileUri));
+            Assert.DoesNotThrow(() => serializer.Serialize(reqIfS, resultFileUri));
         }
 
         [Test]
@@ -85,13 +84,12 @@ namespace ReqIFSharp.Tests
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
-            var reqIf = reqIfs.First();
+            var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token); var reqIf = reqIfs.First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIf, resultFileUri, cancellationTokenSource.Token));
+            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token));
         }
 
         [Test]
@@ -100,12 +98,12 @@ namespace ReqIFSharp.Tests
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "DefaultValueDemo.reqif");
             var deserializer = new ReqIFDeserializer();
 
-            var reqIf = deserializer.Deserialize(reqifPath).First();
+            var reqIfs = deserializer.Deserialize(reqifPath);
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "DefaultValueDemo-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            serializer.Serialize(reqIf, resultFileUri);
+            serializer.Serialize(reqIfs, resultFileUri);
 
             var reqIf2 = deserializer.Deserialize(resultFileUri).First();
 
@@ -131,12 +129,11 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
 
             var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
-            var reqIf = reqIfs.First();
 
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "DefaultValueDemo-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            await serializer.SerializeAsync(reqIf, resultFileUri, cancellationTokenSource.Token);
+            await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token);
 
             var reqIf2 = deserializer.Deserialize(resultFileUri).First();
 

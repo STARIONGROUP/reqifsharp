@@ -32,7 +32,7 @@ namespace ReqIFSharp
     public interface IReqIFDeSerializer
     {
         /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> from a file
+        /// Deserializes a <see cref="IEnumerable{ReqIF}"/> from a file
         /// </summary>
         /// <param name="xmlFilePath">
         /// The Path of the <see cref="ReqIF"/> file to deserialize
@@ -49,7 +49,7 @@ namespace ReqIFSharp
         IEnumerable<ReqIF> Deserialize(string xmlFilePath, bool validate = false, ValidationEventHandler validationEventHandler = null);
 
         /// <summary>
-        /// Deserializes a <see cref="ReqIF"/> from a <see cref="Stream"/>.
+        /// Deserializes a <see cref="IEnumerable{ReqIF}"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">
         /// The <see cref="Stream"/> that contains the reqifz file to deserialize
@@ -66,7 +66,7 @@ namespace ReqIFSharp
         IEnumerable<ReqIF> Deserialize(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null);
 
         /// <summary>
-        /// Asynchronously deserializes a <see cref="ReqIF"/> from a file
+        /// Asynchronously deserializes a <see cref="IEnumerable{ReqIF}"/> from a file
         /// </summary>
         /// <param name="xmlFilePath">
         /// The Path of the <see cref="ReqIF"/> file to deserialize
@@ -86,7 +86,7 @@ namespace ReqIFSharp
         Task<IEnumerable<ReqIF>> DeserializeAsync(string xmlFilePath, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null);
 
         /// <summary>
-        /// Asynchronously deserializes a <see cref="ReqIF"/> from a <see cref="Stream"/>.
+        /// Asynchronously deserializes a <see cref="IEnumerable{ReqIF}"/> from a <see cref="Stream"/>.
         /// </summary>
         /// <param name="stream">
         /// The <see cref="Stream"/> that contains the reqifz file to deserialize

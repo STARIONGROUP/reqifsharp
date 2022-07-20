@@ -21,6 +21,7 @@
 namespace ReqIFSharp.Tests
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -37,7 +38,9 @@ namespace ReqIFSharp.Tests
         private ReqIF reqIF;
 
         private string resultFileUri;
+        private string resultFileUriÀrchive;
         private string asyncResultFileUri;
+        private string asyncResultFileUriArchive;
 
         private const string ReqIFNamespace = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
 
@@ -58,8 +61,12 @@ namespace ReqIFSharp.Tests
         [SetUp]
         public void SetUp()
         {
-            this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.xml");
-            this.asyncResultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "async-result.xml");
+            this.resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.reqif");
+            this.resultFileUriÀrchive = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.reqifz");
+            this.asyncResultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "async-result.reqif");
+            this.asyncResultFileUriArchive = Path.Combine(TestContext.CurrentContext.TestDirectory, "async-result.reqifz");
+
+            this.CleanUpFiles();
 
             this.enumdatatype_id = "enumeration";
             this.enum_value_low_id = "enumlow";
@@ -104,8 +111,18 @@ namespace ReqIFSharp.Tests
         [TearDown]
         public void TearDown()
         {
+            this.CleanUpFiles();
+        }
+
+        /// <summary>
+        /// Clean up generated reqif and reqifz files
+        /// </summary>
+        private void CleanUpFiles()
+        {
             File.Delete(this.resultFileUri);
+            File.Delete(this.resultFileUriÀrchive);
             File.Delete(this.asyncResultFileUri);
+            File.Delete(this.asyncResultFileUriArchive);
         }
 
         /// <summary>
@@ -719,20 +736,40 @@ namespace ReqIFSharp.Tests
 
             string filePath = null;
 
+            var reqifs = new List<ReqIF>();
+            
             Assert.That(
-                () => serializer.Serialize(null, filePath),
-                Throws.Exception.TypeOf<ArgumentNullException>()
-                .With.Message.Contains("The reqIf object cannot be null."));
-
-            Assert.That(
-                () => serializer.Serialize(this.reqIF, filePath),
+                () => serializer.Serialize(reqifs, filePath),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                 .With.Message.Contains("The path of the file cannot be null."));
 
             Assert.That(
-                () => serializer.Serialize(this.reqIF, string.Empty),
+                () => serializer.Serialize(reqifs, string.Empty),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
                 .With.Message.Contains("The path of the file cannot be empty."));
+
+            filePath = this.resultFileUri;
+
+            Assert.That(
+                () => serializer.Serialize(null, filePath),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The reqIfs object cannot be null."));
+
+            Assert.That(() => serializer.Serialize(reqifs, filePath),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("One and only one ReqIF object can be serialized to a reqif file. If multiple ReqIF objects need to be serialized, please make use of the reqifz format."));
+
+            filePath = this.resultFileUriÀrchive;
+
+            Assert.That(() => serializer.Serialize(reqifs, filePath),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("At least one ReqIF object must be serialized."));
+
+            filePath = Path.ChangeExtension(filePath, "xml");
+
+            Assert.That(() => serializer.Serialize(reqifs, filePath),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("only .reqif and .reqifz are supported file extensions."));
         }
 
         [Test]
@@ -744,20 +781,44 @@ namespace ReqIFSharp.Tests
 
             string filePath = null;
 
-            Assert.That(
-                async () => await serializer.SerializeAsync(null, filePath, cancellationTokenSource.Token),
-                Throws.Exception.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("The reqIf object cannot be null."));
+            var reqifs = new List<ReqIF>();
 
             Assert.That(
-                async () => await serializer.SerializeAsync(this.reqIF, filePath, cancellationTokenSource.Token),
+                async () => await serializer.SerializeAsync(reqifs, filePath, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                     .With.Message.Contains("The path of the file cannot be null."));
 
             Assert.That(
-                async () => await serializer.SerializeAsync(this.reqIF, string.Empty, cancellationTokenSource.Token),
+                async () => await serializer.SerializeAsync(reqifs, string.Empty, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
                     .With.Message.Contains("The path of the file cannot be empty."));
+
+            filePath = this.resultFileUri;
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(null, filePath, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The reqIfs object cannot be null."));
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(reqifs, filePath, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("One and only one ReqIF object can be serialized to a reqif file. If multiple ReqIF objects need to be serialized, please make use of the reqifz format."));
+
+            filePath = Path.ChangeExtension(filePath, "reqifz");
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(reqifs, filePath, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("At least one ReqIF object must be serialized."));
+
+            filePath = Path.ChangeExtension(filePath, "xml");
+
+            Assert.That(
+                async () => await serializer.SerializeAsync(reqifs, filePath, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentException>()
+                    .With.Message.Contains("only .reqif and .reqifz are supported file extensions."));
+
         }
 
         [Test]
@@ -767,13 +828,17 @@ namespace ReqIFSharp.Tests
 
             Stream stream = null;
 
-            Assert.That(
-                () => serializer.Serialize(null, stream),
-                Throws.Exception.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("The reqIf object cannot be null."));
+            var reqifs = new List<ReqIF>();
 
             Assert.That(
-                () => serializer.Serialize(this.reqIF, stream),
+                () => serializer.Serialize(null, stream, SupportedFileExtensionKind.Reqif),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The reqIfs object cannot be null."));
+            
+            reqifs.Add(this.reqIF);
+
+            Assert.That(
+                () => serializer.Serialize(reqifs, stream, SupportedFileExtensionKind.Reqif),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                     .With.Message.Contains("The stream cannot be null."));
         }
@@ -785,15 +850,17 @@ namespace ReqIFSharp.Tests
 
             var serializer = new ReqIFSerializer();
 
+            var reqifs = new List<ReqIF> { this.reqIF };
+
             Stream stream = null;
 
             Assert.That(
-                 async () => await serializer.SerializeAsync(null, stream, cancellationTokenSource.Token),
+                 async () => await serializer.SerializeAsync(null, stream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("The reqIf object cannot be null."));
+                    .With.Message.Contains("The reqIfs object cannot be null."));
 
             Assert.That(
-                async () => await serializer.SerializeAsync(this.reqIF, stream, cancellationTokenSource.Token),
+                async () => await serializer.SerializeAsync(reqifs, stream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>()
                     .With.Message.Contains("The stream cannot be null."));
         }
@@ -801,8 +868,10 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_file_Without_Validation()
         {
+            var reqifs = new List<ReqIF> { this.reqIF };
+
             var serializer = new ReqIFSerializer();
-            serializer.Serialize(this.reqIF, this.resultFileUri);
+            serializer.Serialize(reqifs, this.resultFileUri);
 
             Assert.IsTrue(File.Exists(this.resultFileUri));
         }
@@ -810,10 +879,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_The_ReqIfSerializer_Serializes_Async_a_ReqIf_Document_to_file_Without_Validation()
         {
+            var reqifs = new List<ReqIF> { this.reqIF };
+
             var cancellationTokenSource = new CancellationTokenSource();
 
             var serializer = new ReqIFSerializer();
-            await serializer.SerializeAsync(this.reqIF, this.asyncResultFileUri, cancellationTokenSource.Token);
+            await serializer.SerializeAsync(reqifs, this.asyncResultFileUri, cancellationTokenSource.Token);
 
             Assert.IsTrue(File.Exists(this.asyncResultFileUri));
         }
@@ -821,10 +892,12 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_The_ReqIfSerializer_Serializes_a_ReqIf_Document_to_stream_Without_Validation()
         {
+            var reqifs = new List<ReqIF> { this.reqIF };
+
             var stream = new MemoryStream();
 
             var serializer = new ReqIFSerializer();
-            serializer.Serialize(this.reqIF, stream);
+            serializer.Serialize(reqifs, stream, SupportedFileExtensionKind.Reqif);
 
             Assert.That(stream.Length, Is.Not.Zero);
         }
@@ -832,98 +905,42 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_That_The_ReqIfSerializer_Async_Serializes_a_ReqIf_Document_to_stream_Without_Validation()
         {
+            var reqifs = new List<ReqIF> { this.reqIF };
+
             var cancellationTokenSource = new CancellationTokenSource();
 
             var stream = new MemoryStream();
 
             var serializer = new ReqIFSerializer();
-            await serializer.SerializeAsync(this.reqIF, stream, cancellationTokenSource.Token);
+            await serializer.SerializeAsync(reqifs, stream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token);
 
             Assert.That(stream.Length, Is.Not.Zero);
         }
 
         [Test]
-        public void Verify_that_AlternativeId_can_be_deserialized()
+        public void Verify_that_multiple_ReqIF_objects_can_be_serialized_to_archive_file_based()
         {
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var reqifs = new List<ReqIF> { this.reqIF, this.reqIF };
 
-            var reqif = deserializer.Deserialize(reqifPath, false).Single();
+            var serializer = new ReqIFSerializer();
 
-            var specObjectType = reqif.CoreContent.SpecTypes.OfType<SpecObjectType>().Single(x => x.Identifier == "_jgCytAfNEeeAO8RifBaE-g");
+            serializer.Serialize(reqifs, this.resultFileUriÀrchive);
 
-            foreach (var attributeDefinition in specObjectType.SpecAttributes)
-            {
-                Assert.That(attributeDefinition.AlternativeId.Identifier, Is.EqualTo(attributeDefinition.Identifier));
-            }
-
-            foreach (var datatypeDefinition in reqif.CoreContent.DataTypes)
-            {
-                Assert.That(datatypeDefinition.AlternativeId.Identifier, Is.EqualTo(datatypeDefinition.Identifier));
-            }
-
-            foreach (var specType in reqif.CoreContent.SpecTypes)
-            {
-                Assert.That(specType.AlternativeId.Identifier, Is.EqualTo(specType.Identifier));
-            }
-
-            foreach (var specObject in reqif.CoreContent.SpecObjects)
-            {
-                Assert.That(specObject.AlternativeId.Identifier, Is.EqualTo(specObject.Identifier));
-            }
-
-            foreach (var specification in reqif.CoreContent.Specifications)
-            {
-                Assert.That(specification.AlternativeId.Identifier, Is.EqualTo(specification.Identifier));
-
-                foreach (var specHierarchy in specification.Children)
-                {
-                    Assert.That(specHierarchy.AlternativeId.Identifier, Is.EqualTo(specHierarchy.Identifier));
-                }
-            }
+            Assert.IsTrue(File.Exists(this.resultFileUriÀrchive));
         }
 
         [Test]
-        public async Task Verify_that_AlternativeId_can_be_deserialized_async()
+        public async Task Verify_that_multiple_ReqIF_objects_can_be_serialized_to_archive_file_based_Async()
         {
+            var reqifs = new List<ReqIF> { this.reqIF, this.reqIF };
+
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var serializer = new ReqIFSerializer();
 
-            var reqif =  (await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, false)).Single();
+            await serializer.SerializeAsync(reqifs, this.asyncResultFileUriArchive, cancellationTokenSource.Token);
 
-            var specObjectType = reqif.CoreContent.SpecTypes.OfType<SpecObjectType>().Single(x => x.Identifier == "_jgCytAfNEeeAO8RifBaE-g");
-
-            foreach (var attributeDefinition in specObjectType.SpecAttributes)
-            {
-                Assert.That(attributeDefinition.AlternativeId.Identifier, Is.EqualTo(attributeDefinition.Identifier));
-            }
-
-            foreach (var datatypeDefinition in reqif.CoreContent.DataTypes)
-            {
-                Assert.That(datatypeDefinition.AlternativeId.Identifier, Is.EqualTo(datatypeDefinition.Identifier));
-            }
-
-            foreach (var specType in reqif.CoreContent.SpecTypes)
-            {
-                Assert.That(specType.AlternativeId.Identifier, Is.EqualTo(specType.Identifier));
-            }
-
-            foreach (var specObject in reqif.CoreContent.SpecObjects)
-            {
-                Assert.That(specObject.AlternativeId.Identifier, Is.EqualTo(specObject.Identifier));
-            }
-
-            foreach (var specification in reqif.CoreContent.Specifications)
-            {
-                Assert.That(specification.AlternativeId.Identifier, Is.EqualTo(specification.Identifier));
-
-                foreach (var specHierarchy in specification.Children)
-                {
-                    Assert.That(specHierarchy.AlternativeId.Identifier, Is.EqualTo(specHierarchy.Identifier));
-                }
-            }
+            Assert.IsTrue(File.Exists(this.asyncResultFileUriArchive));
         }
     }
 }
