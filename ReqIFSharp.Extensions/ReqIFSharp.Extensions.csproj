@@ -30,8 +30,8 @@
     <ProjectReference Include="..\ReqIFSharp\ReqIFSharp.csproj" />
   </ItemGroup>
 
-	<ItemGroup>
-		<None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
-	</ItemGroup>
+  <ItemGroup>
+	<None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
+  </ItemGroup>
 
 </Project>

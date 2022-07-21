@@ -20,6 +20,8 @@
 
 namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
+    using System.Linq;
+
     using NUnit.Framework;
 
     using ReqIFSharp;

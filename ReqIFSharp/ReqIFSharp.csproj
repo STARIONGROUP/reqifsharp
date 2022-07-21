@@ -2,7 +2,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
  
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
+	<TargetFramework>netstandard2.0</TargetFramework>
     <Version>5.0.3</Version>
     <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
     <PackageId>ReqIFSharp</PackageId>
@@ -30,7 +30,7 @@
     <IncludeSymbols>true</IncludeSymbols>
     <DefineConstants>RELEASE</DefineConstants>
   </PropertyGroup>
-
+  
   <ItemGroup>
     <None Remove="Resources\driver.xsd" />
     <None Remove="Resources\reqif.xsd" />
@@ -54,7 +54,7 @@
     <None Remove="Resources\xhtml-text-1.xsd" />
     <None Remove="Resources\xml.xsd" />
   </ItemGroup>
-  
+	
   <ItemGroup>
     <EmbeddedResource Include="Resources\driver.xsd" />
     <EmbeddedResource Include="Resources\reqif.xsd" />
@@ -78,7 +78,7 @@
     <EmbeddedResource Include="Resources\xhtml-text-1.xsd" />
     <EmbeddedResource Include="Resources\xml.xsd" />
   </ItemGroup>
-  
+	
   <ItemGroup>
 	  <None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
   </ItemGroup>
