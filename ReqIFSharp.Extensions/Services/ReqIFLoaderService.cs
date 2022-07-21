@@ -18,6 +18,9 @@
 //  </copyright>
 //  -------------------------------------------------------------------------------------------------
 
+using System.Collections;
+using System.Linq;
+
 namespace ReqIFSharp.Extensions.Services
 {
     using System;
@@ -55,6 +58,12 @@ namespace ReqIFSharp.Extensions.Services
         private readonly ILogger<ReqIFLoaderService> logger;
 
         /// <summary>
+        /// a thread safe cache where the data associated to an <see cref="ExternalObject"/> is stored
+        /// </summary>
+        private readonly ConcurrentDictionary<ExternalObject, string> externalObjectDataCache =
+            new ConcurrentDictionary<ExternalObject, string>();
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ReqIFLoaderService"/>
         /// </summary>
         /// <param name="reqIfDeSerializer">
@@ -69,13 +78,7 @@ namespace ReqIFSharp.Extensions.Services
 
             this.logger = loggerFactory == null ? NullLogger<ReqIFLoaderService>.Instance : loggerFactory.CreateLogger<ReqIFLoaderService>();
         }
-
-        /// <summary>
-        /// a thread safe cache where the data associated to an <see cref="ExternalObject"/> is stored
-        /// </summary>
-        private ConcurrentDictionary<ExternalObject, string> externalObjectDataCache =
-            new ConcurrentDictionary<ExternalObject, string>();
-
+        
         /// <summary>
         /// Gets the instances of <see cref="ReqIF"/>
         /// </summary>
@@ -172,7 +175,7 @@ namespace ReqIFSharp.Extensions.Services
         {
             if (externalObject == null)
             {
-                throw new ArgumentNullException($"The {nameof(externalObject)} may not be null");
+                throw new ArgumentNullException(nameof(externalObject), $"The {nameof(externalObject)} may not be null");
             }
 
             if (externalObjectDataCache.TryGetValue(externalObject, out var result))
@@ -209,8 +212,8 @@ namespace ReqIFSharp.Extensions.Services
             this.externalObjectDataCache.Clear();
 
             this.logger.LogDebug("loader service reset");
-
-            ReqIfChanged?.Invoke(this, null);
+            
+            ReqIfChanged?.Invoke(this, Enumerable.Empty<ReqIF>());
         }
 
         /// <summary>
