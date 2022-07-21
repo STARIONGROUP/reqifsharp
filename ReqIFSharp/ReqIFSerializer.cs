@@ -44,8 +44,6 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="ArgumentOutOfRangeException"></exception>
         public void Serialize(IEnumerable<ReqIF> reqIfs, string fileUri)
         {
             this.FileBasedSerializerArgumentValidation(fileUri);
@@ -187,18 +185,18 @@ namespace ReqIFSharp
         /// Argument validation for file based operations
         /// </summary>
         /// <param name="fileUri">
-        /// The path of the output file
+        /// The path of the output ReqIF file
         /// </param>
         private void FileBasedSerializerArgumentValidation(string fileUri)
         {
             if (fileUri == null)
             {
-                throw new ArgumentNullException(nameof(fileUri), "The path of the file cannot be null.");
+                throw new ArgumentNullException(nameof(fileUri), "The path of the ReqIF file cannot be null.");
             }
 
             if (fileUri == string.Empty)
             {
-                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the file cannot be empty.");
+                throw new ArgumentOutOfRangeException(nameof(fileUri), "The path of the ReqIF file cannot be empty.");
             }
         }
 

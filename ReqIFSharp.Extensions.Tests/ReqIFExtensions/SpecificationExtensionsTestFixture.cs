@@ -46,10 +46,12 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
             var reqIfDeserializer = new ReqIFDeserializer();
             var reqIfLoaderService = new ReqIFLoaderService(reqIfDeserializer);
-            await reqIfLoaderService.Load(fileStream, cts.Token);
+            await reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
 
             this.reqIf = reqIfLoaderService.ReqIFData.Single();
         }

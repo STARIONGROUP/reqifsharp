@@ -38,13 +38,6 @@ namespace ReqIFSharp
         /// </summary>
         /// <param name="reqIfs">The <see cref="ReqIF"/> object to serialize</param>
         /// <param name="fileUri">The path of the output file</param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
         void Serialize(IEnumerable<ReqIF> reqIfs, string fileUri);
 
         /// <summary>
@@ -56,13 +49,6 @@ namespace ReqIFSharp
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
         void Serialize(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind);
 
         /// <summary>
@@ -73,13 +59,6 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
         Task SerializeAsync(IEnumerable<ReqIF> reqIfs, string fileUri, CancellationToken token);
 
         /// <summary>
@@ -94,13 +73,6 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        /// <exception cref="XmlSchemaValidationException"></exception>
-        /// <exception cref="ArgumentException"></exception>
-        /// <exception cref="UnauthorizedAccessException"></exception>
-        /// <exception cref="ArgumentNullException"></exception>
-        /// <exception cref="DirectoryNotFoundException"></exception>
-        /// <exception cref="IOException"></exception>
-        /// <exception cref="SecurityException"></exception>
         Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
     }
 }

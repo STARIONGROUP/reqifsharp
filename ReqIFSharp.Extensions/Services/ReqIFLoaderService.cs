@@ -18,9 +18,6 @@
 //  </copyright>
 //  -------------------------------------------------------------------------------------------------
 
-using System.Collections;
-using System.Linq;
-
 namespace ReqIFSharp.Extensions.Services
 {
     using System;
@@ -28,6 +25,7 @@ namespace ReqIFSharp.Extensions.Services
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
 
@@ -116,7 +114,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <returns>
         /// an awaitable <see cref="Task"/>
         /// </returns>
-        public async Task Load(Stream reqIFStream, CancellationToken token)
+        public async Task Load(Stream reqIFStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
             this.externalObjectDataCache.Clear();
 
@@ -146,7 +144,7 @@ namespace ReqIFSharp.Extensions.Services
 
             var sw = Stopwatch.StartNew();
             this.logger.LogDebug("starting deserialization");
-            result = await this.reqIfDeSerializer.DeserializeAsync(deserializationStream, token);
+            result = await this.reqIfDeSerializer.DeserializeAsync(deserializationStream, fileExtensionKind, token);
             this.logger.LogDebug("deserialization finished in {time} [ms]", sw.ElapsedMilliseconds);
 
             deserializationStream.Dispose();

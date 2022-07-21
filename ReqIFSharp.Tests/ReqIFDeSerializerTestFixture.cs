@@ -52,10 +52,14 @@ namespace ReqIFSharp.Tests
         public void Verify_that_ArgumentException_Are_thrown_on_read_from_file()
         {
             var deserializer = new ReqIFDeserializer();
-            
+
+            Assert.That(() => deserializer.Deserialize(null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The path of the ReqIF file cannot be null."));
+
             Assert.That(() => deserializer.Deserialize(""), 
-                Throws.Exception.TypeOf<ArgumentException>()
-                    .With.Message.Contains("The xml file path may not be null or empty"));
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
+                    .With.Message.Contains("The path of the ReqIF file cannot be empty."));
         }
 
         [Test]
@@ -65,9 +69,13 @@ namespace ReqIFSharp.Tests
 
             var deserializer = new ReqIFDeserializer();
 
+            Assert.That(async () => await deserializer.DeserializeAsync(null, cancellationTokenSource.Token),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The path of the ReqIF file cannot be null."));
+
             Assert.That(async () => await deserializer.DeserializeAsync("", cancellationTokenSource.Token),
-                Throws.Exception.TypeOf<ArgumentException>()
-                    .With.Message.Contains("The xml file path may not be null or empty"));
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
+                    .With.Message.Contains("The path of the ReqIF file cannot be empty."));
         }
 
         [Test]
@@ -77,18 +85,18 @@ namespace ReqIFSharp.Tests
 
             MemoryStream memoryStream = null;
 
-            Assert.That(() => deserializer.Deserialize(memoryStream),
+            Assert.That(() => deserializer.Deserialize(memoryStream, SupportedFileExtensionKind.Reqif),
                 Throws.Exception.TypeOf<ArgumentNullException>());
 
             var validationEventHandler = new ValidationEventHandler(ValidationEventHandler);
 
-            Assert.That(() => deserializer.Deserialize(memoryStream, false, validationEventHandler),
+            Assert.That(() => deserializer.Deserialize(memoryStream, SupportedFileExtensionKind.Reqif, false, validationEventHandler),
                 Throws.Exception.TypeOf<ArgumentException>()
                     .With.Message.Contains("validationEventHandler must be null when validate is false"));
 
             memoryStream = new MemoryStream();
 
-            Assert.That(() => deserializer.Deserialize(memoryStream),
+            Assert.That(() => deserializer.Deserialize(memoryStream, SupportedFileExtensionKind.Reqif),
                 Throws.Exception.TypeOf<ArgumentException>());
         }
 
@@ -101,23 +109,23 @@ namespace ReqIFSharp.Tests
 
             MemoryStream memoryStream = null;
 
-            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
+            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>());
 
             var validationEventHandler = new ValidationEventHandler(ValidationEventHandler);
 
-            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token, false, validationEventHandler),
+            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token, false, validationEventHandler),
                 Throws.Exception.TypeOf<ArgumentException>()
                     .With.Message.Contains("validationEventHandler must be null when validate is false"));
 
             memoryStream = new MemoryStream();
 
-            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, cancellationTokenSource.Token),
+            Assert.That(async () => await deserializer.DeserializeAsync(memoryStream, SupportedFileExtensionKind.Reqif, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentException>());
         }
         
         [Test]
-        public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_Without_Validation()
+        public void Verify_That_A_ReqIF_Document_Can_Be_Deserialized_Without_Validation()
         {
             var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif")).First();
@@ -150,7 +158,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_That_A_ReqIF_XML_Document_Can_Be_DeserializedAsync_Without_Validation()
+        public async Task Verify_That_A_ReqIF_Document_Can_Be_DeserializedAsync_Without_Validation()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -337,7 +345,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_That_A_ReqIF_XML_Document_Can_Be_DeserializedAsync_With_Validation()
+        public async Task Verify_That_A_ReqIF_Document_Can_Be_DeserializedAsync_With_Validation()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -463,12 +471,14 @@ namespace ReqIFSharp.Tests
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             var deserializer = new ReqIFDeserializer();
             Assert.That(() => deserializer.Deserialize(reqifPath, true, this.ValidationEventHandler), Throws.Nothing);
 
             using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
             {
-                Assert.That(() => deserializer.Deserialize(sourceStream), Throws.Nothing);
+                Assert.That(() => deserializer.Deserialize(sourceStream, supportedFileExtensionKind), Throws.Nothing);
             }
         }
 
@@ -479,12 +489,14 @@ namespace ReqIFSharp.Tests
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             var deserializer = new ReqIFDeserializer();
             Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true, this.ValidationEventHandler), Throws.Nothing);
 
             using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
             {
-                Assert.That(async () => await deserializer.DeserializeAsync(sourceStream, cancellationTokenSource.Token), Throws.Nothing);
+                Assert.That(async () => await deserializer.DeserializeAsync(sourceStream, supportedFileExtensionKind, cancellationTokenSource.Token), Throws.Nothing);
             }
         }
 
@@ -492,13 +504,16 @@ namespace ReqIFSharp.Tests
         public void Verify_that_when_path_is_null_exception_is_thrown()
         {
             var deserializer = new ReqIFDeserializer();
-
-            string xmlPath = null;
+            
+            Assert.That(
+                () => deserializer.Deserialize(""),
+                Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
+                    .With.Message.Contains("The path of the ReqIF file cannot be empty."));
 
             Assert.That(
-                () => deserializer.Deserialize(xmlPath),
-                Throws.Exception.TypeOf<ArgumentException>()
-                    .With.Message.Contains("The xml file path may not be null or empty"));
+                () => deserializer.Deserialize(null),
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Message.Contains("The path of the ReqIF file cannot be null."));
         }
 
         [Test]
@@ -548,13 +563,15 @@ namespace ReqIFSharp.Tests
         {
             var deserializer = new ReqIFDeserializer();
 
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
-            using (var fileStream = new FileStream(path, FileMode.Open))
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
+            using (var fileStream = new FileStream(reqifPath, FileMode.Open))
             {
                 var sw = Stopwatch.StartNew();
 
-                var reqif = deserializer.Deserialize(fileStream, false, null).First();
+                var reqif = deserializer.Deserialize(fileStream, supportedFileExtensionKind, false, null).First();
 
                 Console.WriteLine($"deserialization done in: {sw.ElapsedMilliseconds} [ms]");
 
@@ -569,13 +586,15 @@ namespace ReqIFSharp.Tests
 
             var deserializer = new ReqIFDeserializer();
 
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
-            using (var fileStream = new FileStream(path, FileMode.Open))
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
+            using (var fileStream = new FileStream(reqifPath, FileMode.Open))
             {
                 var sw = Stopwatch.StartNew();
 
-                var reqif = (await deserializer.DeserializeAsync(fileStream, cancellationTokenSource.Token, false, null)).First();
+                var reqif = (await deserializer.DeserializeAsync(fileStream, supportedFileExtensionKind, cancellationTokenSource.Token, false, null)).First();
 
                 Console.WriteLine($"async deserialization done in: {sw.ElapsedMilliseconds} [ms]");
 

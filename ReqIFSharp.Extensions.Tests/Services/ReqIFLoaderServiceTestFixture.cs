@@ -56,8 +56,10 @@ namespace ReqIFSharp.Extensions.Tests.Services
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            await this.reqIfLoaderService.Load(fileStream, cts.Token);
+            await this.reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
 
             Assert.That(this.reqIfLoaderService.ReqIFData, Is.Not.Empty);
 
@@ -75,8 +77,10 @@ namespace ReqIFSharp.Extensions.Tests.Services
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            await this.reqIfLoaderService.Load(fileStream, cts.Token);
+            await this.reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
 
             Console.WriteLine($"requirements-and-objects.reqifz desserialized in {sw.ElapsedMilliseconds} [ms]");
 
@@ -96,8 +100,10 @@ namespace ReqIFSharp.Extensions.Tests.Services
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            await this.reqIfLoaderService.Load(fileStream, cts.Token);
+            await this.reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
 
             Console.WriteLine($"requirements-and-objects.reqifz desserialized in {sw.ElapsedMilliseconds} [ms]");
 

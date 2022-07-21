@@ -50,9 +50,11 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
 
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
             this.reqIFLoaderService = new ReqIFLoaderService(reqIfDeserializer);
-            await this.reqIFLoaderService.Load(fileStream, cts.Token);
+            await this.reqIFLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
 
             this.reqIf = this.reqIFLoaderService.ReqIFData.Single();
         }
