@@ -57,7 +57,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// Queries the base64 payloads of the <see cref="SpecElementWithAttributes"/>
         /// </summary>
         /// <param name="specElementWithAttributes">
-        /// The <see cref="SpecElementWithAttributes"/> to query the base64 payloads from from
+        /// The <see cref="SpecElementWithAttributes"/> to query the base64 payloads from
         /// </param>
         /// <param name="reqIfLoaderService">
         /// The <see cref="IReqIFLoaderService"/> that is used to query the payload from the associated reqifz file-stream

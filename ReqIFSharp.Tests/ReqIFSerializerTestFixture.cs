@@ -302,7 +302,7 @@ namespace ReqIFSharp.Tests
             specificationType.LastChange = DateTime.Parse("2015-12-01");
             CreateAlternativeId(specificationType);
 
-            this.CreateAndAddAttributeDefinitionsToSpecType(specificationType, reqIfContent);
+            CreateAndAddAttributeDefinitionsToSpecType(specificationType, reqIfContent);
 
             reqIfContent.SpecTypes.Add(specificationType);
         }
@@ -458,7 +458,7 @@ namespace ReqIFSharp.Tests
         /// <param name="reqIfContent">
         /// An instance of <see cref="ReqIFContent"/>
         /// </param>
-        private void CreateAndAddAttributeDefinitionsToSpecType(SpecType specType, ReqIFContent reqIfContent)
+        private static void CreateAndAddAttributeDefinitionsToSpecType(SpecType specType, ReqIFContent reqIfContent)
         {
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
             attributeDefinitionBoolean.LongName = "boolean attribute";

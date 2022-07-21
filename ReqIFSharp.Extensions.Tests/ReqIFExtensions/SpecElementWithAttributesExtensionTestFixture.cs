@@ -39,6 +39,8 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
     {
         private ReqIF reqIf;
 
+        private IReqIFLoaderService reqIFLoaderService;
+
         [SetUp]
         public async Task SetUp()
         {
@@ -46,13 +48,35 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var cts = new CancellationTokenSource();
 
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
 
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            var reqIfLoaderService = new ReqIFLoaderService(reqIfDeserializer);
-            await reqIfLoaderService.Load(fileStream, cts.Token);
+            this.reqIFLoaderService = new ReqIFLoaderService(reqIfDeserializer);
+            await this.reqIFLoaderService.Load(fileStream, cts.Token);
 
-            this.reqIf = reqIfLoaderService.ReqIFData.Single();
+            this.reqIf = this.reqIFLoaderService.ReqIFData.Single();
+        }
+
+        [Test]
+        public void Verify_that_QueryExternalObjects_returns_expected_results()
+        {
+            var specObject = this.reqIf.CoreContent.SpecObjects.Single(x => x.Identifier == "_3.4.2.2.2_BrLeft_2_BrRight_._BrLeft_f_BrRight_1");
+
+            var externalObjects = specObject.QueryExternalObjects();
+
+            Assert.That(externalObjects.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task Verify_that_QueryBase64Payloads_returns_expected_results()
+        {
+            var specObject = this.reqIf.CoreContent.SpecObjects.Single(x => x.Identifier == "_3.4.2.2.2_BrLeft_2_BrRight_._BrLeft_f_BrRight_1");
+
+            var base64Payloads = await specObject.QueryBase64Payloads(this.reqIFLoaderService);
+
+            var base64Payload = base64Payloads.Single();
+
+            Assert.That(base64Payload.Item2, Does.StartWith("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAACfCAIAAACazFx+AAAAAXNSR0IArs4c6QAA"));
         }
     }
 }
