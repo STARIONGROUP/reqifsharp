@@ -670,7 +670,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_sampleGH43_can_be_deserialized()
         {
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.reqifz");
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.zip");
 
             var deserializer = new ReqIFDeserializer();
             Assert.That(() => deserializer.Deserialize(reqifPath), Throws.Nothing);
@@ -681,7 +681,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.reqifz");
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.zip");
 
             var deserializer = new ReqIFDeserializer();
             

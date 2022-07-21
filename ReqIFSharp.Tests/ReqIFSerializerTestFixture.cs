@@ -769,7 +769,7 @@ namespace ReqIFSharp.Tests
 
             Assert.That(() => serializer.Serialize(reqifs, filePath),
                 Throws.Exception.TypeOf<ArgumentException>()
-                    .With.Message.Contains("only .reqif and .reqifz are supported file extensions."));
+                    .With.Message.Contains("only .reqif, .reqifz and .zip are supported file extensions."));
         }
 
         [Test]
@@ -817,7 +817,7 @@ namespace ReqIFSharp.Tests
             Assert.That(
                 async () => await serializer.SerializeAsync(reqifs, filePath, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentException>()
-                    .With.Message.Contains("only .reqif and .reqifz are supported file extensions."));
+                    .With.Message.Contains("only .reqif, .reqifz and .zip are supported file extensions."));
 
         }
 

@@ -179,7 +179,7 @@ namespace ReqIFSharp
                         break;
                     }
                 default:
-                    throw new ArgumentException("only .reqif and .reqifz are supported file extensions.", nameof(fileExtensionKind));
+                    throw new ArgumentException("only .reqif, .reqifz and .zip are supported file extensions.", nameof(fileExtensionKind));
             }
         }
 
@@ -247,7 +247,7 @@ namespace ReqIFSharp
 
                     break;
                 default:
-                    throw new ArgumentException("only .reqif and .reqifz are supported file extensions.", nameof(extensionKind));
+                    throw new ArgumentException("only .reqif, .reqifz and .zip are supported file extensions.", nameof(extensionKind));
             }
         }
 

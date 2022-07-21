@@ -35,12 +35,17 @@ namespace ReqIFSharp.Tests
         {
             var reqif = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.reqif");
             var reqifz = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.reqifz");
+            var zip = Path.Combine(TestContext.CurrentContext.TestDirectory, "result.zip");
 
             Assert.Multiple(() =>
             {
                 Assert.That(reqif.ConvertPathToSupportedFileExtensionKind(),
                     Is.EqualTo(SupportedFileExtensionKind.Reqif));
+
                 Assert.That(reqifz.ConvertPathToSupportedFileExtensionKind(),
+                    Is.EqualTo(SupportedFileExtensionKind.Reqifz));
+
+                Assert.That(zip.ConvertPathToSupportedFileExtensionKind(),
                     Is.EqualTo(SupportedFileExtensionKind.Reqifz));
             });
         }

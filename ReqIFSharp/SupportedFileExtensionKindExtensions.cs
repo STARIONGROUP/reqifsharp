@@ -44,8 +44,10 @@ namespace ReqIFSharp
                     return SupportedFileExtensionKind.Reqif;
                 case ".reqifz":
                     return SupportedFileExtensionKind.Reqifz;
+                case ".zip":
+                    return SupportedFileExtensionKind.Reqifz;
                 default:
-                    throw new ArgumentException("only .reqif and .reqifz are supported file extensions.", nameof(fileUri));
+                    throw new ArgumentException("only .reqif, .reqifz and .zip are supported file extensions.", nameof(fileUri));
             }
         }
     }
