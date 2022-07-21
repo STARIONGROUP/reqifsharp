@@ -48,6 +48,9 @@
 		<None Update="TestData\DefaultValueDemo.reqif">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="TestData\large-sample.reqif">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="TestData\output.reqif">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
@@ -62,6 +65,9 @@
 		</None>
 		<None Update="TestData\requirements-and-objects.reqifz">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
+		<None Update="TestData\sampleGH43.reqifz">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
 		<None Update="TestData\sample_debug.reqif">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>

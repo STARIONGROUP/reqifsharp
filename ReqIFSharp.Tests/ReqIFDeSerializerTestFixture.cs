@@ -666,5 +666,26 @@ namespace ReqIFSharp.Tests
                 }
             }
         }
+
+        [Test]
+        public void Verify_that_sampleGH43_can_be_deserialized()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.reqifz");
+
+            var deserializer = new ReqIFDeserializer();
+            Assert.That(() => deserializer.Deserialize(reqifPath), Throws.Nothing);
+        }
+
+        [Test]
+        public async Task Verify_that_sampleGH43_can_be_deserialized_async()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.reqifz");
+
+            var deserializer = new ReqIFDeserializer();
+            
+            Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Nothing);
+        }
     }
 }
