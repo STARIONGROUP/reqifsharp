@@ -57,7 +57,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <returns>
         /// an awaitable <see cref="Task"/>
         /// </returns>
-        Task Load(Stream reqifStream, CancellationToken token);
+        Task Load(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
 
         /// <summary>
         /// Query the data object from associated to the <see cref="ExternalObject"/>

@@ -18,7 +18,7 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-namespace ReqIFLib.Tests
+namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;

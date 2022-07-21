@@ -741,12 +741,12 @@ namespace ReqIFSharp.Tests
             Assert.That(
                 () => serializer.Serialize(reqifs, filePath),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                .With.Message.Contains("The path of the file cannot be null."));
+                .With.Message.Contains("The path of the ReqIF file cannot be null."));
 
             Assert.That(
                 () => serializer.Serialize(reqifs, string.Empty),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
-                .With.Message.Contains("The path of the file cannot be empty."));
+                .With.Message.Contains("The path of the ReqIF file cannot be empty."));
 
             filePath = this.resultFileUri;
 
@@ -786,12 +786,12 @@ namespace ReqIFSharp.Tests
             Assert.That(
                 async () => await serializer.SerializeAsync(reqifs, filePath, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>()
-                    .With.Message.Contains("The path of the file cannot be null."));
+                    .With.Message.Contains("The path of the ReqIF file cannot be null."));
 
             Assert.That(
                 async () => await serializer.SerializeAsync(reqifs, string.Empty, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentOutOfRangeException>()
-                    .With.Message.Contains("The path of the file cannot be empty."));
+                    .With.Message.Contains("The path of the ReqIF file cannot be empty."));
 
             filePath = this.resultFileUri;
 
