@@ -20,13 +20,10 @@
 
 namespace ReqIFSharp
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Security;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Xml.Schema;
 
     /// <summary>
     /// The interface for the a <see cref="ReqIF"/> serializer
