@@ -284,6 +284,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             CreateAndAddAttributeDefinitionsToSpecType(specificationType, reqIfContent);
 
             reqIfContent.SpecTypes.Add(specificationType);
+            specificationType.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
