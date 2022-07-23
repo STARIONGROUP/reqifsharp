@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
+    using System;
     using System.Linq;
 
     using NUnit.Framework;
@@ -74,6 +75,16 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var attributeDefinition = attributeDefinitions.Single(x => x.Identifier == "specification-boolean-attribute");
 
             Assert.That(attributeDefinition.LongName, Is.EqualTo("boolean attribute"));
+        }
+
+        [Test]
+        public void Verify_that_on_QueryReferencingAttributeDefinitions_NullReferenceException_is_thrown_when_owning_ReqIFContent_is_not_set()
+        {
+            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean();
+            
+            Assert.That(() => datatypeDefinitionBoolean.QueryReferencingAttributeDefinitions(),
+                Throws.Exception.TypeOf<NullReferenceException>()
+                    .With.Message.Contains("The owning ReqIFContent of the DatatypeDefinition is not set."));
         }
     }
 }

@@ -79,6 +79,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         {
             var result = new HashSet<AttributeDefinition>();
 
+            if (datatypeDefinition.ReqIFContent == null)
+            {
+                throw new NullReferenceException("The owning ReqIFContent of the DatatypeDefinition is not set.");
+            }
+
             var spectypes = datatypeDefinition.ReqIFContent.SpecTypes;
             foreach (var spectype in spectypes)
             {

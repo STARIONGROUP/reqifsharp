@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.ReqIFExtensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -41,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<RelationGroup> QueryReferencingRelationGroups(this RelationGroupType relationGroupType)
         {
+            if (relationGroupType.ReqIFContent == null)
+            {
+                throw new NullReferenceException("The owning ReqIFContent of the RelationGroupType is not set.");
+            }
+
             var relationGroups = relationGroupType.ReqIFContent.SpecRelationGroups;
 
             var result = relationGroups.Where(x => x.Type == relationGroupType);

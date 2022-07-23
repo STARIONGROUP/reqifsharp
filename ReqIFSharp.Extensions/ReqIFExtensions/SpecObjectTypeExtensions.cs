@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.ReqIFExtensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -41,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<SpecObject> QueryReferencingSpecObjects(this SpecObjectType specObjectType)
         {
+            if (specObjectType.ReqIFContent == null)
+            {
+                throw new NullReferenceException("The owning ReqIFContent of the SpecObjectType is not set.");
+            }
+
             var specObjects = specObjectType.ReqIFContent.SpecObjects;
 
             var result =  specObjects.Where(x => x.Type == specObjectType);

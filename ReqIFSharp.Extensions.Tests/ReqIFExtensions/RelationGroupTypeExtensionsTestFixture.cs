@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
+    using System;
     using System.Linq;
 
     using NUnit.Framework;
@@ -51,6 +52,16 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var specObjects = relationGroupType.QueryReferencingRelationGroups();
 
             Assert.That(specObjects.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Verify_that_on_QueryReferencingRelationGroups_NullReferenceException_is_thrown_when_owning_ReqIFContent_is_not_set()
+        {
+            var relationGroupType = new RelationGroupType();
+
+            Assert.That(() => relationGroupType.QueryReferencingRelationGroups(),
+                Throws.Exception.TypeOf<NullReferenceException>()
+                    .With.Message.Contains("The owning ReqIFContent of the RelationGroupType is not set."));
         }
     }
 }
