@@ -46,6 +46,12 @@ namespace ReqIFSharp.Extensions.Tests.TestData
 
         private string xhtmlcontent;
 
+        /// <summary>
+        /// Creates a <see cref="ReqIF"/> object for testing purposes
+        /// </summary>
+        /// <returns>
+        /// An instance of <see cref="ReqIF"/>
+        /// </returns>
         public ReqIF Create()
         {
             this.enumdatatype_id = "enumeration";
@@ -259,6 +265,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             specObjectType.SpecAttributes.Add(attributeDefinitionXhtml);
 
             this.reqIF.CoreContent.SpecTypes.Add(specObjectType);
+            specObjectType.ReqIFContent = this.reqIF.CoreContent;
         }
 
         /// <summary>
@@ -349,6 +356,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             specRelationType.SpecAttributes.Add(attributeDefinitionXhtml);
 
             reqIfContent.SpecTypes.Add(specRelationType);
+            specRelationType.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -419,6 +427,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             relationGroupType.SpecAttributes.Add(attributeDefinitionXhtml);
 
             this.reqIF.CoreContent.SpecTypes.Add(relationGroupType);
+            relationGroupType.ReqIFContent = this.reqIF.CoreContent;
         }
 
         /// <summary>
@@ -502,15 +511,16 @@ namespace ReqIFSharp.Extensions.Tests.TestData
         {
             var reqIfContent = this.reqIF.CoreContent;
 
-            var specObject = new SpecObject();
-            specObject.LongName = "spec object 1";
-            specObject.Identifier = this.specobject_1_id;
-            specObject.LastChange = DateTime.Parse("2015-12-01");
+            var specObject_1 = new SpecObject();
+            specObject_1.LongName = "spec object 1";
+            specObject_1.Identifier = this.specobject_1_id;
+            specObject_1.LastChange = DateTime.Parse("2015-12-01");
             var specType = (SpecObjectType)reqIfContent.SpecTypes.SingleOrDefault(x => x.GetType() == typeof(SpecObjectType));
-            specObject.Type = specType;
-            this.CreateValuesForSpecElementWithAttributes(specObject, specType);
-            CreateAlternativeId(specObject);
-            reqIfContent.SpecObjects.Add(specObject);
+            specObject_1.Type = specType;
+            this.CreateValuesForSpecElementWithAttributes(specObject_1, specType);
+            CreateAlternativeId(specObject_1);
+            reqIfContent.SpecObjects.Add(specObject_1);
+            specObject_1.ReqIFContent = reqIfContent;
 
             var specobject_2 = new SpecObject();
             specobject_2.LongName = "spec object 2";
@@ -520,6 +530,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             this.CreateValuesForSpecElementWithAttributes(specobject_2, specType);
             CreateAlternativeId(specobject_2);
             reqIfContent.SpecObjects.Add(specobject_2);
+            specobject_2.ReqIFContent = reqIfContent;
 
             var specobject_3 = new SpecObject();
             specobject_3.LongName = "spec object 3";
@@ -529,6 +540,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             this.CreateValuesForSpecElementWithAttributes(specobject_3, specType);
             CreateAlternativeId(specobject_3);
             reqIfContent.SpecObjects.Add(specobject_3);
+            specobject_3.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -553,6 +565,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             CreateAlternativeId(specRelation);
 
             reqIfContent.SpecRelations.Add(specRelation);
+            specRelation.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -601,6 +614,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             specHierarchy1.Children.Add(specHierarchy1_2);
 
             reqIfContent.Specifications.Add(specification1);
+            specification1.ReqIFContent = reqIfContent;
 
             var specification2 = new Specification();
             specification2.Identifier = "specification-2";
@@ -610,6 +624,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             this.CreateValuesForSpecElementWithAttributes(specification2, specificationType);
             CreateAlternativeId(specification2);
             reqIfContent.Specifications.Add(specification2);
+            specification2.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
@@ -635,6 +650,7 @@ namespace ReqIFSharp.Extensions.Tests.TestData
             relationGroup.TargetSpecification = targetSpecification;
 
             reqIfContent.SpecRelationGroups.Add(relationGroup);
+            relationGroup.ReqIFContent = reqIfContent;
         }
 
         /// <summary>
