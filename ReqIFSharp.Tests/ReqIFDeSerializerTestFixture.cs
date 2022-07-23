@@ -696,7 +696,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task Verify_that_sampleGH43_can_be_deserialized_async()
+        public void Verify_that_sampleGH43_can_be_deserialized_async()
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
