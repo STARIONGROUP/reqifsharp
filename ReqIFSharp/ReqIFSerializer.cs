@@ -159,7 +159,6 @@ namespace ReqIFSharp
                     using (var archive = new ZipArchive(stream, ZipArchiveMode.Create, true))
                     {
                         var i = 0;
-                        var tasks = new List<Task>();
 
                         foreach (var reqIf in reqIfs)
                         {
@@ -169,11 +168,10 @@ namespace ReqIFSharp
 
                             using (var reqifEntryStream = reqifEntry.Open())
                             {
-                                tasks.Add( this.WriteXmlToStreamAsync(reqIf, reqifEntryStream, token));
+                                await this.WriteXmlToStreamAsync(reqIf, reqifEntryStream, token);
                             }
                         }
 
-                        await Task.WhenAll(tasks);
                         break;
                     }
                 default:
