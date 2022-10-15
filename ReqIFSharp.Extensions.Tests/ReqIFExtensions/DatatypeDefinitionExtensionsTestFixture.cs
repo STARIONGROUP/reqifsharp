@@ -22,6 +22,9 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
     using System;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Xml;
 
     using NUnit.Framework;
 
@@ -85,6 +88,26 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             Assert.That(() => datatypeDefinitionBoolean.QueryReferencingAttributeDefinitions(),
                 Throws.Exception.TypeOf<NullReferenceException>()
                     .With.Message.Contains("The owning ReqIFContent of the DatatypeDefinition is not set."));
+        }
+
+        [Test]
+        public void Verify_that_Unsupported_QueryDatatypeName_throws_exception()
+        {
+            var testDatatypeDefinitionSimple = new TestDatatypeDefinitionSimple();
+
+            Assert.That(() => testDatatypeDefinitionSimple.QueryDatatypeName(),
+                Throws.Exception.TypeOf<InvalidOperationException>());
+        }
+    }
+
+    /// <summary>
+    /// test class
+    /// </summary>
+    public class TestDatatypeDefinitionSimple : DatatypeDefinitionSimple
+    {
+        internal override Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        {
+            throw new NotImplementedException();
         }
     }
 }
