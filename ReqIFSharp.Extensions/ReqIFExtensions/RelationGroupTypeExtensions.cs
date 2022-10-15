@@ -44,7 +44,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         {
             if (relationGroupType.ReqIFContent == null)
             {
-                throw new NullReferenceException("The owning ReqIFContent of the RelationGroupType is not set.");
+                throw new InvalidOperationException("The owning ReqIFContent of the RelationGroupType is not set.");
             }
 
             var relationGroups = relationGroupType.ReqIFContent.SpecRelationGroups;

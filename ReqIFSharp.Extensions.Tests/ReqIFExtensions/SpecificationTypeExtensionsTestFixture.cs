@@ -60,7 +60,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var specificationType = new SpecificationType();
 
             Assert.That(() => specificationType.QueryReferencingSpecifications(),
-                Throws.Exception.TypeOf<NullReferenceException>()
+                Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("The owning ReqIFContent of the SpecificationType is not set."));
         }
     }

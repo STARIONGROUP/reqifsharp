@@ -86,7 +86,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean();
             
             Assert.That(() => datatypeDefinitionBoolean.QueryReferencingAttributeDefinitions(),
-                Throws.Exception.TypeOf<NullReferenceException>()
+                Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("The owning ReqIFContent of the DatatypeDefinition is not set."));
         }
 

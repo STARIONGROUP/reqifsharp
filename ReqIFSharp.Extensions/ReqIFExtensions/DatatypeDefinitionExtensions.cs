@@ -81,7 +81,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
 
             if (datatypeDefinition.ReqIFContent == null)
             {
-                throw new NullReferenceException("The owning ReqIFContent of the DatatypeDefinition is not set.");
+                throw new InvalidOperationException("The owning ReqIFContent of the DatatypeDefinition is not set.");
             }
 
             var spectypes = datatypeDefinition.ReqIFContent.SpecTypes;

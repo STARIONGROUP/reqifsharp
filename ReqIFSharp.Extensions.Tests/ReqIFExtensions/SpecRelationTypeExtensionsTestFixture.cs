@@ -60,7 +60,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var specObjectType = new SpecRelationType();
 
             Assert.That(() => specObjectType.QueryReferencingSpecRelations(),
-                Throws.Exception.TypeOf<NullReferenceException>()
+                Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("The owning ReqIFContent of the SpecRelationType is not set."));
         }
     }

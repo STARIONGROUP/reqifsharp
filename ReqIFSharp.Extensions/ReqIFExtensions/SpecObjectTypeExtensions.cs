@@ -44,7 +44,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         {
             if (specObjectType.ReqIFContent == null)
             {
-                throw new NullReferenceException("The owning ReqIFContent of the SpecObjectType is not set.");
+                throw new InvalidOperationException("The owning ReqIFContent of the SpecObjectType is not set.");
             }
 
             var specObjects = specObjectType.ReqIFContent.SpecObjects;

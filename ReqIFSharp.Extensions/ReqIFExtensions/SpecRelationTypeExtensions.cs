@@ -44,7 +44,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         {
             if (specRelationType.ReqIFContent == null)
             {
-                throw new NullReferenceException("The owning ReqIFContent of the SpecRelationType is not set.");
+                throw new InvalidOperationException("The owning ReqIFContent of the SpecRelationType is not set.");
             }
 
             var specRelations = specRelationType.ReqIFContent.SpecRelations;

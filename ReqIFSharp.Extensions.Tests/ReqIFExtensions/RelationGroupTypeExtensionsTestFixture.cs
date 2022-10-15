@@ -60,7 +60,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var relationGroupType = new RelationGroupType();
 
             Assert.That(() => relationGroupType.QueryReferencingRelationGroups(),
-                Throws.Exception.TypeOf<NullReferenceException>()
+                Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("The owning ReqIFContent of the RelationGroupType is not set."));
         }
     }
