@@ -3,7 +3,7 @@
  
   <PropertyGroup>
 	<TargetFramework>netstandard2.0</TargetFramework>
-    <Version>6.0.1</Version>
+    <Version>7.0.0</Version>
     <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
     <PackageId>ReqIFSharp</PackageId>
     <Company>RHEA System S.A.</Company>
@@ -18,11 +18,7 @@
     <Authors>Sam Gerene, Naron Phou</Authors>
     <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
     <PackageReleaseNotes>
-		- [Refactor] IReqIFSerializer and ReqIFSerializer to be symmetrical to the IReqIFDeserializer interface
-		- [Add] SupportedFileExtensionKind to deserializer; fixes #47
-		- [Add] capability to serialize to `reqif`, `reqifz`, `zip` format; fixes #23
-		- [Set] stream to position 0 prior to creating XmlReader; fixes #43
-		- [Update] Microsoft.Extensions.Logging.Abstractions to version 6.0.1
+	    - [Update] Microsoft.Extensions.Logging.Abstractions to version 7.0.0
 	</PackageReleaseNotes>
   </PropertyGroup>
 
