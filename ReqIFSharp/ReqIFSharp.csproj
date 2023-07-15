@@ -1,90 +1,95 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
+
 <Project Sdk="Microsoft.NET.Sdk">
- 
-  <PropertyGroup>
-	<TargetFramework>netstandard2.0</TargetFramework>
-    <Version>7.0.1</Version>
-    <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
-    <PackageId>ReqIFSharp</PackageId>
-    <Company>RHEA System S.A.</Company>
-    <Copyright>Copyright 2017-2022 RHEA System S.A.</Copyright>
-    <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
-    <RepositoryType>Git</RepositoryType>
-    <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
-    <PackageTags>ReqIF</PackageTags>
-    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-    <Authors>Sam Gerene, Naron Phou</Authors>
-    <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-    <PackageReleaseNotes>
-	    - [Update] Microsoft.Extensions.Logging.Abstractions to version 7.0.1
-	</PackageReleaseNotes>
-  </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-    <DefineConstants>TRACE;DEBUG;</DefineConstants>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Version>7.0.1</Version>
+        <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
+        <PackageId>ReqIFSharp</PackageId>
+        <Company>RHEA System S.A.</Company>
+        <Copyright>Copyright 2017-2023 RHEA System S.A.</Copyright>
+        <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
+        <PackageTags>ReqIF</PackageTags>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <Authors>Sam Gerene, Naron Phou</Authors>
+        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+        <IncludeSource>true</IncludeSource>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PackageReleaseNotes>
+            - [Update] Microsoft.Extensions.Logging.Abstractions to version 7.0.1
+        </PackageReleaseNotes>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
-    <IncludeSymbols>true</IncludeSymbols>
-    <DefineConstants>RELEASE</DefineConstants>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <None Remove="Resources\driver.xsd" />
-    <None Remove="Resources\reqif.xsd" />
-    <None Remove="Resources\xhtml-attribs-1.xsd" />
-    <None Remove="Resources\xhtml-blkphras-1.xsd" />
-    <None Remove="Resources\xhtml-blkpres-1.xsd" />
-    <None Remove="Resources\xhtml-blkstruct-1.xsd" />
-    <None Remove="Resources\xhtml-datatypes-1.xsd" />
-    <None Remove="Resources\xhtml-edit-1.xsd" />
-    <None Remove="Resources\xhtml-framework-1.xsd" />
-    <None Remove="Resources\xhtml-hypertext-1.xsd" />
-    <None Remove="Resources\xhtml-inlphras-1.xsd" />
-    <None Remove="Resources\xhtml-inlpres-1.xsd" />
-    <None Remove="Resources\xhtml-inlstruct-1.xsd" />
-    <None Remove="Resources\xhtml-inlstyle-1.xsd" />
-    <None Remove="Resources\xhtml-list-1.xsd" />
-    <None Remove="Resources\xhtml-object-1.xsd" />
-    <None Remove="Resources\xhtml-param-1.xsd" />
-    <None Remove="Resources\xhtml-pres-1.xsd" />
-    <None Remove="Resources\xhtml-table-1.xsd" />
-    <None Remove="Resources\xhtml-text-1.xsd" />
-    <None Remove="Resources\xml.xsd" />
-  </ItemGroup>
-	
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\driver.xsd" />
-    <EmbeddedResource Include="Resources\reqif.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-attribs-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-blkphras-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-blkpres-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-blkstruct-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-datatypes-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-edit-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-framework-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-hypertext-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-inlphras-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-inlpres-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-inlstruct-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-inlstyle-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-list-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-object-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-param-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-pres-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-table-1.xsd" />
-    <EmbeddedResource Include="Resources\xhtml-text-1.xsd" />
-    <EmbeddedResource Include="Resources\xml.xsd" />
-  </ItemGroup>
-	
-  <ItemGroup>
-	  <None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
-  </ItemGroup>
+    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+        <DefineConstants>TRACE;DEBUG;</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='Release'">
+        <IncludeSymbols>true</IncludeSymbols>
+        <DefineConstants>RELEASE</DefineConstants>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <None Remove="Resources\driver.xsd" />
+        <None Remove="Resources\reqif.xsd" />
+        <None Remove="Resources\xhtml-attribs-1.xsd" />
+        <None Remove="Resources\xhtml-blkphras-1.xsd" />
+        <None Remove="Resources\xhtml-blkpres-1.xsd" />
+        <None Remove="Resources\xhtml-blkstruct-1.xsd" />
+        <None Remove="Resources\xhtml-datatypes-1.xsd" />
+        <None Remove="Resources\xhtml-edit-1.xsd" />
+        <None Remove="Resources\xhtml-framework-1.xsd" />
+        <None Remove="Resources\xhtml-hypertext-1.xsd" />
+        <None Remove="Resources\xhtml-inlphras-1.xsd" />
+        <None Remove="Resources\xhtml-inlpres-1.xsd" />
+        <None Remove="Resources\xhtml-inlstruct-1.xsd" />
+        <None Remove="Resources\xhtml-inlstyle-1.xsd" />
+        <None Remove="Resources\xhtml-list-1.xsd" />
+        <None Remove="Resources\xhtml-object-1.xsd" />
+        <None Remove="Resources\xhtml-param-1.xsd" />
+        <None Remove="Resources\xhtml-pres-1.xsd" />
+        <None Remove="Resources\xhtml-table-1.xsd" />
+        <None Remove="Resources\xhtml-text-1.xsd" />
+        <None Remove="Resources\xml.xsd" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\driver.xsd" />
+        <EmbeddedResource Include="Resources\reqif.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-attribs-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-blkphras-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-blkpres-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-blkstruct-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-datatypes-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-edit-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-framework-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-hypertext-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-inlphras-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-inlpres-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-inlstruct-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-inlstyle-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-list-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-object-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-param-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-pres-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-table-1.xsd" />
+        <EmbeddedResource Include="Resources\xhtml-text-1.xsd" />
+        <EmbeddedResource Include="Resources\xml.xsd" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
+        <None Include="..\README.md" Pack="true" PackagePath="\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    </ItemGroup>
 
 </Project>

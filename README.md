@@ -12,7 +12,6 @@ ReqIFSharp is a C# library for reading and writing ReqIF documents. ReqIFSharp i
 [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=sqale_index)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=RHEAGROUP_reqifsharp&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=RHEAGROUP_reqifsharp)
-[![Total alerts](https://img.shields.io/lgtm/alerts/g/RHEAGROUP/reqifsharp.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/RHEAGROUP/reqifsharp/alerts/)
 
 ## Installation
 
