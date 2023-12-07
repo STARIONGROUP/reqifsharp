@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>netstandard2.0</TargetFramework>
-	  <Version>2.0.1</Version>
+	  <Version>2.1.0</Version>
 	  <Description>A .NET library that provides extenions and services to operate on ReqIF documents.</Description>
 	  <PackageId>ReqIFSharp.Extensions</PackageId>
 	  <Company>RHEA System S.A.</Company>
