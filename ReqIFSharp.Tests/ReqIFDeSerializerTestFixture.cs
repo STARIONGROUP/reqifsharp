@@ -130,31 +130,31 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif")).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
             var firstobject = reqIf.CoreContent.SpecObjects.First();
             var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
-            Assert.IsNotNull(xhtmlAttribute);
-            Assert.IsNotEmpty(xhtmlAttribute.TheValue);
-            Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
+            Assert.That(xhtmlAttribute, Is.Not.Null);
+            Assert.That(xhtmlAttribute.TheValue, Is.Not.Empty);
+            Assert.That(xhtmlAttribute.AttributeDefinition, Is.Not.Null);
 
-            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(7));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children.Count, Is.EqualTo(1));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children[0].Children.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.SpecRelationGroups.Count, Is.EqualTo(2));
 
             Assert.That(reqIf.TheHeader.DocumentRoot, Is.EqualTo(reqIf));
 
             var unknownSpecRel = reqIf.CoreContent.SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
-            Assert.IsNotNull(unknownSpecRel.Target);
-            Assert.AreEqual("unknown-specobject", unknownSpecRel.Target.Identifier);
+            Assert.That(unknownSpecRel.Target, Is.Not.Null);
+            Assert.That(unknownSpecRel.Target.Identifier, Is.EqualTo("unknown-specobject"));
 
             var unknownrelGroup = reqIf.CoreContent.SpecRelationGroups.First(x => x.Identifier == "relationgroup-no-target");
-            Assert.AreEqual("unknown", unknownrelGroup.TargetSpecification.Identifier);
+            Assert.That(unknownrelGroup.TargetSpecification.Identifier, Is.EqualTo("unknown"));
         }
 
         [Test]
@@ -165,29 +165,29 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), cancellationTokenSource.Token)).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
             var firstobject = reqIf.CoreContent.SpecObjects.First();
             var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
-            Assert.IsNotNull(xhtmlAttribute);
-            Assert.IsNotEmpty(xhtmlAttribute.TheValue);
-            Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
+            Assert.That(xhtmlAttribute, Is.Not.Null);
+            Assert.That(xhtmlAttribute.TheValue, Is.Not.Empty);
+            Assert.That(xhtmlAttribute.AttributeDefinition, Is.Not.Null);
 
-            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(7));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children.Count, Is.EqualTo(1));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children[0].Children.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.SpecRelationGroups.Count, Is.EqualTo(2));
 
             var unknownSpecRel = reqIf.CoreContent.SpecRelations.First(x => x.Identifier == "specobject_1-unknown");
-            Assert.IsNotNull(unknownSpecRel.Target);
-            Assert.AreEqual("unknown-specobject", unknownSpecRel.Target.Identifier);
+            Assert.That(unknownSpecRel.Target, Is.Not.Null);
+            Assert.That(unknownSpecRel.Target.Identifier, Is.EqualTo("unknown-specobject"));
 
             var unknownrelGroup = reqIf.CoreContent.SpecRelationGroups.First(x => x.Identifier == "relationgroup-no-target");
-            Assert.AreEqual("unknown", unknownrelGroup.TargetSpecification.Identifier);
+            Assert.That(unknownrelGroup.TargetSpecification.Identifier, Is.EqualTo("unknown"));
         }
 
         [Test]
@@ -334,14 +334,14 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), true, this.ValidationEventHandler).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
-            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(7));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.SpecRelationGroups.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -352,14 +352,14 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), cancellationTokenSource.Token,true, this.ValidationEventHandler)).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
-            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(3, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(7));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.SpecRelationGroups.Count, Is.EqualTo(2));
         }
 
         [Test]
@@ -390,7 +390,7 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif")).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
             var specObject = reqIf.CoreContent.SpecObjects.Single(r => r.Identifier == "R001");
 
@@ -407,7 +407,7 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif"), cancellationTokenSource.Token)).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
             var specObject = reqIf.CoreContent.SpecObjects.Single(r => r.Identifier == "R001");
 
@@ -422,22 +422,22 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz")).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
             var firstobject = reqIf.CoreContent.SpecObjects.First();
             var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
-            Assert.IsNotNull(xhtmlAttribute);
-            Assert.IsNotEmpty(xhtmlAttribute.TheValue);
-            Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
+            Assert.That(xhtmlAttribute, Is.Not.Null);
+            Assert.That(xhtmlAttribute.TheValue, Is.Not.Empty);
+            Assert.That(xhtmlAttribute.AttributeDefinition, Is.Not.Null);
 
-            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(3, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(7));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(1));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children.Count, Is.EqualTo(1));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children[0].Children.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.SpecRelationGroups.Count, Is.EqualTo(1));
         }
 
         [Test]
@@ -448,22 +448,22 @@ namespace ReqIFSharp.Tests
             var deserializer = new ReqIFDeserializer();
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz"), cancellationTokenSource.Token)).First();
 
-            Assert.AreEqual("en", reqIf.Lang);
+            Assert.That(reqIf.Lang, Is.EqualTo("en"));
 
             var firstobject = reqIf.CoreContent.SpecObjects.First();
             var xhtmlAttribute = firstobject.Values.OfType<AttributeValueXHTML>().SingleOrDefault();
-            Assert.IsNotNull(xhtmlAttribute);
-            Assert.IsNotEmpty(xhtmlAttribute.TheValue);
-            Assert.IsNotNull(xhtmlAttribute.AttributeDefinition);
+            Assert.That(xhtmlAttribute, Is.Not.Null);
+            Assert.That(xhtmlAttribute.TheValue, Is.Not.Empty);
+            Assert.That(xhtmlAttribute.AttributeDefinition, Is.Not.Null);
 
-            Assert.AreEqual(7, reqIf.CoreContent.DataTypes.Count);
-            Assert.AreEqual(4, reqIf.CoreContent.SpecTypes.Count);
-            Assert.AreEqual(3, reqIf.CoreContent.SpecObjects.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.SpecRelations.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.Specifications.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.Specifications[0].Children.Count);
-            Assert.AreEqual(2, reqIf.CoreContent.Specifications[0].Children[0].Children.Count);
-            Assert.AreEqual(1, reqIf.CoreContent.SpecRelationGroups.Count);
+            Assert.That(reqIf.CoreContent.DataTypes.Count, Is.EqualTo(7));
+            Assert.That(reqIf.CoreContent.SpecTypes.Count, Is.EqualTo(4));
+            Assert.That(reqIf.CoreContent.SpecObjects.Count, Is.EqualTo(3));
+            Assert.That(reqIf.CoreContent.SpecRelations.Count, Is.EqualTo(1));
+            Assert.That(reqIf.CoreContent.Specifications.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children.Count, Is.EqualTo(1));
+            Assert.That(reqIf.CoreContent.Specifications[0].Children[0].Children.Count, Is.EqualTo(2));
+            Assert.That(reqIf.CoreContent.SpecRelationGroups.Count, Is.EqualTo(1));
         }
 
         [Test]

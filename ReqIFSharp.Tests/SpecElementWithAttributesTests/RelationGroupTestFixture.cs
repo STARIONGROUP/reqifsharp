@@ -134,7 +134,7 @@ namespace ReqIFSharp.Tests
 
             relationGroup.SpecType = relationGroupType;
 
-            Assert.AreEqual(relationGroupType, relationGroup.SpecType);
+            Assert.That(relationGroup.SpecType, Is.EqualTo(relationGroupType));
         }
 
         [Test]

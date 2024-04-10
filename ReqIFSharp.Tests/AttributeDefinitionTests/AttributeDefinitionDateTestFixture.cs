@@ -47,11 +47,11 @@ namespace ReqIFSharp.Tests
 
             var attributeDefinition = (AttributeDefinition)attributeDefinitionDate;
 
-            Assert.AreEqual(datatypeDefinitionDate, attributeDefinition.DatatypeDefinition);
+            Assert.That(attributeDefinition.DatatypeDefinition, Is.EqualTo(datatypeDefinitionDate));
 
             attributeDefinition.DatatypeDefinition = datatypeDefinitionDate;
 
-            Assert.AreEqual(datatypeDefinitionDate, attributeDefinition.DatatypeDefinition);
+            Assert.That(attributeDefinition.DatatypeDefinition, Is.EqualTo(datatypeDefinitionDate));
         }
 
         [Test]

@@ -46,11 +46,11 @@ namespace ReqIFSharp.Tests
 
             var attributeValue = (AttributeValue)attributeValueBoolean;
 
-            Assert.AreEqual(atrAttributeDefinitionBoolean, attributeValue.AttributeDefinition);
+            Assert.That(attributeValue.AttributeDefinition, Is.EqualTo(atrAttributeDefinitionBoolean));
 
             attributeValue.AttributeDefinition = atrAttributeDefinitionBoolean;
 
-            Assert.AreEqual(atrAttributeDefinitionBoolean, attributeValue.AttributeDefinition);
+            Assert.That(attributeValue.AttributeDefinition, Is.EqualTo(atrAttributeDefinitionBoolean));
         }
 
         [Test]

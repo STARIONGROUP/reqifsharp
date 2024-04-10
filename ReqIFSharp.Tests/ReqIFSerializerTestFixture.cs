@@ -873,7 +873,7 @@ namespace ReqIFSharp.Tests
             var serializer = new ReqIFSerializer();
             serializer.Serialize(reqifs, this.resultFileUri);
 
-            Assert.IsTrue(File.Exists(this.resultFileUri));
+            Assert.That(File.Exists(this.resultFileUri), Is.True);
         }
 
         [Test]
@@ -886,7 +886,7 @@ namespace ReqIFSharp.Tests
             var serializer = new ReqIFSerializer();
             await serializer.SerializeAsync(reqifs, this.asyncResultFileUri, cancellationTokenSource.Token);
 
-            Assert.IsTrue(File.Exists(this.asyncResultFileUri));
+            Assert.That(File.Exists(this.asyncResultFileUri), Is.True);
         }
 
         [Test]
@@ -926,7 +926,7 @@ namespace ReqIFSharp.Tests
 
             serializer.Serialize(reqifs, this.resultFileUriArchive);
 
-            Assert.IsTrue(File.Exists(this.resultFileUriArchive));
+            Assert.That(File.Exists(this.resultFileUriArchive), Is.True);
         }
 
         [Test]
@@ -940,7 +940,7 @@ namespace ReqIFSharp.Tests
 
             await serializer.SerializeAsync(reqifs, this.asyncResultFileUriArchive, cancellationTokenSource.Token);
 
-            Assert.IsTrue(File.Exists(this.asyncResultFileUriArchive));
+            Assert.That(File.Exists(this.asyncResultFileUriArchive), Is.True);
 
             var deserializer = new ReqIFDeserializer();
 

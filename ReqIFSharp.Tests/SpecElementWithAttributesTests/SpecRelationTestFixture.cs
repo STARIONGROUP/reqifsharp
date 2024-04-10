@@ -53,13 +53,13 @@ namespace ReqIFSharp.Tests
 
             var specElementWithAttributes = (SpecElementWithAttributes)specRelation;
 
-            Assert.AreEqual(specRelationType, specElementWithAttributes.SpecType);
+            Assert.That(specElementWithAttributes.SpecType, Is.EqualTo(specRelationType));
 
             var relationType = new SpecRelationType();
 
             specElementWithAttributes.SpecType = relationType;
 
-            Assert.AreEqual(relationType, specRelation.SpecType);
+            Assert.That(specRelation.SpecType, Is.EqualTo(relationType));
         }
 
         [Test]

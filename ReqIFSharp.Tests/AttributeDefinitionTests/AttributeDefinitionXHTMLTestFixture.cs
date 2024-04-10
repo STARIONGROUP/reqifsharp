@@ -46,11 +46,11 @@ namespace ReqIFSharp.Tests
 
             var attributeDefinition = (AttributeDefinition)attributeDefinitionXhtml;
 
-            Assert.AreEqual(datatypeDefinitionXhtml, attributeDefinition.DatatypeDefinition);
+            Assert.That(attributeDefinition.DatatypeDefinition, Is.EqualTo(datatypeDefinitionXhtml));
 
             attributeDefinition.DatatypeDefinition = datatypeDefinitionXhtml;
 
-            Assert.AreEqual(datatypeDefinitionXhtml, attributeDefinition.DatatypeDefinition);
+            Assert.That(attributeDefinition.DatatypeDefinition, Is.EqualTo(datatypeDefinitionXhtml));
         }
 
         [Test]

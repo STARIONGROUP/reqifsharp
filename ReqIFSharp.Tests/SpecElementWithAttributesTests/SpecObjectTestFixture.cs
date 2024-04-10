@@ -54,13 +54,13 @@ namespace ReqIFSharp.Tests
 
             var specElementWithAttributes = (SpecElementWithAttributes)spectObject;
 
-            Assert.AreEqual(specObjectType, specElementWithAttributes.SpecType);
+            Assert.That(specElementWithAttributes.SpecType, Is.EqualTo(specObjectType));
 
             var otherSpecObjectType = new SpecObjectType();
 
             specElementWithAttributes.SpecType = otherSpecObjectType;
 
-            Assert.AreEqual(otherSpecObjectType, spectObject.SpecType);
+            Assert.That(spectObject.SpecType, Is.EqualTo(otherSpecObjectType));
         }
 
         [Test]

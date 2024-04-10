@@ -56,11 +56,11 @@ namespace ReqIFSharp.Tests
 
             var attributeValue = (AttributeValue)attributeValueReal;
 
-            Assert.AreEqual(attributeDefinitionReal, attributeValue.AttributeDefinition);
+            Assert.That(attributeValue.AttributeDefinition, Is.EqualTo(attributeDefinitionReal));
 
             attributeValue.AttributeDefinition = attributeDefinitionReal;
 
-            Assert.AreEqual(attributeDefinitionReal, attributeValue.AttributeDefinition);
+            Assert.That(attributeValue.AttributeDefinition, Is.EqualTo(attributeDefinitionReal));
         }
 
         [Test]
@@ -138,8 +138,8 @@ namespace ReqIFSharp.Tests
             var val = 3.66;
             attributeValue.ObjectValue = val;
 
-            Assert.AreEqual(attributeValue.TheValue, val);
-            Assert.AreEqual(attributeValue.ObjectValue, val);
+            Assert.That(val, Is.EqualTo(attributeValue.TheValue));
+            Assert.That(val, Is.EqualTo(attributeValue.ObjectValue));
         }
 
         [Test]

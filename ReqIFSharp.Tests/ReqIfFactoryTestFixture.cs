@@ -49,14 +49,13 @@ namespace ReqIFSharp.Tests
         public void Verify_That_XmlElementName_Returns_AttributeDefinition()
         {
             var spectType = new SpecObjectType();
-
-            Assert.IsInstanceOf<AttributeDefinitionBoolean>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-BOOLEAN", spectType, this.loggerFactory));
-            Assert.IsInstanceOf<AttributeDefinitionDate>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-DATE", spectType, this.loggerFactory));
-            Assert.IsInstanceOf<AttributeDefinitionEnumeration>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-ENUMERATION", spectType, this.loggerFactory));
-            Assert.IsInstanceOf<AttributeDefinitionInteger>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-INTEGER", spectType, this.loggerFactory));
-            Assert.IsInstanceOf<AttributeDefinitionReal>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-REAL", spectType, this.loggerFactory));
-            Assert.IsInstanceOf<AttributeDefinitionString>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-STRING", spectType, this.loggerFactory));
-            Assert.IsInstanceOf<AttributeDefinitionXHTML>(ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-XHTML", spectType, this.loggerFactory));
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-BOOLEAN", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionBoolean>());
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-DATE", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionDate>());
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-ENUMERATION", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionEnumeration>());
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-INTEGER", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionInteger>());
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-REAL", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionReal>());
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-STRING", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionString>());
+            Assert.That(() => ReqIfFactory.AttributeDefinitionConstruct("ATTRIBUTE-DEFINITION-XHTML", spectType, this.loggerFactory), Is.InstanceOf<AttributeDefinitionXHTML>());
         }
 
         [Test]
@@ -65,7 +64,7 @@ namespace ReqIFSharp.Tests
             var spectType = new SpecObjectType();
 
             string unknownName = "RHEA";
-            Assert.IsNull(ReqIfFactory.AttributeDefinitionConstruct(unknownName, spectType, this.loggerFactory));
+            Assert.That(ReqIfFactory.AttributeDefinitionConstruct(unknownName, spectType, this.loggerFactory), Is.Null);
         }
 
         [Test]
@@ -73,17 +72,16 @@ namespace ReqIFSharp.Tests
         {
             var reqIfContent = new ReqIFContent();
 
-            Assert.IsInstanceOf<DatatypeDefinitionBoolean>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-BOOLEAN", reqIfContent, this.loggerFactory));
-            Assert.IsInstanceOf<DatatypeDefinitionDate>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-DATE", reqIfContent, this.loggerFactory));
-            Assert.IsInstanceOf<DatatypeDefinitionEnumeration>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-ENUMERATION", reqIfContent, this.loggerFactory));
-            Assert.IsInstanceOf<DatatypeDefinitionInteger>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-INTEGER", reqIfContent, this.loggerFactory));
-            Assert.IsInstanceOf<DatatypeDefinitionReal>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-REAL", reqIfContent, this.loggerFactory));
-            Assert.IsInstanceOf<DatatypeDefinitionString>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-STRING", reqIfContent, this.loggerFactory));
-            Assert.IsInstanceOf<DatatypeDefinitionXHTML>(ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-XHTML", reqIfContent, this.loggerFactory));
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-BOOLEAN", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionBoolean>());
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-DATE", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionDate>());
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-ENUMERATION", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionEnumeration>());
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-INTEGER", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionInteger>()); Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-REAL", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionReal>());
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-STRING", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionString>());
+            Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-XHTML", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionXHTML>());
         }
 
         [Test]
-        public void Verify_That_Unkown_Element_DataTypeDefinition_Throws_ArgumentException()
+        public void Verify_That_Unknown_Element_DataTypeDefinition_Throws_ArgumentException()
         {
             var reqIfContent = new ReqIFContent();
 

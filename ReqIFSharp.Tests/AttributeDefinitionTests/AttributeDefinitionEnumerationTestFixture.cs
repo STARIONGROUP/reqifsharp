@@ -46,11 +46,11 @@ namespace ReqIFSharp.Tests
 
             var attributeDefinition = (AttributeDefinition)attributeDefinitionEnumeration;
 
-            Assert.AreEqual(datatypeDefinitionEnumeration, attributeDefinition.DatatypeDefinition);
+            Assert.That(attributeDefinition.DatatypeDefinition, Is.EqualTo(datatypeDefinitionEnumeration));
 
             attributeDefinition.DatatypeDefinition = datatypeDefinitionEnumeration;
 
-            Assert.AreEqual(datatypeDefinitionEnumeration, attributeDefinition.DatatypeDefinition);
+            Assert.That(attributeDefinition.DatatypeDefinition, Is.EqualTo(datatypeDefinitionEnumeration));
         }
 
         [Test]
