@@ -16,6 +16,8 @@
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 	  <Authors>Sam Gerene</Authors>
 	  <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+	  <IncludeSource>true</IncludeSource>
+      <IncludeSymbols>true</IncludeSymbols>
 	  <PackageReleaseNotes>
 		  [Update] reqifsharp 7.1.1
 	  </PackageReleaseNotes>
