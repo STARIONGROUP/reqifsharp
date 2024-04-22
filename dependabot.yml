@@ -1,0 +1,18 @@
+version: 2
+updates:
+  # Enable updates for NuGet dependencies
+  - package-ecosystem: "nuget"
+    # Directory where your solution files are located
+    directory: "/"
+    # Schedule for checking updates
+    schedule:
+      interval: "weekly"
+    # Do not automatically open pull requests
+    open-pull-requests-limit: 0
+    # Additional configuration to specify how Dependabot should handle version updates
+    versioning-strategy: "widen"
+    # Custom commit message options
+    commit-message:
+      prefix: "chore"
+      prefix-development: "chore"
+      include: "scope"
