@@ -11,7 +11,7 @@ We would like to start with saying thank you for wanting to contribute to ReqIFS
 
 1. [Fork](http://help.github.com/forking/) on GitHub
 1. Clone your fork locally
-1. Configure the upstream repo (`git remote add upstream git://github.com/RHEAGROUP/ReqIFSharp`) 
+1. Configure the upstream repo (`git remote add upstream git://github.com/STARIONGROUP/ReqIFSharp`) 
 1. Checkout development
 1. Create a local branch (`git checkout -b myBranch`) from development
 1. Work on your feature
@@ -44,9 +44,9 @@ When you're ready to go you should confirm that you are up to date and rebased w
 
 1. `git push origin myBranch`
 1. Send a descriptive [Pull Request](https://help.github.com/articles/creating-a-pull-request/) on GitHub - making sure you have selected the correct branch in the GitHub UI!
-1. Wait for @samatrhea to merge your changes in.
+1. Wait for @samatstarion to merge your changes in.
 
-And remember; **A pull-request with tests is a pull-request that's likely to be pulled in.** :grin: Bonus points if you document your feature in our [wiki](https://github.com/RHEAGROUP/ReqIFSharp/wiki) once it has been pulled in
+And remember; **A pull-request with tests is a pull-request that's likely to be pulled in.** :grin: Bonus points if you document your feature in our [wiki](https://github.com/STARIONGROUP/ReqIFSharp/wiki) once it has been pulled in
 
 ## Style Guidelines
 

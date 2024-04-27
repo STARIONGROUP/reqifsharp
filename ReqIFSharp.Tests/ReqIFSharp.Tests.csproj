@@ -3,11 +3,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-		<Company>RHEA System S.A.</Company>
+		<Company>Starion Group S.A.</Company>
 		<Authors>Sam Gerene, Naron Phou</Authors>
 		<Description>Nunit test suite for the ReqIFSharp library</Description>
-		<Copyright>Copyright 2017-2024 RHEA System S.A.</Copyright>
-		<RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
+		<Copyright>Copyright 2017-2024 Starion Group S.A.</Copyright>
+		<RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
 		<RepositoryType>Git</RepositoryType>
 		<Nullable>disable</Nullable>
 		<IsPackable>false</IsPackable>

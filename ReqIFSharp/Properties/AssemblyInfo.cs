@@ -1,7 +1,7 @@
 ﻿// -------------------------------------------------------------------------------------------------
-// <copyright file="AssemblyInfo.cs" company="RHEA System S.A.">
+// <copyright file="AssemblyInfo.cs" company="Starion Group S.A.">
 //
-//   Copyright 2017-2024 RHEA System S.A.
+//   Copyright 2017-2024 Starion Group S.A.
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
 //   you may not use this file except in compliance with the License.

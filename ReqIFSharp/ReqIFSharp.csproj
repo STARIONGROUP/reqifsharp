@@ -4,14 +4,14 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>7.1.1</Version>
+        <Version>8.0.0</Version>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
-        <Company>RHEA System S.A.</Company>
-        <Copyright>Copyright 2017-204 RHEA System S.A.</Copyright>
+        <Company>Starion Group S.A.</Company>
+        <Copyright>Copyright 2017-2024 Starion Group S.A.</Copyright>
         <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/RHEAGROUP/reqifsharp.git</RepositoryUrl>
+        <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
         <PackageTags>ReqIF</PackageTags>
@@ -21,7 +21,7 @@
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
         <PackageReleaseNotes>
-            - [Update] Microsoft.Extensions.Logging.Abstractions to version 8.0.1
+            - [Update] to Starion Group
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
