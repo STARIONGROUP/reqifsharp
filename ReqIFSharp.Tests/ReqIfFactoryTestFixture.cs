@@ -63,7 +63,7 @@ namespace ReqIFSharp.Tests
         {
             var spectType = new SpecObjectType();
 
-            string unknownName = "RHEA";
+            string unknownName = "Starion";
             Assert.That(ReqIfFactory.AttributeDefinitionConstruct(unknownName, spectType, this.loggerFactory), Is.Null);
         }
 
@@ -85,7 +85,7 @@ namespace ReqIFSharp.Tests
         {
             var reqIfContent = new ReqIFContent();
 
-            string unknownName = "RHEA";
+            string unknownName = "Starion";
             Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent, this.loggerFactory), Throws.Exception.TypeOf<ArgumentException>());
         }
 
@@ -94,7 +94,7 @@ namespace ReqIFSharp.Tests
         {
             var reqIfContent = new ReqIFContent();
 
-            string unknownName = "RHEA";
+            string unknownName = "Starion";
             Assert.That(() => ReqIfFactory.SpecTypeConstruct(unknownName, reqIfContent, this.loggerFactory), Throws.Exception.TypeOf<ArgumentException>());
         }
 
