@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>8.0.0</Version>
+        <Version>8.1.0</Version>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
         <Company>Starion Group S.A.</Company>
@@ -21,7 +21,9 @@
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
         <PackageReleaseNotes>
-            - [Update] to Starion Group
+            - [Fix] (de)serialization of AlternativeID; fixes #54
+            - [Fix] xml:lang attribute serialization
+            - [Implement] SonarQube improvements
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
