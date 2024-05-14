@@ -39,7 +39,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
     {
         private ReqIF reqIf;
 
-        private IReqIFLoaderService reqIFLoaderService;
+        private ReqIFLoaderService reqIFLoaderService;
 
         [SetUp]
         public async Task SetUp()

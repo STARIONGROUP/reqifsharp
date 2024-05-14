@@ -69,14 +69,15 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         {
             var result = new List<Tuple<ExternalObject, string>>();
 
-            var cts = new CancellationTokenSource();
-
-            foreach (var specObjectValue in specElementWithAttributes.Values.OfType<AttributeValueXHTML>())
+            using (var cts = new CancellationTokenSource())
             {
-                foreach (var externalObject in specObjectValue.ExternalObjects)
+                foreach (var specObjectValue in specElementWithAttributes.Values.OfType<AttributeValueXHTML>())
                 {
-                    var payload = await reqIfLoaderService.QueryData(externalObject, cts.Token);
-                    result.Add(new Tuple<ExternalObject, string>(externalObject, payload));
+                    foreach (var externalObject in specObjectValue.ExternalObjects)
+                    {
+                        var payload = await reqIfLoaderService.QueryData(externalObject, cts.Token);
+                        result.Add(new Tuple<ExternalObject, string>(externalObject, payload));
+                    }
                 }
             }
 
