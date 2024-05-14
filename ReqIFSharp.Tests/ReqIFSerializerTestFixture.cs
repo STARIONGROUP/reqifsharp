@@ -42,8 +42,6 @@ namespace ReqIFSharp.Tests
         private string asyncResultFileUri;
         private string asyncResultFileUriArchive;
 
-        private const string ReqIFNamespace = @"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd";
-
         private string specobject_1_id;
 
         private string specobject_2_id;
@@ -709,7 +707,7 @@ namespace ReqIFSharp.Tests
             var simplifiedAttributeValueXhtml = new AttributeValueXHTML();
             simplifiedAttributeValueXhtml.Definition = (AttributeDefinitionXHTML)specType.SpecAttributes.SingleOrDefault(x => x.GetType() == typeof(AttributeDefinitionXHTML));
             simplifiedAttributeValueXhtml.IsSimplified = true;
-            simplifiedAttributeValueXhtml.TheValue = "simplified content";
+            simplifiedAttributeValueXhtml.TheValue = this.xhtmlcontent;
             simplifiedAttributeValueXhtml.TheOriginalValue= this.xhtmlcontent;
             specElementWithAttributes.Values.Add(simplifiedAttributeValueXhtml);
         }

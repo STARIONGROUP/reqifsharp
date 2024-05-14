@@ -1,0 +1,719 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<REQ-IF xmlns:xhtml="http://www.w3.org/1999/xhtml" xml:lang="en" xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd">
+  <THE-HEADER>
+    <REQ-IF-HEADER IDENTIFIER="reqifheader">
+      <COMMENT>this is a comment</COMMENT>
+      <CREATION-TIME>2015-12-01T00:00:00</CREATION-TIME>
+      <REPOSITORY-ID>a repos id</REPOSITORY-ID>
+      <REQ-IF-TOOL-ID>tool - CDP4</REQ-IF-TOOL-ID>
+      <REQ-IF-VERSION>1.0</REQ-IF-VERSION>
+      <SOURCE-TOOL-ID>source tool - CDP4</SOURCE-TOOL-ID>
+      <TITLE>this is a title</TITLE>
+    </REQ-IF-HEADER>
+  </THE-HEADER>
+  <CORE-CONTENT>
+    <REQ-IF-CONTENT>
+      <DATATYPES>
+        <DATATYPE-DEFINITION-BOOLEAN DESC="boolean data type definition" IDENTIFIER="boolean" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="a boolean">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="boolean_alternative" />
+          </ALTERNATIVE-ID>
+        </DATATYPE-DEFINITION-BOOLEAN>
+        <DATATYPE-DEFINITION-DATE DESC="date data type definition" IDENTIFIER="DateTime" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="a date">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="DateTime_alternative" />
+          </ALTERNATIVE-ID>
+        </DATATYPE-DEFINITION-DATE>
+        <DATATYPE-DEFINITION-ENUMERATION DESC="enum value type definition" IDENTIFIER="enumeration" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="an enumeration">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="enumeration_alternative" />
+          </ALTERNATIVE-ID>
+          <SPECIFIED-VALUES>
+            <ENUM-VALUE IDENTIFIER="enumlow" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="low">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="enumlow_alternative" />
+              </ALTERNATIVE-ID>
+              <PROPERTIES>
+                <EMBEDDED-VALUE KEY="1" OTHER-CONTENT="foo" />
+              </PROPERTIES>
+            </ENUM-VALUE>
+            <ENUM-VALUE IDENTIFIER="enummedium" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="medium">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="enummedium_alternative" />
+              </ALTERNATIVE-ID>
+              <PROPERTIES>
+                <EMBEDDED-VALUE KEY="2" OTHER-CONTENT="bar" />
+              </PROPERTIES>
+            </ENUM-VALUE>
+          </SPECIFIED-VALUES>
+        </DATATYPE-DEFINITION-ENUMERATION>
+        <DATATYPE-DEFINITION-INTEGER MIN="2" MAX="6" DESC="integer data type definition" IDENTIFIER="integer" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="an integer">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="integer_alternative" />
+          </ALTERNATIVE-ID>
+        </DATATYPE-DEFINITION-INTEGER>
+        <DATATYPE-DEFINITION-REAL ACCURACY="5" MIN="1" MAX="5" DESC="real data type definition" IDENTIFIER="real" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="a real">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="real_alternative" />
+          </ALTERNATIVE-ID>
+        </DATATYPE-DEFINITION-REAL>
+        <DATATYPE-DEFINITION-STRING MAX-LENGTH="32000" DESC="string data type definition" IDENTIFIER="string" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="a string">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="string_alternative" />
+          </ALTERNATIVE-ID>
+        </DATATYPE-DEFINITION-STRING>
+        <DATATYPE-DEFINITION-XHTML DESC="string data type definition" IDENTIFIER="xhtml" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="a string">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="xhtml_alternative" />
+          </ALTERNATIVE-ID>
+        </DATATYPE-DEFINITION-XHTML>
+      </DATATYPES>
+      <SPEC-TYPES>
+        <SPEC-OBJECT-TYPE IDENTIFIER="requirement" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="Requirement Type">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="requirement_alternative" />
+          </ALTERNATIVE-ID>
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="requirement-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="boolean attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-boolean-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="requirement-date-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="date attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-date-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION MULTI-VALUED="false" IDENTIFIER="requirement-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="enumeration attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-enumeration-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="requirement-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="integer attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-integer-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="requirement-real-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="real attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-real-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="requirement-string-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="string attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-string-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="requirement-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="xhtml attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="requirement-xhtml-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPEC-OBJECT-TYPE>
+        <SPECIFICATION-TYPE IDENTIFIER="specificationtype" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="Specification Type">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specificationtype_alternative" />
+          </ALTERNATIVE-ID>
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="specification-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="boolean attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-boolean-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="specification-date-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="date attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-date-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION MULTI-VALUED="false" IDENTIFIER="specification-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="enumeration attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-enumeration-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="specification-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="integer attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-integer-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="specification-real-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="real attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-real-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="specification-string-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="string attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-string-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="specification-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="xhtml attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specification-xhtml-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPECIFICATION-TYPE>
+        <SPEC-RELATION-TYPE IDENTIFIER="specificationrelation" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="Specification Relation Type">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specificationrelation_alternative" />
+          </ALTERNATIVE-ID>
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="specificationrelation-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="boolean attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-boolean-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="specificationrelation-date-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="date attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-date-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION MULTI-VALUED="false" IDENTIFIER="specificationrelation-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="enumeration attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-enumeration-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="specificationrelation-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="integer attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-integer-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="specificationrelation-real-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="real attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-real-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="specificationrelation-string-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="string attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-string-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="specificationrelation-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="xhtml attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="specificationrelation-xhtml-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </SPEC-RELATION-TYPE>
+        <RELATION-GROUP-TYPE IDENTIFIER="relationgrouptype" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="Relation Group Type">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="relationgrouptype_alternative" />
+          </ALTERNATIVE-ID>
+          <SPEC-ATTRIBUTES>
+            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="relationgrouptype-boolean-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="boolean attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-boolean-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-BOOLEAN-REF>boolean</DATATYPE-DEFINITION-BOOLEAN-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-BOOLEAN>
+            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="relationgrouptype-date-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="date attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-date-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-DATE-REF>DateTime</DATATYPE-DEFINITION-DATE-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-DATE>
+            <ATTRIBUTE-DEFINITION-ENUMERATION MULTI-VALUED="false" IDENTIFIER="relationgrouptype-enumeration-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="enumeration attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-enumeration-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-ENUMERATION-REF>enumeration</DATATYPE-DEFINITION-ENUMERATION-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-ENUMERATION>
+            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="relationgrouptype-integer-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="integer attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-integer-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-INTEGER-REF>integer</DATATYPE-DEFINITION-INTEGER-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-INTEGER>
+            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="relationgrouptype-real-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="real attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-real-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-REAL-REF>real</DATATYPE-DEFINITION-REAL-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-REAL>
+            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="relationgrouptype-string-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="string attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-string-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-STRING-REF>string</DATATYPE-DEFINITION-STRING-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-STRING>
+            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="relationgrouptype-xhtml-attribute" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="xhtml attribute">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="relationgrouptype-xhtml-attribute_alternative" />
+              </ALTERNATIVE-ID>
+              <TYPE>
+                <DATATYPE-DEFINITION-XHTML-REF>xhtml</DATATYPE-DEFINITION-XHTML-REF>
+              </TYPE>
+            </ATTRIBUTE-DEFINITION-XHTML>
+          </SPEC-ATTRIBUTES>
+        </RELATION-GROUP-TYPE>
+      </SPEC-TYPES>
+      <SPEC-OBJECTS>
+        <SPEC-OBJECT IDENTIFIER="specobject_1" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="spec object 1">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specobject_1_alternative" />
+          </ALTERNATIVE-ID>
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>requirement-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000Z">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>requirement-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>requirement-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>requirement-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>requirement-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+              <THE-ORIGINAL-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-ORIGINAL-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="specobject_2" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="spec object 2">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specobject_2_alternative" />
+          </ALTERNATIVE-ID>
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>requirement-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000Z">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>requirement-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>requirement-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>requirement-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>requirement-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+              <THE-ORIGINAL-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-ORIGINAL-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+        <SPEC-OBJECT IDENTIFIER="specobject_3" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="spec object 3">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specobject_3_alternative" />
+          </ALTERNATIVE-ID>
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>requirement-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000Z">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>requirement-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>requirement-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>requirement-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>requirement-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>requirement-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>requirement-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+              <THE-ORIGINAL-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-ORIGINAL-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-OBJECT-TYPE-REF>requirement</SPEC-OBJECT-TYPE-REF>
+          </TYPE>
+        </SPEC-OBJECT>
+      </SPEC-OBJECTS>
+      <SPEC-RELATIONS>
+        <SPEC-RELATION IDENTIFIER="specobject_1-specobject_2" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="A relationship between spec objects">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specobject_1-specobject_2_alternative" />
+          </ALTERNATIVE-ID>
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specificationrelation-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000Z">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>specificationrelation-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specificationrelation-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>specificationrelation-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>specificationrelation-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>specificationrelation-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>specificationrelation-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>specificationrelation-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+              <THE-ORIGINAL-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-ORIGINAL-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPEC-RELATION-TYPE-REF>specificationrelation</SPEC-RELATION-TYPE-REF>
+          </TYPE>
+          <TARGET>
+            <SPEC-OBJECT-REF>specobject_2</SPEC-OBJECT-REF>
+          </TARGET>
+          <SOURCE>
+            <SPEC-OBJECT-REF>specobject_1</SPEC-OBJECT-REF>
+          </SOURCE>
+        </SPEC-RELATION>
+      </SPEC-RELATIONS>
+      <SPECIFICATIONS>
+        <SPECIFICATION IDENTIFIER="specification-1" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="specification 1">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specification-1_alternative" />
+          </ALTERNATIVE-ID>
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specification-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000Z">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>specification-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specification-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>specification-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>specification-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>specification-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>specification-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>specification-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+              <THE-ORIGINAL-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-ORIGINAL-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>specificationtype</SPECIFICATION-TYPE-REF>
+          </TYPE>
+          <CHILDREN>
+            <SPEC-HIERARCHY IDENTIFIER="spec-hierarchy-1" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="specHierarchy 1">
+              <ALTERNATIVE-ID>
+                <ALTERNATIVE-ID IDENTIFIER="spec-hierarchy-1_alternative" />
+              </ALTERNATIVE-ID>
+              <OBJECT>
+                <SPEC-OBJECT-REF>specobject_1</SPEC-OBJECT-REF>
+              </OBJECT>
+              <CHILDREN>
+                <SPEC-HIERARCHY IDENTIFIER="spec-hierarchy-1-1" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="specHierarchy 1_1">
+                  <ALTERNATIVE-ID>
+                    <ALTERNATIVE-ID IDENTIFIER="spec-hierarchy-1-1_alternative" />
+                  </ALTERNATIVE-ID>
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>specobject_2</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+                <SPEC-HIERARCHY IDENTIFIER="spec-hierarchy-1-2" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="specHierarchy 1_2">
+                  <ALTERNATIVE-ID>
+                    <ALTERNATIVE-ID IDENTIFIER="spec-hierarchy-1-2_alternative" />
+                  </ALTERNATIVE-ID>
+                  <OBJECT>
+                    <SPEC-OBJECT-REF>specobject_3</SPEC-OBJECT-REF>
+                  </OBJECT>
+                </SPEC-HIERARCHY>
+              </CHILDREN>
+            </SPEC-HIERARCHY>
+          </CHILDREN>
+        </SPECIFICATION>
+        <SPECIFICATION IDENTIFIER="specification-2" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="specification 2">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="specification-2_alternative" />
+          </ALTERNATIVE-ID>
+          <VALUES>
+            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>specification-boolean-attribute</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-BOOLEAN>
+            <ATTRIBUTE-VALUE-DATE THE-VALUE="2015-12-01T00:00:00.0000000Z">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-DATE-REF>specification-date-attribute</ATTRIBUTE-DEFINITION-DATE-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-DATE>
+            <ATTRIBUTE-VALUE-ENUMERATION>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>specification-enumeration-attribute</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+              </DEFINITION>
+              <VALUES>
+                <ENUM-VALUE-REF>enumlow</ENUM-VALUE-REF>
+              </VALUES>
+            </ATTRIBUTE-VALUE-ENUMERATION>
+            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="1">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-INTEGER-REF>specification-integer-attribute</ATTRIBUTE-DEFINITION-INTEGER-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-INTEGER>
+            <ATTRIBUTE-VALUE-REAL THE-VALUE="100">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-REAL-REF>specification-real-attribute</ATTRIBUTE-DEFINITION-REAL-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-REAL>
+            <ATTRIBUTE-VALUE-STRING THE-VALUE="a string value">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-STRING-REF>specification-string-attribute</ATTRIBUTE-DEFINITION-STRING-REF>
+              </DEFINITION>
+            </ATTRIBUTE-VALUE-STRING>
+            <ATTRIBUTE-VALUE-XHTML>
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>specification-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+            <ATTRIBUTE-VALUE-XHTML IS-SIMPLIFIED="true">
+              <DEFINITION>
+                <ATTRIBUTE-DEFINITION-XHTML-REF>specification-xhtml-attribute</ATTRIBUTE-DEFINITION-XHTML-REF>
+              </DEFINITION>
+              <THE-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-VALUE>
+              <THE-ORIGINAL-VALUE><xhtml:p>XhtmlPType<xhtml:a accesskey="a" charset="UTF-8" href="http://eclipse.org/rmf" hreflang="en" rel="LinkTypes" rev="LinkTypes" style="text-decoration:underline" tabindex="1" title="text" type="text/html"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p></THE-ORIGINAL-VALUE>
+            </ATTRIBUTE-VALUE-XHTML>
+          </VALUES>
+          <TYPE>
+            <SPECIFICATION-TYPE-REF>specificationtype</SPECIFICATION-TYPE-REF>
+          </TYPE>
+        </SPECIFICATION>
+      </SPECIFICATIONS>
+      <SPEC-RELATION-GROUPS>
+        <RELATION-GROUP IDENTIFIER="relationgroup-1" LAST-CHANGE="2015-12-01T00:00:00" LONG-NAME="relationgroup 1">
+          <ALTERNATIVE-ID>
+            <ALTERNATIVE-ID IDENTIFIER="relationgroup-1_alternative" />
+          </ALTERNATIVE-ID>
+          <TYPE>
+            <RELATION-GROUP-TYPE-REF>relationgrouptype</RELATION-GROUP-TYPE-REF>
+          </TYPE>
+          <SOURCE-SPECIFICATION>
+            <SPECIFICATION-REF>specification-1</SPECIFICATION-REF>
+          </SOURCE-SPECIFICATION>
+          <TARGET-SPECIFICATION>
+            <SPECIFICATION-REF>specification-2</SPECIFICATION-REF>
+          </TARGET-SPECIFICATION>
+        </RELATION-GROUP>
+      </SPEC-RELATION-GROUPS>
+    </REQ-IF-CONTENT>
+  </CORE-CONTENT>
+</REQ-IF>

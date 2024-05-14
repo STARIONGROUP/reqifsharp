@@ -63,6 +63,9 @@
 		<None Update="TestData\ProR_Traceability-Template-v1.0.reqif">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>
+		<None Update="TestData\reqifsharpgenerated.reqif">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</None>
 		<None Update="TestData\requirements-and-objects.reqifz">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</None>

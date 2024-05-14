@@ -706,5 +706,18 @@ namespace ReqIFSharp.Tests
             
             Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Nothing);
         }
+
+        [Test]
+        public void Verify_that_ReqIfSharp_file_can_be_deserialized_async_with_validation()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "reqifsharpgenerated.reqif");
+
+            var deserializer = new ReqIFDeserializer();
+
+            Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true), Throws.Nothing);
+        }
+        
     }
 }

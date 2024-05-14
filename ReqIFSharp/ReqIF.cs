@@ -232,7 +232,7 @@ namespace ReqIFSharp
 
             if (!string.IsNullOrEmpty(this.Lang))
             {
-                writer.WriteAttributeString("lang", "xml", this.Lang);
+                writer.WriteAttributeString("xml", "lang", null, this.Lang);
             }
 
             this.WriteTheHeader(writer);
@@ -260,7 +260,7 @@ namespace ReqIFSharp
 
             if (!string.IsNullOrEmpty(this.Lang))
             {
-                await writer.WriteAttributeStringAsync(null, "lang", "xml",this.Lang );
+                await writer.WriteAttributeStringAsync("xml", "lang", null, this.Lang);
             }
 
             await this.WriteTheHeaderAsync(writer, token);
