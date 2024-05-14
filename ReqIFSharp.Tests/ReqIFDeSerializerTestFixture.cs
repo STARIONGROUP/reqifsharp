@@ -655,14 +655,14 @@ namespace ReqIFSharp.Tests
 
             var specObjectType = reqif.CoreContent.SpecTypes.OfType<SpecObjectType>().Single(x => x.Identifier == "_jgCytAfNEeeAO8RifBaE-g");
 
-            foreach (var attributeDefinition in specObjectType.SpecAttributes)
-            {
-                Assert.That(attributeDefinition.AlternativeId.Identifier, Is.EqualTo(attributeDefinition.Identifier));
-            }
-
             foreach (var datatypeDefinition in reqif.CoreContent.DataTypes)
             {
                 Assert.That(datatypeDefinition.AlternativeId.Identifier, Is.EqualTo(datatypeDefinition.Identifier));
+            }
+
+            foreach (var attributeDefinition in specObjectType.SpecAttributes)
+            {
+                Assert.That(attributeDefinition.AlternativeId.Identifier, Is.EqualTo(attributeDefinition.Identifier));
             }
 
             foreach (var specType in reqif.CoreContent.SpecTypes)

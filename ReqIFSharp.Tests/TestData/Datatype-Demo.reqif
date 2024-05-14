@@ -1,360 +1,442 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <REQ-IF xmlns="http://www.omg.org/spec/ReqIF/20110401/reqif.xsd" xmlns:configuration="http://eclipse.org/rmf/pror/toolextensions/1.0" xmlns:id="http://pror.org/presentation/id" xmlns:xhtml="http://www.w3.org/1999/xhtml">
-  <THE-HEADER>
-    <REQ-IF-HEADER IDENTIFIER="_jgCysQfNEeeAO8RifBaE-g">
-      <COMMENT>Created by: jastram</COMMENT>
-      <CREATION-TIME>2017-03-13T10:15:09.017+01:00</CREATION-TIME>
-      <REQ-IF-TOOL-ID>fmStudio (http://formalmind.com/studio)</REQ-IF-TOOL-ID>
-      <REQ-IF-VERSION>1.0</REQ-IF-VERSION>
-      <SOURCE-TOOL-ID>ProR (http://pror.org)</SOURCE-TOOL-ID>
-      <TITLE>Specification Title</TITLE>
-    </REQ-IF-HEADER>
-  </THE-HEADER>
-  <CORE-CONTENT>
-    <REQ-IF-CONTENT>
-      <DATATYPES>
-        <DATATYPE-DEFINITION-STRING IDENTIFIER="_xtgx0AgsEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:36:44.261+01:00" LONG-NAME="T_ID" MAX-LENGTH="10">
-          <ALTERNATIVE-ID IDENTIFIER="_xtgx0AgsEeeQEdG1aamkjg" />
-        </DATATYPE-DEFINITION-STRING>
-        <DATATYPE-DEFINITION-STRING IDENTIFIER="_jgCyswfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="T_String32k" MAX-LENGTH="32000">
-          <ALTERNATIVE-ID IDENTIFIER="_jgCyswfNEeeAO8RifBaE-g" />
-        </DATATYPE-DEFINITION-STRING>
-        <DATATYPE-DEFINITION-BOOLEAN IDENTIFIER="_HOkxEAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:34:51.246+01:00" LONG-NAME="T_Bool">
-          <ALTERNATIVE-ID IDENTIFIER="_HOkxEAfhEeelU71CdMk83g" />
-        </DATATYPE-DEFINITION-BOOLEAN>
-        <DATATYPE-DEFINITION-INTEGER IDENTIFIER="_IrT00AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:35:17.083+01:00" LONG-NAME="T_Int" MAX="100" MIN="-100">
-          <ALTERNATIVE-ID IDENTIFIER="_IrT00AfhEeelU71CdMk83g" />
-        </DATATYPE-DEFINITION-INTEGER>
-        <DATATYPE-DEFINITION-REAL IDENTIFIER="_LjYOIAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:35:35.407+01:00" LONG-NAME="T_Real" ACCURACY="2" MAX="100.1" MIN="-100.0">
-          <ALTERNATIVE-ID IDENTIFIER="_LjYOIAfhEeelU71CdMk83g" />
-        </DATATYPE-DEFINITION-REAL>
-        <DATATYPE-DEFINITION-DATE IDENTIFIER="_OyzXgAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:35:56.645+01:00" LONG-NAME="T_Date">
-          <ALTERNATIVE-ID IDENTIFIER="_OyzXgAfhEeelU71CdMk83g" />
-        </DATATYPE-DEFINITION-DATE>
-        <DATATYPE-DEFINITION-ENUMERATION IDENTIFIER="_QIZRcAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:06.412+01:00" LONG-NAME="T_Enum">
-          <ALTERNATIVE-ID IDENTIFIER="_QIZRcAfhEeelU71CdMk83g" />
-          <SPECIFIED-VALUES>
-            <ENUM-VALUE IDENTIFIER="_Rnhh4AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:15.526+01:00" LONG-NAME="One">
-              <PROPERTIES>
-                <EMBEDDED-VALUE KEY="1" OTHER-CONTENT="1"/>
-              </PROPERTIES>
-            </ENUM-VALUE>
-            <ENUM-VALUE IDENTIFIER="_Sur-QAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:24.693+01:00" LONG-NAME="Two">
-              <PROPERTIES>
-                <EMBEDDED-VALUE KEY="2" OTHER-CONTENT="2"/>
-              </PROPERTIES>
-            </ENUM-VALUE>
-            <ENUM-VALUE IDENTIFIER="_T5FU0AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:32.680+01:00" LONG-NAME="Three">
-              <PROPERTIES>
-                <EMBEDDED-VALUE KEY="3" OTHER-CONTENT="3"/>
-              </PROPERTIES>
-            </ENUM-VALUE>
-          </SPECIFIED-VALUES>
-        </DATATYPE-DEFINITION-ENUMERATION>
-        <DATATYPE-DEFINITION-XHTML IDENTIFIER="_VzBR8AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:44.875+01:00" LONG-NAME="XHTML">
-          <ALTERNATIVE-ID IDENTIFIER="_VzBR8AfhEeelU71CdMk83g" />
-        </DATATYPE-DEFINITION-XHTML>
-        <DATATYPE-DEFINITION-STRING IDENTIFIER="_GAD_cAf1EeekzOuWuhAXRw" LAST-CHANGE="2017-03-13T14:58:07.144+01:00" LONG-NAME="T_Error" MAX-LENGTH="100">
-          <ALTERNATIVE-ID IDENTIFIER="_GAD_cAf1EeekzOuWuhAXRw" />
-        </DATATYPE-DEFINITION-STRING>
-      </DATATYPES>
-      <SPEC-TYPES>
-        <SPEC-OBJECT-TYPE IDENTIFIER="_jgCytAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Requirement Type">
-          <ALTERNATIVE-ID IDENTIFIER="_jgCytAfNEeeAO8RifBaE-g" />
-          <SPEC-ATTRIBUTES>
-            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_045IsAgsEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:37:05.242+01:00" LONG-NAME="ID">
-              <ALTERNATIVE-ID IDENTIFIER="_045IsAgsEeeQEdG1aamkjg" />
-              <DEFAULT-VALUE>
-                <ATTRIBUTE-VALUE-STRING THE-VALUE="TBD"/>
-              </DEFAULT-VALUE>
-              <TYPE>
-                <DATATYPE-DEFINITION-STRING-REF>_xtgx0AgsEeeQEdG1aamkjg</DATATYPE-DEFINITION-STRING-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-STRING>
-            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_jgCytQfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Description">
-              <ALTERNATIVE-ID IDENTIFIER="_jgCytQfNEeeAO8RifBaE-g" />
-              <TYPE>
-                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-STRING>
-            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_2ojCsAfPEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:31:29.527+01:00" LONG-NAME="Name">
-              <ALTERNATIVE-ID IDENTIFIER="_2ojCsAfPEeeAO8RifBaE-g" />
-              <TYPE>
-                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-STRING>
-            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_Y4OIUAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:03.641+01:00" LONG-NAME="XHTML">
-              <ALTERNATIVE-ID IDENTIFIER="_Y4OIUAfhEeelU71CdMk83g" />
-              <DEFAULT-VALUE>
-                <ATTRIBUTE-VALUE-XHTML THE-VALUE="xhtml string"/>
-              </DEFAULT-VALUE>
-              <TYPE>
-                <DATATYPE-DEFINITION-XHTML-REF>_VzBR8AfhEeelU71CdMk83g</DATATYPE-DEFINITION-XHTML-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-XHTML>
-            <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_b6gNkAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:26.006+01:00" LONG-NAME="Bool">
-              <ALTERNATIVE-ID IDENTIFIER="_b6gNkAfhEeelU71CdMk83g" />
-              <DEFAULT-VALUE>
-                <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true"/>
-              </DEFAULT-VALUE>
-              <TYPE>
-                <DATATYPE-DEFINITION-BOOLEAN-REF>_HOkxEAfhEeelU71CdMk83g</DATATYPE-DEFINITION-BOOLEAN-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-BOOLEAN>
-            <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="_eULasAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:41.309+01:00" LONG-NAME="Date">
-              <ALTERNATIVE-ID IDENTIFIER="_eULasAfhEeelU71CdMk83g" />
-              <DEFAULT-VALUE>
-                <ATTRIBUTE-VALUE-DATE THE-VALUE="1976-08-20T12:00:00.000+01:00"/>
-              </DEFAULT-VALUE>
-              <TYPE>
-                <DATATYPE-DEFINITION-DATE-REF>_OyzXgAfhEeelU71CdMk83g</DATATYPE-DEFINITION-DATE-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-DATE>
-            <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_gelcwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:56.048+01:00" LONG-NAME="Enum_Single" MULTI-VALUED="false">
-              <ALTERNATIVE-ID IDENTIFIER="_gelcwAfhEeelU71CdMk83g" />
-              <TYPE>
-                <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-ENUMERATION>
-            <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_jB5uEAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:13.283+01:00" LONG-NAME="Enum_Multi" MULTI-VALUED="true">
-              <ALTERNATIVE-ID IDENTIFIER="_jB5uEAfhEeelU71CdMk83g" />
-              <TYPE>
-                <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-ENUMERATION>
-            <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="_mOeXwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:34.125+01:00" LONG-NAME="Int">
-              <ALTERNATIVE-ID IDENTIFIER="_mOeXwAfhEeelU71CdMk83g" />
-              <DEFAULT-VALUE>
-                <ATTRIBUTE-VALUE-INTEGER THE-VALUE="6"/>
-              </DEFAULT-VALUE>
-              <TYPE>
-                <DATATYPE-DEFINITION-INTEGER-REF>_IrT00AfhEeelU71CdMk83g</DATATYPE-DEFINITION-INTEGER-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-INTEGER>
-            <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="_onD_wAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:50.097+01:00" LONG-NAME="Real">
-              <ALTERNATIVE-ID IDENTIFIER="_onD_wAfhEeelU71CdMk83g" />
-              <DEFAULT-VALUE>
-                <ATTRIBUTE-VALUE-REAL THE-VALUE="1.6"/>
-              </DEFAULT-VALUE>
-              <TYPE>
-                <DATATYPE-DEFINITION-REAL-REF>_LjYOIAfhEeelU71CdMk83g</DATATYPE-DEFINITION-REAL-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-REAL>
-            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_IDEZAAf1EeekzOuWuhAXRw" LAST-CHANGE="2017-03-13T14:58:21.892+01:00" LONG-NAME="Error">
-              <ALTERNATIVE-ID IDENTIFIER="_IDEZAAf1EeekzOuWuhAXRw" />
-              <TYPE>
-                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-STRING>
-          </SPEC-ATTRIBUTES>
-        </SPEC-OBJECT-TYPE>
-        <SPECIFICATION-TYPE IDENTIFIER="_jgCytgfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Specification Type">
-          <ALTERNATIVE-ID IDENTIFIER="_jgCytgfNEeeAO8RifBaE-g" />
-          <SPEC-ATTRIBUTES>
-            <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_jgCytwfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Description">
-              <TYPE>
-                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-STRING>
-          </SPEC-ATTRIBUTES>
-        </SPECIFICATION-TYPE>
-        <SPEC-OBJECT-TYPE IDENTIFIER="_XeZugAgJEeeio8SumSVgWQ" LAST-CHANGE="2017-03-13T17:22:57.472+01:00" LONG-NAME="NewType">
-          <ALTERNATIVE-ID IDENTIFIER="_XeZugAgJEeeio8SumSVgWQ" />
-          <SPEC-ATTRIBUTES>
-            <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_Z3d3oAgJEeeio8SumSVgWQ" LAST-CHANGE="2017-03-13T17:23:29.548+01:00" LONG-NAME="Description">
-              <TYPE>
-                <DATATYPE-DEFINITION-XHTML-REF>_VzBR8AfhEeelU71CdMk83g</DATATYPE-DEFINITION-XHTML-REF>
-              </TYPE>
-            </ATTRIBUTE-DEFINITION-XHTML>
-          </SPEC-ATTRIBUTES>
-        </SPEC-OBJECT-TYPE>
-      </SPEC-TYPES>
-      <SPEC-OBJECTS>
-        <SPEC-OBJECT IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-14T15:03:00.541+01:00">
-          <ALTERNATIVE-ID IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" />
-          <VALUES>
-            <ATTRIBUTE-VALUE-STRING THE-VALUE="This is the demo file that resulted from the Datatype configuration lecture at ReqIF.academy">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-STRING-REF>_jgCytQfNEeeAO8RifBaE-g</ATTRIBUTE-DEFINITION-STRING-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-STRING>
-            <ATTRIBUTE-VALUE-INTEGER THE-VALUE="10">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-INTEGER-REF>_mOeXwAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-INTEGER-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-INTEGER>
-            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-1">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-STRING-REF>_045IsAgsEeeQEdG1aamkjg</ATTRIBUTE-DEFINITION-STRING-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-STRING>
-            <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_b6gNkAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-BOOLEAN>
-            <ATTRIBUTE-VALUE-DATE THE-VALUE="2017-01-01T13:00:00.000+01:00">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-DATE-REF>_eULasAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-DATE-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-DATE>
-            <ATTRIBUTE-VALUE-ENUMERATION>
-              <VALUES>
-                <ENUM-VALUE-REF>_Rnhh4AfhEeelU71CdMk83g</ENUM-VALUE-REF>
-                <ENUM-VALUE-REF>_Sur-QAfhEeelU71CdMk83g</ENUM-VALUE-REF>
-                <ENUM-VALUE-REF>_T5FU0AfhEeelU71CdMk83g</ENUM-VALUE-REF>
-              </VALUES>
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>_jB5uEAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-ENUMERATION>
-            <ATTRIBUTE-VALUE-ENUMERATION>
-              <VALUES>
-                <ENUM-VALUE-REF>_Sur-QAfhEeelU71CdMk83g</ENUM-VALUE-REF>
-              </VALUES>
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>_gelcwAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-ENUMERATION>
-            <ATTRIBUTE-VALUE-XHTML>
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-XHTML-REF>_Y4OIUAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-XHTML-REF>
-              </DEFINITION>
-              <THE-VALUE>
-                <xhtml:div><xhtml:p style=" text-align: left">Embedded Image:</xhtml:p><xhtml:object data="Datatype-Demo/ReqIF.png" type="image/png">This is what will show if the image can't be displayed.</xhtml:object></xhtml:div>
-              </THE-VALUE>
-            </ATTRIBUTE-VALUE-XHTML>
-          </VALUES>
-          <TYPE>
-            <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
-          </TYPE>
-        </SPEC-OBJECT>
-        <SPEC-OBJECT IDENTIFIER="_PDEZkAgMEee0LJx6M8ERew" LAST-CHANGE="2017-03-14T15:03:51.211+01:00">
-          <ALTERNATIVE-ID IDENTIFIER="_PDEZkAgMEee0LJx6M8ERew" />
-          <VALUES>
-            <ATTRIBUTE-VALUE-XHTML>
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-XHTML-REF>_Z3d3oAgJEeeio8SumSVgWQ</ATTRIBUTE-DEFINITION-XHTML-REF>
-              </DEFINITION>
-              <THE-VALUE>
-                <xhtml:div><xhtml:p style="text-align: left;">This SpecObject has a <xhtml:span style="color: rgb(255, 0, 0);">different type</xhtml:span> than the others.</xhtml:p></xhtml:div>
-              </THE-VALUE>
-            </ATTRIBUTE-VALUE-XHTML>
-          </VALUES>
-          <TYPE>
-            <SPEC-OBJECT-TYPE-REF>_XeZugAgJEeeio8SumSVgWQ</SPEC-OBJECT-TYPE-REF>
-          </TYPE>
-        </SPEC-OBJECT>
-        <SPEC-OBJECT IDENTIFIER="_1qST8AgtEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:44:19.841+01:00">
-          <ALTERNATIVE-ID IDENTIFIER="_1qST8AgtEeeQEdG1aamkjg" />
-          <VALUES>
-            <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-2">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-STRING-REF>_045IsAgsEeeQEdG1aamkjg</ATTRIBUTE-DEFINITION-STRING-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-STRING>
-            <ATTRIBUTE-VALUE-STRING THE-VALUE="This SpecType is associated with an ID generator.">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-STRING-REF>_jgCytQfNEeeAO8RifBaE-g</ATTRIBUTE-DEFINITION-STRING-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-STRING>
-            <ATTRIBUTE-VALUE-XHTML>
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-XHTML-REF>_Y4OIUAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-XHTML-REF>
-              </DEFINITION>
-              <THE-VALUE>
-                <xhtml:div><xhtml:p style=" text-align: left">Embedded File:</xhtml:p><xhtml:object data="Datatype-Demo/reqif-reference-v1.2.pdf" type="application/pdf"><xhtml:object data="Datatype-Demo/application-pdf.png" type="image/png">This is what will show if the image can't be displayed.</xhtml:object></xhtml:object></xhtml:div>
-              </THE-VALUE>
-            </ATTRIBUTE-VALUE-XHTML>
-          </VALUES>
-          <TYPE>
-            <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
-          </TYPE>
-        </SPEC-OBJECT>
-      </SPEC-OBJECTS>
-      <SPECIFICATIONS>
-        <SPECIFICATION IDENTIFIER="_jgCyugfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Specification Document">
-          <ALTERNATIVE-ID IDENTIFIER="_jgCyugfNEeeAO8RifBaE-g" />
-          <VALUES>
-            <ATTRIBUTE-VALUE-STRING THE-VALUE="Requirements Document">
-              <DEFINITION>
-                <ATTRIBUTE-DEFINITION-STRING-REF>_jgCytwfNEeeAO8RifBaE-g</ATTRIBUTE-DEFINITION-STRING-REF>
-              </DEFINITION>
-            </ATTRIBUTE-VALUE-STRING>
-          </VALUES>
-          <TYPE>
-            <SPECIFICATION-TYPE-REF>_jgCytgfNEeeAO8RifBaE-g</SPECIFICATION-TYPE-REF>
-          </TYPE>
-          <CHILDREN>
-            <SPEC-HIERARCHY IDENTIFIER="_jgCyvAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00">
-              <ALTERNATIVE-ID IDENTIFIER="_jgCyvAfNEeeAO8RifBaE-g" />
-              <OBJECT>
-                <SPEC-OBJECT-REF>_jgCyuAfNEeeAO8RifBaE-g</SPEC-OBJECT-REF>
-              </OBJECT>
-            </SPEC-HIERARCHY>
-            <SPEC-HIERARCHY IDENTIFIER="_PDc0EAgMEee0LJx6M8ERew" LAST-CHANGE="2017-03-13T17:43:47.242+01:00">
-              <ALTERNATIVE-ID IDENTIFIER="_PDc0EAgMEee0LJx6M8ERew" />
-              <OBJECT>
-                <SPEC-OBJECT-REF>_PDEZkAgMEee0LJx6M8ERew</SPEC-OBJECT-REF>
-              </OBJECT>
-            </SPEC-HIERARCHY>
-            <SPEC-HIERARCHY IDENTIFIER="_1qcsAAgtEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:44:19.841+01:00">
-              <ALTERNATIVE-ID IDENTIFIER="_1qcsAAgtEeeQEdG1aamkjg" />
-              <OBJECT>
-                <SPEC-OBJECT-REF>_1qST8AgtEeeQEdG1aamkjg</SPEC-OBJECT-REF>
-              </OBJECT>
-            </SPEC-HIERARCHY>
-          </CHILDREN>
-        </SPECIFICATION>
-      </SPECIFICATIONS>
-    </REQ-IF-CONTENT>
-  </CORE-CONTENT>
-  <TOOL-EXTENSIONS>
-    <REQ-IF-TOOL-EXTENSION/>
-    <REQ-IF-TOOL-EXTENSION>
-      <configuration:ProrToolExtension>
-        <configuration:specViewConfigurations>
-          <configuration:ProrSpecViewConfiguration specification="_jgCyugfNEeeAO8RifBaE-g">
-            <configuration:columns>
-              <configuration:Column label="ID" width="66"/>
-              <configuration:Column label="Description" width="244"/>
-              <configuration:Column label="Name" width="47"/>
-              <configuration:Column label="XHTML" width="121"/>
-              <configuration:Column label="Bool" width="51"/>
-              <configuration:Column label="Date" width="135"/>
-              <configuration:Column label="Enum_Single" width="81"/>
-              <configuration:Column label="Enum_Multi" width="78"/>
-              <configuration:Column label="Int" width="41"/>
-              <configuration:Column label="Real" width="49"/>
-            </configuration:columns>
-            <configuration:leftHeaderColumn>
-              <configuration:Column label="Lead Header Column" width="30"/>
-            </configuration:leftHeaderColumn>
-          </configuration:ProrSpecViewConfiguration>
-        </configuration:specViewConfigurations>
-        <configuration:generalConfiguration>
-          <configuration:ProrGeneralConfiguration>
-            <configuration:labelConfiguration>
-              <configuration:LabelConfiguration>
-                <defaultLabel>ReqIF.ChapterNumber</defaultLabel>
-                <defaultLabel>ReqIF.ChapterName</defaultLabel>
-                <defaultLabel>ReqIF.Name</defaultLabel>
-                <defaultLabel>ReqIF.Text</defaultLabel>
-                <defaultLabel>ID</defaultLabel>
-                <defaultLabel>Name</defaultLabel>
-                <defaultLabel>Description</defaultLabel>
-              </configuration:LabelConfiguration>
-            </configuration:labelConfiguration>
-          </configuration:ProrGeneralConfiguration>
-        </configuration:generalConfiguration>
-        <configuration:presentationConfigurations>
-          <configuration:ProrPresentationConfigurations>
-            <configuration:presentationConfigurations>
-              <id:IdConfiguration datatype="_xtgx0AgsEeeQEdG1aamkjg" prefix="REQ-" count="2"/>
-            </configuration:presentationConfigurations>
-          </configuration:ProrPresentationConfigurations>
-        </configuration:presentationConfigurations>
-      </configuration:ProrToolExtension>
-    </REQ-IF-TOOL-EXTENSION>
-  </TOOL-EXTENSIONS>
+    <THE-HEADER>
+        <REQ-IF-HEADER IDENTIFIER="_jgCysQfNEeeAO8RifBaE-g">
+            <COMMENT>Created by: jastram</COMMENT>
+            <CREATION-TIME>2017-03-13T10:15:09.017+01:00</CREATION-TIME>
+            <REQ-IF-TOOL-ID>fmStudio (http://formalmind.com/studio)</REQ-IF-TOOL-ID>
+            <REQ-IF-VERSION>1.0</REQ-IF-VERSION>
+            <SOURCE-TOOL-ID>ProR (http://pror.org)</SOURCE-TOOL-ID>
+            <TITLE>Specification Title</TITLE>
+        </REQ-IF-HEADER>
+    </THE-HEADER>
+    <CORE-CONTENT>
+        <REQ-IF-CONTENT>
+            <DATATYPES>
+                <DATATYPE-DEFINITION-STRING IDENTIFIER="_xtgx0AgsEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:36:44.261+01:00" LONG-NAME="T_ID" MAX-LENGTH="10">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_xtgx0AgsEeeQEdG1aamkjg"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-STRING>
+                <DATATYPE-DEFINITION-STRING IDENTIFIER="_jgCyswfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="T_String32k" MAX-LENGTH="32000">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_jgCyswfNEeeAO8RifBaE-g"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-STRING>
+                <DATATYPE-DEFINITION-BOOLEAN IDENTIFIER="_HOkxEAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:34:51.246+01:00" LONG-NAME="T_Bool">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_HOkxEAfhEeelU71CdMk83g"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-BOOLEAN>
+                <DATATYPE-DEFINITION-INTEGER IDENTIFIER="_IrT00AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:35:17.083+01:00" LONG-NAME="T_Int" MAX="100" MIN="-100">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_IrT00AfhEeelU71CdMk83g"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-INTEGER>
+                <DATATYPE-DEFINITION-REAL IDENTIFIER="_LjYOIAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:35:35.407+01:00" LONG-NAME="T_Real" ACCURACY="2" MAX="100.1" MIN="-100.0">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_LjYOIAfhEeelU71CdMk83g"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-REAL>
+                <DATATYPE-DEFINITION-DATE IDENTIFIER="_OyzXgAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:35:56.645+01:00" LONG-NAME="T_Date">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_OyzXgAfhEeelU71CdMk83g"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-DATE>
+                <DATATYPE-DEFINITION-ENUMERATION IDENTIFIER="_QIZRcAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:06.412+01:00" LONG-NAME="T_Enum">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_QIZRcAfhEeelU71CdMk83g"/>
+                    </ALTERNATIVE-ID>
+                    <SPECIFIED-VALUES>
+                        <ENUM-VALUE IDENTIFIER="_Rnhh4AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:15.526+01:00" LONG-NAME="One">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_Rnhh4AfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <PROPERTIES>
+                                <EMBEDDED-VALUE KEY="1" OTHER-CONTENT="1"/>
+                            </PROPERTIES>
+                        </ENUM-VALUE>
+                        <ENUM-VALUE IDENTIFIER="_Sur-QAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:24.693+01:00" LONG-NAME="Two">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_Sur-QAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <PROPERTIES>
+                                <EMBEDDED-VALUE KEY="2" OTHER-CONTENT="2"/>
+                            </PROPERTIES>
+                        </ENUM-VALUE>
+                        <ENUM-VALUE IDENTIFIER="_T5FU0AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:32.680+01:00" LONG-NAME="Three">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_Sur-_T5FU0AfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <PROPERTIES>
+                                <EMBEDDED-VALUE KEY="3" OTHER-CONTENT="3"/>
+                            </PROPERTIES>
+                        </ENUM-VALUE>
+                    </SPECIFIED-VALUES>
+                </DATATYPE-DEFINITION-ENUMERATION>
+                <DATATYPE-DEFINITION-XHTML IDENTIFIER="_VzBR8AfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:36:44.875+01:00" LONG-NAME="XHTML">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_VzBR8AfhEeelU71CdMk83g"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-XHTML>
+                <DATATYPE-DEFINITION-STRING IDENTIFIER="_GAD_cAf1EeekzOuWuhAXRw" LAST-CHANGE="2017-03-13T14:58:07.144+01:00" LONG-NAME="T_Error" MAX-LENGTH="100">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_GAD_cAf1EeekzOuWuhAXRw"/>
+                    </ALTERNATIVE-ID>
+                </DATATYPE-DEFINITION-STRING>
+            </DATATYPES>
+            <SPEC-TYPES>
+                <SPEC-OBJECT-TYPE IDENTIFIER="_jgCytAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Requirement Type">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_jgCytAfNEeeAO8RifBaE-g"/>
+                    </ALTERNATIVE-ID>
+                    <SPEC-ATTRIBUTES>
+                        <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_045IsAgsEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:37:05.242+01:00" LONG-NAME="ID">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_045IsAgsEeeQEdG1aamkjg"/>
+                            </ALTERNATIVE-ID>
+                            <DEFAULT-VALUE>
+                                <ATTRIBUTE-VALUE-STRING THE-VALUE="TBD"/>
+                            </DEFAULT-VALUE>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-STRING-REF>_xtgx0AgsEeeQEdG1aamkjg</DATATYPE-DEFINITION-STRING-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-STRING>
+                        <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_jgCytQfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Description">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_jgCytQfNEeeAO8RifBaE-g"/>
+                            </ALTERNATIVE-ID>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-STRING>
+                        <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_2ojCsAfPEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:31:29.527+01:00" LONG-NAME="Name">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_2ojCsAfPEeeAO8RifBaE-g"/>
+                            </ALTERNATIVE-ID>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-STRING>
+                        <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_Y4OIUAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:03.641+01:00" LONG-NAME="XHTML">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_Y4OIUAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <DEFAULT-VALUE>
+                                <ATTRIBUTE-VALUE-XHTML THE-VALUE="xhtml string"/>
+                            </DEFAULT-VALUE>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-XHTML-REF>_VzBR8AfhEeelU71CdMk83g</DATATYPE-DEFINITION-XHTML-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-XHTML>
+                        <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_b6gNkAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:26.006+01:00" LONG-NAME="Bool">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_b6gNkAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <DEFAULT-VALUE>
+                                <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true"/>
+                            </DEFAULT-VALUE>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-BOOLEAN-REF>_HOkxEAfhEeelU71CdMk83g</DATATYPE-DEFINITION-BOOLEAN-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-BOOLEAN>
+                        <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="_eULasAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:41.309+01:00" LONG-NAME="Date">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_eULasAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <DEFAULT-VALUE>
+                                <ATTRIBUTE-VALUE-DATE THE-VALUE="1976-08-20T12:00:00.000+01:00"/>
+                            </DEFAULT-VALUE>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-DATE-REF>_OyzXgAfhEeelU71CdMk83g</DATATYPE-DEFINITION-DATE-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-DATE>
+                        <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_gelcwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:56.048+01:00" LONG-NAME="Enum_Single" MULTI-VALUED="false">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_gelcwAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-ENUMERATION>
+                        <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_jB5uEAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:13.283+01:00" LONG-NAME="Enum_Multi" MULTI-VALUED="true">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_jB5uEAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-ENUMERATION>
+                        <ATTRIBUTE-DEFINITION-INTEGER IDENTIFIER="_mOeXwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:34.125+01:00" LONG-NAME="Int">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_mOeXwAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <DEFAULT-VALUE>
+                                <ATTRIBUTE-VALUE-INTEGER THE-VALUE="6"/>
+                            </DEFAULT-VALUE>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-INTEGER-REF>_IrT00AfhEeelU71CdMk83g</DATATYPE-DEFINITION-INTEGER-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-INTEGER>
+                        <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="_onD_wAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:50.097+01:00" LONG-NAME="Real">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_onD_wAfhEeelU71CdMk83g"/>
+                            </ALTERNATIVE-ID>
+                            <DEFAULT-VALUE>
+                                <ATTRIBUTE-VALUE-REAL THE-VALUE="1.6"/>
+                            </DEFAULT-VALUE>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-REAL-REF>_LjYOIAfhEeelU71CdMk83g</DATATYPE-DEFINITION-REAL-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-REAL>
+                        <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_IDEZAAf1EeekzOuWuhAXRw" LAST-CHANGE="2017-03-13T14:58:21.892+01:00" LONG-NAME="Error">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_IDEZAAf1EeekzOuWuhAXRw"/>
+                            </ALTERNATIVE-ID>
+                            <TYPE>
+                                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-STRING>
+                    </SPEC-ATTRIBUTES>
+                </SPEC-OBJECT-TYPE>
+                <SPECIFICATION-TYPE IDENTIFIER="_jgCytgfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Specification Type">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_jgCytgfNEeeAO8RifBaE-g"/>
+                    </ALTERNATIVE-ID>
+                    <SPEC-ATTRIBUTES>
+                        <ATTRIBUTE-DEFINITION-STRING IDENTIFIER="_jgCytwfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Description">
+                            <TYPE>
+                                <DATATYPE-DEFINITION-STRING-REF>_jgCyswfNEeeAO8RifBaE-g</DATATYPE-DEFINITION-STRING-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-STRING>
+                    </SPEC-ATTRIBUTES>
+                </SPECIFICATION-TYPE>
+                <SPEC-OBJECT-TYPE IDENTIFIER="_XeZugAgJEeeio8SumSVgWQ" LAST-CHANGE="2017-03-13T17:22:57.472+01:00" LONG-NAME="NewType">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_XeZugAgJEeeio8SumSVgWQ"/>
+                    </ALTERNATIVE-ID>
+                    <SPEC-ATTRIBUTES>
+                        <ATTRIBUTE-DEFINITION-XHTML IDENTIFIER="_Z3d3oAgJEeeio8SumSVgWQ" LAST-CHANGE="2017-03-13T17:23:29.548+01:00" LONG-NAME="Description">
+                            <TYPE>
+                                <DATATYPE-DEFINITION-XHTML-REF>_VzBR8AfhEeelU71CdMk83g</DATATYPE-DEFINITION-XHTML-REF>
+                            </TYPE>
+                        </ATTRIBUTE-DEFINITION-XHTML>
+                    </SPEC-ATTRIBUTES>
+                </SPEC-OBJECT-TYPE>
+            </SPEC-TYPES>
+            <SPEC-OBJECTS>
+                <SPEC-OBJECT IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-14T15:03:00.541+01:00">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g"/>
+                    </ALTERNATIVE-ID>
+                    <VALUES>
+                        <ATTRIBUTE-VALUE-STRING THE-VALUE="This is the demo file that resulted from the Datatype configuration lecture at ReqIF.academy">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-STRING-REF>_jgCytQfNEeeAO8RifBaE-g</ATTRIBUTE-DEFINITION-STRING-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-STRING>
+                        <ATTRIBUTE-VALUE-INTEGER THE-VALUE="10">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-INTEGER-REF>_mOeXwAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-INTEGER-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-INTEGER>
+                        <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-1">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-STRING-REF>_045IsAgsEeeQEdG1aamkjg</ATTRIBUTE-DEFINITION-STRING-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-STRING>
+                        <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-BOOLEAN-REF>_b6gNkAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-BOOLEAN-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-BOOLEAN>
+                        <ATTRIBUTE-VALUE-DATE THE-VALUE="2017-01-01T13:00:00.000+01:00">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-DATE-REF>_eULasAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-DATE-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-DATE>
+                        <ATTRIBUTE-VALUE-ENUMERATION>
+                            <VALUES>
+                                <ENUM-VALUE-REF>_Rnhh4AfhEeelU71CdMk83g</ENUM-VALUE-REF>
+                                <ENUM-VALUE-REF>_Sur-QAfhEeelU71CdMk83g</ENUM-VALUE-REF>
+                                <ENUM-VALUE-REF>_T5FU0AfhEeelU71CdMk83g</ENUM-VALUE-REF>
+                            </VALUES>
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>_jB5uEAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-ENUMERATION>
+                        <ATTRIBUTE-VALUE-ENUMERATION>
+                            <VALUES>
+                                <ENUM-VALUE-REF>_Sur-QAfhEeelU71CdMk83g</ENUM-VALUE-REF>
+                            </VALUES>
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-ENUMERATION-REF>_gelcwAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-ENUMERATION-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-ENUMERATION>
+                        <ATTRIBUTE-VALUE-XHTML>
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-XHTML-REF>_Y4OIUAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-XHTML-REF>
+                            </DEFINITION>
+                            <THE-VALUE>
+                                <xhtml:div>
+                                    <xhtml:p style=" text-align: left">Embedded Image:</xhtml:p>
+                                    <xhtml:object data="Datatype-Demo/ReqIF.png" type="image/png">This is what will show if the image can't be displayed.</xhtml:object>
+                                </xhtml:div>
+                            </THE-VALUE>
+                        </ATTRIBUTE-VALUE-XHTML>
+                    </VALUES>
+                    <TYPE>
+                        <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
+                    </TYPE>
+                </SPEC-OBJECT>
+                <SPEC-OBJECT IDENTIFIER="_PDEZkAgMEee0LJx6M8ERew" LAST-CHANGE="2017-03-14T15:03:51.211+01:00">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_PDEZkAgMEee0LJx6M8ERew"/>
+                    </ALTERNATIVE-ID>
+                    <VALUES>
+                        <ATTRIBUTE-VALUE-XHTML>
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-XHTML-REF>_Z3d3oAgJEeeio8SumSVgWQ</ATTRIBUTE-DEFINITION-XHTML-REF>
+                            </DEFINITION>
+                            <THE-VALUE>
+                                <xhtml:div>
+                                    <xhtml:p style="text-align: left;">This SpecObject has a
+                                        <xhtml:span style="color: rgb(255, 0, 0);">different type</xhtml:span>
+                                        than the others.
+                                    </xhtml:p>
+                                </xhtml:div>
+                            </THE-VALUE>
+                        </ATTRIBUTE-VALUE-XHTML>
+                    </VALUES>
+                    <TYPE>
+                        <SPEC-OBJECT-TYPE-REF>_XeZugAgJEeeio8SumSVgWQ</SPEC-OBJECT-TYPE-REF>
+                    </TYPE>
+                </SPEC-OBJECT>
+                <SPEC-OBJECT IDENTIFIER="_1qST8AgtEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:44:19.841+01:00">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_1qST8AgtEeeQEdG1aamkjg"/>
+                    </ALTERNATIVE-ID>
+                    <VALUES>
+                        <ATTRIBUTE-VALUE-STRING THE-VALUE="REQ-2">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-STRING-REF>_045IsAgsEeeQEdG1aamkjg</ATTRIBUTE-DEFINITION-STRING-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-STRING>
+                        <ATTRIBUTE-VALUE-STRING THE-VALUE="This SpecType is associated with an ID generator.">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-STRING-REF>_jgCytQfNEeeAO8RifBaE-g</ATTRIBUTE-DEFINITION-STRING-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-STRING>
+                        <ATTRIBUTE-VALUE-XHTML>
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-XHTML-REF>_Y4OIUAfhEeelU71CdMk83g</ATTRIBUTE-DEFINITION-XHTML-REF>
+                            </DEFINITION>
+                            <THE-VALUE>
+                                <xhtml:div>
+                                    <xhtml:p style=" text-align: left">Embedded File:</xhtml:p>
+                                    <xhtml:object data="Datatype-Demo/reqif-reference-v1.2.pdf" type="application/pdf">
+                                        <xhtml:object data="Datatype-Demo/application-pdf.png" type="image/png">This is what will show if the image can't be displayed.</xhtml:object>
+</xhtml:object>
+                                </xhtml:div>
+                            </THE-VALUE>
+                        </ATTRIBUTE-VALUE-XHTML>
+                    </VALUES>
+                    <TYPE>
+                        <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
+                    </TYPE>
+                </SPEC-OBJECT>
+            </SPEC-OBJECTS>
+            <SPECIFICATIONS>
+                <SPECIFICATION IDENTIFIER="_jgCyugfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00" LONG-NAME="Specification Document">
+                    <ALTERNATIVE-ID>
+                        <ALTERNATIVE-ID IDENTIFIER="_jgCyugfNEeeAO8RifBaE-g"/>
+                    </ALTERNATIVE-ID>
+                    <VALUES>
+                        <ATTRIBUTE-VALUE-STRING THE-VALUE="Requirements Document">
+                            <DEFINITION>
+                                <ATTRIBUTE-DEFINITION-STRING-REF>_jgCytwfNEeeAO8RifBaE-g</ATTRIBUTE-DEFINITION-STRING-REF>
+                            </DEFINITION>
+                        </ATTRIBUTE-VALUE-STRING>
+                    </VALUES>
+                    <TYPE>
+                        <SPECIFICATION-TYPE-REF>_jgCytgfNEeeAO8RifBaE-g</SPECIFICATION-TYPE-REF>
+                    </TYPE>
+                    <CHILDREN>
+                        <SPEC-HIERARCHY IDENTIFIER="_jgCyvAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-13T10:15:09.017+01:00">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_jgCyvAfNEeeAO8RifBaE-g"/>
+                            </ALTERNATIVE-ID>
+                            <OBJECT>
+                                <SPEC-OBJECT-REF>_jgCyuAfNEeeAO8RifBaE-g</SPEC-OBJECT-REF>
+                            </OBJECT>
+                        </SPEC-HIERARCHY>
+                        <SPEC-HIERARCHY IDENTIFIER="_PDc0EAgMEee0LJx6M8ERew" LAST-CHANGE="2017-03-13T17:43:47.242+01:00">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_PDc0EAgMEee0LJx6M8ERew"/>
+                            </ALTERNATIVE-ID>
+                            <OBJECT>
+                                <SPEC-OBJECT-REF>_PDEZkAgMEee0LJx6M8ERew</SPEC-OBJECT-REF>
+                            </OBJECT>
+                        </SPEC-HIERARCHY>
+                        <SPEC-HIERARCHY IDENTIFIER="_1qcsAAgtEeeQEdG1aamkjg" LAST-CHANGE="2017-03-13T21:44:19.841+01:00">
+                            <ALTERNATIVE-ID>
+                                <ALTERNATIVE-ID IDENTIFIER="_1qcsAAgtEeeQEdG1aamkjg"/>
+                            </ALTERNATIVE-ID>
+                            <OBJECT>
+                                <SPEC-OBJECT-REF>_1qST8AgtEeeQEdG1aamkjg</SPEC-OBJECT-REF>
+                            </OBJECT>
+                        </SPEC-HIERARCHY>
+                    </CHILDREN>
+                </SPECIFICATION>
+            </SPECIFICATIONS>
+        </REQ-IF-CONTENT>
+    </CORE-CONTENT>
+    <TOOL-EXTENSIONS>
+        <REQ-IF-TOOL-EXTENSION/>
+        <REQ-IF-TOOL-EXTENSION>
+            <configuration:ProrToolExtension>
+                <configuration:specViewConfigurations>
+                    <configuration:ProrSpecViewConfiguration specification="_jgCyugfNEeeAO8RifBaE-g">
+                        <configuration:columns>
+                            <configuration:Column label="ID" width="66"/>
+                            <configuration:Column label="Description" width="244"/>
+                            <configuration:Column label="Name" width="47"/>
+                            <configuration:Column label="XHTML" width="121"/>
+                            <configuration:Column label="Bool" width="51"/>
+                            <configuration:Column label="Date" width="135"/>
+                            <configuration:Column label="Enum_Single" width="81"/>
+                            <configuration:Column label="Enum_Multi" width="78"/>
+                            <configuration:Column label="Int" width="41"/>
+                            <configuration:Column label="Real" width="49"/>
+                        </configuration:columns>
+                        <configuration:leftHeaderColumn>
+                            <configuration:Column label="Lead Header Column" width="30"/>
+                        </configuration:leftHeaderColumn>
+                    </configuration:ProrSpecViewConfiguration>
+                </configuration:specViewConfigurations>
+                <configuration:generalConfiguration>
+                    <configuration:ProrGeneralConfiguration>
+                        <configuration:labelConfiguration>
+                            <configuration:LabelConfiguration>
+                                <defaultLabel>ReqIF.ChapterNumber</defaultLabel>
+                                <defaultLabel>ReqIF.ChapterName</defaultLabel>
+                                <defaultLabel>ReqIF.Name</defaultLabel>
+                                <defaultLabel>ReqIF.Text</defaultLabel>
+                                <defaultLabel>ID</defaultLabel>
+                                <defaultLabel>Name</defaultLabel>
+                                <defaultLabel>Description</defaultLabel>
+                            </configuration:LabelConfiguration>
+                        </configuration:labelConfiguration>
+                    </configuration:ProrGeneralConfiguration>
+                </configuration:generalConfiguration>
+                <configuration:presentationConfigurations>
+                    <configuration:ProrPresentationConfigurations>
+                        <configuration:presentationConfigurations>
+                            <id:IdConfiguration datatype="_xtgx0AgsEeeQEdG1aamkjg" prefix="REQ-" count="2"/>
+                        </configuration:presentationConfigurations>
+                    </configuration:ProrPresentationConfigurations>
+                </configuration:presentationConfigurations>
+            </configuration:ProrToolExtension>
+        </REQ-IF-TOOL-EXTENSION>
+    </TOOL-EXTENSIONS>
 </REQ-IF>

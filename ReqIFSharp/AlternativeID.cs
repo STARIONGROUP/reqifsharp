@@ -70,7 +70,9 @@ namespace ReqIFSharp
         /// </exception>
         internal void WriteXml(XmlWriter writer)
         {
+            writer.WriteStartElement("ALTERNATIVE-ID");
             writer.WriteAttributeString("IDENTIFIER", this.Identifier);
+            writer.WriteEndElement();
         }
 
         /// <summary>
@@ -92,7 +94,9 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
+            await writer.WriteStartElementAsync(null, "ALTERNATIVE-ID", null);
             await writer.WriteAttributeStringAsync(null, "IDENTIFIER", null, this.Identifier);
+            await writer.WriteEndElementAsync();
         }
 
         /// <summary>
@@ -103,7 +107,40 @@ namespace ReqIFSharp
         /// </param>
         internal void ReadXml(XmlReader reader)
         {
-            this.Identifier = reader.GetAttribute("IDENTIFIER");
+            while (reader.Read())
+            {
+                if (reader.MoveToContent() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            this.Identifier = reader.GetAttribute("IDENTIFIER");
+                            break;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Generates a <see cref="AlternativeId"/> object from its XML representation.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        {
+            while (await reader.ReadAsync())
+            {
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element)
+                {
+                    switch (reader.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            this.Identifier = reader.GetAttribute("IDENTIFIER");
+                            break;
+                    }
+                }
+            }
         }
     }
 }

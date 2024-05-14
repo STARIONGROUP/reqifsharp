@@ -124,8 +124,7 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            var alternativeId = new AlternativeId(this);
-                            alternativeId.ReadXml(reader);
+                            this.ReadAlternativeId(reader);
                             break;
                         case "DATATYPE-DEFINITION-XHTML-REF":
                             var reference = reader.ReadElementContentAsString();
@@ -176,8 +175,7 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            var alternativeId = new AlternativeId(this);
-                            alternativeId.ReadXml(reader);
+                            await this.ReadAlternativeIdAsync(reader, token);
                             break;
                         case "DATATYPE-DEFINITION-XHTML-REF":
                             var reference = await reader.ReadElementContentAsStringAsync();

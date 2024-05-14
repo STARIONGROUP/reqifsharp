@@ -21,8 +21,7 @@
 namespace ReqIFSharp
 {
     using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
-
+    
     /// <summary>
     /// Contains a set of attribute definitions for a Specification element.
     /// Inherits a set of attribute definitions from SpecType. By using SpecificationType elements, multiple specifications can be

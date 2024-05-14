@@ -209,5 +209,37 @@ namespace ReqIFSharp
                 await writer.WriteEndElementAsync();
             }
         }
+
+        /// <summary>
+        /// Reads the ALTERNATIVE-ID
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected void ReadAlternativeId(XmlReader reader)
+        {
+            var alternativeId = new AlternativeId(this);
+
+            using (var alternativeIdSubtree = reader.ReadSubtree())
+            {
+                alternativeId.ReadXml(alternativeIdSubtree);
+            }
+        }
+
+        /// <summary>
+        /// Reads the ALTERNATIVE-ID
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        protected async Task ReadAlternativeIdAsync(XmlReader reader, CancellationToken token)
+        {
+            var alternativeId = new AlternativeId(this);
+
+            using (var alternativeIdSubtree = reader.ReadSubtree())
+            {
+                await alternativeId.ReadXmlAsync(alternativeIdSubtree, token);
+            }
+        }
     }
 }

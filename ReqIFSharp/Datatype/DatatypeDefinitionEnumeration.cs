@@ -88,8 +88,7 @@ namespace ReqIFSharp
                         switch (subtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
-                                var alternativeId = new AlternativeId(this);
-                                alternativeId.ReadXml(subtree);
+                                this.ReadAlternativeId(reader);
                                 break;
                             case "ENUM-VALUE":
                                 var enumValue = new EnumValue(this, this.loggerFactory);
@@ -133,8 +132,7 @@ namespace ReqIFSharp
                         switch (subtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
-                                var alternativeId = new AlternativeId(this);
-                                alternativeId.ReadXml(reader);
+                                await this.ReadAlternativeIdAsync(reader, token);
                                 break;
                             case "ENUM-VALUE":
                                 var enumValue = new EnumValue(this, this.loggerFactory);

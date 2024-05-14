@@ -88,13 +88,7 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            using (var subtree = reader.ReadSubtree())
-                            {
-                                var alternativeId = new AlternativeId(this);
-                                subtree.MoveToContent();
-                                alternativeId.ReadXml(subtree);
-                            }
-
+                            this.ReadAlternativeId(reader);
                             break;
                         case "SPEC-ATTRIBUTES":
 
@@ -140,13 +134,7 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            using (var subtree = reader.ReadSubtree())
-                            {
-                                var alternativeId = new AlternativeId(this);
-                                await subtree.MoveToContentAsync();
-                                alternativeId.ReadXml(reader);
-                            }
-
+                            await this.ReadAlternativeIdAsync(reader, token);
                             break;
                         case "SPEC-ATTRIBUTES":
 

@@ -124,8 +124,7 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            var alternativeId = new AlternativeId(this);
-                            alternativeId.ReadXml(reader);
+                            this.ReadAlternativeId(reader);
                             break;
                         case "ATTRIBUTE-VALUE-DATE":
                             this.DefaultValue = new AttributeValueDate(this, this.loggerFactory);
@@ -176,8 +175,7 @@ namespace ReqIFSharp
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
-                            var alternativeId = new AlternativeId(this);
-                            alternativeId.ReadXml(reader);
+                            await this.ReadAlternativeIdAsync(reader, token);
                             break;
                         case "ATTRIBUTE-VALUE-DATE":
                             this.DefaultValue = new AttributeValueDate(this, this.loggerFactory);

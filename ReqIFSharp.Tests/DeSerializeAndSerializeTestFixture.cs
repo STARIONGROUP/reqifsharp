@@ -149,5 +149,21 @@ namespace ReqIFSharp.Tests
             Assert.That(attributeDefinitionString.DefaultValue.TheValue, Is.EqualTo("LAH ---.---.---.-"));
             Assert.That(attributeDefinitionString.DefaultValue.Definition.Identifier, Is.EqualTo("_d0368b53-d0c6-43a1-a746-45243624b027"));
         }
+
+        [Test]
+        public void Verify_That_ProRailDemo_with_validation_and_assert_alternaiveid()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+            var deserializer = new ReqIFDeserializer();
+
+            var reqIfs = deserializer.Deserialize(reqifPath, true);
+
+            var reqif = reqIfs.Single();
+            var alternativeId = reqif.CoreContent.DataTypes.Single(x => x.Identifier == "_o7scM6dbEeafNduaIhMwQg_ald").AlternativeId;
+
+            Assert.That(alternativeId.Identifier, Is.EqualTo("_o7scM6dbEeafNduaIhMwQg_ald"));
+        }
     }
 }
