@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/STARIONGROUP/reqifsharp/master/reqifsharp-logo.png" width="350">
+![reqifsharp](https://raw.githubusercontent.com/STARIONGROUP/reqifsharp/master/reqifsharp-logo.png)
 
 ReqIFSharp is a C# library for reading and writing ReqIF documents. ReqIFSharp is used in Starion products such as [CDP4-COMET](https://www.stariongroup.eu/services-solutions/system-engineering/concurrent-design/cdp4-comet/) and a web based ReqIF [Viewer](https://viewer.reqifsharp.org). Read more about it here: https://www.reqifsharp.org
 
