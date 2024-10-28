@@ -1,0 +1,47 @@
+name: "nuget package reference check"
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 8 * * *'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        # We must fetch at least the immediate parents so that if this is
+        # a pull request then we can checkout the head.
+        fetch-depth: 2
+
+    - name: Setup .NET Environment
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+
+    - name: Install dependencies
+      run: dotnet restore ReqIFSharp.sln
+
+    - name: Build
+      run: dotnet build ReqIFSharp.sln --no-restore /p:ContinuousIntegrationBuild=true
+
+    - name: Checking NuGet vulnerabilites
+      run: |
+        set -e
+        dotnet list ReqIFSharp.sln package --outdated --include-transitive
+
+        dotnet list ReqIFSharp.sln package --deprecated --include-transitive
+
+        dotnet list ReqIFSharp.sln package --vulnerable --include-transitive 2>&1 | tee vulnerabilities.log
+
+        echo "Analyze dotnet list package command log output..."
+        if grep -q -i "\bcritical\b\|\bhigh\b\|\bmoderate\b\|\blow\b" vulnerabilities.log; then
+            echo "Security Vulnerabilities found"
+            exit 1
+        else
+            echo "No Security Vulnerabilities found"
+            exit 0
+        fi
