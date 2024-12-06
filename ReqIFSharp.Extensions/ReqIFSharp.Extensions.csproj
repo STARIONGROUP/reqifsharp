@@ -19,7 +19,7 @@
 	  <IncludeSource>true</IncludeSource>
       <IncludeSymbols>true</IncludeSymbols>
 	  <PackageReleaseNotes>
-          - [Update] to reqifsharp version 8.2.0
+          - [Update] to reqifsharp version 9.0.0
       </PackageReleaseNotes>
 	  <LangVersion>latest</LangVersion>
       <PackageReadmeFile>README.md</PackageReadmeFile>

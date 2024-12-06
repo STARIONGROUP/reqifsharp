@@ -4,7 +4,7 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>8.2.0</Version>
+        <Version>9.0.0</Version>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
         <Company>Starion Group S.A.</Company>
@@ -22,6 +22,7 @@
         <IncludeSymbols>true</IncludeSymbols>
         <PackageReleaseNotes>
             - [Update] Microsoft.Extensions.Logging.Abstractions to version 9.0.0
+            - [Rename] async/Task methods to end on ...Async
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
