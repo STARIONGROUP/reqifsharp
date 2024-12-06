@@ -334,7 +334,7 @@ namespace ReqIFSharp
 
                 if (specObject == null)
                 {
-                    this.logger.LogTrace("The SpecObject:{reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The SpecObject:{Reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
                 }
             }
         }
@@ -363,7 +363,7 @@ namespace ReqIFSharp
 
                 if (specObject == null)
                 {
-                    this.logger.LogTrace("The SpecObject:{reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The SpecObject:{Reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
                 }
             }
         }

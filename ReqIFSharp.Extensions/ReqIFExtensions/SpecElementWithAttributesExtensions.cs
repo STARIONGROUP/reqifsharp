@@ -65,7 +65,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// <returns>
         /// an <see cref="IEnumerable{String}"/> that contains base64 encoded strings
         /// </returns>
-        public static async Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64Payloads(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService)
+        public static async Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64PayloadsAsync(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService)
         {
             var result = new List<Tuple<ExternalObject, string>>();
 
@@ -75,7 +75,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
                 {
                     foreach (var externalObject in specObjectValue.ExternalObjects)
                     {
-                        var payload = await reqIfLoaderService.QueryData(externalObject, cts.Token);
+                        var payload = await reqIfLoaderService.QueryDataAsync(externalObject, cts.Token);
                         result.Add(new Tuple<ExternalObject, string>(externalObject, payload));
                     }
                 }

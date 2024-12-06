@@ -85,7 +85,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <summary>
         /// Gets a copy of the <see cref="Stream"/> from which the ReqIF is loaded
         /// </summary>
-        public async Task<Stream> GetSourceStream(CancellationToken token)
+        public async Task<Stream> GetSourceStreamAsync(CancellationToken token)
         {
             if (this.sourceStream.Position != 0)
             {
@@ -105,7 +105,7 @@ namespace ReqIFSharp.Extensions.Services
         /// Loads the <see cref="ReqIF"/> objects from the provided <see cref="Stream"/>
         /// and stores the result in the <see cref="ReqIFData"/> property.
         /// </summary>
-        /// <param name="reqIFStream">
+        /// <param name="reqIfStream">
         /// a <see cref="Stream"/> that contains <see cref="ReqIF"/> content
         /// </param>
         /// <param name="token">
@@ -114,7 +114,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <returns>
         /// an awaitable <see cref="Task"/>
         /// </returns>
-        public async Task Load(Stream reqIFStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        public async Task LoadAsync(Stream reqIfStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
             this.externalObjectDataCache.Clear();
 
@@ -124,8 +124,8 @@ namespace ReqIFSharp.Extensions.Services
 
             this.logger.LogDebug("copying the reqif stream to the deserialization stream for deserialization");
 
-            reqIFStream.Seek(0, SeekOrigin.Begin);
-            await reqIFStream.CopyToAsync(deserializationStream, 81920, token);
+            reqIfStream.Seek(0, SeekOrigin.Begin);
+            await reqIfStream.CopyToAsync(deserializationStream, 81920, token);
             if (deserializationStream.Position != 0)
             {
                 deserializationStream.Seek(0, SeekOrigin.Begin);
@@ -133,8 +133,8 @@ namespace ReqIFSharp.Extensions.Services
 
             this.logger.LogDebug("copying the reqif stream to the source stream for safe keeping");
 
-            reqIFStream.Seek(0, SeekOrigin.Begin);
-            await reqIFStream.CopyToAsync(this.sourceStream, 81920, token);
+            reqIfStream.Seek(0, SeekOrigin.Begin);
+            await reqIfStream.CopyToAsync(this.sourceStream, 81920, token);
             if (this.sourceStream.Position != 0)
             {
                 this.sourceStream.Seek(0, SeekOrigin.Begin);
@@ -145,7 +145,7 @@ namespace ReqIFSharp.Extensions.Services
             var sw = Stopwatch.StartNew();
             this.logger.LogDebug("starting deserialization");
             result = await this.reqIfDeSerializer.DeserializeAsync(deserializationStream, fileExtensionKind, token);
-            this.logger.LogDebug("deserialization finished in {time} [ms]", sw.ElapsedMilliseconds);
+            this.logger.LogDebug("deserialization finished in {Time} [ms]", sw.ElapsedMilliseconds);
 
             deserializationStream.Dispose();
             
@@ -169,7 +169,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <remarks>
         /// The <see cref="ReqIFLoaderService"/> caches the data for fast
         /// </remarks>
-        public async Task<string> QueryData(ExternalObject externalObject, CancellationToken token)
+        public async Task<string> QueryDataAsync(ExternalObject externalObject, CancellationToken token)
         {
             if (externalObject == null)
             {
@@ -178,12 +178,12 @@ namespace ReqIFSharp.Extensions.Services
 
             if (externalObjectDataCache.TryGetValue(externalObject, out var result))
             {
-                this.logger.LogDebug("External Object {uri} retrieved from Cache", externalObject.Uri);
+                this.logger.LogDebug("External Object {Uri} retrieved from Cache", externalObject.Uri);
 
                 return result;
             }
 
-            var stream = await this.GetSourceStream(token);
+            var stream = await this.GetSourceStreamAsync(token);
 
             var targetStream = new MemoryStream();
 
@@ -193,7 +193,7 @@ namespace ReqIFSharp.Extensions.Services
 
             if (this.externalObjectDataCache.TryAdd(externalObject, result))
             {
-                this.logger.LogDebug("External Object {uri} added to Cache", externalObject.Uri);
+                this.logger.LogDebug("External Object {Uri} added to Cache", externalObject.Uri);
             }
 
             return result;

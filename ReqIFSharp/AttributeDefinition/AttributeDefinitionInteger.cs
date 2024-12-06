@@ -135,7 +135,7 @@ namespace ReqIFSharp
 
                             if (datatypeDefinition == null)
                             {
-                                this.logger.LogTrace("The DatatypeDefinitionInteger:{reference} could not be found and has been set to null on AttributeDefinitionInteger:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The DatatypeDefinitionInteger:{Reference} could not be found and has been set to null on AttributeDefinitionInteger:{Identifier}", reference, Identifier);
                             }
 
                             break;
@@ -186,7 +186,7 @@ namespace ReqIFSharp
 
                             if (datatypeDefinition == null)
                             {
-                                this.logger.LogTrace("The DatatypeDefinitionInteger:{reference} could not be found and has been set to null on AttributeDefinitionInteger:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The DatatypeDefinitionInteger:{Reference} could not be found and has been set to null on AttributeDefinitionInteger:{Identifier}", reference, Identifier);
                             }
 
                             break;

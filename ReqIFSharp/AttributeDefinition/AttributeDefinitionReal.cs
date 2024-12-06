@@ -133,7 +133,7 @@ namespace ReqIFSharp
 
                             if (datatypeDefinition == null)
                             {
-                                this.logger.LogTrace("The DatatypeDefinitionReal:{reference} could not be found and has been set to null on AttributeDefinitionReal:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The DatatypeDefinitionReal:{Reference} could not be found and has been set to null on AttributeDefinitionReal:{Identifier}", reference, Identifier);
                             }
 
                             break;
@@ -184,7 +184,7 @@ namespace ReqIFSharp
 
                             if (datatypeDefinition == null)
                             {
-                                this.logger.LogTrace("The DatatypeDefinitionReal:{reference} could not be found and has been set to null on AttributeDefinitionReal:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The DatatypeDefinitionReal:{Reference} could not be found and has been set to null on AttributeDefinitionReal:{Identifier}", reference, Identifier);
                             }
 
                             break;

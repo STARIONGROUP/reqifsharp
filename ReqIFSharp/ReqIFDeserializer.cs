@@ -91,11 +91,11 @@ namespace ReqIFSharp
             {
                 var sw = Stopwatch.StartNew();
 
-                this.logger.LogTrace("start deserializing from {path}", fileUri);
+                this.logger.LogTrace("start deserializing from {Path}", fileUri);
 
                 var result = this.Deserialize(fileStream, fileExtensionKind, validate, validationEventHandler);
 
-                this.logger.LogTrace("File {path} deserialized in {time} [ms]", fileUri, sw.ElapsedMilliseconds);
+                this.logger.LogTrace("File {Path} deserialized in {Time} [ms]", fileUri, sw.ElapsedMilliseconds);
 
                 return result;
             }
@@ -155,12 +155,12 @@ namespace ReqIFSharp
             {
                 var sw = Stopwatch.StartNew();
                 
-                this.logger.LogTrace("start deserializing from {path}", fileUri);
+                this.logger.LogTrace("start deserializing from {Path}", fileUri);
 
                 byte[] result = new byte[fileStream.Length];
                 await fileStream.ReadAsync(result, 0, (int)fileStream.Length, token);
 
-                this.logger.LogTrace("File {path} deserialized in {time} [ms]", fileUri, sw.ElapsedMilliseconds);
+                this.logger.LogTrace("File {Path} deserialized in {Time} [ms]", fileUri, sw.ElapsedMilliseconds);
 
                 return await this.DeserializeAsync(fileStream, fileExtensionKind, token, validate, validationEventHandler);
             }
@@ -295,7 +295,7 @@ namespace ReqIFSharp
                             }
                         }
 
-                        this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                        this.logger.LogTrace("xml read in {Time}", sw.ElapsedMilliseconds);
                         sw.Stop();
 
                         return reqifs;
@@ -315,7 +315,7 @@ namespace ReqIFSharp
                             throw new FileNotFoundException($"No reqif file could be found in the archive.");
                         }
 
-                        this.logger.LogTrace("found {entries} in the reqif zip archive in {time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
+                        this.logger.LogTrace("found {Entries} in the reqif zip archive in {Time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
                         sw.Stop();
 
                         var reqifs = new List<ReqIF>();
@@ -337,7 +337,7 @@ namespace ReqIFSharp
                                     }
                                 }
 
-                                this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                                this.logger.LogTrace("xml read in {Time}", sw.ElapsedMilliseconds);
                                 sw.Stop();
                             }
                         }
@@ -403,7 +403,7 @@ namespace ReqIFSharp
                             }
                         }
 
-                        this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                        this.logger.LogTrace("xml read in {Time}", sw.ElapsedMilliseconds);
                         sw.Stop();
 
                         return reqifs;
@@ -423,7 +423,7 @@ namespace ReqIFSharp
                             throw new FileNotFoundException($"No reqif file could be found in the archive.");
                         }
 
-                        this.logger.LogTrace("found {entries} in the reqif zip archive in {time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
+                        this.logger.LogTrace("found {Entries} in the reqif zip archive in {Time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
                         sw.Stop();
 
                         if (token.IsCancellationRequested)
@@ -451,7 +451,7 @@ namespace ReqIFSharp
                                 }
                             }
 
-                            this.logger.LogTrace("xml read in {time}", sw.ElapsedMilliseconds);
+                            this.logger.LogTrace("xml read in {Time}", sw.ElapsedMilliseconds);
                             sw.Stop();
 
                             if (token.IsCancellationRequested)

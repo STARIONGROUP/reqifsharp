@@ -42,7 +42,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <summary>
         /// Gets a copy of the <see cref="Stream"/> from which the ReqIF is loaded
         /// </summary>
-        Task<Stream> GetSourceStream(CancellationToken token);
+        Task<Stream> GetSourceStreamAsync(CancellationToken token);
 
         /// <summary>
         /// Loads the <see cref="ReqIF"/> objects from the provided <see cref="Stream"/>
@@ -57,7 +57,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <returns>
         /// an awaitable <see cref="Task"/>
         /// </returns>
-        Task Load(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
+        Task LoadAsync(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
 
         /// <summary>
         /// Query the data object from associated to the <see cref="ExternalObject"/>
@@ -74,7 +74,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <remarks>
         /// The <see cref="IReqIFLoaderService"/> caches the data for fast
         /// </remarks>
-        Task<string> QueryData(ExternalObject externalObject, CancellationToken token);
+        Task<string> QueryDataAsync(ExternalObject externalObject, CancellationToken token);
 
         /// <summary>
         /// Resets the <see cref="IReqIFLoaderService"/> by clearing <see cref="ReqIFData"/> and

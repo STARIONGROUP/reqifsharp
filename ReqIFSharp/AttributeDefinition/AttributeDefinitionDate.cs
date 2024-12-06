@@ -141,7 +141,7 @@ namespace ReqIFSharp
 
                             if (datatypeDefinition == null)
                             {
-                                this.logger.LogTrace("The DatatypeDefinitionDate:{reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The DatatypeDefinitionDate:{Reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
                             }
 
                             break;
@@ -192,7 +192,7 @@ namespace ReqIFSharp
 
                             if (datatypeDefinition == null)
                             {
-                                this.logger.LogTrace("The DatatypeDefinitionDate:{reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The DatatypeDefinitionDate:{Reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
                             }
 
                             break;

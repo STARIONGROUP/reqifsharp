@@ -54,7 +54,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
             this.reqIFLoaderService = new ReqIFLoaderService(reqIfDeserializer);
-            await this.reqIFLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
+            await this.reqIFLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
 
             this.reqIf = this.reqIFLoaderService.ReqIFData.Single();
         }
@@ -74,7 +74,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
         {
             var specObject = this.reqIf.CoreContent.SpecObjects.Single(x => x.Identifier == "_3.4.2.2.2_BrLeft_2_BrRight_._BrLeft_f_BrRight_1");
 
-            var base64Payloads = await specObject.QueryBase64Payloads(this.reqIFLoaderService);
+            var base64Payloads = await specObject.QueryBase64PayloadsAsync(this.reqIFLoaderService);
 
             var base64Payload = base64Payloads.Single();
 

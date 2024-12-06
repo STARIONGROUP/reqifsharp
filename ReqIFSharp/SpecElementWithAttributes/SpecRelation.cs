@@ -107,7 +107,7 @@ namespace ReqIFSharp
 
                             if (specObject == null)
                             {
-                                this.logger.LogTrace("The source SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as source for SpecRelation:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The source SpecObject:{Reference} was not found, a new SpecObject with the same identifier has been created and set as source for SpecRelation:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -125,7 +125,7 @@ namespace ReqIFSharp
 
                             if (specObject == null)
                             {
-                                this.logger.LogTrace("The target SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The target SpecObject:{Reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -168,7 +168,7 @@ namespace ReqIFSharp
 
                             if (specObject == null)
                             {
-                                this.logger.LogTrace("The source SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as source for SpecRelation:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The source SpecObject:{Reference} was not found, a new SpecObject with the same identifier has been created and set as source for SpecRelation:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -186,7 +186,7 @@ namespace ReqIFSharp
 
                             if (specObject == null)
                             {
-                                this.logger.LogTrace("The target SpecObject:{reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The target SpecObject:{Reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -237,7 +237,7 @@ namespace ReqIFSharp
 
                 if (specType == null)
                 {
-                    this.logger.LogTrace("The SpecRelationType:{reference} could not be found and has been set to null on SpecRelation:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The SpecRelationType:{Reference} could not be found and has been set to null on SpecRelation:{Identifier}", reference, Identifier);
                 }
             }
         }
@@ -266,7 +266,7 @@ namespace ReqIFSharp
 
                 if (specType == null)
                 {
-                    this.logger.LogTrace("The SpecRelationType:{reference} could not be found and has been set to null on SpecRelation:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The SpecRelationType:{Reference} could not be found and has been set to null on SpecRelation:{Identifier}", reference, Identifier);
                 }
             }
         }

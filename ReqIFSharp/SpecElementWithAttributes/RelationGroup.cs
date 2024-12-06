@@ -157,7 +157,7 @@ namespace ReqIFSharp
 
                             if (specification == null)
                             {
-                                this.logger.LogTrace("The source specification:{reference} was not found, a new specification with the same identifier has been created and set as source for RelationGroup:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The source specification:{Reference} was not found, a new specification with the same identifier has been created and set as source for RelationGroup:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -175,7 +175,7 @@ namespace ReqIFSharp
 
                             if (specification == null)
                             {
-                                this.logger.LogTrace("The target specification:{reference} was not found, a new specification with the same identifier has been created and set as target for RelationGroup:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The target specification:{Reference} was not found, a new specification with the same identifier has been created and set as target for RelationGroup:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -224,7 +224,7 @@ namespace ReqIFSharp
                                                        };
                             if (specification == null)
                             {
-                                this.logger.LogTrace("The source specification:{reference} was not found, a new specification with the same identifier has been created and set as source for RelationGroup:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The source specification:{Reference} was not found, a new specification with the same identifier has been created and set as source for RelationGroup:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -241,7 +241,7 @@ namespace ReqIFSharp
                                                        };
                             if (specification == null)
                             {
-                                this.logger.LogTrace("The target specification:{reference} was not found, a new specification with the same identifier has been created and set as target for RelationGroup:{Identifier}", reference, Identifier);
+                                this.logger.LogTrace("The target specification:{Reference} was not found, a new specification with the same identifier has been created and set as target for RelationGroup:{Identifier}", reference, Identifier);
                             }
                         }
                         break;
@@ -272,7 +272,7 @@ namespace ReqIFSharp
 
                 if (specType == null)
                 {
-                    this.logger.LogTrace("The RelationGroupType:{reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The RelationGroupType:{Reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
         }
@@ -301,7 +301,7 @@ namespace ReqIFSharp
 
                 if (specType == null)
                 {
-                    this.logger.LogTrace("The RelationGroupType:{reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The RelationGroupType:{Reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
         }
@@ -349,7 +349,7 @@ namespace ReqIFSharp
                 }
                 else
                 {
-                    this.logger.LogTrace("The SpecRelation:{reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The SpecRelation:{Reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
         }
@@ -380,7 +380,7 @@ namespace ReqIFSharp
                 }
                 else
                 {
-                    this.logger.LogTrace("The SpecRelation:{reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
+                    this.logger.LogTrace("The SpecRelation:{Reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
         }

@@ -59,7 +59,7 @@ namespace ReqIFSharp.Extensions.Tests.Services
             var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
 
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            await this.reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
+            await this.reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
 
             Assert.That(this.reqIfLoaderService.ReqIFData, Is.Not.Empty);
 
@@ -80,7 +80,7 @@ namespace ReqIFSharp.Extensions.Tests.Services
             var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
 
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            await this.reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
+            await this.reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
 
             Console.WriteLine($"requirements-and-objects.reqifz desserialized in {sw.ElapsedMilliseconds} [ms]");
 
@@ -103,7 +103,7 @@ namespace ReqIFSharp.Extensions.Tests.Services
             var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
 
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
-            await this.reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
+            await this.reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
 
             Console.WriteLine($"requirements-and-objects.reqifz desserialized in {sw.ElapsedMilliseconds} [ms]");
 
@@ -116,7 +116,7 @@ namespace ReqIFSharp.Extensions.Tests.Services
             {
                 sw.Restart();
 
-                var image = await this.reqIfLoaderService.QueryData(externalObject, cts.Token);
+                var image = await this.reqIfLoaderService.QueryDataAsync(externalObject, cts.Token);
 
                 Console.WriteLine($"image extracted in {sw.ElapsedMilliseconds} [ms]");
 
@@ -128,7 +128,7 @@ namespace ReqIFSharp.Extensions.Tests.Services
             {
                 sw.Restart();
 
-                var image = await this.reqIfLoaderService.QueryData(externalObject, cts.Token);
+                var image = await this.reqIfLoaderService.QueryDataAsync(externalObject, cts.Token);
 
                 Console.WriteLine($"image extracted in {sw.ElapsedMilliseconds} [ms]");
 

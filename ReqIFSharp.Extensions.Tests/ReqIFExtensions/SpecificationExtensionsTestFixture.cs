@@ -51,7 +51,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             await using var fileStream = new FileStream(reqifPath, FileMode.Open);
             var reqIfDeserializer = new ReqIFDeserializer();
             var reqIfLoaderService = new ReqIFLoaderService(reqIfDeserializer);
-            await reqIfLoaderService.Load(fileStream, supportedFileExtensionKind, cts.Token);
+            await reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
 
             this.reqIf = reqIfLoaderService.ReqIFData.Single();
         }

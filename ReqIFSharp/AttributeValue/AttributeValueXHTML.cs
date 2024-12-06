@@ -344,7 +344,7 @@ namespace ReqIFSharp
                 }
             }
 
-            this.logger.LogTrace("a total of {count} ExternalObjects have been created in {time} [sw]", result.Count, sw.ElapsedMilliseconds);
+            this.logger.LogTrace("a total of {Count} ExternalObjects have been created in {Time} [sw]", result.Count, sw.ElapsedMilliseconds);
 
             return result;
         }
@@ -404,7 +404,7 @@ namespace ReqIFSharp
                 }
             }
             
-            this.logger.LogTrace("a total of {count} ExternalObjects have been created in {time} [sw]", result.Count, sw.ElapsedMilliseconds);
+            this.logger.LogTrace("a total of {Count} ExternalObjects have been created in {Time} [sw]", result.Count, sw.ElapsedMilliseconds);
 
             return result;
         }

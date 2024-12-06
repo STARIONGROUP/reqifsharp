@@ -117,7 +117,7 @@ namespace ReqIFSharp
         {
             this.Identifier = reader.GetAttribute("IDENTIFIER");
 
-            this.logger.LogTrace("read xml of {typename}:{identifier}", this.GetType().Name, this.Identifier);
+            this.logger.LogTrace("read xml of {Typename}:{Identifier}", this.GetType().Name, this.Identifier);
 
             var lastChange = reader.GetAttribute("LAST-CHANGE");
             this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
