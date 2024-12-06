@@ -2,7 +2,7 @@
 
   <PropertyGroup>
 	  <TargetFramework>netstandard2.0</TargetFramework>
-	  <Version>3.1.1</Version>
+	  <Version>3.2.0</Version>
 	  <Description>A .NET library that provides extenions and services to operate on ReqIF documents.</Description>
 	  <PackageId>ReqIFSharp.Extensions</PackageId>
 	  <Company>Starion Group S.A.</Company>
@@ -19,7 +19,7 @@
 	  <IncludeSource>true</IncludeSource>
       <IncludeSymbols>true</IncludeSymbols>
 	  <PackageReleaseNotes>
-          - [Update] to reqifsharp version 8.1.1
+          - [Update] to reqifsharp version 8.2.0
       </PackageReleaseNotes>
 	  <LangVersion>latest</LangVersion>
       <PackageReadmeFile>README.md</PackageReadmeFile>
