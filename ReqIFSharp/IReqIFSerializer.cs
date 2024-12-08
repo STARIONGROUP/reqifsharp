@@ -33,9 +33,9 @@ namespace ReqIFSharp
         /// <summary>
         /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIfs">The <see cref="ReqIF"/> object to serialize</param>
+        /// <param name="reqifs">The <see cref="ReqIF"/> object to serialize</param>
         /// <param name="fileUri">The path of the output file</param>
-        void Serialize(IEnumerable<ReqIF> reqIfs, string fileUri);
+        void Serialize(IEnumerable<ReqIF> reqifs, string fileUri);
 
         /// <summary>
         /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
@@ -51,17 +51,17 @@ namespace ReqIFSharp
         /// <summary>
         /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIfs">The <see cref="ReqIF"/> object to serialize</param>
+        /// <param name="reqifs">The <see cref="ReqIF"/> object to serialize</param>
         /// <param name="fileUri">The path of the output file</param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        Task SerializeAsync(IEnumerable<ReqIF> reqIfs, string fileUri, CancellationToken token);
+        Task SerializeAsync(IEnumerable<ReqIF> reqifs, string fileUri, CancellationToken token);
 
         /// <summary>
         /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIfs">
+        /// <param name="reqifs">
         /// The <see cref="ReqIF"/> object to serialize
         /// </param>
         /// <param name="stream">
@@ -70,6 +70,6 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
+        Task SerializeAsync(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token);
     }
 }

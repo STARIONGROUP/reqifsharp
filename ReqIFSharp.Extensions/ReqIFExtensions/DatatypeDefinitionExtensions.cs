@@ -84,10 +84,10 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
                 throw new InvalidOperationException("The owning ReqIFContent of the DatatypeDefinition is not set.");
             }
 
-            var spectypes = datatypeDefinition.ReqIFContent.SpecTypes;
-            foreach (var spectype in spectypes)
+            var specTypes = datatypeDefinition.ReqIFContent.SpecTypes;
+            foreach (var specType in specTypes)
             {
-                var attributeDefinitions = spectype.SpecAttributes.Where(x => x.DatatypeDefinition == datatypeDefinition);
+                var attributeDefinitions = specType.SpecAttributes.Where(x => x.DatatypeDefinition == datatypeDefinition);
                 foreach (var attributeDefinition in attributeDefinitions)
                 {
                     result.Add(attributeDefinition);

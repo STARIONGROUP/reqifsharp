@@ -45,13 +45,13 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
             switch (attributeValue)
             {
                 case AttributeValueBoolean attributeValueBoolean:
-                    return attributeValueBoolean.TheValue.ToString();
+                    return attributeValueBoolean.TheValue.ToString(CultureInfo.InvariantCulture);
                 case AttributeValueDate attributeValueDate:
                     return attributeValueDate.TheValue.ToString("yyyy-MM-dd, HH:mm:ss", CultureInfo.InvariantCulture);
                 case AttributeValueEnumeration attributeValueEnumeration:
                     return string.Join(";", attributeValueEnumeration.Values.Select(x => x.Properties.OtherContent));
                 case AttributeValueInteger attributeValueInteger:
-                    return attributeValueInteger.TheValue.ToString();
+                    return attributeValueInteger.TheValue.ToString(CultureInfo.InvariantCulture);
                 case AttributeValueReal attributeValueReal:
                     return attributeValueReal.TheValue.ToString(CultureInfo.InvariantCulture);
                 case AttributeValueString attributeValueString:

@@ -105,7 +105,7 @@ namespace ReqIFSharp.Extensions.Services
         /// Loads the <see cref="ReqIF"/> objects from the provided <see cref="Stream"/>
         /// and stores the result in the <see cref="ReqIFData"/> property.
         /// </summary>
-        /// <param name="reqIfStream">
+        /// <param name="reqifStream">
         /// a <see cref="Stream"/> that contains <see cref="ReqIF"/> content
         /// </param>
         /// <param name="token">
@@ -114,7 +114,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <returns>
         /// an awaitable <see cref="Task"/>
         /// </returns>
-        public async Task LoadAsync(Stream reqIfStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        public async Task LoadAsync(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
             this.externalObjectDataCache.Clear();
 
@@ -124,8 +124,8 @@ namespace ReqIFSharp.Extensions.Services
 
             this.logger.LogDebug("copying the reqif stream to the deserialization stream for deserialization");
 
-            reqIfStream.Seek(0, SeekOrigin.Begin);
-            await reqIfStream.CopyToAsync(deserializationStream, 81920, token);
+            reqifStream.Seek(0, SeekOrigin.Begin);
+            await reqifStream.CopyToAsync(deserializationStream, 81920, token);
             if (deserializationStream.Position != 0)
             {
                 deserializationStream.Seek(0, SeekOrigin.Begin);
@@ -133,8 +133,8 @@ namespace ReqIFSharp.Extensions.Services
 
             this.logger.LogDebug("copying the reqif stream to the source stream for safe keeping");
 
-            reqIfStream.Seek(0, SeekOrigin.Begin);
-            await reqIfStream.CopyToAsync(this.sourceStream, 81920, token);
+            reqifStream.Seek(0, SeekOrigin.Begin);
+            await reqifStream.CopyToAsync(this.sourceStream, 81920, token);
             if (this.sourceStream.Position != 0)
             {
                 this.sourceStream.Seek(0, SeekOrigin.Begin);

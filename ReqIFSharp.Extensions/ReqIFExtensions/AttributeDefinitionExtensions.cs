@@ -81,7 +81,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
             {
                 case AttributeDefinitionBoolean attributeDefinitionBoolean:
                     return attributeDefinitionBoolean.DefaultValue != null
-                        ? attributeDefinitionBoolean.DefaultValue.TheValue.ToString()
+                        ? attributeDefinitionBoolean.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture)
                         : "NOT SET";
                 case AttributeDefinitionDate attributeDefinitionDate:
                     return attributeDefinitionDate.DefaultValue != null
@@ -94,11 +94,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
                         : "NOT SET";
                 case AttributeDefinitionInteger attributeDefinitionInteger:
                     return attributeDefinitionInteger.DefaultValue != null
-                        ? attributeDefinitionInteger.DefaultValue.TheValue.ToString()
+                        ? attributeDefinitionInteger.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture)
                         : "NOT SET";
                 case AttributeDefinitionReal attributeDefinitionReal:
                     return attributeDefinitionReal.DefaultValue != null
-                        ? attributeDefinitionReal.DefaultValue.TheValue.ToString()
+                        ? attributeDefinitionReal.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture)
                         : "NOT SET";
                 case AttributeDefinitionString attributeDefinitionString:
                     return attributeDefinitionString.DefaultValue != null

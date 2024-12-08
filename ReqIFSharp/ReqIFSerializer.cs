@@ -38,13 +38,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIfs">
+        /// <param name="reqifs">
         /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="fileUri">
         /// The path of the output file
         /// </param>
-        public void Serialize(IEnumerable<ReqIF> reqIfs, string fileUri)
+        public void Serialize(IEnumerable<ReqIF> reqifs, string fileUri)
         {
             this.FileBasedSerializerArgumentValidation(fileUri);
 
@@ -52,14 +52,14 @@ namespace ReqIFSharp
 
             using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
             {
-                this.Serialize(reqIfs, fileStream, fileExtensionKind);
+                this.Serialize(reqifs, fileStream, fileExtensionKind);
             }
         }
 
         /// <summary>
         /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIfs">
+        /// <param name="reqifs">
         /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="stream">
@@ -69,15 +69,15 @@ namespace ReqIFSharp
         /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
         /// contains the reqif file or a zip-archive of reqif files
         /// </param>
-        public void Serialize(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind)
+        public void Serialize(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind)
         {
-            this.StreamBasedSerializerArgumentValidation(reqIfs, stream, fileExtensionKind);
+            this.StreamBasedSerializerArgumentValidation(reqifs, stream, fileExtensionKind);
 
             switch (fileExtensionKind)
             {
                 case SupportedFileExtensionKind.Reqif:
 
-                    this.WriteXmlToStream(reqIfs.First(), stream);
+                    this.WriteXmlToStream(reqifs.First(), stream);
 
                     break;
                 case SupportedFileExtensionKind.Reqifz:
@@ -86,7 +86,7 @@ namespace ReqIFSharp
                     {
                         var i = 0;
 
-                        foreach (var reqIf in reqIfs)
+                        foreach (var reqIf in reqifs)
                         {
                             var reqifEntryName =  $"{i++}_{reqIf.TheHeader.Identifier}.reqif";
 
@@ -106,7 +106,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content in an XML-file in the corresponding path
         /// </summary>
-        /// <param name="reqIfs">
+        /// <param name="reqifs">
         /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="fileUri">
@@ -115,7 +115,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task SerializeAsync(IEnumerable<ReqIF> reqIfs, string fileUri, CancellationToken token)
+        public async Task SerializeAsync(IEnumerable<ReqIF> reqifs, string fileUri, CancellationToken token)
         {
             this.FileBasedSerializerArgumentValidation(fileUri);
 
@@ -123,14 +123,14 @@ namespace ReqIFSharp
 
             using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
             {
-                await this.SerializeAsync(reqIfs, fileStream, fileExtensionKind, token);
+                await this.SerializeAsync(reqifs, fileStream, fileExtensionKind, token);
             }
         }
 
         /// <summary>
         /// Async Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIfs">
+        /// <param name="reqifs">
         /// The <see cref="IEnumerable{ReqIF}"/> object to serialize
         /// </param>
         /// <param name="stream">
@@ -143,15 +143,15 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        public async Task SerializeAsync(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        public async Task SerializeAsync(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
-            this.StreamBasedSerializerArgumentValidation(reqIfs, stream, fileExtensionKind);
+            this.StreamBasedSerializerArgumentValidation(reqifs, stream, fileExtensionKind);
             
             switch (fileExtensionKind)
             {
                 case SupportedFileExtensionKind.Reqif:
 
-                    await this.WriteXmlToStreamAsync(reqIfs.First(), stream, token);
+                    await this.WriteXmlToStreamAsync(reqifs.First(), stream, token);
                     break;
 
                 case SupportedFileExtensionKind.Reqifz:
@@ -160,7 +160,7 @@ namespace ReqIFSharp
                     {
                         var i = 0;
 
-                        foreach (var reqIf in reqIfs)
+                        foreach (var reqIf in reqifs)
                         {
                             var reqifEntryName = $"{i++}_{reqIf.TheHeader.Identifier}.reqif";
 
