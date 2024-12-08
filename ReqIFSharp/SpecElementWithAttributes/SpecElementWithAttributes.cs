@@ -60,6 +60,18 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecElementWithAttributes"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected SpecElementWithAttributes(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+            this.logger = this.loggerFactory == null ? NullLogger<SpecElementWithAttributes>.Instance : this.loggerFactory.CreateLogger<SpecElementWithAttributes>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpecElementWithAttributes"/> class.
+        /// </summary>
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>

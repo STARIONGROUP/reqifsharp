@@ -22,11 +22,15 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
     using System.Linq;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
     using ReqIFSharp.Extensions.ReqIFExtensions;
     using ReqIFSharp.Extensions.Tests.TestData;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionExtensions"/> class
@@ -34,28 +38,65 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
     [TestFixture]
     public class AttributeDefinitionExtensionsTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [Test]
         public void Verify_that_QueryDatatypeName_returns_expected_results()
         {
             var attributeDefinitionBoolean = new AttributeDefinitionBoolean();
             Assert.That(attributeDefinitionBoolean.QueryDatatypeName(), Is.EqualTo("Boolean"));
 
+            attributeDefinitionBoolean = new AttributeDefinitionBoolean(this.loggerFactory);
+            Assert.That(attributeDefinitionBoolean.QueryDatatypeName(), Is.EqualTo("Boolean"));
+
             var attributeDefinitionDate = new AttributeDefinitionDate();
+            Assert.That(attributeDefinitionDate.QueryDatatypeName(), Is.EqualTo("Date"));
+
+            attributeDefinitionDate = new AttributeDefinitionDate(this.loggerFactory);
             Assert.That(attributeDefinitionDate.QueryDatatypeName(), Is.EqualTo("Date"));
 
             var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration();
             Assert.That(attributeDefinitionEnumeration.QueryDatatypeName(), Is.EqualTo("Enumeration"));
 
+            attributeDefinitionEnumeration = new AttributeDefinitionEnumeration(this.loggerFactory);
+            Assert.That(attributeDefinitionEnumeration.QueryDatatypeName(), Is.EqualTo("Enumeration"));
+
             var attributeDefinitionInteger = new AttributeDefinitionInteger();
+            Assert.That(attributeDefinitionInteger.QueryDatatypeName(), Is.EqualTo("Integer"));
+
+            attributeDefinitionInteger = new AttributeDefinitionInteger(this.loggerFactory);
             Assert.That(attributeDefinitionInteger.QueryDatatypeName(), Is.EqualTo("Integer"));
 
             var attributeDefinitionReal = new AttributeDefinitionReal();
             Assert.That(attributeDefinitionReal.QueryDatatypeName(), Is.EqualTo("Real"));
 
+            attributeDefinitionReal = new AttributeDefinitionReal(this.loggerFactory);
+            Assert.That(attributeDefinitionReal.QueryDatatypeName(), Is.EqualTo("Real"));
+
             var attributeDefinitionString = new AttributeDefinitionString();
             Assert.That(attributeDefinitionString.QueryDatatypeName(), Is.EqualTo("String"));
 
+            attributeDefinitionString = new AttributeDefinitionString(this.loggerFactory);
+            Assert.That(attributeDefinitionString.QueryDatatypeName(), Is.EqualTo("String"));
+
             var attributeDefinitionXhtml = new AttributeDefinitionXHTML();
+            Assert.That(attributeDefinitionXhtml.QueryDatatypeName(), Is.EqualTo("XHTML"));
+
+            attributeDefinitionXhtml = new AttributeDefinitionXHTML(this.loggerFactory);
             Assert.That(attributeDefinitionXhtml.QueryDatatypeName(), Is.EqualTo("XHTML"));
         }
 

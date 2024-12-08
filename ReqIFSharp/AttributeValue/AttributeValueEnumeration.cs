@@ -50,6 +50,17 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeValueEnumeration"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public AttributeValueEnumeration(ILoggerFactory loggerFactory) : base(loggerFactory)
+        {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueEnumeration>.Instance : this.loggerFactory.CreateLogger<AttributeValueEnumeration>();
+        }
+
+        /// <summary>
         /// Instantiated a new instance of the <see cref="AttributeValueEnumeration"/> class
         /// </summary>
         /// <param name="attributeDefinition">The <see cref="AttributeDefinitionEnumeration"/> for which this is the default value</param>

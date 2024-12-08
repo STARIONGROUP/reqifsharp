@@ -58,6 +58,17 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionDate"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public AttributeDefinitionDate(ILoggerFactory loggerFactory) : base(loggerFactory)
+        {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionDate>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionDate>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeDefinitionDate"/> class.
+        /// </summary>
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>

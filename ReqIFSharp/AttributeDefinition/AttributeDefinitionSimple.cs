@@ -37,6 +37,17 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionSimple"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected AttributeDefinitionSimple(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeDefinitionSimple"/> class.
+        /// </summary>
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>

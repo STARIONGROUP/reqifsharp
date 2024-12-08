@@ -25,18 +25,38 @@ namespace ReqIFSharp.Tests
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
 
+    using Serilog;
+
     [TestFixture]
     public class DeSerializeAndSerializeTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [Test]
         public void Verify_That_ProR_Traceability_Template_reqif_file_can_deserialized_and_serialized_with_equivalent_output()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfs = deserializer.Deserialize(reqifPath);
 
@@ -52,7 +72,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token); var reqIf = reqIfs.First();
 
@@ -66,7 +86,7 @@ namespace ReqIFSharp.Tests
         public void Verify_That_Datatype_Demo_reqif_file_is_deserialized_and_serialized_with_equivalent_output()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfS = deserializer.Deserialize(reqifPath);
 
@@ -82,7 +102,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token); var reqIf = reqIfs.First();
 
@@ -96,7 +116,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_DefaultValueDemo_file_is_deserialized_and_serialized_with_equivalent_output()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "DefaultValueDemo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfs = deserializer.Deserialize(reqifPath);
 
@@ -126,7 +146,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "DefaultValueDemo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfs = await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token);
 
@@ -156,7 +176,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIfs = deserializer.Deserialize(reqifPath, true);
 

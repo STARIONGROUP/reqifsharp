@@ -34,6 +34,8 @@ namespace ReqIFSharp.Tests
 
     using ReqIFSharp;
 
+    using Serilog;
+
     /// <summary>
     /// Suite of tests for the <see cref="ReqIFDeSerializer"/>
     /// </summary>
@@ -42,16 +44,24 @@ namespace ReqIFSharp.Tests
     {
         private ILoggerFactory loggerFactory;
 
-        [SetUp]
-        public void SetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
-            this.loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
         }
-        
+ 
         [Test]
         public void Verify_that_ArgumentException_Are_thrown_on_read_from_file()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             Assert.That(() => deserializer.Deserialize(null),
                 Throws.Exception.TypeOf<ArgumentNullException>()
@@ -67,7 +77,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             Assert.That(async () => await deserializer.DeserializeAsync(null, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<ArgumentNullException>()
@@ -81,7 +91,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_ArgumentException_Are_thrown_on_read_from_stream()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             MemoryStream memoryStream = null;
 
@@ -105,7 +115,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             MemoryStream memoryStream = null;
 
@@ -162,7 +172,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), cancellationTokenSource.Token)).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -194,7 +204,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_the_Tool_Extensions_are_Deserialized_from_ProR_Traceability_template()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIf = deserializer.Deserialize(reqifPath).First() ;
 
@@ -236,7 +246,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIf = (await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token)).First();
 
@@ -278,7 +288,7 @@ namespace ReqIFSharp.Tests
             var sw = Stopwatch.StartNew();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIf = deserializer.Deserialize(reqifPath).First();
 
@@ -305,7 +315,7 @@ namespace ReqIFSharp.Tests
             var sw = Stopwatch.StartNew();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "requirements-and-objects.reqifz");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var cancellationTokenSource = new CancellationTokenSource();
 
@@ -331,7 +341,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_A_ReqIF_XML_Document_Can_Be_Deserialized_With_Validation()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), true, this.ValidationEventHandler).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -349,7 +359,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "output.reqif"), cancellationTokenSource.Token,true, this.ValidationEventHandler)).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -367,7 +377,7 @@ namespace ReqIFSharp.Tests
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             
             Assert.That(() => deserializer.Deserialize(reqifPath, true, this.ValidationEventHandler), Throws.Exception.TypeOf<XmlSchemaValidationException>());
         }
@@ -379,7 +389,7 @@ namespace ReqIFSharp.Tests
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true, this.ValidationEventHandler), Throws.Exception.TypeOf<XmlSchemaValidationException>());
         }
@@ -387,7 +397,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_XHTML_attributes_can_de_Deserialized()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif")).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -404,7 +414,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "testreqif.reqif"), cancellationTokenSource.Token)).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -419,7 +429,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_A_ReqIF_Archive_Can_Be_Deserialized_Without_Validation()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz")).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -445,7 +455,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = (await deserializer.DeserializeAsync(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz"), cancellationTokenSource.Token)).First();
 
             Assert.That(reqIf.Lang, Is.EqualTo("en"));
@@ -473,7 +483,7 @@ namespace ReqIFSharp.Tests
 
             var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             Assert.That(() => deserializer.Deserialize(reqifPath, true, this.ValidationEventHandler), Throws.Nothing);
 
             using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
@@ -491,7 +501,7 @@ namespace ReqIFSharp.Tests
 
             var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true, this.ValidationEventHandler), Throws.Nothing);
 
             using (var sourceStream = new FileStream(reqifPath, FileMode.Open))
@@ -503,7 +513,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_when_path_is_null_exception_is_thrown()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             
             Assert.That(
                 () => deserializer.Deserialize(""),
@@ -521,7 +531,7 @@ namespace ReqIFSharp.Tests
         {
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             Assert.That(
                 () => deserializer.Deserialize(path, false, this.ValidationEventHandler),
@@ -536,7 +546,7 @@ namespace ReqIFSharp.Tests
 
             var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             Assert.That(
                 async () => await deserializer.DeserializeAsync(path, cancellationTokenSource.Token, false, this.ValidationEventHandler),
@@ -559,9 +569,9 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public void Verify_that_ReqIF_can_be_Deserializaed_from_stream()
+        public void Verify_that_ReqIF_can_be_Deserialized_from_stream()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
@@ -584,7 +594,7 @@ namespace ReqIFSharp.Tests
         {
             var cancellationTokenSource = new CancellationTokenSource();
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "test-multiple-reqif.reqifz");
 
@@ -606,7 +616,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_AlternativeId_can_be_deserialized()
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqif = deserializer.Deserialize(reqifPath, false).Single();
 
@@ -649,7 +659,7 @@ namespace ReqIFSharp.Tests
             var cancellationTokenSource = new CancellationTokenSource();
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo.reqif");
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqif = (await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, false)).Single();
 
@@ -691,7 +701,7 @@ namespace ReqIFSharp.Tests
         {
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.zip");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             Assert.That(() => deserializer.Deserialize(reqifPath), Throws.Nothing);
         }
 
@@ -702,7 +712,7 @@ namespace ReqIFSharp.Tests
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sampleGH43.zip");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             
             Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token), Throws.Nothing);
         }
@@ -714,10 +724,9 @@ namespace ReqIFSharp.Tests
 
             var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "reqifsharpgenerated.reqif");
 
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             Assert.That(async () => await deserializer.DeserializeAsync(reqifPath, cancellationTokenSource.Token, true), Throws.Nothing);
         }
-        
     }
 }

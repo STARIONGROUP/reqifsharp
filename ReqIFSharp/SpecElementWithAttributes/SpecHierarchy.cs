@@ -66,6 +66,18 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecHierarchy"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public SpecHierarchy(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+            this.logger = loggerFactory == null ? NullLogger<SpecHierarchy>.Instance : loggerFactory.CreateLogger<SpecHierarchy>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpecHierarchy"/> class.
+        /// </summary>
         /// <param name="root">
         /// The root.
         /// </param>

@@ -63,6 +63,18 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="RelationGroup"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public RelationGroup(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+            this.logger = loggerFactory == null ? NullLogger<RelationGroup>.Instance : loggerFactory.CreateLogger<RelationGroup>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RelationGroup"/> class.
+        /// </summary>
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>

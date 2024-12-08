@@ -58,6 +58,17 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionReal"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public AttributeDefinitionReal(ILoggerFactory loggerFactory) : base(loggerFactory)
+        {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionReal>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionReal>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeDefinitionReal"/> class.
+        /// </summary>
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>

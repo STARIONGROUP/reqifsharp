@@ -24,15 +24,35 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Threading;
     using System.Threading.Tasks;
-    
+
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     [TestFixture]
     public class ExternalObjectDeseralizationTestFixture
     {
         private string reqiffile;
+
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
 
         [SetUp]
         public void SetUp()
@@ -43,7 +63,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_External_objects_are_Deserialized()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIf = deserializer.Deserialize(this.reqiffile).First();
 
@@ -61,7 +81,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_External_objects_are_Deserialized_Async()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
 
             var reqIf = await deserializer.DeserializeAsync(this.reqiffile, CancellationToken.None);
 

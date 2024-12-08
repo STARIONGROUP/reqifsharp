@@ -27,12 +27,15 @@ namespace ReqIFSharp.Extensions.Tests.Services
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
-
     using ReqIFSharp.Extensions.ReqIFExtensions;
     using ReqIFSharp.Extensions.Services;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="ReqIFLoaderService"/> class
@@ -42,10 +45,26 @@ namespace ReqIFSharp.Extensions.Tests.Services
     {
         private ReqIFLoaderService reqIfLoaderService;
 
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [SetUp]
         public void Setup()
         {
-            var reqIfDeserializer = new ReqIFDeserializer();
+            var reqIfDeserializer = new ReqIFDeserializer(this.loggerFactory);
             this.reqIfLoaderService = new ReqIFLoaderService(reqIfDeserializer);
         }
 

@@ -25,7 +25,11 @@ namespace ReqIFSharp.Tests
     using System.Threading;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="ReqIFHeader"/> class
@@ -33,6 +37,22 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class ReqIFHeaderTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [Test]
         public void Verify_that_ReadXmlAsync_throws_exception_when_cancelled()
         {
@@ -44,7 +64,7 @@ namespace ReqIFSharp.Tests
             using var fileStream = File.OpenRead(reqifPath);
             using var xmlReader = XmlReader.Create(fileStream, new XmlReaderSettings { Async = true });
             
-            var reqIfHeader = new ReqIFHeader();
+            var reqIfHeader = new ReqIFHeader(this.loggerFactory);
 
             Assert.That( async () => await reqIfHeader.ReadXmlAsync(xmlReader, cts.Token),
                 Throws.Exception.TypeOf<OperationCanceledException>());
@@ -56,7 +76,7 @@ namespace ReqIFSharp.Tests
             using var memoryStream = new MemoryStream();
             using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
 
-            var reqIfHeader = new ReqIFHeader();
+            var reqIfHeader = new ReqIFHeader(this.loggerFactory);
 
             var cts = new CancellationTokenSource();
             cts.Cancel();

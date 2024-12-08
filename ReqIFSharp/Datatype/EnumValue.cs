@@ -37,7 +37,18 @@ namespace ReqIFSharp
         public EnumValue()
         {
         }
-        
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EnumValue"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public EnumValue(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="EnumValue"/> class.
         /// </summary>

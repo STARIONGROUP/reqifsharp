@@ -31,6 +31,8 @@ namespace ReqIFSharp.Tests
 
     using ReqIFSharp;
 
+    using Serilog;
+
     /// <summary>
     /// Suite of tests for the <see cref="ReqIfFactory"/> class.
     /// </summary>
@@ -39,10 +41,18 @@ namespace ReqIFSharp.Tests
     {
         private ILoggerFactory loggerFactory;
 
-        [SetUp]
-        public void SetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
-            this.loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
         }
 
         [Test]
@@ -61,7 +71,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_Unkown_Element_AttributeDefinition_Throws_ArgumentException()
         {
-            var spectType = new SpecObjectType();
+            var spectType = new SpecObjectType(this.loggerFactory);
 
             string unknownName = "Starion";
             Assert.That(ReqIfFactory.AttributeDefinitionConstruct(unknownName, spectType, this.loggerFactory), Is.Null);
@@ -70,7 +80,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_XmlElementName_Returns_DataTypeDefinition()
         {
-            var reqIfContent = new ReqIFContent();
+            var reqIfContent = new ReqIFContent(this.loggerFactory);
 
             Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-BOOLEAN", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionBoolean>());
             Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct("DATATYPE-DEFINITION-DATE", reqIfContent, this.loggerFactory), Is.InstanceOf<DatatypeDefinitionDate>());
@@ -83,7 +93,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_That_Unknown_Element_DataTypeDefinition_Throws_ArgumentException()
         {
-            var reqIfContent = new ReqIFContent();
+            var reqIfContent = new ReqIFContent(this.loggerFactory);
 
             string unknownName = "Starion";
             Assert.That(() => ReqIfFactory.DatatypeDefinitionConstruct(unknownName, reqIfContent, this.loggerFactory), Throws.Exception.TypeOf<ArgumentException>());
@@ -92,7 +102,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_unknown_SpecTypeName_throws_exception()
         {
-            var reqIfContent = new ReqIFContent();
+            var reqIfContent = new ReqIFContent(this.loggerFactory);
 
             string unknownName = "Starion";
             Assert.That(() => ReqIfFactory.SpecTypeConstruct(unknownName, reqIfContent, this.loggerFactory), Throws.Exception.TypeOf<ArgumentException>());

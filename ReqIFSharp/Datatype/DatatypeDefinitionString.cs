@@ -42,6 +42,17 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
+        /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public DatatypeDefinitionString(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
         /// </summary>
         /// <param name="reqIfContent">

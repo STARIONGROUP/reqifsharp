@@ -57,6 +57,17 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeDefinitionBoolean"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public AttributeDefinitionBoolean(ILoggerFactory loggerFactory) : base(loggerFactory)
+        {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeDefinitionBoolean>.Instance : this.loggerFactory.CreateLogger<AttributeDefinitionBoolean>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeDefinitionBoolean"/> class.
+        /// </summary>
         /// <param name="specType">
         /// The owning <see cref="SpecType"/>.
         /// </param>

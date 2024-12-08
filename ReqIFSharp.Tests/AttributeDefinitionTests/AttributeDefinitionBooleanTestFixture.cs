@@ -27,9 +27,13 @@ namespace ReqIFSharp.Tests
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionBoolean"/>
@@ -37,6 +41,22 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class AttributeDefinitionBooleanTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
@@ -69,7 +89,8 @@ namespace ReqIFSharp.Tests
         {
             using var fs = new FileStream("test.xml", FileMode.Create);
             using var writer = XmlWriter.Create(fs, new XmlWriterSettings { Indent = true });
-            var attributeDefinitionBoolean = new AttributeDefinitionBoolean()
+
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(this.loggerFactory)
             {
                 Identifier = "identifier",
                 LongName = "longname"
@@ -87,7 +108,8 @@ namespace ReqIFSharp.Tests
 
             using var memoryStream = new MemoryStream();
             using var writer = XmlWriter.Create(memoryStream, new XmlWriterSettings { Indent = true });
-            var attributeDefinitionBoolean = new AttributeDefinitionBoolean()
+
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(this.loggerFactory)
             {
                 Identifier = "identifier",
                 LongName = "longname"
@@ -101,7 +123,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_WriteXml_does_not_throw_exception()
         {
-            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean
+            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean(this.loggerFactory)
             {
                 Identifier = "datatypeDefinitionBoolean"
             };
@@ -109,7 +131,7 @@ namespace ReqIFSharp.Tests
             var attributeValueBoolean = new AttributeValueBoolean();
             attributeValueBoolean.Definition = new AttributeDefinitionBoolean { Identifier = "default-identifier" };
 
-            var attributeDefinitionBoolean = new AttributeDefinitionBoolean
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(this.loggerFactory)
             {
                 Identifier = "attributeDefinitionBoolean",
                 Type = datatypeDefinitionBoolean,
@@ -126,15 +148,15 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_WriteXmlAsync_does_not_throw_exception()
         {
-            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean
+            var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean(this.loggerFactory)
             {
                 Identifier = "datatypeDefinitionBoolean"
             };
 
-            var attributeValueBoolean = new AttributeValueBoolean();
+            var attributeValueBoolean = new AttributeValueBoolean(this.loggerFactory);
             attributeValueBoolean.Definition = new AttributeDefinitionBoolean { Identifier = "default-identifier" };
 
-            var attributeDefinitionBoolean = new AttributeDefinitionBoolean
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(this.loggerFactory)
             {
                 Identifier = "attributeDefinitionBoolean",
                 Type = datatypeDefinitionBoolean,

@@ -24,17 +24,37 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Linq;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
 
+    using Serilog;
+
     [TestFixture]
     public class SampleDebugTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console()
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [Test]
         public void Verify_that_sampledebug_reqif_file_can_be_deserialized()
         {
-            var deserializer = new ReqIFDeserializer();
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
             var reqIf = deserializer.Deserialize(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "sample_debug.reqif")).Single();
             var header = reqIf.TheHeader;
             var content = reqIf.CoreContent;

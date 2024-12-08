@@ -44,6 +44,13 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AttributeValue"/> class.
+        /// </summary>
+        protected AttributeValue(ILoggerFactory loggerFactory)
+        {
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValue"/> class.         
         /// </summary>
         /// <param name="attributeDefinition">

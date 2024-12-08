@@ -51,6 +51,18 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecRelation"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        public SpecRelation(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+            this.logger = loggerFactory == null ? NullLogger<SpecRelation>.Instance : loggerFactory.CreateLogger<SpecRelation>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpecRelation"/> class.
+        /// </summary>
         /// <param name="reqIfContent">
         /// The container <see cref="reqIfContent"/>
         /// </param>

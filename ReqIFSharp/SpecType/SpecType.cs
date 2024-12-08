@@ -55,8 +55,23 @@ namespace ReqIFSharp
         /// <summary>
         /// Initializes a new instance of the <see cref="SpecType"/> class.
         /// </summary>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// </param>
+        protected SpecType(ILoggerFactory loggerFactory)
+            : base(loggerFactory)
+        {
+            this.logger = loggerFactory == null ? NullLogger<SpecType>.Instance : loggerFactory.CreateLogger<SpecType>();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SpecType"/> class.
+        /// </summary>
         /// <param name="reqIfContent">
         /// The owning <see cref="reqIfContent"/>
+        /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
         /// </param>
         protected SpecType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
