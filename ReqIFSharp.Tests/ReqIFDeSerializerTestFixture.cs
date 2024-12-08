@@ -49,7 +49,7 @@ namespace ReqIFSharp.Tests
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .WriteTo.Console()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
 
             this.loggerFactory = LoggerFactory.Create(builder =>
