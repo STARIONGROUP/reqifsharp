@@ -108,6 +108,10 @@ namespace ReqIFSharp.Extensions.Services
         /// <param name="reqifStream">
         /// a <see cref="Stream"/> that contains <see cref="ReqIF"/> content
         /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the input <see cref="Stream"/>
+        /// contains the ReqIF file or a zip-archive of ReqIF files
+        /// </param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
@@ -116,13 +120,40 @@ namespace ReqIFSharp.Extensions.Services
         /// </returns>
         public async Task LoadAsync(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
+            if (reqifStream == null)
+            {
+                throw new ArgumentNullException(nameof(reqifStream));
+            }
+
+            await this.LoadInternalAsync(reqifStream, fileExtensionKind, token);
+        }
+
+        /// <summary>
+        /// Loads the <see cref="ReqIF"/> objects from the provided <see cref="Stream"/>
+        /// and stores the result in the <see cref="ReqIFData"/> property.
+        /// </summary>
+        /// <param name="reqifStream">
+        /// a <see cref="Stream"/> that contains <see cref="ReqIF"/> content
+        /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the input <see cref="Stream"/>
+        /// contains the ReqIF file or a zip-archive of ReqIF files
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        /// <returns>
+        /// an awaitable <see cref="Task"/>
+        /// </returns>
+        private async Task LoadInternalAsync(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        {
             this.externalObjectDataCache.Clear();
 
             this.sourceStream = new MemoryStream();
 
             var deserializationStream = new MemoryStream();
 
-            this.logger.LogDebug("copying the reqif stream to the deserialization stream for deserialization");
+            this.logger.LogDebug("copying the ReqIF stream to the deserialization stream for deserialization");
 
             reqifStream.Seek(0, SeekOrigin.Begin);
             await reqifStream.CopyToAsync(deserializationStream, 81920, token);
@@ -131,7 +162,7 @@ namespace ReqIFSharp.Extensions.Services
                 deserializationStream.Seek(0, SeekOrigin.Begin);
             }
 
-            this.logger.LogDebug("copying the reqif stream to the source stream for safe keeping");
+            this.logger.LogDebug("copying the ReqIF stream to the source stream for safe keeping");
 
             reqifStream.Seek(0, SeekOrigin.Begin);
             await reqifStream.CopyToAsync(this.sourceStream, 81920, token);
@@ -148,7 +179,7 @@ namespace ReqIFSharp.Extensions.Services
             this.logger.LogDebug("deserialization finished in {Time} [ms]", sw.ElapsedMilliseconds);
 
             deserializationStream.Dispose();
-            
+
             this.ReqIFData = result;
 
             ReqIfChanged?.Invoke(this, this.ReqIFData);
@@ -176,6 +207,26 @@ namespace ReqIFSharp.Extensions.Services
                 throw new ArgumentNullException(nameof(externalObject), $"The {nameof(externalObject)} may not be null");
             }
 
+            return await this.QueryDataInternalAsync(externalObject, token);
+        }
+
+        /// <summary>
+        /// Query the data object from associated to the <see cref="ExternalObject"/>
+        /// </summary>
+        /// <param name="externalObject">
+        /// The <see cref="ExternalObject"/> that holds a reference to the data
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        /// <returns>
+        /// a Base64 encoded string that can be used in an HTML image element
+        /// </returns>
+        /// <remarks>
+        /// The <see cref="ReqIFLoaderService"/> caches the data for fast
+        /// </remarks>
+        private async Task<string> QueryDataInternalAsync(ExternalObject externalObject, CancellationToken token)
+        {
             if (externalObjectDataCache.TryGetValue(externalObject, out var result))
             {
                 this.logger.LogDebug("External Object {Uri} retrieved from Cache", externalObject.Uri);

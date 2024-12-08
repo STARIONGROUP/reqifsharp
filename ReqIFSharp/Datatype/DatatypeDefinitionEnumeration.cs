@@ -28,6 +28,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionEnumeration"/> class is to define enumeration types.
@@ -39,6 +40,11 @@ namespace ReqIFSharp
     public class DatatypeDefinitionEnumeration : DatatypeDefinition
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<DatatypeDefinitionEnumeration> logger;
+
+        /// <summary>
         /// Backing field for the <see cref="SpecifiedValues"/> property;
         /// </summary>
         private readonly List<EnumValue> specifiedValues = new List<EnumValue>();
@@ -48,6 +54,7 @@ namespace ReqIFSharp
         /// </summary>
         public DatatypeDefinitionEnumeration()
         {
+            this.logger = NullLogger<DatatypeDefinitionEnumeration>.Instance;
         }
 
         /// <summary>
@@ -62,6 +69,7 @@ namespace ReqIFSharp
         internal DatatypeDefinitionEnumeration(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionEnumeration>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionEnumeration>();
         }
 
         /// <summary>
@@ -93,6 +101,9 @@ namespace ReqIFSharp
                             case "ENUM-VALUE":
                                 var enumValue = new EnumValue(this, this.loggerFactory);
                                 enumValue.ReadXml(subtree);
+                                break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
                                 break;
                         }
                     }
@@ -137,6 +148,9 @@ namespace ReqIFSharp
                             case "ENUM-VALUE":
                                 var enumValue = new EnumValue(this, this.loggerFactory);
                                 await enumValue.ReadXmlAsync(subtree, token);
+                                break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
                                 break;
                         }
                     }

@@ -41,6 +41,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// <exception cref="InvalidOperationException"></exception>
         public static string QueryTypeDisplayName(this Identifiable identifiable)
         {
+            if (identifiable == null)
+            {
+                throw new ArgumentNullException(nameof(identifiable));
+            }
+
             switch (identifiable)
             {
                 case AttributeDefinitionBoolean:

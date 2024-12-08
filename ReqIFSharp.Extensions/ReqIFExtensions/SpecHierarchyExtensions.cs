@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.ReqIFExtensions
 {
+    using System;
     using System.Collections.Generic;
 
     using ReqIFSharp;
@@ -40,6 +41,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<SpecHierarchy> QueryAllContainedSpecHierarchies(this SpecHierarchy specHierarchy)
         {
+            if (specHierarchy == null)
+            {
+                throw new ArgumentNullException(nameof(specHierarchy));
+            }
+
             var result = new List<SpecHierarchy>();
 
             foreach (var child in specHierarchy.Children)

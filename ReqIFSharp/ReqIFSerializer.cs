@@ -46,7 +46,7 @@ namespace ReqIFSharp
         /// </param>
         public void Serialize(IEnumerable<ReqIF> reqifs, string fileUri)
         {
-            this.FileBasedSerializerArgumentValidation(fileUri);
+            FileBasedSerializerArgumentValidation(fileUri);
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
@@ -71,7 +71,7 @@ namespace ReqIFSharp
         /// </param>
         public void Serialize(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind)
         {
-            this.StreamBasedSerializerArgumentValidation(reqifs, stream, fileExtensionKind);
+            StreamBasedSerializerArgumentValidation(reqifs, stream, fileExtensionKind);
 
             switch (fileExtensionKind)
             {
@@ -117,7 +117,7 @@ namespace ReqIFSharp
         /// </param>
         public async Task SerializeAsync(IEnumerable<ReqIF> reqifs, string fileUri, CancellationToken token)
         {
-            this.FileBasedSerializerArgumentValidation(fileUri);
+            FileBasedSerializerArgumentValidation(fileUri);
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
@@ -145,7 +145,7 @@ namespace ReqIFSharp
         /// </param>
         public async Task SerializeAsync(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
-            this.StreamBasedSerializerArgumentValidation(reqifs, stream, fileExtensionKind);
+            StreamBasedSerializerArgumentValidation(reqifs, stream, fileExtensionKind);
             
             switch (fileExtensionKind)
             {
@@ -185,7 +185,7 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the output ReqIF file
         /// </param>
-        private void FileBasedSerializerArgumentValidation(string fileUri)
+        private static void FileBasedSerializerArgumentValidation(string fileUri)
         {
             if (fileUri == null)
             {
@@ -212,7 +212,7 @@ namespace ReqIFSharp
         /// an xml file or a (zip) archive
         /// </param>
 
-        private void StreamBasedSerializerArgumentValidation(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind extensionKind)
+        private static void StreamBasedSerializerArgumentValidation(IEnumerable<ReqIF> reqIfs, Stream stream, SupportedFileExtensionKind extensionKind)
         {
             if (reqIfs == null)
             {
@@ -261,9 +261,9 @@ namespace ReqIFSharp
         /// </returns>
         private void WriteXmlToStream(ReqIF reqIf, Stream stream)
         {
-            using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings(true)))
+            using (var writer = XmlWriter.Create(stream, CreateXmlWriterSettings(true)))
             {
-                this.WriteXml(writer, reqIf);
+                WriteXml(writer, reqIf);
                 writer.Flush();
             }
         }
@@ -290,9 +290,9 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            using (var writer = XmlWriter.Create(stream, this.CreateXmlWriterSettings(true)))
+            using (var writer = XmlWriter.Create(stream, CreateXmlWriterSettings(true)))
             {
-                await this.WriteXmlAsync(writer, reqIf, token);
+                await WriteXmlAsync(writer, reqIf, token);
             }
         }
 
@@ -302,7 +302,7 @@ namespace ReqIFSharp
         /// <returns>
         /// an instance of <see cref="XmlWriterSettings"/>
         /// </returns>
-        private XmlWriterSettings CreateXmlWriterSettings(bool asynchronous = false)
+        private static XmlWriterSettings CreateXmlWriterSettings(bool asynchronous = false)
         {
             return new XmlWriterSettings
                 {
@@ -322,7 +322,7 @@ namespace ReqIFSharp
         /// <param name="reqIf">
         /// The <see cref="ReqIF"/> object that is to be serialized
         /// </param>
-        private void WriteXml(XmlWriter xmlWriter, ReqIF reqIf)
+        private static void WriteXml(XmlWriter xmlWriter, ReqIF reqIf)
         {
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("REQ-IF", DefaultXmlAttributeFactory.ReqIFSchemaUri);
@@ -343,7 +343,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        private async Task WriteXmlAsync(XmlWriter xmlWriter, ReqIF reqIf, CancellationToken token)
+        private static async Task WriteXmlAsync(XmlWriter xmlWriter, ReqIF reqIf, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {

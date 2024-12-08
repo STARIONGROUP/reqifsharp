@@ -201,7 +201,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueString may not be null");
             }
 
-            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString());
+            writer.WriteAttributeString("THE-VALUE", this.TheValue);
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-STRING-REF", this.Definition.Identifier);
             writer.WriteEndElement();
@@ -231,7 +231,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, this.TheValue.ToString());
+            await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, this.TheValue);
             await writer.WriteStartElementAsync(null, "DEFINITION", null);
             await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-STRING-REF", null, this.Definition.Identifier);
             await writer.WriteEndElementAsync();

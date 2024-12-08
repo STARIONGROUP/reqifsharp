@@ -26,6 +26,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// An abstract super class for elements that can own attributes.
@@ -39,6 +40,11 @@ namespace ReqIFSharp
     public abstract class SpecElementWithAttributes : Identifiable
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<SpecElementWithAttributes> logger;
+
+        /// <summary>
         /// Backing field for the <see cref="Values"/> property.
         /// </summary>
         private readonly List<AttributeValue> values = new List<AttributeValue>(); 
@@ -48,6 +54,7 @@ namespace ReqIFSharp
         /// </summary>
         protected SpecElementWithAttributes()
         {
+            this.logger = NullLogger<SpecElementWithAttributes>.Instance;
         }
 
         /// <summary>
@@ -63,6 +70,8 @@ namespace ReqIFSharp
             : base(loggerFactory)
         {
             this.ReqIFContent = reqIfContent;
+
+            this.logger = this.loggerFactory == null ? NullLogger<SpecElementWithAttributes>.Instance : this.loggerFactory.CreateLogger<SpecElementWithAttributes>();
         }
 
         /// <summary>
@@ -192,6 +201,9 @@ namespace ReqIFSharp
                                     attributeValueXhtml.ReadXml(subtree);
                                 }
                                 break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", specElementWithAttributesReader.LocalName);
+                                break;
                         }
                     }
 
@@ -298,6 +310,9 @@ namespace ReqIFSharp
                                     var attributeValueXhtml = new AttributeValueXHTML(this, this.loggerFactory);
                                     await attributeValueXhtml.ReadXmlAsync(subtree, token);
                                 }
+                                break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", specElementWithAttributesReader.LocalName);
                                 break;
                         }
                     }

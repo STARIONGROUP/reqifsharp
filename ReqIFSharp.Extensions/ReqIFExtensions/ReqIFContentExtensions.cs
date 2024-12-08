@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.ReqIFExtensions
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -41,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<ExternalObject> QueryExternalObjects(this ReqIFContent reqIfContent)
         {
+            if (reqIfContent == null)
+            {
+                throw new ArgumentNullException(nameof(reqIfContent));
+            }
+
             var specElementWithAttributesList = new List<SpecElementWithAttributes>();
 
             specElementWithAttributesList.AddRange(reqIfContent.SpecRelationGroups);

@@ -42,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<SpecRelation> QueryReferencingSpecRelations(this SpecRelationType specRelationType)
         {
+            if (specRelationType == null)
+            {
+                throw new ArgumentNullException(nameof(specRelationType));
+            }
+
             if (specRelationType.ReqIFContent == null)
             {
                 throw new InvalidOperationException("The owning ReqIFContent of the SpecRelationType is not set.");

@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
@@ -217,7 +218,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueDate may not be null");
             }
 
-            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString("o"));
+            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString("o", CultureInfo.InvariantCulture));
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-DATE-REF", this.Definition.Identifier);
             writer.WriteEndElement();
@@ -247,7 +248,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, this.TheValue.ToString("o"));
+            await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, this.TheValue.ToString("o", CultureInfo.InvariantCulture));
             await writer.WriteStartElementAsync(null, "DEFINITION", null);
             await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-DATE-REF", null, this.Definition.Identifier);
             await writer.WriteEndElementAsync();

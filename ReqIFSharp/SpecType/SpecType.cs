@@ -26,6 +26,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// Contains a set of attribute definitions. By using an instance of a subclass of <see cref="SpecType"/>, multiple elements can be
@@ -33,6 +34,11 @@ namespace ReqIFSharp
     /// </summary>
     public abstract class SpecType : Identifiable
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<SpecType> logger;
+
         /// <summary>
         /// Backing field for the <see cref="SpecAttributes"/> property
         /// </summary>
@@ -43,6 +49,7 @@ namespace ReqIFSharp
         /// </summary>
         protected SpecType()
         {
+            this.logger = NullLogger<SpecType>.Instance;
         }
 
         /// <summary>
@@ -56,6 +63,8 @@ namespace ReqIFSharp
         {
             this.ReqIFContent = reqIfContent;
             reqIfContent.SpecTypes.Add(this);
+
+            this.logger = loggerFactory == null ? NullLogger<SpecType>.Instance : loggerFactory.CreateLogger<SpecType>();
         }
 
         /// <summary>
@@ -91,7 +100,6 @@ namespace ReqIFSharp
                             this.ReadAlternativeId(reader);
                             break;
                         case "SPEC-ATTRIBUTES":
-
                             using (var specAttributesSubTree = reader.ReadSubtree())
                             {
                                 while (specAttributesSubTree.Read())
@@ -102,7 +110,9 @@ namespace ReqIFSharp
                                     }
                                 }
                             }
-
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }
@@ -153,7 +163,9 @@ namespace ReqIFSharp
                                     }
                                 }
                             }
-
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }

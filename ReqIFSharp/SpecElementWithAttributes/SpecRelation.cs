@@ -129,6 +129,9 @@ namespace ReqIFSharp
                             }
                         }
                         break;
+                    default:
+                        this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                        break;
                 }
             }
         }
@@ -189,6 +192,9 @@ namespace ReqIFSharp
                                 this.logger.LogTrace("The target SpecObject:{Reference} was not found, a new SpecObject with the same identifier has been created and set as target for SpecRelation:{Identifier}", reference, Identifier);
                             }
                         }
+                        break;
+                    default:
+                        this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                         break;
                 }
             }

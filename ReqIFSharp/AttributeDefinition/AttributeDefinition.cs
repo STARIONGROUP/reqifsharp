@@ -57,6 +57,11 @@ namespace ReqIFSharp
         protected AttributeDefinition(SpecType specType, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            if (specType == null)
+            {
+                throw new ArgumentNullException(nameof(specType));
+            }
+
             this.SpecType = specType;
             specType.SpecAttributes.Add(this);
         }

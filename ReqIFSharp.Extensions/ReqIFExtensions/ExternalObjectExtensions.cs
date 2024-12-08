@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.ReqIFExtensions
 {
+    using System;
     using System.Text;
 
     using ReqIFSharp;
@@ -40,6 +41,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static string CreateUrl(this ExternalObject externalObject)
         {
+            if (externalObject == null)
+            {
+                throw new ArgumentNullException(nameof(externalObject));
+            }
+
             var url = new StringBuilder();
             url.Append($"/reqif/{externalObject.Owner.SpecElAt.ReqIFContent.DocumentRoot.TheHeader.Identifier}");
             url.Append($"/externalobject/{externalObject.Uri.Base64Encode()} ");

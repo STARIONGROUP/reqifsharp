@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
@@ -99,6 +100,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void SetDatatypeDefinition(DatatypeDefinition datatypeDefinition)
         {
+            if (datatypeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(datatypeDefinition));
+            }
+
             if (datatypeDefinition.GetType() != typeof(DatatypeDefinitionDate))
             {
                 throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionDate");
@@ -143,7 +149,9 @@ namespace ReqIFSharp
                             {
                                 this.logger.LogTrace("The DatatypeDefinitionDate:{Reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
                             }
-
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }
@@ -194,7 +202,9 @@ namespace ReqIFSharp
                             {
                                 this.logger.LogTrace("The DatatypeDefinitionDate:{Reference} could not be found and has been set to null on AttributeDefinitionDate:{Identifier}", reference, Identifier);
                             }
-
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }
@@ -223,7 +233,7 @@ namespace ReqIFSharp
             {
                 writer.WriteStartElement("DEFAULT-VALUE");
                     writer.WriteStartElement("ATTRIBUTE-VALUE-DATE");
-                    writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue.ToString("o"));
+                    writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue.ToString("o", CultureInfo.InvariantCulture));
                         writer.WriteStartElement("DEFINITION");
                             writer.WriteElementString("ATTRIBUTE-DEFINITION-DATE-REF", this.DefaultValue.Definition.Identifier);
                         writer.WriteEndElement();
@@ -256,7 +266,7 @@ namespace ReqIFSharp
             {
                 await writer.WriteStartElementAsync(null,"DEFAULT-VALUE", null);
                 await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-DATE", null);
-                await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.DefaultValue.TheValue.ToString("o"));
+                await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.DefaultValue.TheValue.ToString("o", CultureInfo.InvariantCulture));
                 await writer.WriteStartElementAsync(null, "DEFINITION", null);
                 await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-DATE-REF", null, this.DefaultValue.Definition.Identifier);
                 await writer.WriteEndElementAsync();

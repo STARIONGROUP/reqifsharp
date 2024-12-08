@@ -99,6 +99,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void SetDatatypeDefinition(DatatypeDefinition datatypeDefinition)
         {
+            if (datatypeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(datatypeDefinition));
+            }
+
             if (datatypeDefinition.GetType() != typeof(DatatypeDefinitionString))
             {
                 throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionString");
@@ -144,6 +149,9 @@ namespace ReqIFSharp
                                 valueSubtree.MoveToContent();
                                 this.DefaultValue.ReadXml(valueSubtree);
                             }
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }
@@ -195,6 +203,9 @@ namespace ReqIFSharp
                                 await valueSubtree.MoveToContentAsync();
                                 await this.DefaultValue.ReadXmlAsync(valueSubtree, token);
                             }
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }

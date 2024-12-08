@@ -44,6 +44,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<ExternalObject> QueryExternalObjects(this SpecElementWithAttributes specElementWithAttributes)
         {
+            if (specElementWithAttributes == null)
+            {
+                throw new ArgumentNullException(nameof(specElementWithAttributes));
+            }
+
             var result = new List<ExternalObject>();
 
             foreach (var attributeValue in specElementWithAttributes.Values.OfType<AttributeValueXHTML>())
@@ -67,6 +72,16 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static async Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64PayloadsAsync(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService)
         {
+            if (specElementWithAttributes == null)
+            {
+                throw new ArgumentNullException(nameof(specElementWithAttributes));
+            }
+
+            if (reqIfLoaderService == null)
+            {
+                throw new ArgumentNullException(nameof(reqIfLoaderService));
+            }
+
             var result = new List<Tuple<ExternalObject, string>>();
 
             using (var cts = new CancellationTokenSource())

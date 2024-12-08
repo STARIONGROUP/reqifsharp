@@ -42,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static string QueryFormattedValue(this AttributeValue attributeValue)
         {
+            if (attributeValue == null)
+            {
+                throw new ArgumentNullException(nameof(attributeValue));
+            }
+
             switch (attributeValue)
             {
                 case AttributeValueBoolean attributeValueBoolean:

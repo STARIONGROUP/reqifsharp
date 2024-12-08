@@ -56,7 +56,7 @@ namespace ReqIFSharp
         /// </param>
         /// <param name="fileExtensionKind">
         /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the input <see cref="Stream"/>
-        /// contains the reqif file or a zip-archive of reqif files
+        /// contains the ReqIF file or a zip-archive of ReqIF files
         /// </param>
         /// <param name="validate">
         /// a value indicating whether the XML document needs to be validated or not

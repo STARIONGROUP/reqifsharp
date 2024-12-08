@@ -26,6 +26,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIFHeader"/> class holds metadata relevant to a ReqIF Exchange Document content.
@@ -36,10 +37,16 @@ namespace ReqIFSharp
     public class ReqIFHeader
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<ReqIFHeader> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ReqIFHeader"/> class
         /// </summary>
         public ReqIFHeader()
         {
+            this.logger = NullLogger<ReqIFHeader>.Instance;
         }
 
         /// <summary>
@@ -50,6 +57,7 @@ namespace ReqIFSharp
         /// </param>
         internal ReqIFHeader(ILoggerFactory loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<ReqIFHeader>.Instance : loggerFactory.CreateLogger<ReqIFHeader>();
         }
 
         /// <summary>
@@ -147,6 +155,9 @@ namespace ReqIFSharp
                         case "TITLE":
                             this.Title = reader.ReadElementContentAsString();
                             break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                            break;
                     }
                 }
             }
@@ -197,6 +208,9 @@ namespace ReqIFSharp
                             break;
                         case "TITLE":
                             this.Title = await reader.ReadElementContentAsStringAsync();
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }

@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.ReqIFExtensions
 {
+    using System;
     using System.Collections.Generic;
 
     using ReqIFSharp;
@@ -40,6 +41,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<SpecHierarchy> QueryAllContainedSpecHierarchies(this Specification specification)
         {
+            if (specification == null)
+            {
+                throw new ArgumentNullException(nameof(specification));
+            }
+
             var result = new List<SpecHierarchy>();
 
             foreach (var specHierarchy in specification.Children)
@@ -64,6 +70,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<SpecObject> QueryAllContainedSpecObjects(this Specification specification)
         {
+            if (specification == null)
+            {
+                throw new ArgumentNullException(nameof(specification));
+            }
+
             var result = new List<SpecObject>();
 
             var specHierarchies = specification.QueryAllContainedSpecHierarchies();
@@ -87,6 +98,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<AttributeDefinition> QueryAttributeDefinitions(this Specification specification)
         {
+            if (specification == null)
+            {
+                throw new ArgumentNullException(nameof(specification));
+            }
+
             var result = new HashSet<AttributeDefinition>();
 
             var specObjects = specification.QueryAllContainedSpecObjects();

@@ -42,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<RelationGroup> QueryReferencingRelationGroups(this RelationGroupType relationGroupType)
         {
+            if (relationGroupType == null)
+            {
+                throw new ArgumentNullException(nameof(relationGroupType));
+            }
+
             if (relationGroupType.ReqIFContent == null)
             {
                 throw new InvalidOperationException("The owning ReqIFContent of the RelationGroupType is not set.");

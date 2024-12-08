@@ -32,19 +32,24 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
     public static class DatatypeDefinitionExtensions
     {
         /// <summary>
-        /// Queries the human readable name of the <see cref="DatatypeDefinition"/>
+        /// Queries the human-readable name of the <see cref="DatatypeDefinition"/>
         /// </summary>
         /// <param name="datatypeDefinition">
         /// The subject <see cref="DatatypeDefinition"/>
         /// </param>
         /// <returns>
-        /// A human readable name (Boolean, Date, Enumeration, Integer, Real, String, XHTML).
+        /// A human-readable name (Boolean, Date, Enumeration, Integer, Real, String, XHTML).
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// thrown when the specified <see cref="DatatypeDefinition"/> is not supported
         /// </exception> 
         public static string QueryDatatypeName(this DatatypeDefinition datatypeDefinition)
         {
+            if (datatypeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(datatypeDefinition));
+            }
+
             switch (datatypeDefinition)
             {
                 case DatatypeDefinitionBoolean:

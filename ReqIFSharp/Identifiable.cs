@@ -54,7 +54,7 @@ namespace ReqIFSharp
         {
             this.logger = NullLogger<Identifiable>.Instance;
 
-            this.LastChange = DateTime.Now;
+            this.LastChange = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -218,6 +218,11 @@ namespace ReqIFSharp
         /// </param>
         protected void ReadAlternativeId(XmlReader reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             var alternativeId = new AlternativeId(this);
 
             using (var alternativeIdSubtree = reader.ReadSubtree())
@@ -234,6 +239,11 @@ namespace ReqIFSharp
         /// </param>
         protected async Task ReadAlternativeIdAsync(XmlReader reader, CancellationToken token)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             var alternativeId = new AlternativeId(this);
 
             using (var alternativeIdSubtree = reader.ReadSubtree())

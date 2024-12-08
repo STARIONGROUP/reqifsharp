@@ -177,7 +177,6 @@ namespace ReqIFSharp
                                     subtree.MoveToContent();
                                     this.DeserializeObject(subtree);
                                 }
-
                                 break;
                             case "CHILDREN":
                                 using (var subtree = speccHierarchySubtree.ReadSubtree())
@@ -185,7 +184,9 @@ namespace ReqIFSharp
                                     subtree.MoveToContent();
                                     this.DeserializeSpecHierarchy(subtree);
                                 }
-
+                                break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", speccHierarchySubtree.LocalName);
                                 break;
                         }
                     }
@@ -233,6 +234,9 @@ namespace ReqIFSharp
                                 await subtree.MoveToContentAsync();
                                 await this.DeserializeSpecHierarchyAsync(subtree, token);
                             }
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }

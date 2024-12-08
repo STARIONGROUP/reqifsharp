@@ -21,6 +21,7 @@
 namespace ReqIFSharp
 {
     using System;
+    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
@@ -99,6 +100,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void SetDatatypeDefinition(DatatypeDefinition datatypeDefinition)
         {
+            if (datatypeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(datatypeDefinition));
+            }
+
             if (datatypeDefinition.GetType() != typeof(DatatypeDefinitionReal))
             {
                 throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionReal");
@@ -144,6 +150,9 @@ namespace ReqIFSharp
                                 valueSubtree.MoveToContent();
                                 this.DefaultValue.ReadXml(valueSubtree);
                             }
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                             break;
                     }
                 }
@@ -196,6 +205,9 @@ namespace ReqIFSharp
                                 await this.DefaultValue.ReadXmlAsync(valueSubtree, token);
                             }
                             break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                            break;
                     }
                 }
             }
@@ -218,7 +230,7 @@ namespace ReqIFSharp
             {
                 writer.WriteStartElement("DEFAULT-VALUE");
                     writer.WriteStartElement("ATTRIBUTE-VALUE-REAL");
-                        writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue.ToString());
+                        writer.WriteAttributeString("THE-VALUE", this.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture));
                         writer.WriteStartElement("DEFINITION");
                             writer.WriteElementString("ATTRIBUTE-DEFINITION-REAL-REF", this.DefaultValue.Definition.Identifier);
                         writer.WriteEndElement();
@@ -251,7 +263,7 @@ namespace ReqIFSharp
             {
                 await writer.WriteStartElementAsync(null,"DEFAULT-VALUE", null);
                 await writer.WriteStartElementAsync(null, "ATTRIBUTE-VALUE-REAL", null);
-                await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.DefaultValue.TheValue.ToString());
+                await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture));
                 await writer.WriteStartElementAsync(null, "DEFINITION", null);
                 await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-REAL-REF", null, this.DefaultValue.Definition.Identifier);
                 await writer.WriteEndElementAsync();

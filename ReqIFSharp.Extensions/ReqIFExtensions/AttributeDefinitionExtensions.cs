@@ -32,19 +32,24 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
     public static class AttributeDefinitionExtensions
     {
         /// <summary>
-        /// Queries the human readable name of the <see cref="AttributeDefinition"/>
+        /// Queries the human-readable name of the <see cref="AttributeDefinition"/>
         /// </summary>
         /// <param name="attributeDefinition">
         /// The subject <see cref="AttributeDefinition"/>
         /// </param>
         /// <returns>
-        /// A human readable name (Boolean, Date, Enumeration, Integer, Real, String, XHTML).
+        /// A human-readable name (Boolean, Date, Enumeration, Integer, Real, String, XHTML).
         /// </returns>
         /// <exception cref="InvalidOperationException">
         /// thrown when the specified <see cref="AttributeDefinition"/> is not supported
         /// </exception> 
         public static string QueryDatatypeName(this AttributeDefinition attributeDefinition)
         {
+            if (attributeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(attributeDefinition));
+            }
+
             switch (attributeDefinition)
             {
                 case AttributeDefinitionBoolean:
@@ -77,6 +82,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static string QueryDefaultValueAsFormattedString(this AttributeDefinition attributeDefinition)
         {
+            if (attributeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(attributeDefinition));
+            }
+
             switch (attributeDefinition)
             {
                 case AttributeDefinitionBoolean attributeDefinitionBoolean:

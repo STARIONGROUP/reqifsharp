@@ -29,6 +29,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="AttributeValueEnumeration"/> class is to define an enumeration attribute value.
@@ -36,10 +37,16 @@ namespace ReqIFSharp
     public class AttributeValueEnumeration : AttributeValue
     {
         /// <summary>
+        /// The (injected) logger
+        /// </summary>
+        private readonly ILogger<AttributeValueEnumeration> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueEnumeration"/> class.
         /// </summary>
         public AttributeValueEnumeration()
         {
+            this.logger = NullLogger<AttributeValueEnumeration>.Instance;
         }
 
         /// <summary>
@@ -55,6 +62,8 @@ namespace ReqIFSharp
         internal AttributeValueEnumeration(AttributeDefinitionEnumeration attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueEnumeration>.Instance : this.loggerFactory.CreateLogger<AttributeValueEnumeration>();
+
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -70,6 +79,7 @@ namespace ReqIFSharp
         internal AttributeValueEnumeration(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueEnumeration>.Instance : this.loggerFactory.CreateLogger<AttributeValueEnumeration>();
         }
 
         /// <summary>
@@ -176,6 +186,9 @@ namespace ReqIFSharp
                                     this.values.Add(enumValue);
                                 }
                                 break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
+                                break;
                         }
                     }
                 }
@@ -225,6 +238,9 @@ namespace ReqIFSharp
                                 {
                                     this.values.Add(enumValue);
                                 }
+                                break;
+                            default:
+                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
                                 break;
                         }
                     }

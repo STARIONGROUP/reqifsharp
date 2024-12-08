@@ -42,6 +42,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<Specification> QueryContainerSpecifications(this SpecObject specObject)
         {
+            if (specObject == null)
+            {
+                throw new ArgumentNullException(nameof(specObject));
+            }
+
             if (specObject.ReqIFContent == null)
             {
                 throw new InvalidOperationException("The owning ReqIFContent of the SpecObject is not set");

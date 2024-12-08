@@ -186,6 +186,9 @@ namespace ReqIFSharp
 
                         reader.ReadEndElement();
                         break;
+                    default:
+                        this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                        break;
                 }
             }
         }
@@ -251,6 +254,9 @@ namespace ReqIFSharp
                         await this.DeserializeSpecRelationsAsync(reader, token);
 
                         reader.ReadEndElement();
+                        break;
+                    default:
+                        this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
                         break;
                 }
             }
