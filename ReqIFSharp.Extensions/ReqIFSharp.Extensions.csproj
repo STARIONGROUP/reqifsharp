@@ -14,12 +14,14 @@
 	  <PackageIcon>reqifsharp-extensions-logo-small.png</PackageIcon>
 	  <PackageTags>ReqIF</PackageTags>
 	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-	  <Authors>Sam Gerene</Authors>
+	  <Authors>Sam Gerené</Authors>
 	  <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
 	  <IncludeSource>true</IncludeSource>
       <IncludeSymbols>true</IncludeSymbols>
 	  <PackageReleaseNotes>
           - [Update] to reqifsharp version 9.0.0
+		  - [Rename] async methods to end on ...Async
+		  - [Improve] argument validation
       </PackageReleaseNotes>
 	  <LangVersion>latest</LangVersion>
       <PackageReadmeFile>README.md</PackageReadmeFile>
