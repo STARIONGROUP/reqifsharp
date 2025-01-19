@@ -87,37 +87,39 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
                 throw new ArgumentNullException(nameof(attributeDefinition));
             }
 
+            const string notSet = "NOT SET";
+
             switch (attributeDefinition)
             {
                 case AttributeDefinitionBoolean attributeDefinitionBoolean:
                     return attributeDefinitionBoolean.DefaultValue != null
                         ? attributeDefinitionBoolean.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture)
-                        : "NOT SET";
+                        : notSet;
                 case AttributeDefinitionDate attributeDefinitionDate:
                     return attributeDefinitionDate.DefaultValue != null
                         ? attributeDefinitionDate.DefaultValue.TheValue.ToString("MMMM dd, yyyy",
                             CultureInfo.InvariantCulture)
-                        : "NOT SET";
+                        : notSet;
                 case AttributeDefinitionEnumeration attributeDefinitionEnumeration:
                     return attributeDefinitionEnumeration.DefaultValue != null
                         ? attributeDefinitionEnumeration.DefaultValue.Values.FirstOrDefault()?.ToString()
-                        : "NOT SET";
+                        : notSet;
                 case AttributeDefinitionInteger attributeDefinitionInteger:
                     return attributeDefinitionInteger.DefaultValue != null
                         ? attributeDefinitionInteger.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture)
-                        : "NOT SET";
+                        : notSet;
                 case AttributeDefinitionReal attributeDefinitionReal:
                     return attributeDefinitionReal.DefaultValue != null
                         ? attributeDefinitionReal.DefaultValue.TheValue.ToString(CultureInfo.InvariantCulture)
-                        : "NOT SET";
+                        : notSet;
                 case AttributeDefinitionString attributeDefinitionString:
                     return attributeDefinitionString.DefaultValue != null
                         ? attributeDefinitionString.DefaultValue.TheValue
-                        : "NOT SET";
+                        : notSet;
                 case AttributeDefinitionXHTML attributeDefinitionXHTML:
                     return attributeDefinitionXHTML.DefaultValue != null
                         ? attributeDefinitionXHTML.DefaultValue.TheValue
-                        : "NOT SET";
+                        : notSet;
                 default:
                     throw new InvalidOperationException("");
             }

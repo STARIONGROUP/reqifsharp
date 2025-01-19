@@ -78,6 +78,11 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// </returns>
         public static IEnumerable<SpecRelation> QuerySpecRelations(this SpecObject specObject)
         {
+            if (specObject == null)
+            {
+                throw new ArgumentNullException(nameof(specObject));
+            }
+
             var result = new List<SpecRelation>();
 
             foreach (var specRelation in specObject.ReqIFContent.SpecRelations)
