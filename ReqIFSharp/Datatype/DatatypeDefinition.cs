@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
@@ -60,6 +61,11 @@ namespace ReqIFSharp
         protected DatatypeDefinition(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            if (reqIfContent == null)
+            {
+                throw new ArgumentNullException(nameof(reqIfContent));
+            }
+
             this.ReqIFContent = reqIfContent;
             reqIfContent.DataTypes.Add(this);
         }

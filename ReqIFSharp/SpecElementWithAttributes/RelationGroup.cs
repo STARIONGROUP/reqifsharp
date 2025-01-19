@@ -134,6 +134,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void SetSpecType(SpecType specType)
         {
+            if (specType == null)
+            {
+                throw new ArgumentNullException(nameof(specType));
+            }
+
             if (specType.GetType() != typeof(RelationGroupType))
             {
                 throw new ArgumentException("specType must of type RelationGroupType");
@@ -151,6 +156,11 @@ namespace ReqIFSharp
         /// </remarks>
         protected override void ReadObjectSpecificElements(XmlReader reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             if (reader.MoveToContent() == XmlNodeType.Element)
             {
                 switch (reader.Name)
@@ -217,11 +227,31 @@ namespace ReqIFSharp
         /// </param>
         protected override async Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             if (token.IsCancellationRequested)
             {
                 token.ThrowIfCancellationRequested();
             }
 
+            await this.ReadObjectSpecificElementsInternalAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Asynchronously reads the concrete <see cref="SpecElementWithAttributes"/> elements
+        /// </summary>
+        /// <param name="reader">The current <see cref="XmlReader"/></param>
+        /// <remarks>
+        /// In this case, read the source, target and spec-relations
+        /// </remarks>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadObjectSpecificElementsInternalAsync(XmlReader reader, CancellationToken token)
+        {
             if (await reader.MoveToContentAsync() == XmlNodeType.Element)
             {
                 switch (reader.Name)
@@ -282,6 +312,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void ReadSpecType(XmlReader reader)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF"))
             {
                 var reference = reader.ReadElementContentAsString();
@@ -306,11 +341,30 @@ namespace ReqIFSharp
         /// </param>
         protected override async Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
         {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
             if (token.IsCancellationRequested)
             {
                 token.ThrowIfCancellationRequested();
             }
 
+            await this.ReadSpecTypeInternalAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Asynchronously reads the <see cref="SpecType"/> which is specific to the <see cref="RelationGroup"/> class.
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
+        {
             if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF"))
             {
                 var reference = await reader.ReadElementContentAsStringAsync();

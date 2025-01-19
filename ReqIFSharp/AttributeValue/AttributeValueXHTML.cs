@@ -156,6 +156,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void SetAttributeDefinition(AttributeDefinition attributeDefinition)
         {
+            if (attributeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(attributeDefinition));
+            }
+
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionXHTML))
             {
                 throw new ArgumentException("attributeDefinition must of type AttributeDefinitionXHTML");

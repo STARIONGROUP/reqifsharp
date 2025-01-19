@@ -77,6 +77,11 @@ namespace ReqIFSharp
         protected SpecType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            if (reqIfContent == null)
+            {
+                throw new ArgumentNullException(nameof(reqIfContent));
+            }
+
             this.ReqIFContent = reqIfContent;
             reqIfContent.SpecTypes.Add(this);
 

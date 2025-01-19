@@ -70,6 +70,11 @@ namespace ReqIFSharp
         /// </returns> 
         public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
         {
+            if (absoluteUri == null)
+            {
+                throw new ArgumentNullException(nameof(absoluteUri));
+            }
+
             var segments = absoluteUri.Segments;
             var upperBound = segments.GetUpperBound(0);
             var schemaName = segments[upperBound];

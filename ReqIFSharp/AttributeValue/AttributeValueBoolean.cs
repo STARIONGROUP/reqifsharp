@@ -18,8 +18,6 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.Logging.Abstractions;
-
 namespace ReqIFSharp
 {
     using System;
@@ -137,6 +135,11 @@ namespace ReqIFSharp
         /// </param>
         protected override void SetAttributeDefinition(AttributeDefinition attributeDefinition)
         {
+            if (attributeDefinition == null)
+            {
+                throw new ArgumentNullException(nameof(attributeDefinition));
+            }
+
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionBoolean))
             {
                 throw new ArgumentException("attributeDefinition must of type AttributeDefinitionBoolean");
