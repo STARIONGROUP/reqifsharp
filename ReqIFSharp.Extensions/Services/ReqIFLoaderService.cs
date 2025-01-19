@@ -48,7 +48,7 @@ namespace ReqIFSharp.Extensions.Services
         /// <summary>
         /// Tracks whether the object has been disposed
         /// </summary>
-        private bool isDisposed = false;
+        private bool isDisposed;
 
         /// <summary>
         /// The (injected) <see cref="IReqIFDeSerializer"/>
@@ -261,7 +261,6 @@ namespace ReqIFSharp.Extensions.Services
         /// </summary>
         public void Reset()
         {
-            this.sourceStream?.Dispose();
             this.sourceStream = null;
             this.ReqIFData = null;
             this.externalObjectDataCache.Clear();

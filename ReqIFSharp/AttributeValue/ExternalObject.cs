@@ -78,7 +78,7 @@ namespace ReqIFSharp
         /// <returns></returns>
         public bool IsDataLocal()
         {
-            return !this.Uri.StartsWith("http");
+            return !this.Uri.StartsWith("http", StringComparison.OrdinalIgnoreCase);
         }
 
         /// <summary>
