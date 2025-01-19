@@ -77,7 +77,7 @@ namespace ReqIFSharp
             {
                 case SupportedFileExtensionKind.Reqif:
 
-                    this.WriteXmlToStream(reqifs.First(), stream);
+                    WriteXmlToStream(reqifs.First(), stream);
 
                     break;
                 case SupportedFileExtensionKind.Reqifz:
@@ -94,7 +94,7 @@ namespace ReqIFSharp
 
                             using (var reqifEntryStream = reqifEntry.Open())
                             {
-                                this.WriteXmlToStream(reqIf, reqifEntryStream);
+                                WriteXmlToStream(reqIf, reqifEntryStream);
                             }
                         }
                     }
@@ -151,7 +151,7 @@ namespace ReqIFSharp
             {
                 case SupportedFileExtensionKind.Reqif:
 
-                    await this.WriteXmlToStreamAsync(reqifs.First(), stream, token);
+                    await WriteXmlToStreamAsync(reqifs.First(), stream, token);
                     break;
 
                 case SupportedFileExtensionKind.Reqifz:
@@ -168,7 +168,7 @@ namespace ReqIFSharp
 
                             using (var reqifEntryStream = reqifEntry.Open())
                             {
-                                await this.WriteXmlToStreamAsync(reqIf, reqifEntryStream, token);
+                                await WriteXmlToStreamAsync(reqIf, reqifEntryStream, token);
                             }
                         }
 
@@ -259,7 +259,7 @@ namespace ReqIFSharp
         /// <returns>
         /// an awaitable task
         /// </returns>
-        private void WriteXmlToStream(ReqIF reqIf, Stream stream)
+        private static void WriteXmlToStream(ReqIF reqIf, Stream stream)
         {
             using (var writer = XmlWriter.Create(stream, CreateXmlWriterSettings(true)))
             {
@@ -283,7 +283,7 @@ namespace ReqIFSharp
         /// <returns>
         /// an awaitable task
         /// </returns>
-        private async Task WriteXmlToStreamAsync(ReqIF reqIf, Stream stream, CancellationToken token)
+        private static async Task WriteXmlToStreamAsync(ReqIF reqIf, Stream stream, CancellationToken token)
         {
             if (token.IsCancellationRequested)
             {

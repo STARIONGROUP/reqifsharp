@@ -83,7 +83,7 @@ namespace ReqIFSharp
         /// </returns>
         public IEnumerable<ReqIF> Deserialize(string fileUri, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
-            this.FileBasedSerializerArgumentValidation(fileUri);
+            FileBasedSerializerArgumentValidation(fileUri);
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
@@ -122,7 +122,7 @@ namespace ReqIFSharp
         /// </returns>
         public IEnumerable<ReqIF> Deserialize(Stream stream, SupportedFileExtensionKind fileExtensionKind, bool validate = false,  ValidationEventHandler validationEventHandler = null)
         {
-            this.StreamBasedSerializerArgumentValidation(stream, validate, validationEventHandler);
+            StreamBasedSerializerArgumentValidation(stream, validate, validationEventHandler);
 
             return this.DeserializeReqIF(stream, fileExtensionKind, validate, validationEventHandler);
         }
@@ -147,7 +147,7 @@ namespace ReqIFSharp
         /// </returns>
         public async Task<IEnumerable<ReqIF>> DeserializeAsync(string fileUri, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
-            this.FileBasedSerializerArgumentValidation(fileUri);
+            FileBasedSerializerArgumentValidation(fileUri);
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
@@ -196,7 +196,7 @@ namespace ReqIFSharp
         /// </returns>
         public Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
-            this.StreamBasedSerializerArgumentValidation(stream, validate, validationEventHandler);
+            StreamBasedSerializerArgumentValidation(stream, validate, validationEventHandler);
 
             return this.DeserializeReqIFAsync(stream, fileExtensionKind, token, validate, validationEventHandler);
         }
@@ -207,7 +207,7 @@ namespace ReqIFSharp
         /// <param name="fileUri">
         /// The path of the input ReqIF file
         /// </param>
-        private void FileBasedSerializerArgumentValidation(string fileUri)
+        private static void FileBasedSerializerArgumentValidation(string fileUri)
         {
             if (fileUri == null)
             {
@@ -232,7 +232,7 @@ namespace ReqIFSharp
         /// <param name="validationEventHandler">
         /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
         /// </param>
-        private void StreamBasedSerializerArgumentValidation(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
+        private static void StreamBasedSerializerArgumentValidation(Stream stream, bool validate = false, ValidationEventHandler validationEventHandler = null)
         {
             if (!validate && validationEventHandler != null)
             {
