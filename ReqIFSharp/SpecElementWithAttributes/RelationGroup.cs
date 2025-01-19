@@ -225,7 +225,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        protected override async Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
+        protected override Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
         {
             if (reader == null)
             {
@@ -237,7 +237,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            await this.ReadObjectSpecificElementsInternalAsync(reader, token);
+            return this.ReadObjectSpecificElementsInternalAsync(reader, token);
         }
 
         /// <summary>
@@ -339,7 +339,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        protected override async Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
+        protected override Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
         {
             if (reader == null)
             {
@@ -351,7 +351,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            await this.ReadSpecTypeInternalAsync(reader, token);
+            return this.ReadSpecTypeInternalAsync(reader, token);
         }
 
         /// <summary>

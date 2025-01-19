@@ -163,7 +163,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        protected override async Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
+        protected override Task ReadObjectSpecificElementsAsync(XmlReader reader, CancellationToken token)
         {
             if (reader == null)
             {
@@ -175,6 +175,21 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
+            return this.ReadObjectSpecificElementsInternalAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Asynchronously reads the concrete <see cref="SpecElementWithAttributes"/> elements
+        /// </summary>
+        /// <param name="reader">The current <see cref="XmlReader"/></param>
+        /// <remarks>
+        /// In this case, read the source and target
+        /// </remarks>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadObjectSpecificElementsInternalAsync(XmlReader reader, CancellationToken token)
+        {
             if (await reader.MoveToContentAsync() == XmlNodeType.Element)
             {
                 switch (reader.LocalName)

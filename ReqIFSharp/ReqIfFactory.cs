@@ -165,7 +165,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Constructs a new instance <see cref="AttributeDefinition"/> based on the XML Name
         /// </summary>
-        /// <param name="xmlname">
+        /// <param name="xmlName">
         /// The XML name of the <see cref="AttributeDefinition"/> that is to be constructed
         /// </param>
         /// <param name="specType">
@@ -178,11 +178,11 @@ namespace ReqIFSharp
         /// an instance of <see cref="AttributeDefinition"/>
         /// </returns>
         /// <exception cref="ArgumentException">
-        /// Thrown when an invalid <paramref name="xmlname"/> is provided
+        /// Thrown when an invalid <paramref name="xmlName"/> is provided
         /// </exception>
-        internal static AttributeDefinition AttributeDefinitionConstruct(string xmlname, SpecType specType, ILoggerFactory loggerFactory)
+        internal static AttributeDefinition AttributeDefinitionConstruct(string xmlName, SpecType specType, ILoggerFactory loggerFactory)
         {
-            switch (xmlname)
+            switch (xmlName)
             {
                 case "ATTRIBUTE-DEFINITION-BOOLEAN":
                     return new AttributeDefinitionBoolean(specType, loggerFactory);

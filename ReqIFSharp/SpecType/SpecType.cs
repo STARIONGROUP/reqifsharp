@@ -223,15 +223,15 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        /// <param name="xmlname">
+        /// <param name="xmlName">
         /// The XML Element name of the <see cref="AttributeDefinition"/>
         /// </param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        private async Task CreateAttributeDefinitionAsync(XmlReader reader, string xmlname, CancellationToken token)
+        private async Task CreateAttributeDefinitionAsync(XmlReader reader, string xmlName, CancellationToken token)
         {
-            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlname, this, this.loggerFactory);
+            var attributeDefinition = ReqIfFactory.AttributeDefinitionConstruct(xmlName, this, this.loggerFactory);
             if (attributeDefinition == null)
             {
                 return;

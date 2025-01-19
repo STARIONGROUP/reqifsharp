@@ -123,14 +123,14 @@ namespace ReqIFSharp.Extensions.Services
         /// <returns>
         /// an awaitable <see cref="Task"/>
         /// </returns>
-        public async Task LoadAsync(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
+        public Task LoadAsync(Stream reqifStream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token)
         {
             if (reqifStream == null)
             {
                 throw new ArgumentNullException(nameof(reqifStream));
             }
 
-            await this.LoadInternalAsync(reqifStream, fileExtensionKind, token);
+            return this.LoadInternalAsync(reqifStream, fileExtensionKind, token);
         }
 
         /// <summary>
