@@ -151,18 +151,24 @@ namespace ReqIFSharp
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
-            using (var fileStream = File.OpenRead(fileUri))
+            using (var fileStream = new FileStream(fileUri, FileMode.Open, FileAccess.Read, FileShare.Read, 4096, FileOptions.Asynchronous))
             {
                 var sw = Stopwatch.StartNew();
-                
-                this.logger.LogTrace("start deserializing from {Path}", fileUri);
+                this.logger.LogTrace("Start deserializing from {Path}", fileUri);
 
-                byte[] result = new byte[fileStream.Length];
-                await fileStream.ReadAsync(result, 0, (int)fileStream.Length, token);
+                try
+                {
+                    var result = await this.DeserializeAsync(fileStream, fileExtensionKind, token, validate, validationEventHandler);
 
-                this.logger.LogTrace("File {Path} deserialized in {Time} [ms]", fileUri, sw.ElapsedMilliseconds);
+                    this.logger.LogTrace("File {Path} deserialized successfully in {Time} ms", fileUri, sw.ElapsedMilliseconds);
 
-                return await this.DeserializeAsync(fileStream, fileExtensionKind, token, validate, validationEventHandler);
+                    return result;
+                }
+                catch (Exception ex) when (!(ex is OperationCanceledException))
+                {
+                    this.logger.LogError(ex, "An error occurred while deserializing file {Path}", fileUri);
+                    throw;
+                }
             }
         }
 

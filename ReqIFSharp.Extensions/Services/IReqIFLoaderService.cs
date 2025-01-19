@@ -51,6 +51,10 @@ namespace ReqIFSharp.Extensions.Services
         /// <param name="reqifStream">
         /// a <see cref="Stream"/> that contains <see cref="ReqIF"/> content
         /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the input <see cref="Stream"/>
+        /// contains the ReqIF file or a zip-archive of ReqIF files
+        /// </param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
@@ -78,7 +82,7 @@ namespace ReqIFSharp.Extensions.Services
 
         /// <summary>
         /// Resets the <see cref="IReqIFLoaderService"/> by clearing <see cref="ReqIFData"/> and
-        /// <see cref="SourceStream"/>
+        /// the source <see cref="Stream"/>
         /// </summary>
         void Reset();
 

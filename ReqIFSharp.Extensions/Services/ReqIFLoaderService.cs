@@ -38,12 +38,17 @@ namespace ReqIFSharp.Extensions.Services
     /// The purpose of the <see cref="IReqIFLoaderService"/> is to load a ReqIF from a provided <see cref="Stream"/>
     /// and make the loaded <see cref="ReqIF"/> objects available
     /// </summary>
-    public class ReqIFLoaderService : IReqIFLoaderService
+    public class ReqIFLoaderService : IReqIFLoaderService, IDisposable
     {
         /// <summary>
         /// the <see cref="Stream"/> that holds a copy of the stream the reqif was loaded from
         /// </summary>
         private Stream sourceStream;
+
+        /// <summary>
+        /// Tracks whether the object has been disposed
+        /// </summary>
+        private bool isDisposed = false;
 
         /// <summary>
         /// The (injected) <see cref="IReqIFDeSerializer"/>
@@ -256,6 +261,7 @@ namespace ReqIFSharp.Extensions.Services
         /// </summary>
         public void Reset()
         {
+            this.sourceStream?.Dispose();
             this.sourceStream = null;
             this.ReqIFData = null;
             this.externalObjectDataCache.Clear();
@@ -269,5 +275,47 @@ namespace ReqIFSharp.Extensions.Services
         /// Event Handler that is invoked when the <see cref="ReqIFLoaderService"/> has either loaded data or has been reset
         /// </summary>
         public event EventHandler<IEnumerable<ReqIF>> ReqIfChanged;
+
+        /// <summary>
+        /// Disposes of the resources used by the <see cref="ReqIFLoaderService"/>.
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Releases unmanaged and optionally managed resources.
+        /// </summary>
+        /// <param name="disposing">
+        /// Indicates whether managed resources should be disposed.
+        /// </param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.isDisposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources
+                    this.sourceStream?.Dispose();
+                    this.sourceStream = null;
+
+                    // Clear the cache
+                    this.externalObjectDataCache.Clear();
+                }
+
+                // Release unmanaged resources (if any)
+                this.isDisposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Destructor for the <see cref="ReqIFLoaderService"/> class.
+        /// </summary>
+        ~ReqIFLoaderService()
+        {
+            Dispose(false);
+        }
     }
 }

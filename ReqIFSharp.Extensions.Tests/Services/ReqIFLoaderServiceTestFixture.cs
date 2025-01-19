@@ -88,6 +88,21 @@ namespace ReqIFSharp.Extensions.Tests.Services
         }
 
         [Test]
+        public async Task Verify_that_ReqIF_data_is_loaded_and_can_be_disposed()
+        {
+            var cts = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
+            await using var fileStream = new FileStream(reqifPath, FileMode.Open);
+            await this.reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
+
+            Assert.That(() => this.reqIfLoaderService.Dispose(), Throws.Nothing);
+        }
+
+        [Test]
         public async Task Verify_that_ReqIF_data_with_objects_is_loaded_and_set_to_ReqIFData()
         {
             var sw = Stopwatch.StartNew();
@@ -108,6 +123,8 @@ namespace ReqIFSharp.Extensions.Tests.Services
             var reqIF = this.reqIfLoaderService.ReqIFData.First();
 
             Assert.That(reqIF.TheHeader.Title, Is.EqualTo("Subset026"));
+
+            Assert.That(() => this.reqIfLoaderService.Dispose(), Throws.Nothing);
         }
 
         [Test]
