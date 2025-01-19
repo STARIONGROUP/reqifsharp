@@ -45,7 +45,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeValueString"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public AttributeValueString(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
@@ -59,7 +59,7 @@ namespace ReqIFSharp
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionString"/>
         /// </remarks>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueString(AttributeDefinitionString attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
@@ -74,7 +74,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueString(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
@@ -134,7 +134,7 @@ namespace ReqIFSharp
 
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionString))
             {
-                throw new ArgumentException("attributeDefinition must of type AttributeDefinitionString");
+                throw new ArgumentException($"{nameof(attributeDefinition)} must of type AttributeDefinitionString");
             }
 
             this.Definition = (AttributeDefinitionString)attributeDefinition;

@@ -58,7 +58,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeDefinitionString"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public AttributeDefinitionString(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
@@ -72,7 +72,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecType"/>.
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeDefinitionString(SpecType specType, ILoggerFactory loggerFactory)
             : base(specType, loggerFactory)
@@ -117,7 +117,7 @@ namespace ReqIFSharp
 
             if (datatypeDefinition.GetType() != typeof(DatatypeDefinitionString))
             {
-                throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionString");
+                throw new ArgumentException($"{nameof(datatypeDefinition)} must of type DatatypeDefinitionString");
             }
 
             this.Type = (DatatypeDefinitionString)datatypeDefinition;

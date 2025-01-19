@@ -32,7 +32,7 @@ namespace ReqIFSharp
     public abstract class AttributeValue
     {
         /// <summary>
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
         protected readonly ILoggerFactory loggerFactory;
 
@@ -60,7 +60,7 @@ namespace ReqIFSharp
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinition"/>
         /// </remarks>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected AttributeValue(AttributeDefinition attributeDefinition, ILoggerFactory loggerFactory)
         {
@@ -75,7 +75,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected AttributeValue(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
         {

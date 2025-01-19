@@ -145,7 +145,7 @@ namespace ReqIFSharp
 
             if (!this.IsDataLocal())
             {
-                throw new InvalidOperationException("The Uri of the External Object is not a relative Uri that can be found in the reqifz file");
+                throw new InvalidOperationException($"The Uri of the External Object is not a relative Uri that can be found in the {nameof(reqifz)} file");
             }
 
             using (var archive = new ZipArchive(reqifz, ZipArchiveMode.Read))

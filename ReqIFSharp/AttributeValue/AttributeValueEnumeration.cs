@@ -53,7 +53,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeValueEnumeration"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public AttributeValueEnumeration(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
@@ -68,7 +68,7 @@ namespace ReqIFSharp
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionEnumeration"/>
         /// </remarks>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueEnumeration(AttributeDefinitionEnumeration attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
@@ -85,7 +85,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueEnumeration(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
@@ -160,7 +160,7 @@ namespace ReqIFSharp
 
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionEnumeration))
             {
-                throw new ArgumentException("attributeDefinition must of type AttributeDefinitionEnumeration");
+                throw new ArgumentException($"{nameof(attributeDefinition)} must of type AttributeDefinitionEnumeration");
             }
 
             this.Definition = (AttributeDefinitionEnumeration)attributeDefinition;

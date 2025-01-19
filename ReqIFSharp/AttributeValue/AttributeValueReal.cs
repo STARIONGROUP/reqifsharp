@@ -47,7 +47,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeValueReal"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public AttributeValueReal(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
@@ -61,7 +61,7 @@ namespace ReqIFSharp
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionReal"/>
         /// </remarks>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueReal(AttributeDefinitionReal attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
@@ -76,7 +76,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueReal(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
@@ -144,7 +144,7 @@ namespace ReqIFSharp
 
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionReal))
             {
-                throw new ArgumentException("attributeDefinition must of type AttributeDefinitionReal");
+                throw new ArgumentException($"{nameof(attributeDefinition)} must of type AttributeDefinitionReal");
             }
 
             this.Definition = (AttributeDefinitionReal)attributeDefinition;

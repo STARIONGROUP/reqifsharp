@@ -50,7 +50,7 @@ namespace ReqIFSharp
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionDate"/>
         /// </remarks>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueDate(AttributeDefinitionDate attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
@@ -65,7 +65,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueDate(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
@@ -133,7 +133,7 @@ namespace ReqIFSharp
 
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionDate))
             {
-                throw new ArgumentException("attributeDefinition must of type AttributeDefinitionDate");
+                throw new ArgumentException($"{nameof(attributeDefinition)} must of type AttributeDefinitionDate");
             }
 
             this.Definition = (AttributeDefinitionDate)attributeDefinition;

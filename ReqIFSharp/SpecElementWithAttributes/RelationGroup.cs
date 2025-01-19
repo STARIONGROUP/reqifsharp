@@ -64,7 +64,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="RelationGroup"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public RelationGroup(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -79,7 +79,7 @@ namespace ReqIFSharp
         /// The container <see cref="reqIfContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal RelationGroup(ReqIFContent reqIfContent, ILoggerFactory loggerFactory) 
             : base(reqIfContent, loggerFactory)
@@ -141,7 +141,7 @@ namespace ReqIFSharp
 
             if (specType.GetType() != typeof(RelationGroupType))
             {
-                throw new ArgumentException("specType must of type RelationGroupType");
+                throw new ArgumentException($"{nameof(specType)} must of type RelationGroupType");
             }
 
             this.Type = (RelationGroupType)specType;
@@ -351,7 +351,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            return this.ReadSpecTypeInternalAsync(reader, token);
+            return this.ReadSpecTypeInternalAsync(reader);
         }
 
         /// <summary>
@@ -360,10 +360,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader)
         {
             if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF"))
             {

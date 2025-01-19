@@ -57,7 +57,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecObject"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public SpecObject(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -72,7 +72,7 @@ namespace ReqIFSharp
         /// The container <see cref="reqIfContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal SpecObject(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
@@ -113,7 +113,7 @@ namespace ReqIFSharp
 
             if (specType.GetType() != typeof(SpecObjectType))
             {
-                throw new ArgumentException("specType must of type SpecObjectType");
+                throw new ArgumentException($"{nameof(specType)} must of type SpecObjectType");
             }
 
             this.Type = (SpecObjectType)specType;

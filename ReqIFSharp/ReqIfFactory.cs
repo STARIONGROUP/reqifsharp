@@ -172,7 +172,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecType"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         /// <returns>
         /// an instance of <see cref="AttributeDefinition"/>
@@ -213,7 +213,7 @@ namespace ReqIFSharp
         /// The owning <see cref="ReqIFContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         /// <returns>
         /// an instance of <see cref="DatatypeDefinition"/>
@@ -254,7 +254,7 @@ namespace ReqIFSharp
         /// The owning <see cref="ReqIFContent"/> object.
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         /// <returns>
         /// an instance of <see cref="SpecType"/>

@@ -35,7 +35,7 @@ namespace ReqIFSharp
     public abstract class Identifiable
     {
         /// <summary>
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
         protected readonly ILoggerFactory loggerFactory;
 
@@ -61,7 +61,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="Identifiable"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         /// <remarks>
         /// The <see cref="LastChange"/> property is set to the current time.
@@ -237,13 +237,27 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        protected async Task ReadAlternativeIdAsync(XmlReader reader, CancellationToken token)
+        protected Task ReadAlternativeIdAsync(XmlReader reader, CancellationToken token)
         {
             if (reader == null)
             {
                 throw new ArgumentNullException(nameof(reader));
             }
 
+            return this.ReadAlternativeIdInternalAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Reads the ALTERNATIVE-ID
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        protected async Task ReadAlternativeIdInternalAsync(XmlReader reader, CancellationToken token)
+        {
             var alternativeId = new AlternativeId(this);
 
             using (var alternativeIdSubtree = reader.ReadSubtree())

@@ -67,7 +67,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecHierarchy"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public SpecHierarchy(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -85,7 +85,7 @@ namespace ReqIFSharp
         /// The requirement core information content.
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected internal SpecHierarchy(Specification root, ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -109,7 +109,7 @@ namespace ReqIFSharp
         /// The requirement core information content.
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal SpecHierarchy(SpecHierarchy container, Specification root, ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -172,33 +172,33 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            using (var speccHierarchySubtree = reader.ReadSubtree())
+            using (var specHierarchySubtree = reader.ReadSubtree())
             {
-                while (speccHierarchySubtree.Read())
+                while (specHierarchySubtree.Read())
                 {
-                    if (speccHierarchySubtree.MoveToContent() == XmlNodeType.Element)
+                    if (specHierarchySubtree.MoveToContent() == XmlNodeType.Element)
                     {
-                        switch (speccHierarchySubtree.LocalName)
+                        switch (specHierarchySubtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
-                                this.ReadAlternativeId(speccHierarchySubtree);
+                                this.ReadAlternativeId(specHierarchySubtree);
                                 break;
                             case "OBJECT":
-                                using (var subtree = speccHierarchySubtree.ReadSubtree())
+                                using (var subtree = specHierarchySubtree.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
                                     this.DeserializeObject(subtree);
                                 }
                                 break;
                             case "CHILDREN":
-                                using (var subtree = speccHierarchySubtree.ReadSubtree())
+                                using (var subtree = specHierarchySubtree.ReadSubtree())
                                 {
                                     subtree.MoveToContent();
                                     this.DeserializeSpecHierarchy(subtree);
                                 }
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", speccHierarchySubtree.LocalName);
+                                this.logger.LogWarning("The {LocalName} is not supported", specHierarchySubtree.LocalName);
                                 break;
                         }
                     }

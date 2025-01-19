@@ -40,7 +40,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecObjectType"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public SpecObjectType(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -54,7 +54,7 @@ namespace ReqIFSharp
         /// The container <see cref="ReqIFContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal SpecObjectType(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)

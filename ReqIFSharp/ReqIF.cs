@@ -35,7 +35,7 @@ namespace ReqIFSharp
     public class ReqIF
     {
         /// <summary>
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
         private readonly ILoggerFactory loggerFactory;
 
@@ -62,7 +62,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="ReqIF"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal ReqIF(ILoggerFactory loggerFactory)
         {

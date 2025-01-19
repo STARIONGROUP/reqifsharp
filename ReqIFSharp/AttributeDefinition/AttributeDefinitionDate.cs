@@ -59,7 +59,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeDefinitionDate"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public AttributeDefinitionDate(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
@@ -73,7 +73,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecType"/>.
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeDefinitionDate(SpecType specType, ILoggerFactory loggerFactory)
             : base(specType, loggerFactory)
@@ -118,7 +118,7 @@ namespace ReqIFSharp
 
             if (datatypeDefinition.GetType() != typeof(DatatypeDefinitionDate))
             {
-                throw new ArgumentException("datatypeDefinition must of type DatatypeDefinitionDate");
+                throw new ArgumentException($"{nameof(datatypeDefinition)} must of type DatatypeDefinitionDate");
             }
 
             this.Type = (DatatypeDefinitionDate)datatypeDefinition;

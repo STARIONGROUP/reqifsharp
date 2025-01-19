@@ -56,7 +56,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeValueString"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public AttributeValueXHTML(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
@@ -70,7 +70,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueXHTML(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
@@ -88,7 +88,7 @@ namespace ReqIFSharp
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionXHTML"/>
         /// </remarks>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal AttributeValueXHTML(AttributeDefinitionXHTML attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
@@ -163,7 +163,7 @@ namespace ReqIFSharp
 
             if (attributeDefinition.GetType() != typeof(AttributeDefinitionXHTML))
             {
-                throw new ArgumentException("attributeDefinition must of type AttributeDefinitionXHTML");
+                throw new ArgumentException($"{nameof(attributeDefinition)} must of type AttributeDefinitionXHTML");
             }
 
             this.Definition = (AttributeDefinitionXHTML)attributeDefinition;

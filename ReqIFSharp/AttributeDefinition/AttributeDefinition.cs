@@ -59,7 +59,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecType"/>.
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected AttributeDefinition(SpecType specType, ILoggerFactory loggerFactory)
             : base(loggerFactory)

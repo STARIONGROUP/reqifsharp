@@ -52,7 +52,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecRelation"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public SpecRelation(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -67,7 +67,7 @@ namespace ReqIFSharp
         /// The container <see cref="reqIfContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal SpecRelation(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
@@ -263,7 +263,7 @@ namespace ReqIFSharp
 
             if (specType.GetType() != typeof(SpecRelationType))
             {
-                throw new ArgumentException("specType must of type SpecRelationType");
+                throw new ArgumentException($"{nameof(specType)} must of type SpecRelationType");
             }
 
             this.Type = (SpecRelationType)specType;
@@ -304,7 +304,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        protected override async Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
+        protected override  Task ReadSpecTypeAsync(XmlReader reader, CancellationToken token)
         {
             if (reader == null)
             {
@@ -316,7 +316,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            await this.ReadSpecTypeInternalAsync(reader, token);
+            return this.ReadSpecTypeInternalAsync(reader, token);
         }
 
         /// <summary>

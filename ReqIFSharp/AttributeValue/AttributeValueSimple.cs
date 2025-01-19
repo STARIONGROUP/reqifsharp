@@ -38,7 +38,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="AttributeValueSimple"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected AttributeValueSimple(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -50,7 +50,7 @@ namespace ReqIFSharp
         /// </summary>
         /// <param name="attributeDefinition">The <see cref="AttributeDefinitionSimple"/> for which this is the default value</param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         /// <remarks>
         /// This constructor shall be used when setting the default value of an <see cref="AttributeDefinitionSimple"/>
@@ -67,7 +67,7 @@ namespace ReqIFSharp
         /// The owning <see cref="SpecElementWithAttributes"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected AttributeValueSimple(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)

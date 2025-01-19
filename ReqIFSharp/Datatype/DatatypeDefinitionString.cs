@@ -45,7 +45,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public DatatypeDefinitionString(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -59,7 +59,7 @@ namespace ReqIFSharp
         /// The owning <see cref="reqIfContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         internal DatatypeDefinitionString(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)

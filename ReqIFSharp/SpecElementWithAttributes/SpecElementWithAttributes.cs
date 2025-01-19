@@ -61,7 +61,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecElementWithAttributes"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected SpecElementWithAttributes(ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -76,7 +76,7 @@ namespace ReqIFSharp
         /// The container <see cref="reqIfContent"/>
         /// </param>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected SpecElementWithAttributes(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(loggerFactory)
@@ -107,7 +107,7 @@ namespace ReqIFSharp
         }
 
         /// <summary>
-        /// Gets the <see cref="SpecType"/> from the sub class
+        /// Gets the <see cref="SpecType"/> from the subclass
         /// </summary>
         /// <returns>
         /// an instance of <see cref="SpecType"/>
@@ -115,7 +115,7 @@ namespace ReqIFSharp
         protected abstract SpecType GetSpecType();
 
         /// <summary>
-        /// Sets the <see cref="SpecType"/> to the sub class
+        /// Sets the <see cref="SpecType"/> to the subclass
         /// </summary>
         /// <param name="specType">
         /// The <see cref="SpecType"/> to set.

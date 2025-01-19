@@ -44,7 +44,7 @@ namespace ReqIFSharp
     public class ReqIFDeserializer : IReqIFDeSerializer
     {
         /// <summary>
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </summary>
         private readonly ILoggerFactory loggerFactory;
 
@@ -57,7 +57,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="ReqIFDeserializer"/> class.
         /// </summary>
         /// <param name="loggerFactory">
-        /// The (injected) <see cref="ILoggerFactory"/> used to setup logging
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         public ReqIFDeserializer(ILoggerFactory loggerFactory = null)
         {
@@ -236,7 +236,7 @@ namespace ReqIFSharp
         {
             if (!validate && validationEventHandler != null)
             {
-                throw new ArgumentException("validationEventHandler must be null when validate is false");
+                throw new ArgumentException($"{nameof(validationEventHandler)} must be null when validate is false");
             }
 
             if (stream == null)
@@ -352,7 +352,7 @@ namespace ReqIFSharp
                     }
             }
 
-            throw new SerializationException("The stream could not be deserialized");
+            throw new SerializationException($"The {nameof(stream)} could not be deserialized");
         }
 
         /// <summary>
@@ -470,7 +470,7 @@ namespace ReqIFSharp
                     }
             }
 
-            throw new SerializationException("The stream could not be deserialized");
+            throw new SerializationException($"The {nameof(stream)} could not be deserialized");
         }
 
         /// <summary>
@@ -506,7 +506,7 @@ namespace ReqIFSharp
                 schemaSet.Add(this.GetSchemaFromResource("reqif.xsd", validationEventHandler));
                 schemaSet.ValidationEventHandler += validationEventHandler;
 
-                // now combine and use the custom xmlresolver to serve all xsd references from resource manifest
+                // now combine and use the custom xml resolver to serve all xsd references from resource manifest
                 schemaSet.Compile();
 
                 // register the resolved schema set to the reader settings
@@ -532,7 +532,7 @@ namespace ReqIFSharp
         /// The <see cref="ValidationEventHandler"/> that processes the result of the <see cref="ReqIF"/> validation.
         /// </param>
         /// <returns>
-        /// An fully resolved instance of <see cref="XmlSchema"/>
+        /// A fully resolved instance of <see cref="XmlSchema"/>
         /// </returns>
         /// <exception cref="MissingManifestResourceException">
         /// the schema resource could not be found.
