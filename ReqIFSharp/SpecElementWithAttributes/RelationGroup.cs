@@ -357,7 +357,7 @@ namespace ReqIFSharp
         /// </param>
         private void DeserializeSpecRelations(XmlReader reader)
         {
-            while (reader.Read() && reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF"))
+            while (reader.Read() && reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF", StringComparison.Ordinal))
             {
                 var reference = reader.ReadElementContentAsString();
                 var specRelation = this.CoreContent.SpecRelations.SingleOrDefault(x => x.Identifier == reference);
@@ -383,7 +383,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task DeserializeSpecRelationsAsync(XmlReader reader, CancellationToken token)
         {
-            while (await reader.ReadAsync() && await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF"))
+            while (await reader.ReadAsync() && await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF", StringComparison.Ordinal))
             {
                 if (token.IsCancellationRequested)
                 {

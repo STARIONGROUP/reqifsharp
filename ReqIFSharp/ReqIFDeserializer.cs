@@ -315,7 +315,7 @@ namespace ReqIFSharp
 
                         var sw = Stopwatch.StartNew();
 
-                        var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
+                        var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.OrdinalIgnoreCase)).ToArray();
                         if (reqIfEntries.Length == 0)
                         {
                             throw new FileNotFoundException($"No reqif file could be found in the archive.");
@@ -423,7 +423,7 @@ namespace ReqIFSharp
 
                         var sw = Stopwatch.StartNew();
 
-                        var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.CurrentCultureIgnoreCase)).ToArray();
+                        var reqIfEntries = archive.Entries.Where(x => x.Name.EndsWith(".reqif", StringComparison.OrdinalIgnoreCase)).ToArray();
                         if (reqIfEntries.Length == 0)
                         {
                             throw new FileNotFoundException($"No reqif file could be found in the archive.");

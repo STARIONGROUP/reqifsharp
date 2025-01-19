@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -119,7 +120,7 @@ namespace ReqIFSharp
                             {
                                 while (specAttributesSubTree.Read())
                                 {
-                                    if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
+                                    if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-", StringComparison.Ordinal))
                                     {
                                         this.CreateAttributeDefinition(reader, reader.LocalName);
                                     }
@@ -172,7 +173,7 @@ namespace ReqIFSharp
                                         token.ThrowIfCancellationRequested();
                                     }
 
-                                    if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-"))
+                                    if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-", StringComparison.Ordinal))
                                     {
                                         await this.CreateAttributeDefinitionAsync(reader, reader.LocalName, token);
                                     }

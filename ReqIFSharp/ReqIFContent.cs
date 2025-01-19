@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -275,7 +276,7 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
-                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
+                if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-", StringComparison.Ordinal))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this, this.loggerFactory);
                     datatypeDefinition.ReadXml(reader);
@@ -301,7 +302,7 @@ namespace ReqIFSharp
                     token.ThrowIfCancellationRequested();
                 }
 
-                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-"))
+                if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-", StringComparison.Ordinal))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this, this.loggerFactory);
                     await datatypeDefinition.ReadXmlAsync(reader, token);

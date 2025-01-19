@@ -291,7 +291,7 @@ namespace ReqIFSharp
         /// </param>
         private void WriteNameSpaceAttributes(XmlWriter writer)
         {
-            if (attributes.All(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
+            if (attributes.TrueForAll(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
             {
                 var xmlAttribute = DefaultXmlAttributeFactory.CreateXHTMLNameSpaceAttribute(this);
                 if (xmlAttribute != null)
@@ -328,7 +328,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteNameSpaceAttributesAsync(XmlWriter writer)
         {
-            if (attributes.All(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
+            if (attributes.TrueForAll(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
             {
                 var xmlAttribute = DefaultXmlAttributeFactory.CreateXHTMLNameSpaceAttribute(this);
                 if (xmlAttribute != null)
