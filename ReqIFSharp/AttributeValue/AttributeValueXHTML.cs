@@ -119,7 +119,15 @@ namespace ReqIFSharp
         public override object ObjectValue
         {
             get => this.TheValue;
-            set => this.TheValue = value.ToString();
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException($"{nameof(value)} cannot be null.");
+                }
+
+                this.TheValue = value.ToString();
+            }
         }
 
         /// <summary>

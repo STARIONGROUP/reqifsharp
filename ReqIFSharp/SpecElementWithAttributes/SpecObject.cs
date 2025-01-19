@@ -166,7 +166,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            return this.ReadSpecTypeInternalAsync(reader, token);
+            return this.ReadSpecTypeInternalAsync(reader);
         }
 
         /// <summary>
@@ -175,10 +175,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader)
         {
             if (reader.ReadToDescendant("SPEC-OBJECT-TYPE-REF"))
             {

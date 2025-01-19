@@ -237,6 +237,9 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         protected Task ReadAlternativeIdAsync(XmlReader reader, CancellationToken token)
         {
             if (reader == null)
@@ -256,7 +259,7 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        protected async Task ReadAlternativeIdInternalAsync(XmlReader reader, CancellationToken token)
+        private async Task ReadAlternativeIdInternalAsync(XmlReader reader, CancellationToken token)
         {
             var alternativeId = new AlternativeId(this);
 

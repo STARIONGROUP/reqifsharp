@@ -175,7 +175,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            return this.ReadObjectSpecificElementsInternalAsync(reader, token);
+            return this.ReadObjectSpecificElementsInternalAsync(reader);
         }
 
         /// <summary>
@@ -185,10 +185,7 @@ namespace ReqIFSharp
         /// <remarks>
         /// In this case, read the source and target
         /// </remarks>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        private async Task ReadObjectSpecificElementsInternalAsync(XmlReader reader, CancellationToken token)
+        private async Task ReadObjectSpecificElementsInternalAsync(XmlReader reader)
         {
             if (await reader.MoveToContentAsync() == XmlNodeType.Element)
             {
@@ -316,7 +313,7 @@ namespace ReqIFSharp
                 token.ThrowIfCancellationRequested();
             }
 
-            return this.ReadSpecTypeInternalAsync(reader, token);
+            return this.ReadSpecTypeInternalAsync(reader);
         }
 
         /// <summary>
@@ -325,10 +322,7 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
-        /// </param>
-        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader)
         {
             if (reader.ReadToDescendant("SPEC-RELATION-TYPE-REF"))
             {

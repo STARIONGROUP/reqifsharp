@@ -236,7 +236,7 @@ namespace ReqIFSharp
         {
             if (!validate && validationEventHandler != null)
             {
-                throw new ArgumentException($"{nameof(validationEventHandler)} must be null when validate is false");
+                throw new ArgumentException($"{nameof(validationEventHandler)} must be null when {nameof(validate)} is false");
             }
 
             if (stream == null)
