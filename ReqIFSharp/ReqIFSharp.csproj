@@ -14,7 +14,7 @@
         <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
-        <PackageTags>ReqIF</PackageTags>
+        <PackageTags>ReqIF mbse modeltopia</PackageTags>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
         <Authors>Sam Gerené, Naron Phou, Alexander van Delft</Authors>
         <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
