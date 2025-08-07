@@ -1,96 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 
 <Project Sdk="Microsoft.NET.Sdk">
-	<PropertyGroup>
+    <PropertyGroup>
         <TargetFramework>net9.0</TargetFramework>
-		<Company>Starion Group S.A.</Company>
-		<Authors>Sam Gerene, Naron Phou</Authors>
-		<Description>Nunit test suite for the ReqIFSharp library</Description>
-		<Copyright>Copyright 2017-2025 Starion Group S.A.</Copyright>
-		<RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
-		<RepositoryType>Git</RepositoryType>
-		<Nullable>disable</Nullable>
-		<IsPackable>false</IsPackable>
-	</PropertyGroup>
+        <Company>Starion Group S.A.</Company>
+        <Authors>Sam Gerene, Naron Phou</Authors>
+        <Description>Nunit test suite for the ReqIFSharp library</Description>
+        <Copyright>Copyright 2017-2025 Starion Group S.A.</Copyright>
+        <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <Nullable>disable</Nullable>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<None Remove="driver.xsd" />
-	</ItemGroup>
-	<ItemGroup>
-		<EmbeddedResource Include="Resources\driver.xsd" />
-	</ItemGroup>
+    <ItemGroup>
+        <None Remove="driver.xsd" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Resources\driver.xsd" />
+    </ItemGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.7" />
-		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-		<PackageReference Include="NUnit" Version="4.3.2" />
-		<PackageReference Include="NUnit.Console" Version="3.20.1" />
-		<PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+        <PackageReference Include="NUnit" Version="4.3.2" />
+        <PackageReference Include="NUnit.Console" Version="3.20.1" />
+        <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
 
-		<PackageReference Include="coverlet.collector" Version="6.0.4">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-			<PrivateAssets>all</PrivateAssets>
-		</PackageReference>
-		<PackageReference Include="coverlet.msbuild" Version="6.0.4">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
+        <PackageReference Include="coverlet.collector" Version="6.0.4">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.msbuild" Version="6.0.4">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
 
         <PackageReference Include="Serilog" Version="4.3.0" />
         <PackageReference Include="Serilog.Extensions.Logging" Version="9.0.2" />
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
-	</ItemGroup>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\ReqIFSharp\ReqIFSharp.csproj"></ProjectReference>
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ReqIFSharp\ReqIFSharp.csproj"></ProjectReference>
+    </ItemGroup>
 
-	<ItemGroup>
-		<None Update="TestData\Datatype-Demo.reqif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\DefaultValueDemo.reqif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\large-sample.reqif">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\output.reqif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="output.xml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="output.zip">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\ProR_Traceability-Template-v1.0.reqif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\reqifsharpgenerated.reqif">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\requirements-and-objects.reqifz">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\sampleGH43.zip">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\sample_debug.reqif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\Spielwiese.reqifz">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\test-multiple-reqif.reqifz">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="TestData\testreqif.reqif">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-		<None Update="testreqif.xml">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <None Update="TestData\Datatype-Demo.reqif">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\DefaultValueDemo.reqif">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\large-sample.reqif">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\output.reqif">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="output.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="output.zip">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\ProR_Traceability-Template-v1.0.reqif">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\reqifsharpgenerated.reqif">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\requirements-and-objects.reqifz">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\sampleGH43.zip">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\sample_debug.reqif">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\Spielwiese.reqifz">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\test-multiple-reqif.reqifz">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="TestData\testreqif.reqif">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="testreqif.xml">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>

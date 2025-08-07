@@ -1,27 +1,27 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-	  <TargetFramework>netstandard2.0</TargetFramework>
-	  <Version>4.2.0</Version>
-	  <Description>A .NET library that provides extenions and services to operate on ReqIF documents.</Description>
-	  <PackageId>ReqIFSharp.Extensions</PackageId>
-	  <Company>Starion Group S.A.</Company>
-	  <Copyright>Copyright 2017-2025 Starion Group S.A.</Copyright>
-	  <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
-	  <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-	  <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
-	  <RepositoryType>Git</RepositoryType>
-	  <PackageIcon>reqifsharp-extensions-logo-small.png</PackageIcon>
+      <TargetFramework>netstandard2.0</TargetFramework>
+      <Version>4.2.0</Version>
+      <Description>A .NET library that provides extenions and services to operate on ReqIF documents.</Description>
+      <PackageId>ReqIFSharp.Extensions</PackageId>
+      <Company>Starion Group S.A.</Company>
+      <Copyright>Copyright 2017-2025 Starion Group S.A.</Copyright>
+      <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
+      <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+      <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
+      <RepositoryType>Git</RepositoryType>
+      <PackageIcon>reqifsharp-extensions-logo-small.png</PackageIcon>
       <PackageTags>ReqIF mbse modeltopia</PackageTags>
-	  <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-	  <Authors>Sam Gerené</Authors>
-	  <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-	  <IncludeSource>true</IncludeSource>
+      <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+      <Authors>Sam Gerené</Authors>
+      <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+      <IncludeSource>true</IncludeSource>
       <IncludeSymbols>true</IncludeSymbols>
-	  <PackageReleaseNotes>
+      <PackageReleaseNotes>
           - [Update] to reqifsharp version 9.2.0
       </PackageReleaseNotes>
-	  <LangVersion>latest</LangVersion>
+      <LangVersion>latest</LangVersion>
       <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
@@ -34,7 +34,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<None Include="..\reqifsharp-extensions-logo-small.png" Pack="true" PackagePath="" />
+    <None Include="..\reqifsharp-extensions-logo-small.png" Pack="true" PackagePath="" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
