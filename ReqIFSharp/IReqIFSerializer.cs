@@ -40,11 +40,15 @@ namespace ReqIFSharp
         /// <summary>
         /// Serialize a <see cref="IEnumerable{ReqIF}"/> object and write its content to the provided <see cref="Stream"/>
         /// </summary>
-        /// <param name="reqIfs">
+        /// <param name="reqifs">
         /// The <see cref="ReqIF"/> object to serialize
         /// </param>
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
+        /// contains the reqif file or a zip-archive of reqif files
         /// </param>
         void Serialize(IEnumerable<ReqIF> reqifs, Stream stream, SupportedFileExtensionKind fileExtensionKind);
 
@@ -66,6 +70,10 @@ namespace ReqIFSharp
         /// </param>
         /// <param name="stream">
         /// The <see cref="Stream"/> to serialize to
+        /// </param>
+        /// <param name="fileExtensionKind">
+        /// The <see cref="SupportedFileExtensionKind"/> that specifies whether the resulting <see cref="Stream"/>
+        /// contains the reqif file or a zip-archive of reqif files
         /// </param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.

@@ -69,7 +69,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecObject"/> class.
         /// </summary>
         /// <param name="reqIfContent">
-        /// The container <see cref="reqIfContent"/>
+        /// The container <see cref="ReqIFContent"/>
         /// </param>
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging

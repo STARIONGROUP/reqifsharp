@@ -35,7 +35,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// Queries the value of the <see cref="AttributeValue"/> as a formatted string
         /// </summary>
         /// <param name="attributeValue">
-        /// the subjectr <see cref="attributeValue"/>
+        /// the subject <see cref="AttributeValue"/>
         /// </param>
         /// <returns>
         /// a formatted string

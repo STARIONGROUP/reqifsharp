@@ -69,7 +69,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="SpecType"/> class.
         /// </summary>
         /// <param name="reqIfContent">
-        /// The owning <see cref="reqIfContent"/>
+        /// The owning <see cref="ReqIFContent"/>
         /// </param>
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
@@ -103,9 +103,6 @@ namespace ReqIFSharp
         /// </summary>
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
-        /// </param>
-        /// <param name="token">
-        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {

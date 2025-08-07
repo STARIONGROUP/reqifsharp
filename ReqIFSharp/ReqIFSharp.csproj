@@ -5,6 +5,8 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <Version>9.2.0</Version>
+        <LangVersion>12.0</LangVersion>
+        <Title>ReqIFSharp</Title>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
         <Company>Starion Group S.A.</Company>
@@ -13,6 +15,8 @@
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
         <PackageTags>ReqIF mbse modeltopia</PackageTags>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -20,19 +24,12 @@
         <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             - [Update] Microsoft.Extensions.Logging.Abstractions to version 9.0.7
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)'=='Debug'">
-        <DefineConstants>TRACE;DEBUG;</DefineConstants>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)'=='Release'">
-        <IncludeSymbols>true</IncludeSymbols>
-        <DefineConstants>RELEASE</DefineConstants>
     </PropertyGroup>
 
     <ItemGroup>
@@ -90,6 +87,7 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

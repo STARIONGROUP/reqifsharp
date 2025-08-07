@@ -127,6 +127,9 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())

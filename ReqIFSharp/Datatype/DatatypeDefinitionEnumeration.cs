@@ -73,7 +73,7 @@ namespace ReqIFSharp
         /// Initializes a new instance of the <see cref="DatatypeDefinitionEnumeration"/> class.
         /// </summary>
         /// <param name="reqIfContent">
-        /// The owning <see cref="reqIfContent"/>
+        /// The owning <see cref="ReqIFContent"/>
         /// </param>
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging

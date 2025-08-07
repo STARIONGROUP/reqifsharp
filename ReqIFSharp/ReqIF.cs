@@ -21,7 +21,6 @@
 namespace ReqIFSharp
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
@@ -90,7 +89,7 @@ namespace ReqIFSharp
         /// Gets or sets the default language encoding of the Exchange XML Document content
         /// </summary>
         /// <remarks>
-        /// The format is defined by the standard for specifying languages in XML documents proposed by the W3C <see cref="http://www.w3.org/TR/xml11/#sec-lang-tag"/>
+        /// The format is defined by the standard for specifying languages in XML documents proposed by the <a href="http://www.w3.org/TR/xml11/#sec-lang-tag"> W3C </a>
         /// </remarks>
         public string Lang { get; set; }
 

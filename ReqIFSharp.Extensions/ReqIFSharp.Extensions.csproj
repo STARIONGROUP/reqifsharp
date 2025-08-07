@@ -3,6 +3,8 @@
   <PropertyGroup>
       <TargetFramework>netstandard2.0</TargetFramework>
       <Version>4.2.0</Version>
+      <LangVersion>12.0</LangVersion>
+      <Title>ReqIFSharp.Extensions</Title>
       <Description>A .NET library that provides extenions and services to operate on ReqIF documents.</Description>
       <PackageId>ReqIFSharp.Extensions</PackageId>
       <Company>Starion Group S.A.</Company>
@@ -11,6 +13,8 @@
       <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
       <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
       <RepositoryType>Git</RepositoryType>
+      <NeutralLanguage>en-US</NeutralLanguage>
+      <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
       <PackageIcon>reqifsharp-extensions-logo-small.png</PackageIcon>
       <PackageTags>ReqIF mbse modeltopia</PackageTags>
       <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -18,10 +22,11 @@
       <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
       <IncludeSource>true</IncludeSource>
       <IncludeSymbols>true</IncludeSymbols>
+      <GenerateDocumentationFile>true</GenerateDocumentationFile>
+      <GenerateSBOM>true</GenerateSBOM>
       <PackageReleaseNotes>
           - [Update] to reqifsharp version 9.2.0
       </PackageReleaseNotes>
-      <LangVersion>latest</LangVersion>
       <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
@@ -37,5 +42,9 @@
     <None Include="..\reqifsharp-extensions-logo-small.png" Pack="true" PackagePath="" />
     <None Include="..\README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
+    </ItemGroup>
 
 </Project>
