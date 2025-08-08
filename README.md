@@ -29,6 +29,18 @@ Branch | Build Status
 Master | ![Build Status](https://github.com/STARIONGROUP/reqifsharp/actions/workflows/CodeQuality.yml/badge.svg?branch=master)
 Development | ![Build Status](https://github.com/STARIONGROUP/reqifsharp/actions/workflows/CodeQuality.yml/badge.svg?branch=development)
 
+## Software Bill of Materials (SBOM)
+
+As part of our commitment to security and transparency, this project includes a Software Bill of Materials (SBOM) in the associated NuGet packages. The SBOM provides a detailed inventory of the components and dependencies included in the package, allowing you to track and verify the software components, their licenses, and versions.
+
+**Why SBOM?**
+
+- **Improved Transparency**: Gain insight into the open-source and third-party components included in this package.
+- **Security Assurance**: By providing an SBOM, we enable users to more easily track vulnerabilities associated with the included components.
+- **Compliance**: SBOMs help ensure compliance with licensing requirements and make it easier to audit the project's dependencies.
+
+You can find the SBOM in the NuGet package itself, which is automatically generated and embedded during the build process.
+
 # License
 
 **ReqIFSharp** and **ReqIFSharp.Extensions** are provided to the community under the Apache License 2.0 License.
