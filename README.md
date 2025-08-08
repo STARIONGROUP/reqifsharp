@@ -1,6 +1,6 @@
 ![reqifsharp](https://raw.githubusercontent.com/STARIONGROUP/reqifsharp/master/reqifsharp-logo.png)
 
-ReqIFSharp is a C# library for reading and writing ReqIF documents. ReqIFSharp is used in Starion products such as [CDP4-COMET](https://www.stariongroup.eu/services-solutions/system-engineering/concurrent-design/cdp4-comet/) and a web based ReqIF [Viewer](https://viewer.reqifsharp.org). Read more about it here: https://www.reqifsharp.org
+**ReqIFSharp** and **ReqIFSharp.Extensions** are C# libraries for reading and writing ReqIF documents. ReqIFSharp is used in Starion products such as [CDP4-COMET](https://www.stariongroup.eu/services-solutions/system-engineering/concurrent-design/cdp4-comet/) and a web based ReqIF [Viewer](https://viewer.reqifsharp.org). Read more about it here: https://www.reqifsharp.org
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_reqifsharp&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_reqifsharp)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=STARIONGROUP_reqifsharp&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=STARIONGROUP_reqifsharp)
@@ -15,9 +15,10 @@ ReqIFSharp is a C# library for reading and writing ReqIF documents. ReqIFSharp i
 
 ## Installation
 
-The package is available on Nuget at https://www.nuget.org/packages/ReqIFSharp/
+The packages are available on Nuget:
 
-[![NuGet Badge](https://buildstats.info/nuget/ReqIFSharp)](https://buildstats.info/nuget/ReqIFSharp)
+- [ReqIFSharp](https://www.nuget.org/packages/ReqIFSharp): ![NuGet Version](https://img.shields.io/nuget/v/ReqIFSharp)
+- [ReqIFSharp.Extensions](https://www.nuget.org/packages/ReqIFSharp.Extensions): ![NuGet Version](https://img.shields.io/nuget/v/ReqIFSharp.Extensions)
 
 ## Build Status
 
@@ -30,7 +31,7 @@ Development | ![Build Status](https://github.com/STARIONGROUP/reqifsharp/actions
 
 # License
 
-The reqifsharp library is provided to the community under the Apache License 2.0.
+**ReqIFSharp** and **ReqIFSharp.Extensions** are provided to the community under the Apache License 2.0 License.
 
 # Contributions
 
