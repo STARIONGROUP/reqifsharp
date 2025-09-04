@@ -1,0 +1,41 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+
+title: "ReqIFSharp"
+abstract: "A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents."
+version: "9.2.2"
+date-released: "2025-09-04"
+url: "https://github.com/STARIONGROUP/reqifsharp"
+
+authors:
+  - given-names: "Sam"
+    family-names: "Gerené"
+    affiliation: "Starion Group S.A."
+    orcid: "https://orcid.org/0009-0000-1848-550X"
+  - given-names: "Alexander"
+    family-names: "van Delft"
+    affiliation: "Starion Group S.A."
+  - name: "Starion Group S.A."
+    affiliation: "Starion Group S.A."
+    given-names: "MBSE Competence Area Developers"
+
+repository-code: "https://github.com/STARIONGROUP/reqifsharp"
+license: "Apache-2.0"
+
+preferred-citation:
+  type: software
+  title: "A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents."
+  authors:
+    - given-names: "Sam"
+      family-names: "Gerené"
+      affiliation: "Starion Group S.A."
+      orcid: "https://orcid.org/0009-0000-1848-550X"
+    - given-names: "Alexander"
+      family-names: "van Delft"
+      affiliation: "Starion Group S.A."
+    - name: "Starion Group S.A."
+      affiliation: "Starion Group S.A."
+      given-names: "MBSE Competence Area Developers"
+  version: "9.2.2"
+  url: "https://github.com/STARIONGROUP/reqifsharp"
+  date-released: "2025-09-04"
