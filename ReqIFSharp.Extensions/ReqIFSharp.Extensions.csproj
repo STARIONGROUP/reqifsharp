@@ -25,9 +25,8 @@
       <GenerateDocumentationFile>true</GenerateDocumentationFile>
       <GenerateSBOM>true</GenerateSBOM>
       <PackageReleaseNotes>
-          - [Update] to reqifsharp version 9.2.1
-          - [Add] generation of SBOM and include in nuget package
-          - [Add] xml docs and improve documentation
+          - [Update] to reqifsharp version 9.2.2
+          - [Update] Microsoft.Sbom.Target to version 4.1.2
       </PackageReleaseNotes>
       <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
@@ -46,7 +45,7 @@
   </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.0" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.2" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

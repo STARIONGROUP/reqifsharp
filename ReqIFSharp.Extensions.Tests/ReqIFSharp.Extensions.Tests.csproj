@@ -15,9 +15,9 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
-        <PackageReference Include="NUnit" Version="4.3.2" />
+        <PackageReference Include="NUnit" Version="4.4.0" />
         <PackageReference Include="NUnit.Console" Version="3.20.1" />
-        <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+        <PackageReference Include="NUnit3TestAdapter" Version="5.1.0" />
 
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
