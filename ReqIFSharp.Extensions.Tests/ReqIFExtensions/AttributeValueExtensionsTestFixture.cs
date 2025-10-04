@@ -20,7 +20,11 @@
 
 namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
+    using System;
+    using System.Collections.Generic;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using NUnit.Framework;
 
@@ -62,6 +66,80 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var attributeValueXhtml = specObject.Values.OfType<AttributeValueXHTML>().First();
             Assert.That(attributeValueXhtml.QueryFormattedValue(), Is.EqualTo("<xhtml:p>XhtmlPType<xhtml:a accesskey=\"a\" charset=\"UTF-8\" href=\"http://eclipse.org/rmf\" hreflang=\"en\" rel=\"LinkTypes\" rev=\"LinkTypes\" style=\"text-decoration:underline\" tabindex=\"1\" title=\"text\" type=\"text/html\"> text before br<xhtml:br/>text after br text before span<xhtml:span>XhtmlSpanType</xhtml:span>text after span text before em<xhtml:em>XhtmlEmType</xhtml:em>text after em text before strong<xhtml:strong>XhtmlStrongType</xhtml:strong>text after strong text before dfn<xhtml:dfn>XhtmlDfnType</xhtml:dfn>text after dfn text before code<xhtml:code>XhtmlCodeType</xhtml:code>text after code text before samp<xhtml:samp>XhtmlSampType</xhtml:samp>text after samp text before kbd<xhtml:kbd>XhtmlKbdType</xhtml:kbd>text after kbd text before var<xhtml:var>XhtmlVarType</xhtml:var>text after var text before cite<xhtml:cite>XhtmlCiteType</xhtml:cite>text after cite text before abbr<xhtml:abbr>XhtmlAbbrType</xhtml:abbr>text after abbr text before acronym<xhtml:acronym>XhtmlAcronymType</xhtml:acronym>text after acronym text before q<xhtml:q>XhtmlQType</xhtml:q>text after q text before tt<xhtml:tt>XhtmlInlPresType</xhtml:tt>text after tt text before i<xhtml:i>XhtmlInlPresType</xhtml:i>text after i text before b<xhtml:b>XhtmlInlPresType</xhtml:b>text after b text before big<xhtml:big>XhtmlInlPresType</xhtml:big>text after big text before small<xhtml:small>XhtmlInlPresType</xhtml:small>text after small text before sub<xhtml:sub>XhtmlInlPresType</xhtml:sub>text after sub text before sup<xhtml:sup>XhtmlInlPresType</xhtml:sup>text after sup text before ins<xhtml:ins>XhtmlEditType</xhtml:ins>text after ins text before del<xhtml:del>XhtmlEditType</xhtml:del>text after del</xhtml:a></xhtml:p>"));
+        }
+
+        [Test]
+        public void Verify_that_QueryFormattedValue_joins_multiple_enumeration_values()
+        {
+            var enumerationValueA = new EnumValue
+            {
+                Properties = new EmbeddedValue { OtherContent = "A" }
+            };
+
+            var enumerationValueB = new EnumValue
+            {
+                Properties = new EmbeddedValue { OtherContent = "B" }
+            };
+
+            var attributeValueEnumeration = new AttributeValueEnumeration();
+            attributeValueEnumeration.Values.Add(enumerationValueA);
+            attributeValueEnumeration.Values.Add(enumerationValueB);
+
+            Assert.That(attributeValueEnumeration.QueryFormattedValue(), Is.EqualTo("A;B"));
+        }
+
+        [Test]
+        public void Verify_that_QueryFormattedValue_throws_when_attributeValue_is_null()
+        {
+            Assert.That(() => AttributeValueExtensions.QueryFormattedValue(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_QueryFormattedValue_throws_when_type_is_not_supported()
+        {
+            var unsupportedAttributeValue = new UnsupportedAttributeValue();
+
+            Assert.That(
+                () => unsupportedAttributeValue.QueryFormattedValue(),
+                Throws.Exception.TypeOf<InvalidOperationException>());
+        }
+
+        private class UnsupportedAttributeValue : AttributeValue
+        {
+            public override object ObjectValue
+            {
+                get => null;
+                set
+                {
+                }
+            }
+
+            protected override AttributeDefinition GetAttributeDefinition()
+            {
+                return null;
+            }
+
+            protected override void SetAttributeDefinition(AttributeDefinition attributeDefinition)
+            {
+            }
+
+            internal override void ReadXml(System.Xml.XmlReader reader)
+            {
+            }
+
+            internal override Task ReadXmlAsync(System.Xml.XmlReader reader, CancellationToken token)
+            {
+                return Task.CompletedTask;
+            }
+
+            internal override void WriteXml(System.Xml.XmlWriter writer)
+            {
+            }
+
+            internal override Task WriteXmlAsync(System.Xml.XmlWriter writer, CancellationToken token)
+            {
+                return Task.CompletedTask;
+            }
         }
     }
 }

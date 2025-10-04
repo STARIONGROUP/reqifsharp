@@ -65,6 +65,35 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
         }
 
         [Test]
+        public void Verify_that_QuerySpecHierarchies_throws_when_specification_is_null()
+        {
+            Assert.That(() => SpecificationExtensions.QueryAllContainedSpecHierarchies(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_SpecHierarchy_QueryAllContainedSpecHierarchies_returns_expected_results()
+        {
+            var rootHierarchy = new SpecHierarchy();
+            var childHierarchy = new SpecHierarchy();
+            var grandChildHierarchy = new SpecHierarchy();
+
+            rootHierarchy.Children.Add(childHierarchy);
+            childHierarchy.Children.Add(grandChildHierarchy);
+
+            var result = rootHierarchy.QueryAllContainedSpecHierarchies();
+
+            Assert.That(result, Is.EquivalentTo(new[] { childHierarchy, grandChildHierarchy }));
+        }
+
+        [Test]
+        public void Verify_that_QueryAllContainedSpecObjects_returns_the_expected_results()
+        {
+            var specification = this.reqIf.CoreContent.Specifications.Single(x => x.Identifier == "_o7scS6dbEeafNduaIhMwQg");
+
+            Assert.That(specification.QueryAllContainedSpecObjects().Count(), Is.EqualTo(13));
+        }
+
+        [Test]
         public void Verify_that_QueryAttributeDefinitions_returns_the_expected_results()
         {
             var specification = this.reqIf.CoreContent.Specifications.Single(x => x.Identifier == "_o7scS6dbEeafNduaIhMwQg");
@@ -76,6 +105,18 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             Assert.That(attributeDefinitions.Single(x => x.Identifier == "_o7scPKdbEeafNduaIhMwQg"), Is.Not.Null);
             Assert.That(attributeDefinitions.Single(x => x.Identifier == "_o7scPadbEeafNduaIhMwQg"), Is.Not.Null);
             Assert.That(attributeDefinitions.Single(x => x.Identifier == "_o7scO6dbEeafNduaIhMwQg"), Is.Not.Null);
+        }
+
+        [Test]
+        public void Verify_that_QueryAttributeDefinitions_throws_when_specification_is_null()
+        {
+            Assert.That(() => SpecificationExtensions.QueryAttributeDefinitions(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_SpecHierarchy_QueryAllContainedSpecHierarchies_throws_when_specHierarchy_is_null()
+        {
+            Assert.That(() => SpecHierarchyExtensions.QueryAllContainedSpecHierarchies(null), Throws.ArgumentNullException);
         }
     }
 }

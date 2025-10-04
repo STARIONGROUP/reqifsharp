@@ -20,7 +20,10 @@
 
 namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
+    using System;
     using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
 
     using Microsoft.Extensions.Logging;
 
@@ -101,6 +104,22 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
         }
 
         [Test]
+        public void Verify_that_QueryDatatypeName_throws_when_input_is_null()
+        {
+            Assert.That(() => AttributeDefinitionExtensions.QueryDatatypeName(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_QueryDatatypeName_throws_when_type_is_not_supported()
+        {
+            var unsupportedAttributeDefinition = new UnsupportedAttributeDefinition();
+
+            Assert.That(
+                () => unsupportedAttributeDefinition.QueryDatatypeName(),
+                Throws.Exception.TypeOf<InvalidOperationException>());
+        }
+
+        [Test]
         public void Verify_that_QueryDefaultValueAsFormattedString_returns_expected_results()
         {
             var testDataCreator = new ReqIFTestDataCreator();
@@ -128,6 +147,96 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
             var attributeDefinitionXHTML = (AttributeDefinitionXHTML)specType.SpecAttributes.Single(x => x.Identifier == "requirement-xhtml-attribute");
             Assert.That(attributeDefinitionXHTML.QueryDefaultValueAsFormattedString(), Is.EqualTo("NOT SET"));
+        }
+
+        [Test]
+        public void Verify_that_QueryDefaultValueAsFormattedString_returns_formatted_default_values()
+        {
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean
+            {
+                DefaultValue = new AttributeValueBoolean { TheValue = true }
+            };
+
+            Assert.That(attributeDefinitionBoolean.QueryDefaultValueAsFormattedString(), Is.EqualTo("True"));
+
+            var attributeDefinitionDate = new AttributeDefinitionDate
+            {
+                DefaultValue = new AttributeValueDate { TheValue = new DateTime(2020, 12, 25) }
+            };
+
+            Assert.That(attributeDefinitionDate.QueryDefaultValueAsFormattedString(), Is.EqualTo("December 25, 2020"));
+
+            var enumValue = new EnumValue { Identifier = "enum" };
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration
+            {
+                DefaultValue = new AttributeValueEnumeration()
+            };
+            attributeDefinitionEnumeration.DefaultValue.Values.Add(enumValue);
+
+            Assert.That(
+                attributeDefinitionEnumeration.QueryDefaultValueAsFormattedString(),
+                Is.EqualTo(enumValue.ToString()));
+
+            var attributeDefinitionInteger = new AttributeDefinitionInteger
+            {
+                DefaultValue = new AttributeValueInteger { TheValue = 42 }
+            };
+
+            Assert.That(attributeDefinitionInteger.QueryDefaultValueAsFormattedString(), Is.EqualTo("42"));
+
+            var attributeDefinitionReal = new AttributeDefinitionReal
+            {
+                DefaultValue = new AttributeValueReal { TheValue = 4.2 }
+            };
+
+            Assert.That(attributeDefinitionReal.QueryDefaultValueAsFormattedString(), Is.EqualTo("4.2"));
+
+            var attributeDefinitionString = new AttributeDefinitionString
+            {
+                DefaultValue = new AttributeValueString { TheValue = "value" }
+            };
+
+            Assert.That(attributeDefinitionString.QueryDefaultValueAsFormattedString(), Is.EqualTo("value"));
+
+            var attributeDefinitionXhtml = new AttributeDefinitionXHTML
+            {
+                DefaultValue = new AttributeValueXHTML { TheValue = "<xhtml:p>content</xhtml:p>" }
+            };
+
+            Assert.That(attributeDefinitionXhtml.QueryDefaultValueAsFormattedString(), Is.EqualTo("<xhtml:p>content</xhtml:p>"));
+        }
+
+        [Test]
+        public void Verify_that_QueryDefaultValueAsFormattedString_throws_when_input_is_null()
+        {
+            Assert.That(() => AttributeDefinitionExtensions.QueryDefaultValueAsFormattedString(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
+        public void Verify_that_QueryDefaultValueAsFormattedString_throws_when_type_is_not_supported()
+        {
+            var unsupportedAttributeDefinition = new UnsupportedAttributeDefinition();
+
+            Assert.That(
+                () => unsupportedAttributeDefinition.QueryDefaultValueAsFormattedString(),
+                Throws.Exception.TypeOf<InvalidOperationException>());
+        }
+
+        private class UnsupportedAttributeDefinition : AttributeDefinition
+        {
+            protected override DatatypeDefinition GetDatatypeDefinition()
+            {
+                return null;
+            }
+
+            protected override void SetDatatypeDefinition(DatatypeDefinition datatypeDefinition)
+            {
+            }
+
+            internal override Task ReadXmlAsync(System.Xml.XmlReader reader, CancellationToken token)
+            {
+                return Task.CompletedTask;
+            }
         }
     }
 }
