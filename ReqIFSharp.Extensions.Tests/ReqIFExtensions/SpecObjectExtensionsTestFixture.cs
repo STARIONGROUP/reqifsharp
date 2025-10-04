@@ -25,6 +25,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
     using NUnit.Framework;
 
+    using ReqIFSharp;
     using ReqIFSharp.Extensions.ReqIFExtensions;
 
     /// <summary>
@@ -76,11 +77,28 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
         }
 
         [Test]
+        public void Verify_that_QueryContainerSpecifications_returns_empty_when_specObject_not_in_specification()
+        {
+            var specObject = new SpecObject
+            {
+                ReqIFContent = this.reqIf.CoreContent
+            };
+
+            Assert.That(specObject.QueryContainerSpecifications(), Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_QueryContainerSpecifications_throws_when_specObject_is_null()
+        {
+            Assert.That(() => SpecObjectExtensions.QueryContainerSpecifications(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
         public void Verify_that_when_ReqIFContent_is_null_exception_is_thrown()
         {
             this.specObject = new SpecObject();
 
-            Assert.That(() => this.specObject.QueryContainerSpecifications(), 
+            Assert.That(() => this.specObject.QueryContainerSpecifications(),
                 Throws.TypeOf<InvalidOperationException>());
         }
 
@@ -90,6 +108,41 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var specRelations = this.specObject.QuerySpecRelations();
 
             Assert.That(specRelations.Single(), Is.EqualTo(this.specRelation));
+        }
+
+        [Test]
+        public void Verify_that_QuerySpecRelations_returns_results_when_specObject_is_target()
+        {
+            var targetSpecObject = new SpecObject(this.reqIf.CoreContent, null)
+            {
+                Identifier = "target"
+            };
+
+            var specRelation = new SpecRelation(this.reqIf.CoreContent, null)
+            {
+                Target = targetSpecObject
+            };
+
+            var specRelations = targetSpecObject.QuerySpecRelations();
+
+            Assert.That(specRelations.Single(), Is.EqualTo(specRelation));
+        }
+
+        [Test]
+        public void Verify_that_QuerySpecRelations_returns_empty_when_no_relations_exist()
+        {
+            var specObject = new SpecObject
+            {
+                ReqIFContent = this.reqIf.CoreContent
+            };
+
+            Assert.That(specObject.QuerySpecRelations(), Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_QuerySpecRelations_throws_when_specObject_is_null()
+        {
+            Assert.That(() => SpecObjectExtensions.QuerySpecRelations(null), Throws.ArgumentNullException);
         }
     }
 }

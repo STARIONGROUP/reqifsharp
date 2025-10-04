@@ -25,6 +25,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
     using NUnit.Framework;
 
+    using ReqIFSharp;
     using ReqIFSharp.Extensions.ReqIFExtensions;
     using ReqIFSharp.Extensions.Tests.TestData;
 
@@ -55,10 +56,39 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
         }
 
         [Test]
+        public void Verify_that_QueryReferencingSpecObject_returns_empty_when_none_reference_type()
+        {
+            var reqIf = new ReqIF
+            {
+                CoreContent = new ReqIFContent()
+            };
+
+            var specObjectType = new SpecObjectType { ReqIFContent = reqIf.CoreContent };
+            var otherSpecObjectType = new SpecObjectType { ReqIFContent = reqIf.CoreContent };
+
+            var specObject = new SpecObject(reqIf.CoreContent, null)
+            {
+                Type = otherSpecObjectType
+            };
+
+            reqIf.CoreContent.SpecObjects.Add(specObject);
+
+            var result = specObjectType.QueryReferencingSpecObjects();
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_QueryReferencingSpecObject_throws_when_specObjectType_is_null()
+        {
+            Assert.That(() => SpecObjectTypeExtensions.QueryReferencingSpecObjects(null), Throws.ArgumentNullException);
+        }
+
+        [Test]
         public void Verify_that_on_QueryReferencingSpecifications_NullReferenceException_is_thrown_when_owning_ReqIFContent_is_not_set()
         {
             var specObjectType = new SpecObjectType();
-            
+
             Assert.That(() => specObjectType.QueryReferencingSpecObjects(),
                 Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("The owning ReqIFContent of the SpecObjectType is not set."));

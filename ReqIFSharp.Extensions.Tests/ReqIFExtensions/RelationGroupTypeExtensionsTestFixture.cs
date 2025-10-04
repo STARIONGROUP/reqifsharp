@@ -25,6 +25,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
     using NUnit.Framework;
 
+    using ReqIFSharp;
     using ReqIFSharp.Extensions.ReqIFExtensions;
     using ReqIFSharp.Extensions.Tests.TestData;
 
@@ -52,6 +53,35 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var specObjects = relationGroupType.QueryReferencingRelationGroups();
 
             Assert.That(specObjects.Count(), Is.EqualTo(1));
+        }
+
+        [Test]
+        public void Verify_that_QueryReferencingRelationGroups_returns_empty_when_none_reference_type()
+        {
+            var reqIf = new ReqIF
+            {
+                CoreContent = new ReqIFContent()
+            };
+
+            var relationGroupType = new RelationGroupType { ReqIFContent = reqIf.CoreContent };
+            var otherRelationGroupType = new RelationGroupType { ReqIFContent = reqIf.CoreContent };
+
+            var relationGroup = new RelationGroup(reqIf.CoreContent, null)
+            {
+                Type = otherRelationGroupType
+            };
+
+            reqIf.CoreContent.SpecRelationGroups.Add(relationGroup);
+
+            var result = relationGroupType.QueryReferencingRelationGroups();
+
+            Assert.That(result, Is.Empty);
+        }
+
+        [Test]
+        public void Verify_that_QueryReferencingRelationGroups_throws_when_relationGroupType_is_null()
+        {
+            Assert.That(() => RelationGroupTypeExtensions.QueryReferencingRelationGroups(null), Throws.ArgumentNullException);
         }
 
         [Test]
