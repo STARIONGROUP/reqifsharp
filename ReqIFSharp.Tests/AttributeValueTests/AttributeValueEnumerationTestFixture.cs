@@ -65,6 +65,18 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_That_Exception_Is_Raised_When_AttributeDefinition_Is_Null()
+        {
+            var attributeValueEnumeration = new AttributeValueEnumeration();
+            var attributeValue = (AttributeValue)attributeValueEnumeration;
+
+            Assert.That(
+                () => attributeValue.AttributeDefinition = null,
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Property("ParamName").EqualTo("attributeDefinition"));
+        }
+
+        [Test]
         public void Verify_That_WriteXml_Without_Definition_Set_Throws_SerializationException()
         {
             using var memoryStream = new MemoryStream();
