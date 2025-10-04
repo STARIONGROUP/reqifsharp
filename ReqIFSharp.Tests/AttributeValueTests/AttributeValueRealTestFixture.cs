@@ -131,6 +131,18 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_That_Exception_Is_Raised_When_AttributeDefinition_Is_Null()
+        {
+            var attributeValueReal = new AttributeValueReal();
+            var attributeValue = (AttributeValue)attributeValueReal;
+
+            Assert.That(
+                () => attributeValue.AttributeDefinition = null,
+                Throws.Exception.TypeOf<ArgumentNullException>()
+                    .With.Property("ParamName").EqualTo("attributeDefinition"));
+        }
+
+        [Test]
         public void Verify_Convenience_Value_Property()
         {
             var attributeValue = new AttributeValueReal();
