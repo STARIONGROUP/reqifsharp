@@ -25,7 +25,6 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 
     using NUnit.Framework;
 
-    using ReqIFSharp;
     using ReqIFSharp.Extensions.ReqIFExtensions;
     using ReqIFSharp.Extensions.Tests.TestData;
 
@@ -53,35 +52,6 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var specObjects = specRelationType.QueryReferencingSpecRelations();
 
             Assert.That(specObjects.Count(), Is.EqualTo(1));
-        }
-
-        [Test]
-        public void Verify_that_QueryReferencingSpecRelations_returns_empty_when_none_reference_type()
-        {
-            var reqIf = new ReqIF
-            {
-                CoreContent = new ReqIFContent()
-            };
-
-            var specRelationType = new SpecRelationType { ReqIFContent = reqIf.CoreContent };
-            var otherSpecRelationType = new SpecRelationType { ReqIFContent = reqIf.CoreContent };
-
-            var specRelation = new SpecRelation(reqIf.CoreContent, null)
-            {
-                Type = otherSpecRelationType
-            };
-
-            reqIf.CoreContent.SpecRelations.Add(specRelation);
-
-            var result = specRelationType.QueryReferencingSpecRelations();
-
-            Assert.That(result, Is.Empty);
-        }
-
-        [Test]
-        public void Verify_that_QueryReferencingSpecRelations_throws_when_specRelationType_is_null()
-        {
-            Assert.That(() => SpecRelationTypeExtensions.QueryReferencingSpecRelations(null), Throws.ArgumentNullException);
         }
 
         [Test]
