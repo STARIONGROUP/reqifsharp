@@ -28,6 +28,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="AttributeValueString"/> class is to define a <see cref="string"/> attribute value.
@@ -148,8 +149,7 @@ namespace ReqIFSharp
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {
-            var value = reader["THE-VALUE"];
-            this.TheValue = value;
+            this.TheValue = reader.GetAttribute("THE-VALUE");
 
             while (reader.Read())
             {
@@ -177,8 +177,7 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            var value = reader["THE-VALUE"];
-            this.TheValue = value;
+            this.TheValue = reader.GetAttribute("THE-VALUE");
 
             while (await reader.ReadAsync())
             {

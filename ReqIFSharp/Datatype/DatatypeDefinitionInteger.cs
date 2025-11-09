@@ -20,11 +20,14 @@
 
 namespace ReqIFSharp
 {
+    using System;
+    using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionInteger"/> class is to define the primitive Integer data type
@@ -32,15 +35,21 @@ namespace ReqIFSharp
     /// <remarks>
     /// This element defines a data type for the representation of Integer data values in the Exchange Document.
     /// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
-    /// ReqIfSharp supports 64 bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
+    /// ReqIfSharp supports 64-bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
     public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
     {
+        /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<DatatypeDefinitionInteger> logger;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionInteger"/> class.
         /// </summary>
         public DatatypeDefinitionInteger()
         {
+            this.logger = NullLogger<DatatypeDefinitionInteger>.Instance;
         }
 
         /// <summary>
@@ -52,6 +61,7 @@ namespace ReqIFSharp
         public DatatypeDefinitionInteger(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionInteger>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionInteger>();
         }
 
         /// <summary>
@@ -66,6 +76,7 @@ namespace ReqIFSharp
         internal DatatypeDefinitionInteger(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionInteger>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionInteger>();
         }
 
         /// <summary>
@@ -88,17 +99,7 @@ namespace ReqIFSharp
         { 
             base.ReadXml(reader);
 
-            var maxValue = reader.GetAttribute("MAX"); 
-            if (!string.IsNullOrEmpty(maxValue)) 
-            { 
-                this.Max = XmlConvert.ToInt64(maxValue);
-            }
-            
-            var minValue = reader.GetAttribute("MIN"); 
-            if (!string.IsNullOrEmpty(minValue)) 
-            { 
-                this.Min = XmlConvert.ToInt64(minValue);
-            }
+            this.ReadXmlAttributes(reader);
 
             this.ReadAlternativeId(reader);
         }
@@ -116,19 +117,64 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            var maxValue = reader.GetAttribute("MAX");
-            if (!string.IsNullOrEmpty(maxValue))
-            {
-                this.Max = XmlConvert.ToInt64(maxValue);
-            }
-
-            var minValue = reader.GetAttribute("MIN");
-            if (!string.IsNullOrEmpty(minValue))
-            {
-                this.Min = XmlConvert.ToInt64(minValue);
-            }
+            this.ReadXmlAttributes(reader);
 
             await this.ReadAlternativeIdAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (MAX, MIN)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading MAX at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var maxValue = reader.GetAttribute("MAX");
+            if (!string.IsNullOrWhiteSpace(maxValue))
+            {
+                try
+                {
+                    this.Max = XmlConvert.ToInt64(maxValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The DatatypeDefinitionInteger.MAX: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Max is set to Int64.MaxValue",
+                        maxValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.Max = long.MaxValue;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The DatatypeDefinitionInteger.MAX {maxValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
+                }
+            }
+
+            this.logger.LogTrace("reading MIN at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var minValue = reader.GetAttribute("MIN");
+            if (!string.IsNullOrWhiteSpace(minValue))
+            {
+                try
+                {
+                    this.Min = XmlConvert.ToInt64(minValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The DatatypeDefinitionInteger.MIN: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Min is set to Int64.MinValue",
+                        minValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.Min = long.MinValue;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The DatatypeDefinitionInteger.MIN {minValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
+                }
+            }
         }
 
         /// <summary>

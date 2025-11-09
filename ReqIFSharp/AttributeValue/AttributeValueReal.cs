@@ -37,10 +37,16 @@ namespace ReqIFSharp
     public class AttributeValueReal : AttributeValueSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueReal> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueReal"/> class.
         /// </summary>
         public AttributeValueReal()
         {
+            this.logger = NullLogger<AttributeValueReal>.Instance;
         }
 
         /// <summary>
@@ -51,6 +57,7 @@ namespace ReqIFSharp
         /// </param>
         public AttributeValueReal(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueReal>.Instance : this.loggerFactory.CreateLogger<AttributeValueReal>();
         }
 
         /// <summary>
@@ -66,6 +73,8 @@ namespace ReqIFSharp
         internal AttributeValueReal(AttributeDefinitionReal attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueReal>.Instance : this.loggerFactory.CreateLogger<AttributeValueReal>();
+
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -81,6 +90,7 @@ namespace ReqIFSharp
         internal AttributeValueReal(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueReal>.Instance : this.loggerFactory.CreateLogger<AttributeValueReal>();
         }
 
         /// <summary>
@@ -158,12 +168,7 @@ namespace ReqIFSharp
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {
-            var value = reader["THE-VALUE"];
-
-            if (value != null)
-            {
-                this.TheValue = XmlConvert.ToDouble(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             while (reader.Read())
             {
@@ -191,12 +196,7 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            var value = reader["THE-VALUE"];
-
-            if (value != null)
-            {
-                this.TheValue = XmlConvert.ToDouble(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             while (await reader.ReadAsync())
             {
@@ -214,6 +214,32 @@ namespace ReqIFSharp
                     {
                         throw new InvalidOperationException($"The attribute-definition Real {reference} could not be found for the value.");
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (THE-VALUE)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading THE-VALUE at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var theValue = reader.GetAttribute("THE-VALUE");
+            if (!string.IsNullOrWhiteSpace(theValue))
+            {
+                try
+                {
+                    this.TheValue = XmlConvert.ToDouble(theValue);
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The AttributeValueReal.THE-VALUE {theValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a REAL", e);
                 }
             }
         }

@@ -20,11 +20,14 @@
 
 namespace ReqIFSharp
 {
+    using System;
+    using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="EmbeddedValue"/> class represents additional information related to enumeration literals.
@@ -32,10 +35,16 @@ namespace ReqIFSharp
     public class EmbeddedValue
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EmbeddedValue> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EmbeddedValue"/> class.
         /// </summary>
         public EmbeddedValue()
         {
+            this.logger = NullLogger<EmbeddedValue>.Instance;
         }
 
         /// <summary>
@@ -49,6 +58,8 @@ namespace ReqIFSharp
         /// </param>
         internal EmbeddedValue(EnumValue enumValue, ILoggerFactory loggerFactory)
         {
+            this.logger = loggerFactory == null ? NullLogger<EmbeddedValue>.Instance : loggerFactory.CreateLogger<EmbeddedValue>();
+
             this.EnumValue = enumValue;
             this.EnumValue.Properties = this;
         }
@@ -56,7 +67,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the numerical value corresponding to the enumeration literal.
         /// </summary>
-        public int Key { get; set; }
+        public long Key { get; set; }
 
         /// <summary>
         /// Gets or sets Arbitrary additional information related to the enumeration literal.
@@ -79,12 +90,42 @@ namespace ReqIFSharp
         /// </param>
         internal void ReadXml(XmlReader reader)
         {
-            var key = reader.GetAttribute("KEY");
+            this.ReadXmlAttributes(reader);
+        }
 
-            if (key != null)
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (KEY, OTHER-CONTENT)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading KEY at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var keyValue = reader.GetAttribute("KEY");
+            if (!string.IsNullOrWhiteSpace(keyValue))
             {
-                this.Key = XmlConvert.ToInt32(key);
+                try
+                {
+                    this.Key = XmlConvert.ToInt64(keyValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The EmbeddedValue.KEY: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Key is set to 0 (default)",
+                        keyValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.Key = default;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The EmbeddedValue.KEY {keyValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
+                }
             }
+
+            this.logger.LogTrace("reading OTHER-CONTENT at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
 
             this.OtherContent = reader.GetAttribute("OTHER-CONTENT");
         }

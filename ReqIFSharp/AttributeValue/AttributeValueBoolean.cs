@@ -28,6 +28,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="AttributeValueBoolean"/> class is to define a <see cref="bool"/> attribute value.
@@ -35,10 +36,16 @@ namespace ReqIFSharp
     public class AttributeValueBoolean : AttributeValueSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueBoolean> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueBoolean"/> class.
         /// </summary>
         public AttributeValueBoolean()
         {
+            this.logger = NullLogger<AttributeValueBoolean>.Instance;
         }
 
         /// <summary>
@@ -49,6 +56,7 @@ namespace ReqIFSharp
         /// </param>
         public AttributeValueBoolean(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueBoolean>.Instance : this.loggerFactory.CreateLogger<AttributeValueBoolean>();
         }
 
         /// <summary>
@@ -64,6 +72,8 @@ namespace ReqIFSharp
         internal AttributeValueBoolean(AttributeDefinitionBoolean attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueBoolean>.Instance : this.loggerFactory.CreateLogger<AttributeValueBoolean>();
+
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -79,6 +89,7 @@ namespace ReqIFSharp
         internal AttributeValueBoolean(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueBoolean>.Instance : this.loggerFactory.CreateLogger<AttributeValueBoolean>();
         }
 
         /// <summary>
@@ -156,12 +167,7 @@ namespace ReqIFSharp
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {
-            var value = reader["THE-VALUE"];
-
-            if (value != null)
-            {
-                this.TheValue = XmlConvert.ToBoolean(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             while (reader.Read())
             {
@@ -189,12 +195,7 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            var value = reader["THE-VALUE"];
-
-            if (value != null)
-            {
-                this.TheValue = XmlConvert.ToBoolean(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             while (await reader.ReadAsync())
             {
@@ -212,6 +213,32 @@ namespace ReqIFSharp
                     {
                         throw new InvalidOperationException($"The attribute-definition Boolean {reference} could not be found for the value.");
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (THE-VALUE)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading THE-VALUE at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var theValue = reader.GetAttribute("THE-VALUE");
+            if (!string.IsNullOrWhiteSpace(theValue))
+            {
+                try
+                {
+                    this.TheValue = XmlConvert.ToBoolean(theValue);
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The AttributeValueBoolean.THE-VALUE {theValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
                 }
             }
         }

@@ -180,6 +180,8 @@ namespace ReqIFSharp
                 {
                     if (subtree.MoveToContent() == XmlNodeType.Element)
                     {
+                        var xmlLineInfo = reader as IXmlLineInfo;
+
                         string reference;
 
                         switch (subtree.LocalName)
@@ -203,7 +205,7 @@ namespace ReqIFSharp
                                 }
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
+                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", subtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                                 break;
                         }
                     }
@@ -233,6 +235,8 @@ namespace ReqIFSharp
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
+                        var xmlLineInfo = reader as IXmlLineInfo;
+
                         string reference;
 
                         switch (subtree.LocalName)
@@ -256,7 +260,7 @@ namespace ReqIFSharp
                                 }
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
+                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", subtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                                 break;
                         }
                     }

@@ -105,6 +105,8 @@ namespace ReqIFSharp
                 {
                     if (subtree.MoveToContent() == XmlNodeType.Element)
                     {
+                        var xmlLineInfo = reader as IXmlLineInfo;
+
                         switch (subtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
@@ -115,7 +117,7 @@ namespace ReqIFSharp
                                 enumValue.ReadXml(subtree);
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
+                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", subtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                                 break;
                         }
                     }
@@ -152,6 +154,8 @@ namespace ReqIFSharp
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
+                        var xmlLineInfo = reader as IXmlLineInfo;
+
                         switch (subtree.LocalName)
                         {
                             case "ALTERNATIVE-ID":
@@ -162,7 +166,7 @@ namespace ReqIFSharp
                                 await enumValue.ReadXmlAsync(subtree, token);
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", subtree.LocalName);
+                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", subtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                                 break;
                         }
                     }
