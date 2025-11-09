@@ -22,9 +22,11 @@ namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;
-    using System.Threading;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
@@ -157,6 +159,44 @@ namespace ReqIFSharp.Tests
 
             Assert.That(async () => await attributeValueInteger.ReadXmlAsync(xmlReader, cts.Token),
                 Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_that_when_too_large_Value_Exception_is_not_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-INTEGER THE-VALUE="9223372036854775808" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinition = new AttributeDefinitionInteger() { SpecType = specType };
+
+            var attributeValueInteger = new AttributeValueInteger(attributeDefinition, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueInteger.ReadXml(xmlReader), Throws.Nothing);
+
+            Assert.That(attributeValueInteger.TheValue, Is.EqualTo(0));
+        }
+
+        [Test]
+        public void Verify_that_when_too_invalid_Value_Exception_is_not_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-INTEGER THE-VALUE="not-an-integer" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinition = new AttributeDefinitionInteger() { SpecType = specType };
+
+            var attributeValueInteger = new AttributeValueInteger(attributeDefinition, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueInteger.ReadXml(xmlReader), Throws.InstanceOf<SerializationException>());
         }
     }
 }

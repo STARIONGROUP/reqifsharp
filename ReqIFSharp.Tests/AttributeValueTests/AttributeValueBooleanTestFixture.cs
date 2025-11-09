@@ -26,6 +26,8 @@ namespace ReqIFSharp.Tests
     using System.Threading;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging.Abstractions;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
@@ -158,6 +160,21 @@ namespace ReqIFSharp.Tests
 
             Assert.That(async () => await attributeValueBoolean.ReadXmlAsync(xmlReader, cts.Token),
                 Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_that_when_invalid_IsMultiValued_Exception_is_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="not-a-boolean" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var attributeValueBoolean = new AttributeValueBoolean(NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueBoolean.ReadXml(xmlReader), Throws.InstanceOf<SerializationException>());
         }
     }
 }

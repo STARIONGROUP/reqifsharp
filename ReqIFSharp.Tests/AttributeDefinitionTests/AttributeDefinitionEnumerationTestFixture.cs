@@ -18,17 +18,17 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
+using Microsoft.Extensions.Logging.Abstractions;
+
 namespace ReqIFSharp.Tests
 {
+    using NUnit.Framework;
+    using ReqIFSharp;
     using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Xml;
-
-    using NUnit.Framework;
-
-    using ReqIFSharp;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionEnumeration"/>
@@ -85,6 +85,23 @@ namespace ReqIFSharp.Tests
 
             Assert.That(async () => await attributeDefinitionEnumeration.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_that_when_invalid_IsMultiValued_Exception_is_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="AD1" MULTI-VALUED="not-a-bool" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration(specType, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeDefinitionEnumeration.ReadXml(xmlReader),
+                Throws.InstanceOf<SerializationException>());
         }
     }
 }

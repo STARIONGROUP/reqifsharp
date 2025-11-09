@@ -128,13 +128,6 @@ namespace ReqIFSharp
                 {
                     this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
                 }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The Identifiable.LAST-CHANGE: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. LAST-CHANGE is set to DateTime.MinValue",
-                        lastChange, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.LastChange = default;
-                }
                 catch (Exception e)
                 {
                     throw new SerializationException($"The Identifiable.LAST-CHANGE {lastChange} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a DATE", e);

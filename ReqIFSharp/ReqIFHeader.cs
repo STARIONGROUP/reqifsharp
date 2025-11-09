@@ -147,13 +147,6 @@ namespace ReqIFSharp
                                 {
                                     this.CreationTime = XmlConvert.ToDateTime(creationTimeValue, XmlDateTimeSerializationMode.RoundtripKind);
                                 }
-                                catch (OverflowException)
-                                {
-                                    this.logger.LogWarning("The ReqIFHeader.CREATION-TIME: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to ReqIFHeader.CREATION-TIME",
-                                        creationTimeValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                                    this.CreationTime = default;
-                                }
                                 catch (Exception e)
                                 {
                                     throw new SerializationException($"The ReqIFHeader.CREATION-TIME {creationTimeValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a DATE", e);
@@ -220,13 +213,6 @@ namespace ReqIFSharp
                                 try
                                 {
                                     this.CreationTime = XmlConvert.ToDateTime(creationTimeValue, XmlDateTimeSerializationMode.RoundtripKind);
-                                }
-                                catch (OverflowException)
-                                {
-                                    this.logger.LogWarning("The ReqIFHeader.CREATION-TIME: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to ReqIFHeader.CREATION-TIME",
-                                        creationTimeValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                                    this.CreationTime = default;
                                 }
                                 catch (Exception e)
                                 {

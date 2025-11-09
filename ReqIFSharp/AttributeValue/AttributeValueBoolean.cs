@@ -236,13 +236,6 @@ namespace ReqIFSharp
                 {
                     this.TheValue = XmlConvert.ToBoolean(theValue);
                 }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The AttributeValueBoolean.THE-VALUE: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to false",
-                        theValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.TheValue = default;
-                }
                 catch (Exception e)
                 {
                     throw new SerializationException($"The AttributeValueBoolean.THE-VALUE {theValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);

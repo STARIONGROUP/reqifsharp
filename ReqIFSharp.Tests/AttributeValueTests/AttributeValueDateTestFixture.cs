@@ -26,6 +26,8 @@ namespace ReqIFSharp.Tests
     using System.Threading;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging.Abstractions;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
@@ -159,6 +161,42 @@ namespace ReqIFSharp.Tests
 
             Assert.That(async () => await attributeValueDate.ReadXmlAsync(xmlReader, cts.Token),
                 Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_that_when_invalid_Value_Exception_is_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-DATE THE-VALUE="not-a-date" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinition = new AttributeDefinitionDate { SpecType = specType };
+
+            var attributeValueDate = new AttributeValueDate(attributeDefinition, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueDate.ReadXml(xmlReader), Throws.InstanceOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_that_when_too_large_small_Value_Exception_is_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-DATE THE-VALUE="999-11-12" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinition = new AttributeDefinitionDate { SpecType = specType };
+
+            var attributeValueDate = new AttributeValueDate(attributeDefinition, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueDate.ReadXml(xmlReader), Throws.InstanceOf<SerializationException>());
         }
     }
 }

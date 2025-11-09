@@ -27,6 +27,7 @@ namespace ReqIFSharp.Tests
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
@@ -180,6 +181,44 @@ namespace ReqIFSharp.Tests
 
             Assert.That(async () => await attributeValueReal.ReadXmlAsync(xmlReader, cts.Token),
                 Throws.Exception.TypeOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void Verify_that_when_too_large_Value_Exception_is_not_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-REAL THE-VALUE="1E+309" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinition = new AttributeDefinitionReal() { SpecType = specType };
+
+            var attributeValueReal = new AttributeValueReal(attributeDefinition, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueReal.ReadXml(xmlReader), Throws.Nothing);
+
+            Assert.That(attributeValueReal.TheValue, Is.EqualTo(double.PositiveInfinity));
+        }
+
+        [Test]
+        public void Verify_that_when_too_invalid_Value_Exception_is_not_raised()
+        {
+            var xml = """
+                      <ATTRIBUTE-VALUE-REAL THE-VALUE="not-a-real" />
+                      """;
+
+            var xmlReader = XmlReader.Create(new StringReader(xml));
+            xmlReader.MoveToContent();
+
+            var specType = new SpecificationType { ReqIFContent = new ReqIFContent() };
+            var attributeDefinition = new AttributeDefinitionReal() { SpecType = specType };
+
+            var attributeValueReal = new AttributeValueReal(attributeDefinition, NullLoggerFactory.Instance);
+
+            Assert.That(() => attributeValueReal.ReadXml(xmlReader), Throws.InstanceOf<SerializationException>());
         }
     }
 }

@@ -163,13 +163,6 @@ namespace ReqIFSharp
                 {
                     this.Max = XmlConvert.ToDouble(maxValue);
                 }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The DatatypeDefinitionReal.MAX: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Max is set to Int64.MaxValue",
-                        maxValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.Max = double.MaxValue;
-                }
                 catch (Exception e)
                 {
                     throw new SerializationException($"The DatatypeDefinitionReal.MAX {maxValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a REAL", e);
@@ -184,13 +177,6 @@ namespace ReqIFSharp
                 try
                 {
                     this.Min = XmlConvert.ToDouble(minValue);
-                }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The DatatypeDefinitionReal.MIN: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Min is set to Int64.MinValue",
-                        minValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.Min = double.MinValue;
                 }
                 catch (Exception e)
                 {

@@ -226,13 +226,6 @@ namespace ReqIFSharp
                 {
                     this.TheValue = XmlConvert.ToDateTime(theValue, XmlDateTimeSerializationMode.RoundtripKind);
                 }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The AttributeValueDate.THE-VALUE: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to DateTime.MinValue",
-                        theValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.TheValue = default;
-                }
                 catch (Exception e)
                 {
                     throw new SerializationException($"The AttributeValueDate.THE-VALUE {theValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a DATE", e);

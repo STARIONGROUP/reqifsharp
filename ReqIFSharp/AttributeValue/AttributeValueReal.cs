@@ -237,13 +237,6 @@ namespace ReqIFSharp
                 {
                     this.TheValue = XmlConvert.ToDouble(theValue);
                 }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The AttributeValueReal.THE-VALUE: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to 0",
-                        theValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.TheValue = default;
-                }
                 catch (Exception e)
                 {
                     throw new SerializationException($"The AttributeValueReal.THE-VALUE {theValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a REAL", e);

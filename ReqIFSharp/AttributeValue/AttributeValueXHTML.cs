@@ -324,13 +324,6 @@ namespace ReqIFSharp
                 {
                     this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
                 }
-                catch (OverflowException)
-                {
-                    this.logger.LogWarning("The AttributeValueXHTML.IS-SIMPLIFIED: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. IsSimplified is set to false",
-                        isSimplified, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-
-                    this.IsSimplified = default;
-                }
                 catch (Exception e)
                 {
                     throw new SerializationException($"The AttributeValueXHTML.IS-SIMPLIFIED {isSimplified} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
