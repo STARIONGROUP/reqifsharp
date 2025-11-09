@@ -113,7 +113,7 @@ namespace ReqIFSharp
         public abstract object ObjectValue { get; set; }
 
         /// <summary>
-        /// Gets the <see cref="AttributeDefinition"/> from the sub class
+        /// Gets the <see cref="AttributeDefinition"/> from the subclass
         /// </summary>
         /// <returns>
         /// an instance of <see cref="AttributeDefinition"/>
@@ -121,7 +121,7 @@ namespace ReqIFSharp
         protected abstract AttributeDefinition GetAttributeDefinition();
 
         /// <summary>
-        /// Sets the <see cref="AttributeDefinition"/> to the sub class
+        /// Sets the <see cref="AttributeDefinition"/> to the subclass
         /// </summary>
         /// <param name="attributeDefinition">
         /// The <see cref="AttributeDefinition"/> to set.

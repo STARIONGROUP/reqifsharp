@@ -136,6 +136,8 @@ namespace ReqIFSharp
             {
                 while (specElementWithAttributesReader.Read())
                 {
+                    var xmlLineInfo = reader as IXmlLineInfo;
+
                     if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element)
                     {
                         switch (specElementWithAttributesReader.LocalName)
@@ -214,7 +216,7 @@ namespace ReqIFSharp
                                 }
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", specElementWithAttributesReader.LocalName);
+                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", specElementWithAttributesReader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                                 break;
                         }
                     }
@@ -248,6 +250,8 @@ namespace ReqIFSharp
 
                     if (await specElementWithAttributesReader.MoveToContentAsync() == XmlNodeType.Element)
                     {
+                        var xmlLineInfo = reader as IXmlLineInfo;
+
                         switch (specElementWithAttributesReader.LocalName)
                         {
                             case "ALTERNATIVE-ID":
@@ -324,7 +328,7 @@ namespace ReqIFSharp
                                 }
                                 break;
                             default:
-                                this.logger.LogWarning("The {LocalName} is not supported", specElementWithAttributesReader.LocalName);
+                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", specElementWithAttributesReader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                                 break;
                         }
                     }

@@ -117,10 +117,29 @@ namespace ReqIFSharp
         {
             this.Identifier = reader.GetAttribute("IDENTIFIER");
 
-            this.logger.LogTrace("read xml of {Typename}:{Identifier}", this.GetType().Name, this.Identifier);
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("read xml of {Typename}:{Identifier} at line:position {LineNumber}:{LinePosition}", this.GetType().Name, this.Identifier, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
 
             var lastChange = reader.GetAttribute("LAST-CHANGE");
-            this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
+            if (!string.IsNullOrWhiteSpace(lastChange))
+            {
+                try
+                {
+                    this.LastChange = XmlConvert.ToDateTime(lastChange, XmlDateTimeSerializationMode.RoundtripKind);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The Identifiable.LAST-CHANGE: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. LAST-CHANGE is set to DateTime.MinValue",
+                        lastChange, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.LastChange = default;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The Identifiable.LAST-CHANGE {lastChange} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a DATE", e);
+                }
+            }
 
             this.Description = reader.GetAttribute("DESC");
             this.LongName = reader.GetAttribute("LONG-NAME");

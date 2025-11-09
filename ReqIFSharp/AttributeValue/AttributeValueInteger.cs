@@ -29,6 +29,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="AttributeValueInteger"/> class is to define an Integer attribute value.
@@ -39,10 +40,16 @@ namespace ReqIFSharp
     public class AttributeValueInteger : AttributeValueSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueInteger> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueInteger"/> class.
         /// </summary>
         public AttributeValueInteger()
         {
+            this.logger = NullLogger<AttributeValueInteger>.Instance;
         }
 
         /// <summary>
@@ -53,6 +60,7 @@ namespace ReqIFSharp
         /// </param>
         public AttributeValueInteger(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueInteger>.Instance : this.loggerFactory.CreateLogger<AttributeValueInteger>();
         }
 
         /// <summary>
@@ -68,6 +76,8 @@ namespace ReqIFSharp
         internal AttributeValueInteger(AttributeDefinitionInteger attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueInteger>.Instance : this.loggerFactory.CreateLogger<AttributeValueInteger>();
+
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -83,6 +93,7 @@ namespace ReqIFSharp
         internal AttributeValueInteger(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueInteger>.Instance : this.loggerFactory.CreateLogger<AttributeValueInteger>();
         }
 
         /// <summary>
@@ -160,12 +171,7 @@ namespace ReqIFSharp
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {
-            var value = reader["THE-VALUE"];
-
-            if (value != null)
-            {
-                this.TheValue = XmlConvert.ToInt64(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             while (reader.Read())
             {
@@ -193,12 +199,7 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            var value = reader["THE-VALUE"];
-
-            if (value != null)
-            {
-                this.TheValue = XmlConvert.ToInt64(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             while (await reader.ReadAsync())
             {
@@ -216,6 +217,39 @@ namespace ReqIFSharp
                     {
                         throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (THE-VALUE)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading THE-VALUE at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var theValue = reader.GetAttribute("THE-VALUE");
+            if (!string.IsNullOrWhiteSpace(theValue))
+            {
+                try
+                {
+                    this.TheValue = XmlConvert.ToInt64(theValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The AttributeValueInteger.THE-VALUE: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to 0",
+                        theValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.TheValue = default;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The AttributeValueInteger.THE-VALUE {theValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
                 }
             }
         }

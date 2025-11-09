@@ -20,13 +20,13 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
     using System;
+    using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="ReqIFHeader"/> class holds metadata relevant to a ReqIF Exchange Document content.
@@ -129,6 +129,8 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    var xmlLineInfo = reader as IXmlLineInfo;
+
                     switch (reader.LocalName)
                     {
                         case "REQ-IF-HEADER":
@@ -138,7 +140,25 @@ namespace ReqIFSharp
                             this.Comment = reader.ReadElementContentAsString();
                             break;
                         case "CREATION-TIME":
-                            this.CreationTime = XmlConvert.ToDateTime(reader.ReadElementContentAsString(), XmlDateTimeSerializationMode.RoundtripKind);
+                            var creationTimeValue = reader.ReadElementContentAsString();
+                            if (!string.IsNullOrWhiteSpace(creationTimeValue))
+                            {
+                                try
+                                {
+                                    this.CreationTime = XmlConvert.ToDateTime(creationTimeValue, XmlDateTimeSerializationMode.RoundtripKind);
+                                }
+                                catch (OverflowException)
+                                {
+                                    this.logger.LogWarning("The ReqIFHeader.CREATION-TIME: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to ReqIFHeader.CREATION-TIME",
+                                        creationTimeValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                                    this.CreationTime = default;
+                                }
+                                catch (Exception e)
+                                {
+                                    throw new SerializationException($"The ReqIFHeader.CREATION-TIME {creationTimeValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a DATE", e);
+                                }
+                            }
                             break;
                         case "REPOSITORY-ID":
                             this.RepositoryId = reader.ReadElementContentAsString();
@@ -156,7 +176,7 @@ namespace ReqIFSharp
                             this.Title = reader.ReadElementContentAsString();
                             break;
                         default:
-                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                            this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                             break;
                     }
                 }
@@ -183,6 +203,8 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    var xmlLineInfo = reader as IXmlLineInfo;
+
                     switch (reader.LocalName)
                     {
                         case "REQ-IF-HEADER":
@@ -192,7 +214,25 @@ namespace ReqIFSharp
                             this.Comment = await reader.ReadElementContentAsStringAsync();
                             break;
                         case "CREATION-TIME":
-                            this.CreationTime = XmlConvert.ToDateTime(await reader.ReadElementContentAsStringAsync(), XmlDateTimeSerializationMode.RoundtripKind);
+                            var creationTimeValue = await reader.ReadElementContentAsStringAsync();
+                            if (!string.IsNullOrWhiteSpace(creationTimeValue))
+                            {
+                                try
+                                {
+                                    this.CreationTime = XmlConvert.ToDateTime(creationTimeValue, XmlDateTimeSerializationMode.RoundtripKind);
+                                }
+                                catch (OverflowException)
+                                {
+                                    this.logger.LogWarning("The ReqIFHeader.CREATION-TIME: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. TheValue is set to ReqIFHeader.CREATION-TIME",
+                                        creationTimeValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                                    this.CreationTime = default;
+                                }
+                                catch (Exception e)
+                                {
+                                    throw new SerializationException($"The ReqIFHeader.CREATION-TIME {creationTimeValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a DATE", e);
+                                }
+                            }
                             break;
                         case "REPOSITORY-ID":
                             this.RepositoryId = await reader.ReadElementContentAsStringAsync();
@@ -210,7 +250,7 @@ namespace ReqIFSharp
                             this.Title = await reader.ReadElementContentAsStringAsync();
                             break;
                         default:
-                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                            this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                             break;
                     }
                 }
@@ -268,7 +308,7 @@ namespace ReqIFSharp
                 await writer.WriteElementStringAsync(null, "COMMENT",null,  this.Comment);
             }
 
-            await writer.WriteElementStringAsync(null, "CREATION-TIME", null ,XmlConvert.ToString(this.CreationTime, XmlDateTimeSerializationMode.RoundtripKind));
+            await writer.WriteElementStringAsync(null, "CREATION-TIME", null, XmlConvert.ToString(this.CreationTime, XmlDateTimeSerializationMode.RoundtripKind));
 
             if (!string.IsNullOrEmpty(this.RepositoryId))
             {

@@ -20,11 +20,14 @@
 
 namespace ReqIFSharp
 {
+    using System;
+    using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="AccessControlledElement"/> is the base class for classes that may restrict user access to their information.
@@ -32,10 +35,16 @@ namespace ReqIFSharp
     public abstract class AccessControlledElement : Identifiable
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AccessControlledElement> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AccessControlledElement"/> class
         /// </summary>
         protected AccessControlledElement()
         {
+            this.logger = NullLogger<AccessControlledElement>.Instance;
         }
 
         /// <summary>
@@ -47,6 +56,7 @@ namespace ReqIFSharp
         protected AccessControlledElement(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AccessControlledElement>.Instance : this.loggerFactory.CreateLogger<AccessControlledElement>();
         }
 
         /// <summary>
@@ -68,11 +78,21 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            var isEditable = reader.GetAttribute("IS-EDITABLE");
+            var xmlLineInfo = reader as IXmlLineInfo;
 
-            if (isEditable != null)
+            this.logger.LogTrace("reading IS-EDITABLE at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var isEditable = reader.GetAttribute("IS-EDITABLE");
+            if (!string.IsNullOrWhiteSpace(isEditable))
             {
-                this.IsEditable = XmlConvert.ToBoolean(isEditable);
+                try
+                {
+                    this.IsEditable = XmlConvert.ToBoolean(isEditable);
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The AccessControlledElement.IS-EDITABLE {isEditable} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
+                }
             }
         }
 

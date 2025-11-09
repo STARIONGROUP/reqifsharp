@@ -229,11 +229,7 @@ namespace ReqIFSharp
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {
-            var isSimplified = reader["IS-SIMPLIFIED"];
-            if (!string.IsNullOrEmpty(isSimplified))
-            {
-                this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
-            }
+            this.ReadXmlAttributes(reader);
 
             using (var subtree = reader.ReadSubtree())
             {
@@ -274,12 +270,8 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            var isSimplified = reader["IS-SIMPLIFIED"];
-            if (!string.IsNullOrEmpty(isSimplified))
-            {
-                this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
-            }
-            
+            this.ReadXmlAttributes(reader);
+
             using (var subtree = reader.ReadSubtree())
             {
                 while (await subtree.ReadAsync())
@@ -309,6 +301,39 @@ namespace ReqIFSharp
                             this.ExternalObjects.AddRange(externalObjects);
                         }
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (IS-SIMPLIFIED)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading IS-SIMPLIFIED at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var isSimplified = reader.GetAttribute("IS-SIMPLIFIED");
+            if (!string.IsNullOrWhiteSpace(isSimplified))
+            {
+                try
+                {
+                    this.IsSimplified = XmlConvert.ToBoolean(isSimplified);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The AttributeValueXHTML.IS-SIMPLIFIED: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. IsSimplified is set to false",
+                        isSimplified, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.IsSimplified = default;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The AttributeValueXHTML.IS-SIMPLIFIED {isSimplified} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
                 }
             }
         }

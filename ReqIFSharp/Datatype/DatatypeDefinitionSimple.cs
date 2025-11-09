@@ -41,7 +41,7 @@ namespace ReqIFSharp
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
         /// </param>
         protected DatatypeDefinitionSimple(ILoggerFactory loggerFactory)
-            : base( loggerFactory)
+            : base(loggerFactory)
         {
         }
 

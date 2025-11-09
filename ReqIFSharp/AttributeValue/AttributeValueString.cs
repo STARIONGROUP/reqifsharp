@@ -28,6 +28,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="AttributeValueString"/> class is to define a <see cref="string"/> attribute value.
@@ -35,10 +36,16 @@ namespace ReqIFSharp
     public class AttributeValueString : AttributeValueSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<AttributeValueString> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueString"/> class.
         /// </summary>
         public AttributeValueString()
         {
+            this.logger = NullLogger<AttributeValueString>.Instance;
         }
 
         /// <summary>
@@ -49,6 +56,7 @@ namespace ReqIFSharp
         /// </param>
         public AttributeValueString(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueString>.Instance : this.loggerFactory.CreateLogger<AttributeValueString>();
         }
 
         /// <summary>
@@ -64,6 +72,8 @@ namespace ReqIFSharp
         internal AttributeValueString(AttributeDefinitionString attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueString>.Instance : this.loggerFactory.CreateLogger<AttributeValueString>();
+
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -79,6 +89,7 @@ namespace ReqIFSharp
         internal AttributeValueString(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueString>.Instance : this.loggerFactory.CreateLogger<AttributeValueString>();
         }
 
         /// <summary>
@@ -148,8 +159,7 @@ namespace ReqIFSharp
         /// </param>
         internal override void ReadXml(XmlReader reader)
         {
-            var value = reader["THE-VALUE"];
-            this.TheValue = value;
+            this.TheValue = reader.GetAttribute("THE-VALUE");
 
             while (reader.Read())
             {
@@ -177,8 +187,7 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            var value = reader["THE-VALUE"];
-            this.TheValue = value;
+            this.TheValue = reader.GetAttribute("THE-VALUE");
 
             while (await reader.ReadAsync())
             {

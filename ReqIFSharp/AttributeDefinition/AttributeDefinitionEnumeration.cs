@@ -22,8 +22,8 @@ namespace ReqIFSharp
 {
     using System;
     using System.Linq;
-    using System.Threading;
     using System.Runtime.Serialization;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
@@ -31,7 +31,7 @@ namespace ReqIFSharp
     using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
-    /// The purpose of the <see cref="AttributeDefinitionEnumeration"/> class is to define a enumeration attribute.
+    /// The purpose of the <see cref="AttributeDefinitionEnumeration"/> class is to define an enumeration attribute.
     /// </summary>
     /// <remarks>
     /// An <see cref="AttributeDefinitionEnumeration"/> element relates an <see cref="AttributeValueEnumeration"/> element to a
@@ -130,7 +130,7 @@ namespace ReqIFSharp
         /// <value>If set to true, this means that the user of a requirements authoring tool can pick one or more than one of the values in
         /// the set of specified values as an enumeration attribute value.
         /// </value>
-        /// <value> 
+        /// <value>
         /// If set to false, this means that the user of a requirements authoring tool can pick exactly one of the values in the set of
         /// specified values as an enumeration attribute value.
         /// </value>
@@ -146,15 +146,14 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            if (reader.GetAttribute("MULTI-VALUED") == "true")
-            {
-                this.IsMultiValued = true;
-            }
+            this.ReadXmlAttributes(reader);
 
             while (reader.Read())
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    var xmlLineInfo = reader as IXmlLineInfo;
+
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
@@ -180,7 +179,7 @@ namespace ReqIFSharp
                             }
                             break;
                         default:
-                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                            this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                             break;
                     }
                 }
@@ -200,10 +199,7 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            if (reader.GetAttribute("MULTI-VALUED") == "true")
-            {
-                this.IsMultiValued = true;
-            }
+            this.ReadXmlAttributes(reader);
 
             while (await reader.ReadAsync())
             {
@@ -214,6 +210,8 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    var xmlLineInfo = reader as IXmlLineInfo;
+
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
@@ -239,9 +237,35 @@ namespace ReqIFSharp
                             }
                             break;
                         default:
-                            this.logger.LogWarning("The {LocalName} is not supported", reader.LocalName);
+                            this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                             break;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (MULTI-VALUED)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading MULTI-VALUED at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var multiValuedValue = reader.GetAttribute("MULTI-VALUED");
+            if (!string.IsNullOrWhiteSpace(multiValuedValue))
+            {
+                try
+                {
+                    this.IsMultiValued = XmlConvert.ToBoolean(multiValuedValue);
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The AttributeDefinitionEnumeration.MULTI-VALUED {multiValuedValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
                 }
             }
         }

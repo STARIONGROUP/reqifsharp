@@ -20,11 +20,14 @@
 
 namespace ReqIFSharp
 {
+    using System;
+    using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// This element defines a data type for the representation of Real data values in the Exchange Document.
@@ -32,10 +35,16 @@ namespace ReqIFSharp
     public class DatatypeDefinitionReal : DatatypeDefinitionSimple
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<DatatypeDefinitionReal> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionReal"/> class.
         /// </summary>
         public DatatypeDefinitionReal()
         {
+            this.logger = NullLogger<DatatypeDefinitionReal>.Instance;
         }
 
         /// <summary>
@@ -47,6 +56,7 @@ namespace ReqIFSharp
         public DatatypeDefinitionReal(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionReal>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionReal>();
         }
 
         /// <summary>
@@ -61,12 +71,13 @@ namespace ReqIFSharp
         internal DatatypeDefinitionReal(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionReal>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionReal>();
         }
 
         /// <summary>
         /// Gets or sets a value that Denotes the supported maximum precision of real numbers represented by this data type.
         /// </summary>
-        public int Accuracy { get; set; }
+        public long Accuracy { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
@@ -88,23 +99,7 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            var accuracyValue = reader.GetAttribute("ACCURACY");
-            if (!string.IsNullOrEmpty(accuracyValue))
-            {
-                this.Accuracy = XmlConvert.ToInt32(accuracyValue);
-            }
-
-            var maxValue = reader.GetAttribute("MAX");
-            if (!string.IsNullOrEmpty(maxValue))
-            {
-                this.Max = XmlConvert.ToDouble(maxValue);
-            }
-
-            var minValue = reader.GetAttribute("MIN"); 
-            if (!string.IsNullOrEmpty(minValue)) 
-            { 
-                this.Min = XmlConvert.ToDouble(minValue);
-            }
+            this.ReadXmlAttributes(reader);
 
             this.ReadAlternativeId(reader);
         }
@@ -122,25 +117,86 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            var accuracyValue = reader.GetAttribute("ACCURACY");
-            if (!string.IsNullOrEmpty(accuracyValue))
-            {
-                this.Accuracy = XmlConvert.ToInt32(accuracyValue);
-            }
-
-            var maxValue = reader.GetAttribute("MAX");
-            if (!string.IsNullOrEmpty(maxValue))
-            {
-                this.Max = XmlConvert.ToDouble(maxValue);
-            }
-
-            var minValue = reader.GetAttribute("MIN");
-            if (!string.IsNullOrEmpty(minValue))
-            {
-                this.Min = XmlConvert.ToDouble(minValue);
-            }
+            this.ReadXmlAttributes(reader);
 
             await this.ReadAlternativeIdAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (ACCURACY, MAX, MIN)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading DatatypeDefinitionReal.ACCURACY at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var accuracyValue = reader.GetAttribute("ACCURACY");
+            if (!string.IsNullOrWhiteSpace(accuracyValue))
+            {
+                try
+                {
+                    this.Accuracy = XmlConvert.ToInt64(accuracyValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The DatatypeDefinitionReal.ACCURACY: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Accuracy is set to Int64.MaxValue",
+                        accuracyValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.Accuracy = long.MaxValue;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The DatatypeDefinitionReal.ACCURACY {accuracyValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
+                }
+            }
+
+            this.logger.LogTrace("reading DatatypeDefinitionReal.MAX at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var maxValue = reader.GetAttribute("MAX");
+            if (!string.IsNullOrWhiteSpace(maxValue))
+            {
+                try
+                {
+                    this.Max = XmlConvert.ToDouble(maxValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The DatatypeDefinitionReal.MAX: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Max is set to Int64.MaxValue",
+                        maxValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.Max = double.MaxValue;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The DatatypeDefinitionReal.MAX {maxValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a REAL", e);
+                }
+            }
+
+            this.logger.LogTrace("reading DatatypeDefinitionReal.MIN at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var minValue = reader.GetAttribute("MIN");
+            if (!string.IsNullOrWhiteSpace(minValue))
+            {
+                try
+                {
+                    this.Min = XmlConvert.ToDouble(minValue);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The DatatypeDefinitionReal.MIN: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. Min is set to Int64.MinValue",
+                        minValue, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.Min = double.MinValue;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The DatatypeDefinitionReal.MIN {minValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a REAL", e);
+                }
+            }
         }
 
         /// <summary>

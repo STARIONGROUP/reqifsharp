@@ -20,11 +20,14 @@
 
 namespace ReqIFSharp
 {
+    using System;
+    using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionString"/> class is to define the primitive <see cref="string"/> data type
@@ -35,10 +38,16 @@ namespace ReqIFSharp
     public class DatatypeDefinitionString : DatatypeDefinitionSimple 
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<DatatypeDefinitionString> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DatatypeDefinitionString"/> class.
         /// </summary>
         public DatatypeDefinitionString()
         {
+            this.logger = NullLogger<DatatypeDefinitionString>.Instance;
         }
 
         /// <summary>
@@ -50,6 +59,7 @@ namespace ReqIFSharp
         public DatatypeDefinitionString(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionString>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionString>();
         }
 
         /// <summary>
@@ -64,12 +74,13 @@ namespace ReqIFSharp
         internal DatatypeDefinitionString(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<DatatypeDefinitionString>.Instance : this.loggerFactory.CreateLogger<DatatypeDefinitionString>();
         }
 
         /// <summary>
         /// Gets or sets the maximum permissible string length
-        /// </summary>        
-        public int MaxLength { get; set; }
+        /// </summary>
+        public long MaxLength { get; set; }
 
         /// <summary>
         /// Generates a <see cref="DatatypeDefinitionReal"/> object from its XML representation.
@@ -78,14 +89,10 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlReader"/>
         /// </param>
         internal override void ReadXml(XmlReader reader)
-        { 
+        {
             base.ReadXml(reader);
 
-            var value = reader.GetAttribute("MAX-LENGTH"); 
-            if ( !string.IsNullOrEmpty(value)) 
-            { 
-                this.MaxLength = XmlConvert.ToInt32(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             this.ReadAlternativeId(reader);
         }
@@ -103,13 +110,42 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
-            var value = reader.GetAttribute("MAX-LENGTH");
-            if (!string.IsNullOrEmpty(value))
-            {
-                this.MaxLength = XmlConvert.ToInt32(value);
-            }
+            this.ReadXmlAttributes(reader);
 
             await this.ReadAlternativeIdAsync(reader, token);
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (MAX-LENGTH)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading MAX-LENGTH at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var maxLength = reader.GetAttribute("MAX-LENGTH");
+            if (!string.IsNullOrWhiteSpace(maxLength))
+            {
+                try
+                {
+                    this.MaxLength = XmlConvert.ToInt64(maxLength);
+                }
+                catch (OverflowException)
+                {
+                    this.logger.LogWarning("The DatatypeDefinitionString.MAX-LENGTH: {Value} at line:position {LineNumber}:{LinePosition} could not be processed. MaxLength is set to Int64.MaxValue",
+                        maxLength, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+                    this.MaxLength = long.MaxValue;
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The DatatypeDefinitionString.MAX-LENGTH: {maxLength} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
+                }
+            }
         }
 
         /// <summary>
@@ -119,7 +155,7 @@ namespace ReqIFSharp
         /// an instance of <see cref="XmlWriter"/>
         /// </param>
         internal override void WriteXml(XmlWriter writer)
-        { 
+        {
             writer.WriteAttributeString("MAX-LENGTH", XmlConvert.ToString(this.MaxLength));
 
             base.WriteXml(writer);
