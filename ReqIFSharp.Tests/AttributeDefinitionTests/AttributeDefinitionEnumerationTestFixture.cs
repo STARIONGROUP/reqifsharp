@@ -18,17 +18,19 @@
 // </copyright>
 // ------------------------------------------------------------------------------------------------
 
-using Microsoft.Extensions.Logging.Abstractions;
-
 namespace ReqIFSharp.Tests
 {
-    using NUnit.Framework;
-    using ReqIFSharp;
     using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging.Abstractions;
+
+    using NUnit.Framework;
+
+    using ReqIFSharp;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionEnumeration"/>
