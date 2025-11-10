@@ -36,16 +36,10 @@ namespace ReqIFSharp
     public class AttributeValueString : AttributeValueSimple
     {
         /// <summary>
-        /// The <see cref="ILogger"/> used to log
-        /// </summary>
-        private readonly ILogger<AttributeValueString> logger;
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueString"/> class.
         /// </summary>
         public AttributeValueString()
         {
-            this.logger = NullLogger<AttributeValueString>.Instance;
         }
 
         /// <summary>
@@ -56,7 +50,6 @@ namespace ReqIFSharp
         /// </param>
         public AttributeValueString(ILoggerFactory loggerFactory) : base(loggerFactory)
         {
-            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueString>.Instance : this.loggerFactory.CreateLogger<AttributeValueString>();
         }
 
         /// <summary>
@@ -72,8 +65,6 @@ namespace ReqIFSharp
         internal AttributeValueString(AttributeDefinitionString attributeDefinition, ILoggerFactory loggerFactory)
             : base(attributeDefinition, loggerFactory)
         {
-            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueString>.Instance : this.loggerFactory.CreateLogger<AttributeValueString>();
-
             this.OwningDefinition = attributeDefinition;
         }
 
@@ -89,7 +80,6 @@ namespace ReqIFSharp
         internal AttributeValueString(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
             : base(specElAt, loggerFactory)
         {
-            this.logger = this.loggerFactory == null ? NullLogger<AttributeValueString>.Instance : this.loggerFactory.CreateLogger<AttributeValueString>();
         }
 
         /// <summary>
