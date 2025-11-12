@@ -150,5 +150,20 @@ namespace ReqIFSharp.Tests
 
             Assert.That(unformattedText, Is.EqualTo("Description of the SpecObject that includes formatted tables and/or style: Element 1 Element 2"));
         }
+
+        [Test]
+        public void AttributeValueXhtml_ExtractsPlainTextAndDetectsExternalObjects()
+        {
+            var attributeValue = new AttributeValueXHTML();
+            attributeValue.TheValue = "<div>plain <b>text</b><object data=\"file%20name.bin\" type=\"application/octet-stream\"></object></div>";
+
+            var plain = attributeValue.ExtractUnformattedTextFromValue();
+
+            Assert.That(plain, Is.EqualTo("plain text"));
+
+            var objects = attributeValue.ExternalObjects;
+            Assert.That(objects, Has.Count.EqualTo(1));
+            Assert.That(objects[0].Uri, Is.EqualTo("file name.bin"));
+        }
     }
 }

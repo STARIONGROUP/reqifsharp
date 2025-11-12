@@ -23,6 +23,7 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
 
     using NUnit.Framework;
@@ -79,6 +80,48 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
                 async () => await specHierarchy.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>()
                     .With.Message.Contains("The Object property of SpecHierarchy identifier:longname may not be null"));
+        }
+
+        [Test]
+        public async Task SpecHierarchy_ReadXmlAsync_InitialisesContainerAndChildren()
+        {
+            var content = new ReqIFContent();
+            var rootSpecification = new Specification(content, null) { Identifier = "root" };
+            var existingObject = new SpecObject(content, null) { Identifier = "existing-object" };
+
+            var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
+            {
+                Identifier = "hierarchy"
+            };
+
+            var xml = """
+                      <SPEC-HIERARCHY IDENTIFIER="hierarchy" IS-TABLE-INTERNAL="true">
+                        <OBJECT>
+                          <SPEC-OBJECT-REF>missing-object</SPEC-OBJECT-REF>
+                        </OBJECT>
+                        <CHILDREN>
+                          <SPEC-HIERARCHY IDENTIFIER="child">
+                            <OBJECT>
+                              <SPEC-OBJECT-REF>existing-object</SPEC-OBJECT-REF>
+                            </OBJECT>
+                          </SPEC-HIERARCHY>
+                        </CHILDREN>
+                      </SPEC-HIERARCHY>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            await specHierarchy.ReadXmlAsync(reader, CancellationToken.None);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(specHierarchy.IsTableInternal, Is.True);
+                Assert.That(specHierarchy.Object, Is.Null, "Missing objects should yield null reference");
+                Assert.That(specHierarchy.Children, Has.Count.EqualTo(1));
+                Assert.That(specHierarchy.Children[0].Object, Is.SameAs(existingObject));
+                Assert.That(specHierarchy.Children[0].Container, Is.SameAs(specHierarchy));
+            });
         }
     }
 }

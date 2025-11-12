@@ -20,15 +20,15 @@
 
 namespace ReqIFSharp
 {
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
-
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="SpecHierarchy"/> class represents a node in a hierarchically structured requirements specification.
@@ -172,6 +172,8 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
+            this.ReadXmlAttributes(reader);
+
             using (var specHierarchySubtree = reader.ReadSubtree())
             {
                 while (specHierarchySubtree.Read())
@@ -221,6 +223,8 @@ namespace ReqIFSharp
         {
             base.ReadXml(reader);
 
+            this.ReadXmlAttributes(reader);
+
             while (await reader.ReadAsync())
             {
                 if (token.IsCancellationRequested)
@@ -255,6 +259,32 @@ namespace ReqIFSharp
                             this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
                             break;
                     }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads the properties that are defined as XML Attributes (MAX-LENGTH)
+        /// </summary>
+        /// <param name="reader">
+        /// an instance of <see cref="XmlReader"/>
+        /// </param>
+        private void ReadXmlAttributes(XmlReader reader)
+        {
+            var xmlLineInfo = reader as IXmlLineInfo;
+
+            this.logger.LogTrace("reading IS-TABLE-INTERNAL at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+
+            var isTableInternal = reader.GetAttribute("IS-TABLE-INTERNAL");
+            if (!string.IsNullOrWhiteSpace(isTableInternal))
+            {
+                try
+                {
+                    this.IsTableInternal = XmlConvert.ToBoolean(isTableInternal);
+                }
+                catch (Exception e)
+                {
+                    throw new SerializationException($"The SpecHierarchy.IS-TABLE-INTERNAL: {isTableInternal} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to an INTEGER", e);
                 }
             }
         }
