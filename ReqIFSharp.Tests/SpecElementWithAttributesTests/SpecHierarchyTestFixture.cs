@@ -20,13 +20,18 @@
 
 namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
 {
+    using System;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="SpecHierarchy"/> class
@@ -36,10 +41,33 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
     {
         private XmlWriterSettings settings;
 
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [SetUp]
         public void SetUp()
         {
             this.settings = new XmlWriterSettings();
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new SpecHierarchy(null), Throws.Nothing);
+            Assert.That(() => new SpecHierarchy(this.loggerFactory), Throws.Nothing);
         }
 
         [Test]
@@ -83,12 +111,103 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
         }
 
         [Test]
+        public void SpecHierarchy_ReadXml_InitialisesContainerAndChildren()
+        {
+            var content = new ReqIFContent();
+            var rootSpecification = new Specification(content, null) { Identifier = "root" };
+            var existingObject = new SpecObject(content, null) { Identifier = "existing-object" };
+
+            var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
+            {
+                Identifier = "hierarchy"
+            };
+
+            var xml = """
+                      <SPEC-HIERARCHY IDENTIFIER="hierarchy" IS-TABLE-INTERNAL="true">
+                        <ALTERNATIVE-ID>
+                          <ALTERNATIVE-ID IDENTIFIER="an-alternative-id"/>
+                        </ALTERNATIVE-ID>
+                        <OBJECT>
+                          <SPEC-OBJECT-REF>missing-object</SPEC-OBJECT-REF>
+                        </OBJECT>
+                        <CHILDREN>
+                          <SPEC-HIERARCHY IDENTIFIER="child">
+                            <OBJECT>
+                              <SPEC-OBJECT-REF>existing-object</SPEC-OBJECT-REF>
+                            </OBJECT>
+                          </SPEC-HIERARCHY>
+                        </CHILDREN>
+                      </SPEC-HIERARCHY>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            specHierarchy.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(specHierarchy.IsTableInternal, Is.True);
+                Assert.That(specHierarchy.Object, Is.Null, "Missing objects should yield null reference");
+                Assert.That(specHierarchy.Children, Has.Count.EqualTo(1));
+                Assert.That(specHierarchy.Children[0].Object, Is.SameAs(existingObject));
+                Assert.That(specHierarchy.Children[0].Container, Is.SameAs(specHierarchy));
+                Assert.That(specHierarchy.AlternativeId.Identifier, Is.EqualTo("an-alternative-id"));
+            }
+        }
+
+        [Test]
         public async Task SpecHierarchy_ReadXmlAsync_InitialisesContainerAndChildren()
         {
             var content = new ReqIFContent();
             var rootSpecification = new Specification(content, null) { Identifier = "root" };
             var existingObject = new SpecObject(content, null) { Identifier = "existing-object" };
 
+            var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
+            {
+                Identifier = "hierarchy"
+            };
+
+            var xml = """
+                      <SPEC-HIERARCHY IDENTIFIER="hierarchy" IS-TABLE-INTERNAL="true">
+                        <ALTERNATIVE-ID>
+                          <ALTERNATIVE-ID IDENTIFIER="an-alternative-id"/>
+                        </ALTERNATIVE-ID>
+                        <OBJECT>
+                          <SPEC-OBJECT-REF>missing-object</SPEC-OBJECT-REF>
+                        </OBJECT>
+                        <CHILDREN>
+                          <SPEC-HIERARCHY IDENTIFIER="child">
+                            <OBJECT>
+                              <SPEC-OBJECT-REF>existing-object</SPEC-OBJECT-REF>
+                            </OBJECT>
+                          </SPEC-HIERARCHY>
+                        </CHILDREN>
+                      </SPEC-HIERARCHY>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            await specHierarchy.ReadXmlAsync(reader, CancellationToken.None);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(specHierarchy.IsTableInternal, Is.True);
+                Assert.That(specHierarchy.Object, Is.Null, "Missing objects should yield null reference");
+                Assert.That(specHierarchy.Children, Has.Count.EqualTo(1));
+                Assert.That(specHierarchy.Children[0].Object, Is.SameAs(existingObject));
+                Assert.That(specHierarchy.Children[0].Container, Is.SameAs(specHierarchy));
+                Assert.That(specHierarchy.AlternativeId.Identifier, Is.EqualTo("an-alternative-id"));
+            }
+        }
+
+        [Test]
+        public async Task SpecHierarchy_ReadXmlAsync_cancel()
+        {
+            var content = new ReqIFContent();
+            var rootSpecification = new Specification(content, null) { Identifier = "root" };
+            
             var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
             {
                 Identifier = "hierarchy"
@@ -112,16 +231,47 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
             using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
             await reader.MoveToContentAsync();
 
-            await specHierarchy.ReadXmlAsync(reader, CancellationToken.None);
+            var cts = new CancellationTokenSource();
 
-            Assert.Multiple(() =>
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => specHierarchy.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void SpecHierarchy_ReadXml_VEry_that_when_attribute_is_incorrect_type_exception_is_thrown()
+        {
+            var content = new ReqIFContent();
+            var rootSpecification = new Specification(content, null) { Identifier = "root" };
+            var existingObject = new SpecObject(content, null) { Identifier = "existing-object" };
+
+            var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
             {
-                Assert.That(specHierarchy.IsTableInternal, Is.True);
-                Assert.That(specHierarchy.Object, Is.Null, "Missing objects should yield null reference");
-                Assert.That(specHierarchy.Children, Has.Count.EqualTo(1));
-                Assert.That(specHierarchy.Children[0].Object, Is.SameAs(existingObject));
-                Assert.That(specHierarchy.Children[0].Container, Is.SameAs(specHierarchy));
-            });
+                Identifier = "hierarchy"
+            };
+
+            var xml = """
+                      <SPEC-HIERARCHY IDENTIFIER="hierarchy" IS-TABLE-INTERNAL="INCORRECT-DATA-TYPE">
+                        <ALTERNATIVE-ID>
+                          <ALTERNATIVE-ID IDENTIFIER="an-alternative-id"/>
+                        </ALTERNATIVE-ID>
+                        <OBJECT>
+                          <SPEC-OBJECT-REF>missing-object</SPEC-OBJECT-REF>
+                        </OBJECT>
+                        <CHILDREN>
+                          <SPEC-HIERARCHY IDENTIFIER="child">
+                            <OBJECT>
+                              <SPEC-OBJECT-REF>existing-object</SPEC-OBJECT-REF>
+                            </OBJECT>
+                          </SPEC-HIERARCHY>
+                        </CHILDREN>
+                      </SPEC-HIERARCHY>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            Assert.That(() => specHierarchy.ReadXml(reader), Throws.InstanceOf<SerializationException>());
         }
     }
 }

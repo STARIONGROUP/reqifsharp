@@ -20,8 +20,6 @@
 
 namespace ReqIFSharp
 {
-    using Microsoft.Extensions.Logging;
-    using Microsoft.Extensions.Logging.Abstractions;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -29,6 +27,9 @@ namespace ReqIFSharp
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The <see cref="SpecHierarchy"/> class represents a node in a hierarchically structured requirements specification.
@@ -174,37 +175,36 @@ namespace ReqIFSharp
 
             this.ReadXmlAttributes(reader);
 
-            using (var specHierarchySubtree = reader.ReadSubtree())
-            {
-                while (specHierarchySubtree.Read())
-                {
-                    if (specHierarchySubtree.MoveToContent() == XmlNodeType.Element)
-                    {
-                        var xmlLineInfo = reader as IXmlLineInfo;
+            using var specHierarchySubtree = reader.ReadSubtree();
 
-                        switch (specHierarchySubtree.LocalName)
-                        {
-                            case "ALTERNATIVE-ID":
-                                this.ReadAlternativeId(specHierarchySubtree);
-                                break;
-                            case "OBJECT":
-                                using (var subtree = specHierarchySubtree.ReadSubtree())
-                                {
-                                    subtree.MoveToContent();
-                                    this.DeserializeObject(subtree);
-                                }
-                                break;
-                            case "CHILDREN":
-                                using (var subtree = specHierarchySubtree.ReadSubtree())
-                                {
-                                    subtree.MoveToContent();
-                                    this.DeserializeSpecHierarchy(subtree);
-                                }
-                                break;
-                            default:
-                                this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", specHierarchySubtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
-                                break;
-                        }
+            while (specHierarchySubtree.Read())
+            {
+                if (specHierarchySubtree.MoveToContent() == XmlNodeType.Element)
+                {
+                    var xmlLineInfo = reader as IXmlLineInfo;
+
+                    switch (specHierarchySubtree.LocalName)
+                    {
+                        case "ALTERNATIVE-ID":
+                            this.ReadAlternativeId(specHierarchySubtree);
+                            break;
+                        case "OBJECT":
+                            using (var subtree = specHierarchySubtree.ReadSubtree())
+                            {
+                                subtree.MoveToContent();
+                                this.DeserializeObject(subtree);
+                            }
+                            break;
+                        case "CHILDREN":
+                            using (var subtree = specHierarchySubtree.ReadSubtree())
+                            {
+                                subtree.MoveToContent();
+                                this.DeserializeSpecHierarchy(subtree);
+                            }
+                            break;
+                        default:
+                            this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", specHierarchySubtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
+                            break;
                     }
                 }
             }
