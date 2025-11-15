@@ -27,9 +27,13 @@ namespace ReqIFSharp.Tests
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionDate"/>
@@ -37,6 +41,29 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class AttributeDefinitionDateTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new AttributeDefinitionDate(null), Throws.Nothing);
+            Assert.That(() => new AttributeDefinitionDate(this.loggerFactory), Throws.Nothing);
+        }
+
         [Test]
         public void Verify_That_The_Attribute_Definition_Can_Be_Set_Or_Get()
         {
@@ -152,6 +179,101 @@ namespace ReqIFSharp.Tests
 
             Assert.That(async () => await attributeDefinitionDate.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Nothing);
+        }
+
+        [Test]
+        public void Verify_that_ReadXml_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="_eULasAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:41.309+01:00" LONG-NAME="Date">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_eULasAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-DATE THE-VALUE="1976-08-20T12:00:00.000+01:00"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-DATE>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionDate = new AttributeDefinitionDate(specificationType, this.loggerFactory);
+
+            attributeDefinitionDate.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionDate.Identifier, Is.EqualTo("_eULasAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionDate.LongName, Is.EqualTo("Date"));
+                Assert.That(attributeDefinitionDate.AlternativeId.Identifier, Is.EqualTo("_eULasAfhEeelU71CdMk83g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadXmlAsync_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="_eULasAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:41.309+01:00" LONG-NAME="Date">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_eULasAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-DATE THE-VALUE="1976-08-20T12:00:00.000+01:00"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-DATE>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionDate = new AttributeDefinitionDate(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await attributeDefinitionDate.ReadXmlAsync(reader, cts.Token);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionDate.Identifier, Is.EqualTo("_eULasAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionDate.LongName, Is.EqualTo("Date"));
+                Assert.That(attributeDefinitionDate.AlternativeId.Identifier, Is.EqualTo("_eULasAfhEeelU71CdMk83g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-DATE IDENTIFIER="_eULasAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:41.309+01:00" LONG-NAME="Date">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_eULasAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-DATE THE-VALUE="1976-08-20T12:00:00.000+01:00"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-DATE>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionDate = new AttributeDefinitionDate(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => attributeDefinitionDate.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }

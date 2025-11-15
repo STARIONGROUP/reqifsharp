@@ -24,11 +24,16 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="RelationGroup"/>
@@ -36,6 +41,37 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class RelationGroupTestFixture
     {
+        private XmlWriterSettings settings;
+
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.settings = new XmlWriterSettings();
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new RelationGroup(null), Throws.Nothing);
+            Assert.That(() => new RelationGroup(this.loggerFactory), Throws.Nothing);
+        }
+
         [Test]
         public void Verify_That_WriteXml_Throws_Exception_When_Type_Is_Null()
         {
@@ -146,6 +182,106 @@ namespace ReqIFSharp.Tests
             Assert.That(() => relationGroup.SpecType = specificationType,
                 Throws.TypeOf<ArgumentException>()
                 .With.Message.EqualTo("specType must of type RelationGroupType")); 
+        }
+
+        [Test]
+        public void Verify_that_ReadXml_sets_references_and_properties()
+        {
+            var xml = """
+                      <RELATION-GROUP IDENTIFIER="relationgroup-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="relationgroup 1">
+                        <TYPE>
+                          <RELATION-GROUP-TYPE-REF>relationgrouptype</RELATION-GROUP-TYPE-REF>
+                        </TYPE>
+                        <SOURCE-SPECIFICATION>
+                          <SPECIFICATION-REF>specification-1</SPECIFICATION-REF>
+                        </SOURCE-SPECIFICATION>
+                        <TARGET-SPECIFICATION>
+                          <SPECIFICATION-REF>specification-2</SPECIFICATION-REF>
+                        </TARGET-SPECIFICATION>
+                      </RELATION-GROUP>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent();
+            var relationGroup = new RelationGroup(content, this.loggerFactory);
+
+            relationGroup.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(relationGroup.Identifier, Is.EqualTo("relationgroup-1"));
+                Assert.That(relationGroup.LongName, Is.EqualTo("relationgroup 1"));
+                Assert.That(relationGroup.SourceSpecification.Identifier, Is.EqualTo("specification-1"));
+                Assert.That(relationGroup.TargetSpecification.Identifier, Is.EqualTo("specification-2"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadXmlAsync_sets_references_and_properties()
+        {
+            var xml = """
+                      <RELATION-GROUP IDENTIFIER="relationgroup-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="relationgroup 1">
+                        <TYPE>
+                          <RELATION-GROUP-TYPE-REF>relationgrouptype</RELATION-GROUP-TYPE-REF>
+                        </TYPE>
+                        <SOURCE-SPECIFICATION>
+                          <SPECIFICATION-REF>specification-1</SPECIFICATION-REF>
+                        </SOURCE-SPECIFICATION>
+                        <TARGET-SPECIFICATION>
+                          <SPECIFICATION-REF>specification-2</SPECIFICATION-REF>
+                        </TARGET-SPECIFICATION>
+                      </RELATION-GROUP>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent();
+            var relationGroup = new RelationGroup(content, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await relationGroup.ReadXmlAsync(reader, cts.Token);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(relationGroup.Identifier, Is.EqualTo("relationgroup-1"));
+                Assert.That(relationGroup.LongName, Is.EqualTo("relationgroup 1"));
+                Assert.That(relationGroup.SourceSpecification.Identifier, Is.EqualTo("specification-1"));
+                Assert.That(relationGroup.TargetSpecification.Identifier, Is.EqualTo("specification-2"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
+        {
+            var xml = """
+                      <RELATION-GROUP IDENTIFIER="relationgroup-1" LAST-CHANGE="2015-12-01T00:00:00Z" LONG-NAME="relationgroup 1">
+                        <TYPE>
+                          <RELATION-GROUP-TYPE-REF>relationgrouptype</RELATION-GROUP-TYPE-REF>
+                        </TYPE>
+                        <SOURCE-SPECIFICATION>
+                          <SPECIFICATION-REF>specification-1</SPECIFICATION-REF>
+                        </SOURCE-SPECIFICATION>
+                        <TARGET-SPECIFICATION>
+                          <SPECIFICATION-REF>specification-2</SPECIFICATION-REF>
+                        </TARGET-SPECIFICATION>
+                      </RELATION-GROUP>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent();
+            var relationGroup = new RelationGroup(content, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => relationGroup.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }

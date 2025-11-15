@@ -24,11 +24,16 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionReal"/>
@@ -36,6 +41,29 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class AttributeDefinitionRealTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new AttributeDefinitionReal(null), Throws.Nothing);
+            Assert.That(() => new AttributeDefinitionReal(this.loggerFactory), Throws.Nothing);
+        }
+
         [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
@@ -83,6 +111,103 @@ namespace ReqIFSharp.Tests
             var attributeDefinitionReal = new AttributeDefinitionReal();
 
             Assert.That(async () => await attributeDefinitionReal.WriteXmlAsync(writer, cancellationTokenSource.Token), Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_that_ReadXml_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="_onD_wAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:50.097+01:00" LONG-NAME="Real">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_onD_wAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-REAL THE-VALUE="1.6"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-REAL>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionReal = new AttributeDefinitionReal(specificationType, this.loggerFactory);
+
+            attributeDefinitionReal.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionReal.Identifier, Is.EqualTo("_onD_wAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionReal.LongName, Is.EqualTo("Real"));
+                Assert.That(attributeDefinitionReal.AlternativeId.Identifier, Is.EqualTo("_onD_wAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionReal.DefaultValue.TheValue, Is.EqualTo(1.6));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadXmlAsync_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="_onD_wAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:50.097+01:00" LONG-NAME="Real">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_onD_wAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-REAL THE-VALUE="1.6"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-REAL>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionReal = new AttributeDefinitionReal(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await attributeDefinitionReal.ReadXmlAsync(reader, cts.Token);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionReal.Identifier, Is.EqualTo("_onD_wAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionReal.LongName, Is.EqualTo("Real"));
+                Assert.That(attributeDefinitionReal.AlternativeId.Identifier, Is.EqualTo("_onD_wAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionReal.DefaultValue.TheValue, Is.EqualTo(1.6));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-REAL IDENTIFIER="_onD_wAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:38:50.097+01:00" LONG-NAME="Real">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_onD_wAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-REAL THE-VALUE="1.6"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-REAL>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionReal = new AttributeDefinitionReal(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => attributeDefinitionReal.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }

@@ -58,6 +58,13 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new AttributeDefinitionBoolean(null), Throws.Nothing);
+            Assert.That(() => new AttributeDefinitionBoolean(this.loggerFactory), Throws.Nothing);
+        }
+
+        [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
             var datatypeDefinitionBoolean = new DatatypeDefinitionBoolean();
@@ -169,6 +176,101 @@ namespace ReqIFSharp.Tests
 
             var cancellationTokenSource = new CancellationTokenSource();
             Assert.That(async () => await attributeDefinitionBoolean.WriteXmlAsync(writer, cancellationTokenSource.Token), Throws.Nothing);
+        }
+
+        [Test]
+        public void Verify_that_ReadXml_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_b6gNkAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:26.006+01:00" LONG-NAME="Bool">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_b6gNkAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-BOOLEAN>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(specificationType, this.loggerFactory);
+
+            attributeDefinitionBoolean.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionBoolean.Identifier, Is.EqualTo("_b6gNkAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionBoolean.LongName, Is.EqualTo("Bool"));
+                Assert.That(attributeDefinitionBoolean.AlternativeId.Identifier, Is.EqualTo("_b6gNkAfhEeelU71CdMk83g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadXmlAsync_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_b6gNkAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:26.006+01:00" LONG-NAME="Bool">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_b6gNkAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-BOOLEAN>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await attributeDefinitionBoolean.ReadXmlAsync(reader, cts.Token);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionBoolean.Identifier, Is.EqualTo("_b6gNkAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionBoolean.LongName, Is.EqualTo("Bool"));
+                Assert.That(attributeDefinitionBoolean.AlternativeId.Identifier, Is.EqualTo("_b6gNkAfhEeelU71CdMk83g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-BOOLEAN IDENTIFIER="_b6gNkAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:26.006+01:00" LONG-NAME="Bool">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_b6gNkAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <DEFAULT-VALUE>
+                              <ATTRIBUTE-VALUE-BOOLEAN THE-VALUE="true"/>
+                          </DEFAULT-VALUE>
+                          <TYPE />
+                      </ATTRIBUTE-DEFINITION-BOOLEAN>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionBoolean = new AttributeDefinitionBoolean(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => attributeDefinitionBoolean.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }

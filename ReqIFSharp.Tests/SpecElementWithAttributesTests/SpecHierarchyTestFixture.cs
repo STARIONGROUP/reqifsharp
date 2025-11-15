@@ -31,6 +31,8 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
 
     using NUnit.Framework;
 
+    using ReqIFSharp;
+
     using Serilog;
 
     /// <summary>
@@ -203,7 +205,7 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
         }
 
         [Test]
-        public async Task SpecHierarchy_ReadXmlAsync_cancel()
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
         {
             var content = new ReqIFContent();
             var rootSpecification = new Specification(content, null) { Identifier = "root" };
@@ -239,12 +241,11 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
         }
 
         [Test]
-        public void SpecHierarchy_ReadXml_VEry_that_when_attribute_is_incorrect_type_exception_is_thrown()
+        public void SpecHierarchy_ReadXml_Verify_that_when_attribute_is_incorrect_type_exception_is_thrown()
         {
             var content = new ReqIFContent();
             var rootSpecification = new Specification(content, null) { Identifier = "root" };
-            var existingObject = new SpecObject(content, null) { Identifier = "existing-object" };
-
+            
             var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
             {
                 Identifier = "hierarchy"

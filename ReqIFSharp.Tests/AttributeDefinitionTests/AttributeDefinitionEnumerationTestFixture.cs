@@ -24,13 +24,17 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeDefinitionEnumeration"/>
@@ -38,6 +42,29 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class AttributeDefinitionEnumerationTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new AttributeDefinitionEnumeration(null), Throws.Nothing);
+            Assert.That(() => new AttributeDefinitionEnumeration(this.loggerFactory), Throws.Nothing);
+        }
+
         [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
@@ -104,6 +131,98 @@ namespace ReqIFSharp.Tests
 
             Assert.That(() => attributeDefinitionEnumeration.ReadXml(xmlReader),
                 Throws.InstanceOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_that_ReadXml_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_gelcwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:56.048+01:00" LONG-NAME="Enum_Single" MULTI-VALUED="false">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_gelcwAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <TYPE>
+                              <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
+                          </TYPE>
+                      </ATTRIBUTE-DEFINITION-ENUMERATION>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration(specificationType, this.loggerFactory);
+
+            attributeDefinitionEnumeration.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionEnumeration.Identifier, Is.EqualTo("_gelcwAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionEnumeration.LongName, Is.EqualTo("Enum_Single"));
+                Assert.That(attributeDefinitionEnumeration.AlternativeId.Identifier, Is.EqualTo("_gelcwAfhEeelU71CdMk83g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadXmlAsync_sets_references_and_properties()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_gelcwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:56.048+01:00" LONG-NAME="Enum_Single" MULTI-VALUED="false">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_gelcwAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <TYPE>
+                              <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
+                          </TYPE>
+                      </ATTRIBUTE-DEFINITION-ENUMERATION>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await attributeDefinitionEnumeration.ReadXmlAsync(reader, cts.Token);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeDefinitionEnumeration.Identifier, Is.EqualTo("_gelcwAfhEeelU71CdMk83g"));
+                Assert.That(attributeDefinitionEnumeration.LongName, Is.EqualTo("Enum_Single"));
+                Assert.That(attributeDefinitionEnumeration.AlternativeId.Identifier, Is.EqualTo("_gelcwAfhEeelU71CdMk83g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
+        {
+            var xml = """
+                      <ATTRIBUTE-DEFINITION-ENUMERATION IDENTIFIER="_gelcwAfhEeelU71CdMk83g" LAST-CHANGE="2017-03-13T12:37:56.048+01:00" LONG-NAME="Enum_Single" MULTI-VALUED="false">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_gelcwAfhEeelU71CdMk83g"/>
+                          </ALTERNATIVE-ID>
+                          <TYPE>
+                              <DATATYPE-DEFINITION-ENUMERATION-REF>_QIZRcAfhEeelU71CdMk83g</DATATYPE-DEFINITION-ENUMERATION-REF>
+                          </TYPE>
+                      </ATTRIBUTE-DEFINITION-ENUMERATION>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent(this.loggerFactory);
+            var specificationType = new SpecificationType(content, this.loggerFactory);
+            var attributeDefinitionEnumeration = new AttributeDefinitionEnumeration(specificationType, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => attributeDefinitionEnumeration.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }

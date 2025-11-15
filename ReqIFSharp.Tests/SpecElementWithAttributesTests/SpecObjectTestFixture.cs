@@ -24,11 +24,16 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="SpecObject"/>
@@ -38,10 +43,33 @@ namespace ReqIFSharp.Tests
     {
         private XmlWriterSettings settings;
 
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [SetUp]
         public void SetUp()
         {
             this.settings = new XmlWriterSettings();
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new SpecObject(null), Throws.Nothing);
+            Assert.That(() => new SpecObject(this.loggerFactory), Throws.Nothing);
         }
 
         [Test]
@@ -109,6 +137,98 @@ namespace ReqIFSharp.Tests
                 () => spectObject.WriteXmlAsync(writer, cts.Token),
                 Throws.Exception.TypeOf<SerializationException>()
                     .With.Message.Contains("The Type property of SpecObject SpectObjectIdentifier:SpectObjectLongName may not be null"));
+        }
+
+        [Test]
+        public void Verify_that_ReadXml_sets_references_and_properties()
+        {
+            var xml = """
+                      <SPEC-OBJECT IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-14T15:03:00.541+01:00" LONG-NAME="specobjectname">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g"/>
+                          </ALTERNATIVE-ID>
+                          <VALUES />
+                          <TYPE>
+                              <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
+                          </TYPE>
+                      </SPEC-OBJECT>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent();
+            var specObject = new SpecObject(content, this.loggerFactory);
+
+            specObject.ReadXml(reader);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(specObject.Identifier, Is.EqualTo("_jgCyuAfNEeeAO8RifBaE-g"));
+                Assert.That(specObject.LongName, Is.EqualTo("specobjectname"));
+                Assert.That(specObject.AlternativeId.Identifier, Is.EqualTo("_jgCyuAfNEeeAO8RifBaE-g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadXmlAsync_sets_references_and_properties()
+        {
+            var xml = """
+                      <SPEC-OBJECT IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-14T15:03:00.541+01:00" LONG-NAME="specobjectname">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g"/>
+                          </ALTERNATIVE-ID>
+                          <VALUES />
+                          <TYPE>
+                              <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
+                          </TYPE>
+                      </SPEC-OBJECT>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent();
+            var specObject = new SpecObject(content, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await specObject.ReadXmlAsync(reader, cts.Token);
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(specObject.Identifier, Is.EqualTo("_jgCyuAfNEeeAO8RifBaE-g"));
+                Assert.That(specObject.LongName, Is.EqualTo("specobjectname"));
+                Assert.That(specObject.AlternativeId.Identifier, Is.EqualTo("_jgCyuAfNEeeAO8RifBaE-g"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_when_ReadXmlAsync_cancel_throws_OperationCanceledException()
+        {
+            var xml = """
+                      <SPEC-OBJECT IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" LAST-CHANGE="2017-03-14T15:03:00.541+01:00" LONG-NAME="specobjectname">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g"/>
+                          </ALTERNATIVE-ID>
+                          <VALUES />
+                          <TYPE>
+                              <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
+                          </TYPE>
+                      </SPEC-OBJECT>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            await reader.MoveToContentAsync();
+
+            var content = new ReqIFContent();
+            var specObject = new SpecObject(content, this.loggerFactory);
+
+            var cts = new CancellationTokenSource();
+
+            await cts.CancelAsync();
+
+            await Assert.ThatAsync(() => specObject.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }
