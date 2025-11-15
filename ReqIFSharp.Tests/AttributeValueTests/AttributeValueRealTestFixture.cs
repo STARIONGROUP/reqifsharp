@@ -33,6 +33,8 @@ namespace ReqIFSharp.Tests
 
     using ReqIFSharp;
 
+    using Serilog;
+
     /// <summary>
     /// Suite of tests for the <see cref="AttributeValueReal"/>
     /// </summary>
@@ -41,10 +43,25 @@ namespace ReqIFSharp.Tests
     {
         private ILoggerFactory loggerFactory;
 
-        [SetUp]
-        public void SetUp()
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
         {
-            this.loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new AttributeValueReal(null), Throws.Nothing);
+            Assert.That(() => new AttributeValueReal(this.loggerFactory), Throws.Nothing);
         }
 
         [Test]

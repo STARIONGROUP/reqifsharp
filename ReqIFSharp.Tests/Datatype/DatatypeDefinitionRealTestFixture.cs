@@ -24,15 +24,41 @@ namespace ReqIFSharp.Tests
     using System.Runtime.Serialization;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
 
+    using Serilog;
+
     [TestFixture]
     public class DatatypeDefinitionRealTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new DatatypeDefinitionReal(null), Throws.Nothing);
+            Assert.That(() => new DatatypeDefinitionReal(this.loggerFactory), Throws.Nothing);
+        }
+
         [Test]
         public void Verify_that_when_MAX_LENGTH_is_too_large_exception_is_thrown()
         {

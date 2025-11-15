@@ -26,11 +26,14 @@ namespace ReqIFSharp.Tests
     using System.Threading;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeValueBoolean"/>
@@ -38,6 +41,29 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class AttributeValueBooleanTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new AttributeValueBoolean(null), Throws.Nothing);
+            Assert.That(() => new AttributeValueBoolean(this.loggerFactory), Throws.Nothing);
+        }
+
         [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {

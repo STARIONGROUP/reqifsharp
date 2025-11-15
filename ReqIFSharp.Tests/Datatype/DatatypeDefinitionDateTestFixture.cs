@@ -24,15 +24,35 @@ namespace ReqIFSharp.Tests.Datatype
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
-    
+
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     [TestFixture]
     public class DatatypeDefinitionDateTestFixture
     {
         private string resultFileUri;
+
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
 
         [SetUp]
         public void SetUp()
@@ -44,6 +64,13 @@ namespace ReqIFSharp.Tests.Datatype
         public void TearDown()
         {
             File.Delete(this.resultFileUri);
+        }
+
+        [Test]
+        public void Verify_that_constructor_does_not_throw_exception()
+        {
+            Assert.That(() => new DatatypeDefinitionDate(null), Throws.Nothing);
+            Assert.That(() => new DatatypeDefinitionDate(this.loggerFactory), Throws.Nothing);
         }
 
         [Test]

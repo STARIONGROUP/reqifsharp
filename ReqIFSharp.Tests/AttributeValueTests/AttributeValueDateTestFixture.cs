@@ -26,11 +26,14 @@ namespace ReqIFSharp.Tests
     using System.Threading;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeValueDate"/>
@@ -38,6 +41,22 @@ namespace ReqIFSharp.Tests
     [TestFixture]
     public class AttributeValueDateTestFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
         [Test]
         public void Verify_That_The_AttributeDefinition_Can_Be_Set_Or_Get()
         {
