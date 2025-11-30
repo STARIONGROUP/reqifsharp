@@ -160,6 +160,14 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_that_when_ObjectValue_is__set_to_null_exception_is_raised_when_setter_is_called()
+        {
+            var attributeValue = new AttributeValueXHTML();
+
+            Assert.That(() => attributeValue.ObjectValue = null, Throws.TypeOf<ArgumentNullException>()); 
+        }
+
+        [Test]
         public void Verify_that_raw_text_can_be_extracted_from_xtml_value()
         {
             var attributeValue = new AttributeValueXHTML();
