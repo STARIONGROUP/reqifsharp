@@ -22,18 +22,21 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
 
     using Serilog;
+    using Serilog.Events;
 
     /// <summary>
     /// Suite of tests for the <see cref="SpecHierarchy"/> class
@@ -45,12 +48,17 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
 
         private ILoggerFactory loggerFactory;
 
+        private TestLogEventSink testLogEventSink;
+
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            this.testLogEventSink = new TestLogEventSink();
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Sink(this.testLogEventSink)
                 .CreateLogger();
 
             this.loggerFactory = LoggerFactory.Create(builder =>
@@ -62,6 +70,7 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
         [SetUp]
         public void SetUp()
         {
+            this.testLogEventSink.Events.Clear();
             this.settings = new XmlWriterSettings();
         }
 
@@ -273,6 +282,50 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
             reader.MoveToContent();
 
             Assert.That(() => specHierarchy.ReadXml(reader), Throws.InstanceOf<SerializationException>());
+        }
+
+        [Test]
+        public void ReadXml_UnsupportedElement_EmitsLogWarning()
+        {
+            var xml = """
+                      <UNSUPPORTED-ELEMENT />
+                      """;
+
+            var specHierarchy = new SpecHierarchy(this.loggerFactory);
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = false, IgnoreWhitespace = false });
+
+            reader.MoveToContent();
+
+            specHierarchy.ReadXml(reader);
+
+            var warningEvent = this.testLogEventSink.Events
+                .Where(e => e.Level == LogEventLevel.Warning)
+                .ToList().First();
+
+            Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
+                Is.EqualTo("UNSUPPORTED-ELEMENT"));
+        }
+
+        [Test]
+        public async Task ReadXmlAsync_UnsupportedElement_EmitsLogWarning()
+        {
+            var xml = """
+                      <UNSUPPORTED-ELEMENT />
+                      """;
+
+            var specHierarchy = new SpecHierarchy(this.loggerFactory);
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true, IgnoreWhitespace = false });
+
+            await specHierarchy.ReadXmlAsync(reader, CancellationToken.None);
+
+            var warningEvent = this.testLogEventSink.Events
+                .Where(e => e.Level == LogEventLevel.Warning)
+                .ToList().First();
+
+            Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
+                Is.EqualTo("UNSUPPORTED-ELEMENT"));
         }
     }
 }
