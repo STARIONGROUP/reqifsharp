@@ -156,8 +156,11 @@ namespace ReqIFSharp.Tests
             var attributeValueBoolean = new AttributeValueBoolean();
             attributeValueBoolean.ObjectValue = true;
 
-            Assert.That(attributeValueBoolean.TheValue, Is.True);
-            Assert.That(attributeValueBoolean.ObjectValue, Is.True);
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeValueBoolean.TheValue, Is.True);
+                Assert.That(attributeValueBoolean.ObjectValue, Is.True);
+            }
         }
 
         [Test]

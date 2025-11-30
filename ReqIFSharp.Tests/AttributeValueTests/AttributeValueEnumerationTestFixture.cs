@@ -153,8 +153,12 @@ namespace ReqIFSharp.Tests
 
             var val = new List<EnumValue> { new EnumValue() };
             attributeValue.ObjectValue = val;
-            
-            Assert.That(attributeValue.Values.Count, Is.EqualTo(1));
+
+            using (Assert.EnterMultipleScope())
+            {
+                Assert.That(attributeValue.Values.Count, Is.EqualTo(1));
+                Assert.That(attributeValue.ObjectValue, Is.EqualTo(val));
+            }
         }
 
         [Test]
