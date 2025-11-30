@@ -46,6 +46,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="TestData\Datatype-Demo-XhtML-Fault.reqif">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
         <None Update="TestData\Datatype-Demo.reqif">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>

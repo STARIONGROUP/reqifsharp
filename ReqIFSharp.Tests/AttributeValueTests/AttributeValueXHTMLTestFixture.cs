@@ -185,5 +185,17 @@ namespace ReqIFSharp.Tests
 
             Assert.That(unformattedText, Is.EqualTo("Description of the SpecObject that includes formatted tables and/or style: Element 1 Element 2"));
         }
+
+        [Test]
+        public void Verify_that_when_IsSimpe_is_incorrect_bool_exception_is_thrown()
+        {
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "Datatype-Demo-XhtML-Fault.reqif");
+            var deserializer = new ReqIFDeserializer(this.loggerFactory);
+
+            Assert.That(() => deserializer.Deserialize(reqifPath, false),
+                Throws.TypeOf<SerializationException>()
+                    .With.Message.StartsWith("The AttributeValueXHTML.IS-SIMPLIFIED"));
+
+        }
     }
 }
