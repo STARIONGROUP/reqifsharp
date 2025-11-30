@@ -22,6 +22,7 @@ namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
     using System.Threading.Tasks;
@@ -34,6 +35,7 @@ namespace ReqIFSharp.Tests
     using ReqIFSharp;
 
     using Serilog;
+    using Serilog.Events;
 
     /// <summary>
     /// Suite of tests for the <see cref="SpecObject"/>
@@ -45,12 +47,17 @@ namespace ReqIFSharp.Tests
 
         private ILoggerFactory loggerFactory;
 
+        private TestLogEventSink testLogEventSink;
+
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
+            this.testLogEventSink = new TestLogEventSink();
+
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Sink(this.testLogEventSink)
                 .CreateLogger();
 
             this.loggerFactory = LoggerFactory.Create(builder =>
@@ -62,6 +69,8 @@ namespace ReqIFSharp.Tests
         [SetUp]
         public void SetUp()
         {
+            this.testLogEventSink.Events.Clear();
+
             this.settings = new XmlWriterSettings();
         }
 
@@ -229,6 +238,78 @@ namespace ReqIFSharp.Tests
             await cts.CancelAsync();
 
             await Assert.ThatAsync(() => specObject.ReadXmlAsync(reader, cts.Token), Throws.InstanceOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public void ReadXml_UnsupportedElement_EmitsLogWarning()
+        {
+            var xml = """
+                      <UNSUPPORTED-ELEMENT />
+                      """;
+
+            var content = new ReqIFContent();
+            var specObject = new SpecObject(content, this.loggerFactory);
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = false, IgnoreWhitespace = false });
+
+            reader.MoveToContent();
+
+            specObject.ReadXml(reader);
+
+            var warningEvent = this.testLogEventSink.Events
+                .Where(e => e.Level == LogEventLevel.Warning)
+                .ToList().First();
+
+            Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
+                Is.EqualTo("UNSUPPORTED-ELEMENT"));
+        }
+
+        [Test]
+        public async Task ReadXmlAsync_UnsupportedElement_EmitsLogWarning()
+        {
+            var xml = """
+                      <UNSUPPORTED-ELEMENT />
+                      """;
+
+            var content = new ReqIFContent();
+            var specObject = new SpecObject(content, this.loggerFactory);
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true, IgnoreWhitespace = false });
+
+            await reader.MoveToContentAsync();
+
+            await specObject.ReadXmlAsync(reader, CancellationToken.None);
+
+            var warningEvent = this.testLogEventSink.Events
+                .Where(e => e.Level == LogEventLevel.Warning)
+                .ToList().First();
+
+            Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
+                Is.EqualTo("UNSUPPORTED-ELEMENT"));
+        }
+
+        [Test]
+        public void Verify_that_when_invalid_date_Identifiable_ReadXml_throws_exception()
+        {
+            var xml = """
+                      <SPEC-OBJECT IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g" LAST-CHANGE="invalid-date" LONG-NAME="specobjectname">
+                          <ALTERNATIVE-ID>
+                              <ALTERNATIVE-ID IDENTIFIER="_jgCyuAfNEeeAO8RifBaE-g"/>
+                          </ALTERNATIVE-ID>
+                          <VALUES />
+                          <TYPE>
+                              <SPEC-OBJECT-TYPE-REF>_jgCytAfNEeeAO8RifBaE-g</SPEC-OBJECT-TYPE-REF>
+                          </TYPE>
+                      </SPEC-OBJECT>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            reader.MoveToContent();
+
+            var content = new ReqIFContent();
+            var specObject = new SpecObject(content, this.loggerFactory);
+
+            Assert.That(() => specObject.ReadXml(reader), Throws.TypeOf<SerializationException>() );
         }
     }
 }

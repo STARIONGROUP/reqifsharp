@@ -22,18 +22,51 @@ namespace ReqIFSharp.Tests
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
 
+    using Serilog;
+    using Serilog.Events;
+
     [TestFixture]
     public class ReqIFTextFixture
     {
+        private ILoggerFactory loggerFactory;
+
+        private TestLogEventSink testLogEventSink;
+
+        [OneTimeSetUp]
+        public void OneTimeSetUp()
+        {
+            this.testLogEventSink = new TestLogEventSink();
+
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(outputTemplate: "[{Timestamp:HH:mm:ss} {Level:u3}] {SourceContext} - {Message:lj}{NewLine}{Exception}")
+                .WriteTo.Sink(this.testLogEventSink)
+                .CreateLogger();
+
+            this.loggerFactory = LoggerFactory.Create(builder =>
+            {
+                builder.AddSerilog();
+            });
+        }
+
+        [SetUp]
+        public void SetUp()
+        {
+            this.testLogEventSink.Events.Clear();
+        }
+
         [Test]
         public async Task ReqIF_ReadXmlAsync_RestoresHeaderAndToolExtensions()
         {
@@ -105,6 +138,48 @@ namespace ReqIFSharp.Tests
             reqIf.ToolExtension.Add(new ReqIFToolExtension { InnerXml = "<extension />" });
 
             return reqIf;
+        }
+
+        [Test]
+        public void ReadXml_UnsupportedElement_EmitsLogWarning()
+        {
+            var xml = """
+                      <UNSUPPORTED-ELEMENT />
+                      """;
+
+            var reqif = new ReqIF(this.loggerFactory);
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = false, IgnoreWhitespace = false });
+
+            reqif.ReadXml(reader);
+
+            var warningEvent = this.testLogEventSink.Events
+                .Where(e => e.Level == LogEventLevel.Warning)
+                .ToList().First();
+
+            Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
+                Is.EqualTo("UNSUPPORTED-ELEMENT"));
+        }
+
+        [Test]
+        public async Task ReadXmlAsync_UnsupportedElement_EmitsLogWarning()
+        {
+            var xml = """
+                      <UNSUPPORTED-ELEMENT />
+                      """;
+
+            var reqif = new ReqIF(this.loggerFactory);
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true, IgnoreWhitespace = false });
+
+            await reqif.ReadXmlAsync(reader, CancellationToken.None);
+
+            var warningEvent = this.testLogEventSink.Events
+                .Where(e => e.Level == LogEventLevel.Warning)
+                .ToList().First();
+
+            Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
+                Is.EqualTo("UNSUPPORTED-ELEMENT"));
         }
     }
 }
