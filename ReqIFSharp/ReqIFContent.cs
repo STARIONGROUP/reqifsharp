@@ -209,10 +209,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
@@ -238,7 +235,7 @@ namespace ReqIFSharp
                             using (var specObjectsSubtree = reader.ReadSubtree())
                             {
                                 await specObjectsSubtree.MoveToContentAsync();
-                                await this.DeserializeSpectObjectsAsync(specObjectsSubtree, token);
+                                await this.DeserializeSpecObjectsAsync(specObjectsSubtree, token);
                             }
                             break;
                         case "SPEC-RELATIONS":
@@ -301,10 +298,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-", StringComparison.Ordinal))
                 {
@@ -356,10 +350,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
@@ -412,14 +403,11 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        private async Task DeserializeSpectObjectsAsync(XmlReader reader, CancellationToken token)
+        private async Task DeserializeSpecObjectsAsync(XmlReader reader, CancellationToken token)
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECT")
                 {
@@ -470,10 +458,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION")
                 {
@@ -524,10 +509,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPECIFICATION")
                 {
@@ -578,11 +560,6 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
-
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "RELATION-GROUP")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -623,10 +600,7 @@ namespace ReqIFSharp
         /// </param>
         internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await this.WriteDataDefinitionsAsync(writer, token);
             await this.WriteSpecTypesAsync(writer, token);
@@ -673,10 +647,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteDataDefinitionsAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.dataTypes.Count == 0)
             {
@@ -733,10 +704,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteSpecTypesAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.specTypes.Count == 0)
             {
@@ -792,10 +760,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteSpecObjectsAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.specObjects.Count == 0)
             {
@@ -850,10 +815,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteSpecRelationsAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.specRelations.Count == 0)
             {
@@ -908,10 +870,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteSpecificationsAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.specifications.Count == 0)
             {
@@ -966,10 +925,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteRelationGroupAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.specRelationGroups.Count == 0)
             {

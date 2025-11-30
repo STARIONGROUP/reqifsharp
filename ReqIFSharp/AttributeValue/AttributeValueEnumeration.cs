@@ -228,10 +228,7 @@ namespace ReqIFSharp
             {
                 while (await subtree.ReadAsync())
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
@@ -302,10 +299,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueEnumeration may not be null");
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await this.WriteDefinitionAsync(writer);
 

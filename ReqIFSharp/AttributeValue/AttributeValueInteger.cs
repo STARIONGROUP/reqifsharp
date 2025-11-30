@@ -203,10 +203,7 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-INTEGER-REF"))
                 {
@@ -295,10 +292,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueInteger may not be null");
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteAttributeStringAsync(null,"THE-VALUE",null, this.TheValue.ToString(NumberFormatInfo.InvariantInfo));
             await writer.WriteStartElementAsync(null, "DEFINITION",null);

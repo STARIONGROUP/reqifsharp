@@ -243,10 +243,7 @@ namespace ReqIFSharp
             {
                 while (await specElementWithAttributesReader.ReadAsync())
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     if (await specElementWithAttributesReader.MoveToContentAsync() == XmlNodeType.Element)
                     {

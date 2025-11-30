@@ -234,10 +234,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             return this.ReadObjectSpecificElementsInternalAsync(reader, token);
         }
@@ -350,10 +347,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             return this.ReadSpecTypeInternalAsync(reader);
         }
@@ -440,10 +434,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync() && await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF", StringComparison.Ordinal))
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specRelation = this.CoreContent.SpecRelations.SingleOrDefault(x => x.Identifier == reference);
@@ -553,10 +544,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteTypeAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null,"TYPE", null);
             await writer.WriteElementStringAsync(null, "RELATION-GROUP-TYPE-REF", null, this.Type.Identifier);
@@ -587,10 +575,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteSourceSpecificationAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null, "SOURCE-SPECIFICATION", null);
             await writer.WriteElementStringAsync(null, "SPECIFICATION-REF",null, this.SourceSpecification.Identifier);
@@ -621,10 +606,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteTargetSpecificationAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null, "TARGET-SPECIFICATION", null);
             await writer.WriteElementStringAsync(null, "SPECIFICATION-REF",null, this.TargetSpecification.Identifier);
@@ -665,10 +647,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteSpecRelationsAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.SpecRelations.Count == 0)
             {

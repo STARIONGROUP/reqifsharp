@@ -174,10 +174,7 @@ namespace ReqIFSharp
 
             while (reader.MoveToNextAttribute())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (reader.Name != "xml:lang")
                 {
@@ -194,10 +191,7 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
@@ -269,10 +263,7 @@ namespace ReqIFSharp
         /// </param>
         internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await this.WriteNameSpaceAttributesAsync(writer);
 
@@ -386,10 +377,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteTheHeaderAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null, "THE-HEADER", null);
             await writer.WriteStartElementAsync(null,"REQ-IF-HEADER", null);
@@ -424,10 +412,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteCoreContentAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null,"CORE-CONTENT", null);
             await writer.WriteStartElementAsync(null,"REQ-IF-CONTENT", null);
@@ -470,10 +455,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteToolExtensionAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.ToolExtension.Count == 0)
             {

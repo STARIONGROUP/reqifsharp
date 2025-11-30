@@ -276,10 +276,7 @@ namespace ReqIFSharp
             {
                 while (await subtree.ReadAsync())
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
                     {
@@ -507,10 +504,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueXHTML may not be null");
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.IsSimplified)
             {

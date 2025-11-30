@@ -197,10 +197,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             return this.ReadSpecTypeInternalAsync(reader);
         }
@@ -264,10 +261,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             return this.ReadHierarchyInternalAsync(reader, token);
         }
@@ -285,17 +279,11 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     using (var subtree = reader.ReadSubtree())
                     {
@@ -332,10 +320,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteTypeAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null, "TYPE", null);
             await writer.WriteElementStringAsync(null, "SPECIFICATION-TYPE-REF",null, this.Type.Identifier);

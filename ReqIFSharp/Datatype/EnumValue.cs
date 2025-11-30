@@ -115,10 +115,7 @@ namespace ReqIFSharp
             {
                 while (await subtree.ReadAsync())
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
                     {

@@ -109,7 +109,7 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
-        public async Task VErify_that_when_cancelled_ReadXmlAsync_throws_exception()
+        public async Task Verify_that_when_cancelled_ReadXmlAsync_throws_exception()
         {
             var xml = """
                       <REQ-IF-CONTENT />

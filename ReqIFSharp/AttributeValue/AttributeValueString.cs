@@ -181,10 +181,7 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-STRING-REF"))
                 {
@@ -240,10 +237,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueString may not be null");
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, this.TheValue);
             await writer.WriteStartElementAsync(null, "DEFINITION", null);

@@ -199,10 +199,7 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-BOOLEAN-REF"))
                 {
@@ -284,10 +281,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueBoolean may not be null");
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteAttributeStringAsync(null, "THE-VALUE", null, this.TheValue ? "true" : "false" );
             await writer.WriteStartElementAsync(null, "DEFINITION", null);

@@ -154,10 +154,7 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
@@ -174,10 +171,7 @@ namespace ReqIFSharp
                             {
                                 while (await specAttributesSubTree.ReadAsync())
                                 {
-                                    if (token.IsCancellationRequested)
-                                    {
-                                        token.ThrowIfCancellationRequested();
-                                    }
+                                    token.ThrowIfCancellationRequested();
 
                                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-", StringComparison.Ordinal))
                                     {
@@ -238,10 +232,7 @@ namespace ReqIFSharp
                 return;
             }
 
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             using (var attributeDefTree = reader.ReadSubtree())
             {

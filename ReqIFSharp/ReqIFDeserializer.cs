@@ -432,10 +432,7 @@ namespace ReqIFSharp
                         this.logger.LogTrace("found {Entries} in the reqif zip archive in {Time} [ms]", reqIfEntries.Length, sw.ElapsedMilliseconds);
                         sw.Stop();
 
-                        if (token.IsCancellationRequested)
-                        {
-                            token.ThrowIfCancellationRequested();
-                        }
+                        token.ThrowIfCancellationRequested();
 
                         var reqifs = new List<ReqIF>();
                         foreach (var zipArchiveEntry in reqIfEntries)
@@ -460,10 +457,7 @@ namespace ReqIFSharp
                             this.logger.LogTrace("xml read in {Time}", sw.ElapsedMilliseconds);
                             sw.Stop();
 
-                            if (token.IsCancellationRequested)
-                            {
-                                token.ThrowIfCancellationRequested();
-                            }
+                            token.ThrowIfCancellationRequested();
                         }
 
                         return reqifs;

@@ -285,10 +285,7 @@ namespace ReqIFSharp
         /// </returns>
         private static async Task WriteXmlToStreamAsync(ReqIF reqIf, Stream stream, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             using (var writer = XmlWriter.Create(stream, CreateXmlWriterSettings(true)))
             {
@@ -345,10 +342,7 @@ namespace ReqIFSharp
         /// </param>
         private static async Task WriteXmlAsync(XmlWriter xmlWriter, ReqIF reqIf, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await xmlWriter.WriteStartDocumentAsync();
             await xmlWriter.WriteStartElementAsync(null,"REQ-IF", DefaultXmlAttributeFactory.ReqIFSchemaUri);

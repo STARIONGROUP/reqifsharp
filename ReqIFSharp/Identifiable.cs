@@ -190,10 +190,7 @@ namespace ReqIFSharp
         /// </param>
         internal virtual async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (string.IsNullOrEmpty(this.Identifier))
             {

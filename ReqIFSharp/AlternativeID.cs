@@ -89,10 +89,7 @@ namespace ReqIFSharp
         /// </param>
         internal async Task WriteXmlAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null, "ALTERNATIVE-ID", null);
             await writer.WriteAttributeStringAsync(null, "IDENTIFIER", null, this.Identifier);

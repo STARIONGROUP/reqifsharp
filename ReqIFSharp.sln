@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 	ProjectSection(SolutionItems) = preProject
 		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
 		.github\workflows\CodeQuality.yml = .github\workflows\CodeQuality.yml
+		.github\workflows\nuget-reference-check.yml = .github\workflows\nuget-reference-check.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReqIFSharp.Extensions", "ReqIFSharp.Extensions\ReqIFSharp.Extensions.csproj", "{93D5132D-F20B-480A-930B-637996AF0E07}"

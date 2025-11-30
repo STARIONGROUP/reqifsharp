@@ -227,10 +227,7 @@ namespace ReqIFSharp
 
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
@@ -403,10 +400,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task DeserializeObjectAsync(XmlReader reader, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
             {
@@ -461,10 +455,7 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
-                if (token.IsCancellationRequested)
-                {
-                    token.ThrowIfCancellationRequested();
-                }
+                token.ThrowIfCancellationRequested();
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
@@ -473,10 +464,7 @@ namespace ReqIFSharp
                         this.IsTableInternal = isTableInternal;
                     }
 
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     using (var subtree = reader.ReadSubtree())
                     {
@@ -512,10 +500,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteObjectAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             await writer.WriteStartElementAsync(null, "OBJECT", null);
             await writer.WriteElementStringAsync(null,"SPEC-OBJECT-REF", null, this.Object.Identifier);
@@ -603,10 +588,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteEditableAttsAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.editableAtts.Count == 0)
             {
@@ -706,10 +688,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteChildrenAsync(XmlWriter writer, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             if (this.children.Count == 0)
             {

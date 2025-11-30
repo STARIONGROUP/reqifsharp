@@ -136,10 +136,7 @@ namespace ReqIFSharp
         /// </param>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
-            if (token.IsCancellationRequested)
-            {
-                token.ThrowIfCancellationRequested();
-            }
+            token.ThrowIfCancellationRequested();
 
             base.ReadXml(reader);
 
@@ -147,10 +144,7 @@ namespace ReqIFSharp
             {
                 while (await subtree.ReadAsync())
                 {
-                    if (token.IsCancellationRequested)
-                    {
-                        token.ThrowIfCancellationRequested();
-                    }
+                    token.ThrowIfCancellationRequested();
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
