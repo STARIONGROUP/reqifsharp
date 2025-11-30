@@ -29,6 +29,8 @@
         <PackageReleaseNotes>
             - [Update] Microsoft.Sbom.Targets to version 4.1.4
             - [Update] Microsoft.Extensions.Logging.Abstractions to version 10.0.0
+            - [Refactor] to use token.ThrowIfCancellationRequested() directly
+            - [Include] LICENSE and (update) NOTICE file in nuget
         </PackageReleaseNotes>
         <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>

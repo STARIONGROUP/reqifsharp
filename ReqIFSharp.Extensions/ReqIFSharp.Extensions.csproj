@@ -27,6 +27,7 @@
       <PackageReleaseNotes>
           - [Update] to reqifsharp version 10.0.1
           - [Update] Microsoft.Sbom.Targets to version 4.1.4
+          - [Include] LICENSE and (update) NOTICE file in nuget
       </PackageReleaseNotes>
       <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
