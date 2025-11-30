@@ -327,5 +327,29 @@ namespace ReqIFSharp.Tests.SpecElementWithAttributesTests
             Assert.That(warningEvent.Properties["LocalName"].ToString().Trim('"'),
                 Is.EqualTo("UNSUPPORTED-ELEMENT"));
         }
+
+        [Test]
+        public void Verify_that_when_is_editable_is_not_boolean_exception_is_raised()
+        {
+            var content = new ReqIFContent();
+            var rootSpecification = new Specification(content, null) { Identifier = "root" };
+
+            var specHierarchy = new SpecHierarchy(rootSpecification, content, null)
+            {
+                Identifier = "hierarchy"
+            };
+
+            var xml = """
+                      <SPEC-HIERARCHY IDENTIFIER="hierarchy" IS-EDITABLE="INCORRECT-DATA-TYPE">
+                        <OBJECT />
+                        <CHILDREN />
+                      </SPEC-HIERARCHY>
+                      """;
+
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = false });
+            reader.MoveToContent();
+
+            Assert.That(() => specHierarchy.ReadXml(reader), Throws.InstanceOf<SerializationException>());
+        }
     }
 }
