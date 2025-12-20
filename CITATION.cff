@@ -3,8 +3,8 @@ message: "If you use this software, please cite it as below."
 
 title: "ReqIFSharp"
 abstract: "A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents."
-version: "10.0.1"
-date-released: "2025-11-30"
+version: "10.0.2"
+date-released: "2025-12-20"
 url: "https://github.com/STARIONGROUP/reqifsharp"
 
 authors:
@@ -36,6 +36,6 @@ preferred-citation:
     - name: "Starion Group S.A."
       affiliation: "Starion Group S.A."
       given-names: "MBSE Competence Area Developers"
-  version: "10.0.1"
+  version: "10.0.2"
   url: "https://github.com/STARIONGROUP/reqifsharp"
-  date-released: "2025-11-30"
+  date-released: "2025-12-20"
