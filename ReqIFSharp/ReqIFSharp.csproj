@@ -91,8 +91,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.4" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>
