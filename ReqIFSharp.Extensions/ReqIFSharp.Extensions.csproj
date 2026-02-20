@@ -8,7 +8,7 @@
       <Description>A .NET library that provides extenions and services to operate on ReqIF documents.</Description>
       <PackageId>ReqIFSharp.Extensions</PackageId>
       <Company>Starion Group S.A.</Company>
-      <Copyright>Copyright 2017-2025 Starion Group S.A.</Copyright>
+      <Copyright>Copyright 2017-2026 Starion Group S.A.</Copyright>
       <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
       <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
       <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>

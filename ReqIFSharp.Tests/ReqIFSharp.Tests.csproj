@@ -6,7 +6,7 @@
         <Company>Starion Group S.A.</Company>
         <Authors>Sam Gerene, Naron Phou</Authors>
         <Description>Nunit test suite for the ReqIFSharp library</Description>
-        <Copyright>Copyright 2017-2025 Starion Group S.A.</Copyright>
+        <Copyright>Copyright 2017-2026 Starion Group S.A.</Copyright>
         <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <Nullable>disable</Nullable>
