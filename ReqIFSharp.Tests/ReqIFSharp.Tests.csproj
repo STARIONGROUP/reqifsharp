@@ -2,7 +2,7 @@
 
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
+        <TargetFramework>net10.0</TargetFramework>
         <Company>Starion Group S.A.</Company>
         <Authors>Sam Gerene, Naron Phou</Authors>
         <Description>Nunit test suite for the ReqIFSharp library</Description>
