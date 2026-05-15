@@ -68,10 +68,13 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// <param name="reqIfLoaderService">
         /// The <see cref="IReqIFLoaderService"/> that is used to query the payload from the associated reqifz file-stream
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <returns>
         /// an <see cref="IEnumerable{String}"/> that contains base64 encoded strings
         /// </returns>
-        public static Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64PayloadsAsync(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService)
+        public static Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64PayloadsAsync(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService, CancellationToken token = default)
         {
             if (specElementWithAttributes == null)
             {
@@ -83,7 +86,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
                 throw new ArgumentNullException(nameof(reqIfLoaderService));
             }
 
-            return QueryBase64PayloadsInternalAsync(specElementWithAttributes, reqIfLoaderService);
+            return QueryBase64PayloadsInternalAsync(specElementWithAttributes, reqIfLoaderService, token);
         }
 
         /// <summary>
@@ -95,20 +98,21 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
         /// <param name="reqIfLoaderService">
         /// The <see cref="IReqIFLoaderService"/> that is used to query the payload from the associated reqifz file-stream
         /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
         /// <returns>
         /// an <see cref="IEnumerable{String}"/> that contains base64 encoded strings
         /// </returns>
-        private static async Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64PayloadsInternalAsync(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService)
+        private static async Task<IEnumerable<Tuple<ExternalObject, string>>> QueryBase64PayloadsInternalAsync(this SpecElementWithAttributes specElementWithAttributes, IReqIFLoaderService reqIfLoaderService, CancellationToken token)
         {
             var result = new List<Tuple<ExternalObject, string>>();
-
-            using var cts = new CancellationTokenSource();
 
             foreach (var specObjectValue in specElementWithAttributes.Values.OfType<AttributeValueXHTML>())
             {
                 foreach (var externalObject in specObjectValue.ExternalObjects)
                 {
-                    var payload = await reqIfLoaderService.QueryDataAsync(externalObject, cts.Token);
+                    var payload = await reqIfLoaderService.QueryDataAsync(externalObject, token);
                     result.Add(new Tuple<ExternalObject, string>(externalObject, payload));
                 }
             }

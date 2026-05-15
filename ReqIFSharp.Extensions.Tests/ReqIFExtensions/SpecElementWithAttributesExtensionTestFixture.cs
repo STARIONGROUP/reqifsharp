@@ -20,6 +20,7 @@
 
 namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
 {
+    using System;
     using System.IO;
     using System.Linq;
     using System.Threading;
@@ -79,6 +80,19 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var base64Payload = base64Payloads.Single();
 
             Assert.That(base64Payload.Item2, Does.StartWith("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfgAAACfCAIAAACazFx+AAAAAXNSR0IArs4c6QAA"));
+        }
+
+        [Test]
+        public void Verify_that_QueryBase64PayloadsAsync_honors_cancellation()
+        {
+            var specObject = this.reqIf.CoreContent.SpecObjects.Single(x => x.Identifier == "_3.4.2.2.2_BrLeft_2_BrRight_._BrLeft_f_BrRight_1");
+
+            using var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            Assert.That(
+                async () => await specObject.QueryBase64PayloadsAsync(this.reqIFLoaderService, cts.Token),
+                Throws.InstanceOf<OperationCanceledException>());
         }
     }
 }
