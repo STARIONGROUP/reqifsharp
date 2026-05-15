@@ -255,3 +255,5 @@ paket-files/
 /ReqIFSharp.Tests/test.xml
 /test.xml
 /TestResult.txt
+
+/.claude/settings.local.json
