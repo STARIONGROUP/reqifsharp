@@ -154,18 +154,8 @@ namespace ReqIFSharp.Extensions.Services
         {
             this.externalObjectDataCache.Clear();
 
+            this.sourceStream?.Dispose();
             this.sourceStream = new MemoryStream();
-
-            var deserializationStream = new MemoryStream();
-
-            this.logger.LogDebug("copying the ReqIF stream to the deserialization stream for deserialization");
-
-            reqifStream.Seek(0, SeekOrigin.Begin);
-            await reqifStream.CopyToAsync(deserializationStream, 81920, token);
-            if (deserializationStream.Position != 0)
-            {
-                deserializationStream.Seek(0, SeekOrigin.Begin);
-            }
 
             this.logger.LogDebug("copying the ReqIF stream to the source stream for safe keeping");
 
@@ -176,14 +166,26 @@ namespace ReqIFSharp.Extensions.Services
                 this.sourceStream.Seek(0, SeekOrigin.Begin);
             }
 
-            IEnumerable<ReqIF> result = null;
+            IEnumerable<ReqIF> result;
 
             var sw = Stopwatch.StartNew();
             this.logger.LogDebug("starting deserialization");
-            result = await this.reqIfDeSerializer.DeserializeAsync(deserializationStream, fileExtensionKind, token);
-            this.logger.LogDebug("deserialization finished in {Time} [ms]", sw.ElapsedMilliseconds);
 
-            deserializationStream.Dispose();
+            using (var deserializationStream = new MemoryStream())
+            {
+                this.logger.LogDebug("copying the ReqIF stream to the deserialization stream for deserialization");
+
+                reqifStream.Seek(0, SeekOrigin.Begin);
+                await reqifStream.CopyToAsync(deserializationStream, 81920, token);
+                if (deserializationStream.Position != 0)
+                {
+                    deserializationStream.Seek(0, SeekOrigin.Begin);
+                }
+
+                result = await this.reqIfDeSerializer.DeserializeAsync(deserializationStream, fileExtensionKind, token);
+            }
+
+            this.logger.LogDebug("deserialization finished in {Time} [ms]", sw.ElapsedMilliseconds);
 
             this.ReqIFData = result;
 
@@ -261,6 +263,7 @@ namespace ReqIFSharp.Extensions.Services
         /// </summary>
         public void Reset()
         {
+            this.sourceStream?.Dispose();
             this.sourceStream = null;
             this.ReqIFData = null;
             this.externalObjectDataCache.Clear();
