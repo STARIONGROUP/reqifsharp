@@ -48,7 +48,7 @@ namespace ReqIFSharp.Extensions.ReqIFExtensions
 
             var url = new StringBuilder();
             url.Append($"/reqif/{externalObject.Owner.SpecElAt.ReqIFContent.DocumentRoot.TheHeader.Identifier}");
-            url.Append($"/externalobject/{externalObject.Uri.Base64Encode()} ");
+            url.Append($"/externalobject/{externalObject.Uri.Base64Encode()}");
 
             return url.ToString();
         }
