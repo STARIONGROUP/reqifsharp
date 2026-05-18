@@ -79,7 +79,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             };
 
             var expectedBase64Uri = Convert.ToBase64String(Encoding.UTF8.GetBytes(externalObject.Uri));
-            var expectedUrl = $"/reqif/{header.Identifier}/externalobject/{expectedBase64Uri} ";
+            var expectedUrl = $"/reqif/{header.Identifier}/externalobject/{expectedBase64Uri}";
 
             Assert.That(externalObject.CreateUrl(), Is.EqualTo(expectedUrl));
         }
