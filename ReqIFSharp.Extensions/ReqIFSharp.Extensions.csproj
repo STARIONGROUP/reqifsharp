@@ -2,7 +2,7 @@
 
   <PropertyGroup>
       <TargetFramework>netstandard2.0</TargetFramework>
-      <Version>5.0.5</Version>
+      <Version>5.1.0</Version>
       <LangVersion>12.0</LangVersion>
       <Deterministic>true</Deterministic>
       <Title>ReqIFSharp.Extensions</Title>
@@ -26,7 +26,10 @@
       <GenerateDocumentationFile>true</GenerateDocumentationFile>
       <GenerateSBOM>true</GenerateSBOM>
       <PackageReleaseNotes>
-          - [Update] to reqifsharp version 10.0.5
+          - [Fix] honor CancellationToken in QueryBase64PayloadsAsync; fixes #67
+          - [Implement] remove trailing space from ExternalObject.CreateUrl; fixes #68
+          - [Implement] deterministic builds and CI pack for reproducible packages; fixes #71
+          - [Update] to reqifsharp version 10.0.6
       </PackageReleaseNotes>
       <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
