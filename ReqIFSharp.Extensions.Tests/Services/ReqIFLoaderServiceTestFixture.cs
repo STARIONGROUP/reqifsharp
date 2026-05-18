@@ -21,11 +21,14 @@
 namespace ReqIFSharp.Extensions.Tests.Services
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Reflection;
     using System.Threading;
     using System.Threading.Tasks;
+    using System.Xml.Schema;
 
     using Microsoft.Extensions.Logging;
 
@@ -170,6 +173,111 @@ namespace ReqIFSharp.Extensions.Tests.Services
 
                 Assert.That(image, Is.Not.Null.Or.Empty);
             }
+        }
+
+        [Test]
+        public async Task Verify_that_reloading_disposes_the_previous_source_stream()
+        {
+            var cts = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
+            await using (var firstStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                await this.reqIfLoaderService.LoadAsync(firstStream, supportedFileExtensionKind, cts.Token);
+            }
+
+            var previousSourceStream = GetSourceStream(this.reqIfLoaderService);
+            Assert.That(previousSourceStream, Is.Not.Null);
+
+            await using (var secondStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                await this.reqIfLoaderService.LoadAsync(secondStream, supportedFileExtensionKind, cts.Token);
+            }
+
+            Assert.That(() => _ = previousSourceStream.Position, Throws.InstanceOf<ObjectDisposedException>());
+            Assert.That(this.reqIfLoaderService.ReqIFData, Is.Not.Empty);
+        }
+
+        [Test]
+        public async Task Verify_that_Reset_disposes_the_source_stream()
+        {
+            var cts = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
+            await using (var fileStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                await this.reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
+            }
+
+            var sourceStream = GetSourceStream(this.reqIfLoaderService);
+            Assert.That(sourceStream, Is.Not.Null);
+
+            this.reqIfLoaderService.Reset();
+
+            Assert.That(() => _ = sourceStream.Position, Throws.InstanceOf<ObjectDisposedException>());
+            Assert.That(this.reqIfLoaderService.ReqIFData, Is.Null);
+        }
+
+        [Test]
+        public async Task Verify_that_a_failing_deserializer_propagates_and_leaves_service_usable()
+        {
+            var cts = new CancellationTokenSource();
+
+            var reqifPath = Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", "ProR_Traceability-Template-v1.0.reqif");
+
+            var supportedFileExtensionKind = reqifPath.ConvertPathToSupportedFileExtensionKind();
+
+            var failingLoaderService = new ReqIFLoaderService(new ThrowingDeSerializer());
+
+            await using (var fileStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                Assert.That(
+                    async () => await failingLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token),
+                    Throws.InstanceOf<InvalidOperationException>());
+            }
+
+            Assert.That(failingLoaderService.ReqIFData, Is.Null);
+
+            await using (var fileStream = new FileStream(reqifPath, FileMode.Open))
+            {
+                await this.reqIfLoaderService.LoadAsync(fileStream, supportedFileExtensionKind, cts.Token);
+            }
+
+            Assert.That(this.reqIfLoaderService.ReqIFData, Is.Not.Empty);
+        }
+
+        /// <summary>
+        /// Reads the private <c>sourceStream</c> field of the <see cref="ReqIFLoaderService"/> for white-box assertions.
+        /// </summary>
+        private static Stream GetSourceStream(ReqIFLoaderService service)
+        {
+            var field = typeof(ReqIFLoaderService).GetField("sourceStream", BindingFlags.NonPublic | BindingFlags.Instance);
+            return (Stream)field?.GetValue(service);
+        }
+
+        /// <summary>
+        /// An <see cref="IReqIFDeSerializer"/> that always throws, used to exercise the error path of
+        /// <see cref="ReqIFLoaderService"/>.
+        /// </summary>
+        private sealed class ThrowingDeSerializer : IReqIFDeSerializer
+        {
+            public IEnumerable<ReqIF> Deserialize(string fileUri, bool validate = false, ValidationEventHandler validationEventHandler = null)
+                => throw new InvalidOperationException("deserialization failed");
+
+            public IEnumerable<ReqIF> Deserialize(Stream stream, SupportedFileExtensionKind fileExtensionKind, bool validate = false, ValidationEventHandler validationEventHandler = null)
+                => throw new InvalidOperationException("deserialization failed");
+
+            public Task<IEnumerable<ReqIF>> DeserializeAsync(string fileUri, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
+                => throw new InvalidOperationException("deserialization failed");
+
+            public Task<IEnumerable<ReqIF>> DeserializeAsync(Stream stream, SupportedFileExtensionKind fileExtensionKind, CancellationToken token, bool validate = false, ValidationEventHandler validationEventHandler = null)
+                => throw new InvalidOperationException("deserialization failed");
         }
     }
 }
