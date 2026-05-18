@@ -538,14 +538,15 @@ namespace ReqIFSharp
             var @namespace = type.Namespace;
             var reqifSchemaResourceName = $"{@namespace}.Resources.{resourceName}";
 
-            var stream = a.GetManifestResourceStream(reqifSchemaResourceName);
-
-            if (stream == null)
+            using (var stream = a.GetManifestResourceStream(reqifSchemaResourceName))
             {
-                throw new MissingManifestResourceException($"The {reqifSchemaResourceName} resource could not be found");
+                if (stream == null)
+                {
+                    throw new MissingManifestResourceException($"The {reqifSchemaResourceName} resource could not be found");
+                }
+
+                return XmlSchema.Read(stream, validationEventHandler);
             }
-            
-            return XmlSchema.Read(stream, validationEventHandler);
         }
     }
 }
