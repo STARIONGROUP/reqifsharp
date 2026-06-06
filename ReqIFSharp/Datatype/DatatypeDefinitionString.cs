@@ -35,7 +35,8 @@ namespace ReqIFSharp
     /// <remarks>
     /// This element defines a data type for the representation of String data values in the Exchange Document.
     /// </remarks>
-    public class DatatypeDefinitionString : DatatypeDefinitionSimple 
+    [Class(name: "DATATYPE-DEFINITION-STRING")]
+    public class DatatypeDefinitionString : DatatypeDefinitionSimple
     {
         /// <summary>
         /// The <see cref="ILogger"/> used to log
@@ -80,6 +81,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the maximum permissible string length
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public long MaxLength { get; set; }
 
         /// <summary>

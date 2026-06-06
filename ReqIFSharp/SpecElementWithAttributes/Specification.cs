@@ -35,6 +35,7 @@ namespace ReqIFSharp
     /// Represents a hierarchically structured requirements specification.
     /// It is the root node of the tree that hierarchically structures <see cref="SpecObject"/> instances.
     /// </summary>
+    [Class(name: "SPECIFICATION")]
     public class Specification : SpecElementWithAttributes
     {
         /// <summary>
@@ -78,11 +79,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the links to next level of owned SpecHierarchy.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecHierarchy> Children => this.children;
 
         /// <summary>
         /// Gets or sets the <see cref="SpecificationType"/> reference.
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecificationType Type { get; set; }
 
         /// <summary>

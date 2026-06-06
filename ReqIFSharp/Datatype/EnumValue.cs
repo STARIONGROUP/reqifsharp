@@ -29,6 +29,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The class <see cref="EnumValue"/> represents enumeration literals.
     /// </summary>
+    [Class(name: "ENUM-VALUE")]
     public class EnumValue : Identifiable
     {
         /// <summary>
@@ -68,6 +69,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the owned <see cref="EmbeddedValue"/>
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 1, upperValue: 1)]
         public EmbeddedValue Properties { get; set; }
 
         /// <summary>

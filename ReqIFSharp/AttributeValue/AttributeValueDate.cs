@@ -34,6 +34,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueDate"/> class is to define a <see cref="DateTime"/> attribute value.
     /// </summary>
+    [Class(name: "ATTRIBUTE-VALUE-DATE")]
     public class AttributeValueDate : AttributeValueSimple
     {
         /// <summary>
@@ -85,6 +86,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value.
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public DateTime TheValue { get; set; }
 
         /// <summary>
@@ -110,6 +112,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Reference to the value definition.
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public AttributeDefinitionDate Definition { get; set; }
 
         /// <summary>

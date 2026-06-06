@@ -37,6 +37,7 @@ namespace ReqIFSharp
     /// Data type definition for enumeration types. The set of enumeration values referenced by specifiedValues constrains the
     /// possible choices for enumeration attribute values
     /// </remarks>
+    [Class(name: "DATATYPE-DEFINITION-ENUMERATION")]
     public class DatatypeDefinitionEnumeration : DatatypeDefinition
     {
         /// <summary>
@@ -87,6 +88,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the owned enumeration literals
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<EnumValue> SpecifiedValues => this.specifiedValues;
 
         /// <summary>

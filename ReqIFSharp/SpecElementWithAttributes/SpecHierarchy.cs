@@ -39,6 +39,7 @@ namespace ReqIFSharp
     /// The tree is created by references of <see cref="SpecHierarchy"/> instances to other <see cref="SpecHierarchy"/> instances.
     /// Each node has additionally a reference to a <see cref="SpecObject"/> resulting in a hierarchical structure of <see cref="SpecObject"/>s
     /// </remarks>
+    [Class(name: "SPEC-HIERARCHY")]
     public class SpecHierarchy : AccessControlledElement
     {
         /// <summary>
@@ -129,16 +130,19 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the Down links to next level of owned SpecHierarchy.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecHierarchy> Children => this.children;
 
         /// <summary>
         /// Gets the attributes whose values are editable for the <see cref="SpecHierarchy"/> by a tool user
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue)]
         public List<AttributeDefinition> EditableAtts => this.editableAtts;
 
         /// <summary>
         /// Gets or sets the reference to the associated <see cref="SpecObject"/>
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecObject Object { get; set; }
 
         /// <summary>
@@ -151,6 +155,7 @@ namespace ReqIFSharp
         /// The root node of the table hierarchy is related to the SpecObject element that is the root of the table by the object
         /// association.
         /// </remarks>
+        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public bool IsTableInternal { get; set; }
 
         /// <summary>

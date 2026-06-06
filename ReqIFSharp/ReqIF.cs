@@ -31,6 +31,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="ReqIF"/> class constitutes the root element of a ReqIF Exchange Document.
     /// </summary>
+    [Class(name: "REQ-IF")]
     public class ReqIF
     {
         /// <summary>
@@ -73,16 +74,19 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the mandatory Exchange Document header, which contains metadata relevant for this exchange.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 1, upperValue: 1)]
         public ReqIFHeader TheHeader { get; set; }
 
         /// <summary>
         /// Gets the mandatory Exchange Document content.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 1, upperValue: 1)]
         public ReqIFContent CoreContent { get; set; }
 
         /// <summary>
         /// Gets the optional Exchange Document content based on tool extensions, if such extensions and content are present.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<ReqIFToolExtension> ToolExtension { get; set; } = new List<ReqIFToolExtension>();
 
         /// <summary>
@@ -91,6 +95,7 @@ namespace ReqIFSharp
         /// <remarks>
         /// The format is defined by the standard for specifying languages in XML documents proposed by the <a href="http://www.w3.org/TR/xml11/#sec-lang-tag"> W3C </a>
         /// </remarks>
+        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public string Lang { get; set; }
 
         /// <summary>

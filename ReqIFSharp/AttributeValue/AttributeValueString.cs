@@ -33,6 +33,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueString"/> class is to define a <see cref="string"/> attribute value.
     /// </summary>
+    [Class(name: "ATTRIBUTE-VALUE-STRING")]
     public class AttributeValueString : AttributeValueSimple
     {
         /// <summary>
@@ -85,6 +86,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string TheValue { get; set; }
 
         /// <summary>
@@ -102,6 +104,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets reference to the value definition
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public AttributeDefinitionString Definition { get; set; }
 
         /// <summary>

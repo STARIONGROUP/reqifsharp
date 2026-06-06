@@ -27,6 +27,7 @@ namespace ReqIFSharp
     /// Inherits a set of attribute definitions from SpecType. By using SpecificationType elements, multiple specifications can be
     /// associated with the same set of attribute definitions (attribute names, default values, data types, etc.).
     /// </summary>
+    [Class(name: "SPECIFICATION-TYPE")]
     public class SpecificationType : SpecType
     {
         /// <summary>

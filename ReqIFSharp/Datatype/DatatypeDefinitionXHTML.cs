@@ -29,6 +29,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="DatatypeDefinitionXHTML"/> class is to define XHTML formatted data.
     /// </summary>
+    [Class(name: "DATATYPE-DEFINITION-XHTML")]
     public class DatatypeDefinitionXHTML : DatatypeDefinition
     {
         /// <summary>

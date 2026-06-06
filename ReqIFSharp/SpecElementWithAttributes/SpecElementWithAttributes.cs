@@ -37,6 +37,7 @@ namespace ReqIFSharp
     /// While this class aggregates the values of the attributes, the association to the attributes’ types that define the acceptable
     /// values for the attributes is realized by concrete sub classes of this class.
     /// </remarks>
+    [Class(name: "SPEC-ELEMENT-WITH-ATTRIBUTES", isAbstract: true)]
     public abstract class SpecElementWithAttributes : Identifiable
     {
         /// <summary>
@@ -89,6 +90,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the values of the attributes owned by the element.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<AttributeValue> Values => this.values;
 
         /// <summary>

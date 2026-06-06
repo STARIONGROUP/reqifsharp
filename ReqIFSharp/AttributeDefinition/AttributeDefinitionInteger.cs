@@ -41,6 +41,7 @@ namespace ReqIFSharp
     /// value if no attribute value is supplied by the user of the requirements authoring tool.
     /// ReqIfSharp supports 64 bit singed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
+    [Class(name: "ATTRIBUTE-DEFINITION-INTEGER")]
     public class AttributeDefinitionInteger : AttributeDefinitionSimple
     {
         /// <summary>
@@ -86,11 +87,13 @@ namespace ReqIFSharp
         /// Gets or sets the owned default value that is used if no attribute value is supplied 
         /// by the user of the requirements authoring tool.
         /// </summary>
+        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
         public AttributeValueInteger DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public DatatypeDefinitionInteger Type { get; set; }
 
         /// <summary>

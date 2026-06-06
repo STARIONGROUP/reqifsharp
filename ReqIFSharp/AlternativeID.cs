@@ -28,6 +28,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AlternativeId"/> class is to provide an alternative, tool-specific identification.
     /// </summary>
+    [Class(name: "ALTERNATIVE-ID")]
     public class AlternativeId
     {
         /// <summary>
@@ -52,6 +53,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the optional alternative identifier, which may be a requirements management tool identifier or <see cref="ReqIF"/> tool identifier
         /// </summary>
+        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string Identifier { get; set; }
 
         /// <summary>
