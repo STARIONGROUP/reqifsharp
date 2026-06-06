@@ -20,6 +20,18 @@ The packages are available on Nuget:
 - [ReqIFSharp](https://www.nuget.org/packages/ReqIFSharp): ![NuGet Version](https://img.shields.io/nuget/v/ReqIFSharp)
 - [ReqIFSharp.Extensions](https://www.nuget.org/packages/ReqIFSharp.Extensions): ![NuGet Version](https://img.shields.io/nuget/v/ReqIFSharp.Extensions)
 
+## Dependencies
+
+`ReqIFSharp` targets `netstandard2.0` and has a single runtime dependency: `Microsoft.Extensions.Logging.Abstractions`. Its version is **deliberately floored at `6.0.0`** - the lowest version that exposes every logging API the library uses. Because a NuGet package reference is a *minimum*, a low floor keeps the library broadly consumable instead of forcing everyone onto the latest major.
+
+**Using ReqIFSharp from .NET 8/10 (or any modern app)?** You don't have to do anything - NuGet automatically floats the dependency up to the version your application already uses (e.g. `Microsoft.Extensions.Logging.Abstractions 10.x` on .NET 10). If you want to be explicit, simply add a direct reference in your own project to the version that matches your runtime:
+
+```xml
+<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+```
+
+This pins the resolved version in your application without ReqIFSharp imposing it on consumers who are still on older lines.
+
 ## Build Status
 
 GitHub actions are used to build and test the library
