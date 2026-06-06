@@ -50,7 +50,7 @@ namespace ReqIFSharp
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
-            using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
+            using (var fileStream = new FileStream(fileUri, FileMode.Create))
             {
                 this.Serialize(reqifs, fileStream, fileExtensionKind);
             }
@@ -121,7 +121,7 @@ namespace ReqIFSharp
 
             var fileExtensionKind = fileUri.ConvertPathToSupportedFileExtensionKind();
 
-            using (var fileStream = new FileStream(fileUri, FileMode.OpenOrCreate))
+            using (var fileStream = new FileStream(fileUri, FileMode.Create))
             {
                 await this.SerializeAsync(reqifs, fileStream, fileExtensionKind, token);
             }
