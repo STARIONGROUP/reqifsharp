@@ -31,7 +31,7 @@ namespace ReqIFSharp.Tests.Decorators
 
     /// <summary>
     /// Reflection-driven completeness guard that verifies every model class and metamodel property
-    /// in the <see cref="ReqIFSharp"/> assembly is decorated with the <see cref="ClassAttribute"/>
+    /// in the <see cref="ReqIFSharp"/> assembly is decorated with the <see cref="ReqIfClassAttribute"/>
     /// and <see cref="ReqIfPropertyAttribute"/> metadata decorators. When a new model class or property
     /// is added, this fixture fails until the decorators are applied (or the property is added to the
     /// documented exclusion list of infrastructure / back-reference members).
@@ -101,10 +101,10 @@ namespace ReqIFSharp.Tests.Decorators
         }
 
         [Test]
-        public void Verify_that_every_model_class_is_decorated_with_ClassAttribute()
+        public void Verify_that_every_model_class_is_decorated_with_ReqIfClassAttribute()
         {
             var offenders = ModelTypes()
-                .Where(t => t.GetCustomAttribute<ClassAttribute>() == null)
+                .Where(t => t.GetCustomAttribute<ReqIfClassAttribute>() == null)
                 .Select(t => t.Name)
                 .ToList();
 
@@ -113,11 +113,11 @@ namespace ReqIFSharp.Tests.Decorators
         }
 
         [Test]
-        public void Verify_that_ClassAttribute_IsAbstract_matches_the_type()
+        public void Verify_that_ReqIfClassAttribute_IsAbstract_matches_the_type()
         {
             foreach (var type in ModelTypes())
             {
-                var classAttribute = type.GetCustomAttribute<ClassAttribute>();
+                var classAttribute = type.GetCustomAttribute<ReqIfClassAttribute>();
 
                 Assert.That(classAttribute, Is.Not.Null, $"{type.Name} is missing the [Class] decorator.");
                 Assert.That(classAttribute.IsAbstract, Is.EqualTo(type.IsAbstract),

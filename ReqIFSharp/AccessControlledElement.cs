@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="AccessControlledElement"/> is the base class for classes that may restrict user access to their information.
     /// </summary>
-    [Class(name: "ACCESS-CONTROLLED-ELEMENT", isAbstract: true)]
+    [ReqIfClass(name: "ACCESS-CONTROLLED-ELEMENT", isAbstract: true)]
     public abstract class AccessControlledElement : Identifiable
     {
         /// <summary>

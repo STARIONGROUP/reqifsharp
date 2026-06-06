@@ -37,7 +37,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueXHTML"/> class is to define an attribute value with XHTML contents.
     /// </summary>
-    [Class(name: "ATTRIBUTE-VALUE-XHTML")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-XHTML")]
     public class AttributeValueXHTML : AttributeValue
     {
         /// <summary>

@@ -34,7 +34,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueEnumeration"/> class is to define an enumeration attribute value.
     /// </summary>
-    [Class(name: "ATTRIBUTE-VALUE-ENUMERATION")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-ENUMERATION")]
     public class AttributeValueEnumeration : AttributeValue
     {
         /// <summary>

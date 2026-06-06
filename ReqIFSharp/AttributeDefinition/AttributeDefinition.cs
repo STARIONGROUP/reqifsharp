@@ -36,7 +36,7 @@ namespace ReqIFSharp
     /// type. In <see cref="ReqIF"/>, each attribute value (<see cref="AttributeValue"/> element) is related to its data type (<see cref="DatatypeDefinition"/>  element) via
     /// an attribute definition (<see cref="AttributeDefinition"/> element).
     /// </remarks>
-    [Class(name: "ATTRIBUTE-DEFINITION", isAbstract: true)]
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION", isAbstract: true)]
     public abstract class AttributeDefinition : AccessControlledElement
     {
         /// <summary>

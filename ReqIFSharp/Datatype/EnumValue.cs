@@ -29,7 +29,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The class <see cref="EnumValue"/> represents enumeration literals.
     /// </summary>
-    [Class(name: "ENUM-VALUE")]
+    [ReqIfClass(name: "ENUM-VALUE")]
     public class EnumValue : Identifiable
     {
         /// <summary>

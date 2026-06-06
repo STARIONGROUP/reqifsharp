@@ -29,7 +29,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="ReqIFToolExtension"/> class allows the optional inclusion of tool-specific information into a ReqIF Exchange Document.
     /// </summary>
-    [Class(name: "REQ-IF-TOOL-EXTENSION")]
+    [ReqIfClass(name: "REQ-IF-TOOL-EXTENSION")]
     public class ReqIFToolExtension
     {
         /// <summary>

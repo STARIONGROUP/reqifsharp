@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="EmbeddedValue"/> class represents additional information related to enumeration literals.
     /// </summary>
-    [Class(name: "EMBEDDED-VALUE")]
+    [ReqIfClass(name: "EMBEDDED-VALUE")]
     public class EmbeddedValue
     {
         /// <summary>

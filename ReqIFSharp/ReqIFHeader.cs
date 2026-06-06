@@ -34,7 +34,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// Meta-information held in the <see cref="ReqIFHeader"/> element is applicable to the Exchange Document as a whole.
     /// </remarks>
-    [Class(name: "REQ-IF-HEADER")]
+    [ReqIfClass(name: "REQ-IF-HEADER")]
     public class ReqIFHeader
     {
         /// <summary>

@@ -31,7 +31,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="ReqIF"/> class constitutes the root element of a ReqIF Exchange Document.
     /// </summary>
-    [Class(name: "REQ-IF")]
+    [ReqIfClass(name: "REQ-IF")]
     public class ReqIF
     {
         /// <summary>

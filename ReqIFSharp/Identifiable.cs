@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="Identifiable"/> Abstract base class provides an identification concept for <see cref="ReqIF"/> elements.
     /// </summary>
-    [Class(name: "IDENTIFIABLE", isAbstract: true)]
+    [ReqIfClass(name: "IDENTIFIABLE", isAbstract: true)]
     public abstract class Identifiable
     {
         /// <summary>

@@ -40,7 +40,7 @@ namespace ReqIFSharp
     /// An <see cref="AttributeDefinitionReal"/> element MAY contain a default value that represents the value that is used as an attribute
     /// value if no attribute value is supplied by the user of the requirements authoring tool.
     /// </remarks>
-    [Class(name: "ATTRIBUTE-DEFINITION-REAL")]
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-REAL")]
     public class AttributeDefinitionReal : AttributeDefinitionSimple
     {
         /// <summary>

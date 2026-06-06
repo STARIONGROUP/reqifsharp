@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-// <copyright file="ClassAttributeTestFixture.cs" company="Starion Group S.A.">
+// <copyright file="ReqIfClassAttributeTestFixture.cs" company="Starion Group S.A.">
 //
 //   Copyright 2017-2026 Starion Group S.A.
 //
@@ -25,15 +25,15 @@ namespace ReqIFSharp.Tests.Decorators
     using ReqIFSharp;
 
     /// <summary>
-    /// Suite of tests for the <see cref="ClassAttribute"/> class
+    /// Suite of tests for the <see cref="ReqIfClassAttribute"/> class
     /// </summary>
     [TestFixture]
-    public class ClassAttributeTestFixture
+    public class ReqIfClassAttributeTestFixture
     {
         [Test]
         public void Verify_that_default_constructor_values_are_as_expected()
         {
-            var classAttribute = new ClassAttribute();
+            var classAttribute = new ReqIfClassAttribute();
 
             Assert.That(classAttribute.Name, Is.EqualTo(string.Empty));
             Assert.That(classAttribute.IsAbstract, Is.False);
@@ -42,7 +42,7 @@ namespace ReqIFSharp.Tests.Decorators
         [Test]
         public void Verify_that_constructor_sets_properties_as_expected()
         {
-            var classAttribute = new ClassAttribute("SPEC-OBJECT", true);
+            var classAttribute = new ReqIfClassAttribute("SPEC-OBJECT", true);
 
             Assert.That(classAttribute.Name, Is.EqualTo("SPEC-OBJECT"));
             Assert.That(classAttribute.IsAbstract, Is.True);
@@ -51,7 +51,7 @@ namespace ReqIFSharp.Tests.Decorators
         [Test]
         public void Verify_that_properties_can_be_set()
         {
-            var classAttribute = new ClassAttribute
+            var classAttribute = new ReqIfClassAttribute
             {
                 Name = "SPEC-RELATION",
                 IsAbstract = true

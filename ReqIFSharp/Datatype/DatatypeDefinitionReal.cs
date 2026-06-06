@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// This element defines a data type for the representation of Real data values in the Exchange Document.
     /// </summary>
-    [Class(name: "DATATYPE-DEFINITION-REAL")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-REAL")]
     public class DatatypeDefinitionReal : DatatypeDefinitionSimple
     {
         /// <summary>

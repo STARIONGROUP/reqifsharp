@@ -40,7 +40,7 @@ namespace ReqIFSharp
     /// <example>
     /// a <see cref="RelationGroup"/> instance may represent a set of relations between a customer requirements <see cref="Specification"/> and a system requirements <see cref="Specification"/>.
     /// </example>
-    [Class(name: "RELATION-GROUP")]
+    [ReqIfClass(name: "RELATION-GROUP")]
     public class RelationGroup : SpecElementWithAttributes
     {
         /// <summary>

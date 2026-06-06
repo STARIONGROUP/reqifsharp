@@ -37,7 +37,7 @@ namespace ReqIFSharp
     /// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
     /// ReqIfSharp supports 64-bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
-    [Class(name: "DATATYPE-DEFINITION-INTEGER")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-INTEGER")]
     public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
     {
         /// <summary>

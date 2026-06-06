@@ -33,7 +33,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// The specification for the XTHML object element defines several XML attributes. For ReqIF, only a subset of these attributes is relevant and used.
     /// </remarks>
-    [Class(name: "EXTERNAL-OBJECT")]
+    [ReqIfClass(name: "EXTERNAL-OBJECT")]
     public class ExternalObject
     {
         /// <summary>

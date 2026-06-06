@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-// <copyright file="ClassAttribute.cs" company="Starion Group S.A.">
+// <copyright file="ReqIfClassAttribute.cs" company="Starion Group S.A.">
 //
 //   Copyright 2017-2026 Starion Group S.A.
 //
@@ -27,10 +27,10 @@ namespace ReqIFSharp
     /// so that the relationships and characteristics of each class are self-documenting.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false, Inherited = false)]
-    public sealed class ClassAttribute : Attribute
+    public sealed class ReqIfClassAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="ClassAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ReqIfClassAttribute"/> class.
         /// </summary>
         /// <param name="name">
         /// The name of the ReqIF metaclass that the decorated class represents (e.g. <c>SPEC-OBJECT</c>).
@@ -39,7 +39,7 @@ namespace ReqIFSharp
         /// A value indicating whether the decorated class is abstract. An abstract class does not provide
         /// a complete declaration and cannot be instantiated on its own.
         /// </param>
-        public ClassAttribute(string name = "", bool isAbstract = false)
+        public ReqIfClassAttribute(string name = "", bool isAbstract = false)
         {
             this.Name = name;
             this.IsAbstract = isAbstract;

@@ -38,7 +38,7 @@ namespace ReqIFSharp
     /// The <see cref="SpecObject"/> instance itself does not carry the requirements text or any other user defined content.
     /// This data is stored in <see cref="AttributeValue"/> instances that are associated to the <see cref="SpecObject"/> instance.
     /// </remarks>
-    [Class(name: "SPEC-OBJECT")]
+    [ReqIfClass(name: "SPEC-OBJECT")]
     public class SpecObject : SpecElementWithAttributes
     {
         /// <summary>

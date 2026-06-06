@@ -40,7 +40,7 @@ namespace ReqIFSharp
     /// An <see cref="AttributeDefinitionDate"/> element MAY contain a default value that represents the value that is used as an attribute
     /// value if no attribute value is supplied by the user of the requirements authoring tool
     /// </remarks>    
-    [Class(name: "ATTRIBUTE-DEFINITION-DATE")]
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-DATE")]
     public class AttributeDefinitionDate : AttributeDefinitionSimple
     {
         /// <summary>

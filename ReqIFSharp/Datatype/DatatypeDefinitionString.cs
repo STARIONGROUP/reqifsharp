@@ -35,7 +35,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// This element defines a data type for the representation of String data values in the Exchange Document.
     /// </remarks>
-    [Class(name: "DATATYPE-DEFINITION-STRING")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-STRING")]
     public class DatatypeDefinitionString : DatatypeDefinitionSimple
     {
         /// <summary>

@@ -33,7 +33,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueBoolean"/> class is to define a <see cref="bool"/> attribute value.
     /// </summary>
-    [Class(name: "ATTRIBUTE-VALUE-BOOLEAN")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-BOOLEAN")]
     public class AttributeValueBoolean : AttributeValueSimple
     {
         /// <summary>

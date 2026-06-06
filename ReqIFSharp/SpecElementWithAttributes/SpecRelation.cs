@@ -33,7 +33,7 @@ namespace ReqIFSharp
     /// <summary>
     /// Defines relations (links) between two <see cref="SpecObject"/> instances.
     /// </summary>
-    [Class(name: "SPEC-RELATION")]
+    [ReqIfClass(name: "SPEC-RELATION")]
     public class SpecRelation : SpecElementWithAttributes
     {
         /// <summary>

@@ -29,7 +29,7 @@ namespace ReqIFSharp
     /// Inherits a set of attribute definitions from <see cref="SpecType"/>. By using <see cref="RelationGroupType"/> elements, <see cref="RelationGroup"/> elements can
     /// be associated with attribute names, default values, data types, etc.
     /// </remarks>
-    [Class(name: "RELATION-GROUP-TYPE")]
+    [ReqIfClass(name: "RELATION-GROUP-TYPE")]
     public class RelationGroupType : SpecType
     {
         /// <summary>

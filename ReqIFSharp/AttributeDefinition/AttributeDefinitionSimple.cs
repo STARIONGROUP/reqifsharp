@@ -25,7 +25,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="AttributeDefinitionSimple"/> is the base class for simple type attributes.
     /// </summary>
-    [Class(name: "ATTRIBUTE-DEFINITION-SIMPLE", isAbstract: true)]
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-SIMPLE", isAbstract: true)]
     public abstract class AttributeDefinitionSimple : AttributeDefinition
     {
         /// <summary>

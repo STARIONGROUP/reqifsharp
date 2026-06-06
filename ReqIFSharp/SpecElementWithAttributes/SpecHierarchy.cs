@@ -39,7 +39,7 @@ namespace ReqIFSharp
     /// The tree is created by references of <see cref="SpecHierarchy"/> instances to other <see cref="SpecHierarchy"/> instances.
     /// Each node has additionally a reference to a <see cref="SpecObject"/> resulting in a hierarchical structure of <see cref="SpecObject"/>s
     /// </remarks>
-    [Class(name: "SPEC-HIERARCHY")]
+    [ReqIfClass(name: "SPEC-HIERARCHY")]
     public class SpecHierarchy : AccessControlledElement
     {
         /// <summary>

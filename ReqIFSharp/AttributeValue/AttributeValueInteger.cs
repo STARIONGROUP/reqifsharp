@@ -37,7 +37,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// ReqIfSharp supports 64 bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
-    [Class(name: "ATTRIBUTE-VALUE-INTEGER")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-INTEGER")]
     public class AttributeValueInteger : AttributeValueSimple
     {
         /// <summary>

@@ -33,7 +33,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// This element defines a data type for the representation of Date and Time data values in the Exchange Document.
     /// </remarks>
-    [Class(name: "DATATYPE-DEFINITION-DATE")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-DATE")]
     public class DatatypeDefinitionDate : DatatypeDefinitionSimple
     {
         /// <summary>

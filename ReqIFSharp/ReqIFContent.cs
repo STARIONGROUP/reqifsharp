@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="ReqIFContent"/> class represents the mandatory content of a ReqIF Exchange Document.
     /// </summary>
-    [Class(name: "REQ-IF-CONTENT")]
+    [ReqIfClass(name: "REQ-IF-CONTENT")]
     public class ReqIFContent
     {
         /// <summary>

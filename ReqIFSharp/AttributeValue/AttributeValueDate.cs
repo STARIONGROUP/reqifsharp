@@ -34,7 +34,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueDate"/> class is to define a <see cref="DateTime"/> attribute value.
     /// </summary>
-    [Class(name: "ATTRIBUTE-VALUE-DATE")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-DATE")]
     public class AttributeValueDate : AttributeValueSimple
     {
         /// <summary>

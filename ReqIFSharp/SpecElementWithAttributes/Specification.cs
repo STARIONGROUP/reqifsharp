@@ -35,7 +35,7 @@ namespace ReqIFSharp
     /// Represents a hierarchically structured requirements specification.
     /// It is the root node of the tree that hierarchically structures <see cref="SpecObject"/> instances.
     /// </summary>
-    [Class(name: "SPECIFICATION")]
+    [ReqIfClass(name: "SPECIFICATION")]
     public class Specification : SpecElementWithAttributes
     {
         /// <summary>

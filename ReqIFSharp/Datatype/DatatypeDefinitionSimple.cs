@@ -25,7 +25,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="DatatypeDefinitionSimple"/> is the base class from which all primitive data types, except enumeration, are derived.
     /// </summary>
-    [Class(name: "DATATYPE-DEFINITION-SIMPLE", isAbstract: true)]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-SIMPLE", isAbstract: true)]
     public abstract class DatatypeDefinitionSimple : DatatypeDefinition
     {
         /// <summary>

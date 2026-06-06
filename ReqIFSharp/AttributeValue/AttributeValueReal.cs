@@ -34,7 +34,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueReal"/> class is to define a real attribute value.
     /// </summary>
-    [Class(name: "ATTRIBUTE-VALUE-REAL")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-REAL")]
     public class AttributeValueReal : AttributeValueSimple
     {
         /// <summary>
