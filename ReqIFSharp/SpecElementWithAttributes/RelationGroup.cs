@@ -94,25 +94,25 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the <see cref="RelationGroupType"/> reference
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public RelationGroupType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Specification"/> that contains <see cref="SpecObject"/> instances that are source objects of the relations.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public Specification SourceSpecification { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Specification"/> that contains <see cref="SpecObject"/> instances that are target objects of the relations.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public Specification TargetSpecification { get; set; }
 
         /// <summary>
         /// Gets the grouped <see cref="SpecRelation"/>s
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecRelation> SpecRelations => this.specRelations;
 
         /// <summary>

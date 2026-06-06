@@ -24,19 +24,16 @@ namespace ReqIFSharp.Tests.Decorators
 
     using ReqIFSharp;
 
-    // ReqIFSharp.PropertyAttribute collides with NUnit.Framework.PropertyAttribute; alias to the model decorator.
-    using PropertyAttribute = ReqIFSharp.PropertyAttribute;
-
     /// <summary>
-    /// Suite of tests for the <see cref="PropertyAttribute"/> class
+    /// Suite of tests for the <see cref="ReqIfPropertyAttribute"/> class
     /// </summary>
     [TestFixture]
-    public class PropertyAttributeTestFixture
+    public class ReqIfPropertyAttributeTestFixture
     {
         [Test]
         public void Verify_that_default_constructor_values_are_as_expected()
         {
-            var propertyAttribute = new PropertyAttribute();
+            var propertyAttribute = new ReqIfPropertyAttribute();
 
             Assert.That(propertyAttribute.Aggregation, Is.EqualTo(AggregationKind.None));
             Assert.That(propertyAttribute.LowerValue, Is.EqualTo(1));
@@ -52,7 +49,7 @@ namespace ReqIFSharp.Tests.Decorators
         [Test]
         public void Verify_that_constructor_sets_properties_as_expected()
         {
-            var propertyAttribute = new PropertyAttribute(
+            var propertyAttribute = new ReqIfPropertyAttribute(
                 aggregation: AggregationKind.Composite,
                 lowerValue: 0,
                 upperValue: int.MaxValue,

@@ -88,7 +88,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the owned enumeration literals
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<EnumValue> SpecifiedValues => this.specifiedValues;
 
         /// <summary>

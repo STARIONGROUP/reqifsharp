@@ -83,13 +83,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public long Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest positive data value representable by this data type.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public long Max { get; set; }
 
         /// <summary>

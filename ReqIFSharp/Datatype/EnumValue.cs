@@ -69,7 +69,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the owned <see cref="EmbeddedValue"/>
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 1, upperValue: 1)]
         public EmbeddedValue Properties { get; set; }
 
         /// <summary>

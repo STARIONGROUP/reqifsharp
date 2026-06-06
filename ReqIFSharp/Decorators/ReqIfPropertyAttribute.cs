@@ -1,5 +1,5 @@
 // -------------------------------------------------------------------------------------------------
-// <copyright file="PropertyAttribute.cs" company="Starion Group S.A.">
+// <copyright file="ReqIfPropertyAttribute.cs" company="Starion Group S.A.">
 //
 //   Copyright 2017-2026 Starion Group S.A.
 //
@@ -27,10 +27,10 @@ namespace ReqIFSharp
     /// so that the multiplicity, ownership and characteristics of each property are self-documenting.
     /// </summary>
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = false)]
-    public sealed class PropertyAttribute : Attribute
+    public sealed class ReqIfPropertyAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyAttribute"/> class.
+        /// Initializes a new instance of the <see cref="ReqIfPropertyAttribute"/> class.
         /// </summary>
         /// <param name="aggregation">
         /// The <see cref="AggregationKind"/> that specifies whether the property references or owns its value(s).
@@ -59,7 +59,7 @@ namespace ReqIFSharp
         /// <param name="defaultValue">
         /// The default value of the property, if any.
         /// </param>
-        public PropertyAttribute(AggregationKind aggregation = AggregationKind.None, int lowerValue = 1, int upperValue = 1,
+        public ReqIfPropertyAttribute(AggregationKind aggregation = AggregationKind.None, int lowerValue = 1, int upperValue = 1,
             bool isOrdered = false,
             bool isReadOnly = false,
             bool isDerived = false,

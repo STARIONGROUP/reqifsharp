@@ -90,7 +90,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the values of the attributes owned by the element.
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<AttributeValue> Values => this.values;
 
         /// <summary>

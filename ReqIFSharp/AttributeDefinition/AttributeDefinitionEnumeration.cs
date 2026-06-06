@@ -85,13 +85,13 @@ namespace ReqIFSharp
         /// Gets or sets the owned default value that is used if no attribute value is supplied 
         /// by the user of the requirements authoring tool.
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
         public AttributeValueEnumeration DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public DatatypeDefinitionEnumeration Type { get; set; }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace ReqIFSharp
         /// If set to false, this means that the user of a requirements authoring tool can pick exactly one of the values in the set of
         /// specified values as an enumeration attribute value.
         /// </value>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public bool IsMultiValued { get; set; }
 
         /// <summary>

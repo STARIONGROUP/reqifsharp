@@ -64,7 +64,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets an optional comment associated with the Exchange Document as a whole
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public string Comment { get; set; }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace ReqIFSharp
         /// <example>
         /// Example: 2005-03-04T10:24:18+01:00 (MET time zone).
         /// </example>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public DateTime CreationTime { get; set; }
 
         /// <summary>
@@ -85,31 +85,31 @@ namespace ReqIFSharp
         /// <remarks>
         /// Examples for repositoryID: databaseId, URL.
         /// </remarks>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public string RepositoryId { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the exporting "ReqIF" tool.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string ReqIFToolId { get; set; }
 
         /// <summary>
         /// Gets or sets the ReqIF interchange format and protocol version
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string ReqIFVersion { get; set; }
 
         /// <summary>
         /// Gets or sets the identifier of the exporting requirements management tool
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string SourceToolId { get; set; }
 
         /// <summary>
         /// Gets or sets the title of the Exchange Document.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string Title { get; set; }
 
         /// <summary>
@@ -118,7 +118,7 @@ namespace ReqIFSharp
         /// <remarks>
         /// The value of the identifier is of the XML Schema data type “xsd::ID”
         /// </remarks>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string Identifier { get; set; }
 
         /// <summary>

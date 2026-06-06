@@ -52,7 +52,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the InnerXml of the <see cref="ReqIFToolExtension"/>
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public string InnerXml { get; set; }
 
         /// <summary>

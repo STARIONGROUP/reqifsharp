@@ -81,19 +81,19 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Source object of the relationship.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecObject Source { get; set; }
 
         /// <summary>
         /// Gets or sets the Target object of the relationship.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecObject Target { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="SpecRelationType"/> of the relationship
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecRelationType Type { get; set; }
 
         /// <summary>

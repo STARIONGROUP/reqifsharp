@@ -79,13 +79,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the links to next level of owned SpecHierarchy.
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecHierarchy> Children => this.children;
 
         /// <summary>
         /// Gets or sets the <see cref="SpecificationType"/> reference.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecificationType Type { get; set; }
 
         /// <summary>

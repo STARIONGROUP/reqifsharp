@@ -29,13 +29,10 @@ namespace ReqIFSharp.Tests.Decorators
 
     using ReqIFSharp;
 
-    // ReqIFSharp.PropertyAttribute collides with NUnit.Framework.PropertyAttribute; alias to the model decorator.
-    using PropertyAttribute = ReqIFSharp.PropertyAttribute;
-
     /// <summary>
     /// Reflection-driven completeness guard that verifies every model class and metamodel property
     /// in the <see cref="ReqIFSharp"/> assembly is decorated with the <see cref="ClassAttribute"/>
-    /// and <see cref="PropertyAttribute"/> metadata decorators. When a new model class or property
+    /// and <see cref="ReqIfPropertyAttribute"/> metadata decorators. When a new model class or property
     /// is added, this fixture fails until the decorators are applied (or the property is added to the
     /// documented exclusion list of infrastructure / back-reference members).
     /// </summary>
@@ -44,7 +41,7 @@ namespace ReqIFSharp.Tests.Decorators
     {
         /// <summary>
         /// Names of properties that are NOT part of the ReqIF metamodel and therefore intentionally
-        /// carry no <see cref="PropertyAttribute"/>: container back-references, owner links and
+        /// carry no <see cref="ReqIfPropertyAttribute"/>: container back-references, owner links and
         /// programming-convenience accessors.
         /// </summary>
         private static readonly HashSet<string> ExcludedPropertyNames = new HashSet<string>
@@ -91,7 +88,7 @@ namespace ReqIFSharp.Tests.Decorators
 
         /// <summary>
         /// Returns the public, instance properties declared directly on <paramref name="type"/> that
-        /// are expected to carry a <see cref="PropertyAttribute"/> (i.e. metamodel features), filtering
+        /// are expected to carry a <see cref="ReqIfPropertyAttribute"/> (i.e. metamodel features), filtering
         /// out the documented infrastructure / back-reference exclusions. The <c>Definition</c> property
         /// IS a metamodel reference and is therefore kept even though it appears in the lookup set above
         /// only for documentation - it is removed from the exclusion set here.
@@ -130,7 +127,7 @@ namespace ReqIFSharp.Tests.Decorators
         }
 
         [Test]
-        public void Verify_that_every_metamodel_property_is_decorated_with_PropertyAttribute()
+        public void Verify_that_every_metamodel_property_is_decorated_with_ReqIfPropertyAttribute()
         {
             var offenders = new List<string>();
 
@@ -138,7 +135,7 @@ namespace ReqIFSharp.Tests.Decorators
             {
                 foreach (var property in MetamodelProperties(type))
                 {
-                    if (property.GetCustomAttribute<PropertyAttribute>() == null)
+                    if (property.GetCustomAttribute<ReqIfPropertyAttribute>() == null)
                     {
                         offenders.Add($"{type.Name}.{property.Name}");
                     }
@@ -150,13 +147,13 @@ namespace ReqIFSharp.Tests.Decorators
         }
 
         [Test]
-        public void Verify_that_every_PropertyAttribute_has_consistent_multiplicity()
+        public void Verify_that_every_ReqIfPropertyAttribute_has_consistent_multiplicity()
         {
             foreach (var type in ModelTypes())
             {
                 foreach (var property in MetamodelProperties(type))
                 {
-                    var propertyAttribute = property.GetCustomAttribute<PropertyAttribute>();
+                    var propertyAttribute = property.GetCustomAttribute<ReqIfPropertyAttribute>();
 
                     if (propertyAttribute == null)
                     {
@@ -189,7 +186,7 @@ namespace ReqIFSharp.Tests.Decorators
             var property = type.GetProperty(propertyName);
             Assert.That(property, Is.Not.Null, $"{type.Name}.{propertyName} does not exist.");
 
-            var propertyAttribute = property.GetCustomAttribute<PropertyAttribute>();
+            var propertyAttribute = property.GetCustomAttribute<ReqIfPropertyAttribute>();
             Assert.That(propertyAttribute, Is.Not.Null, $"{type.Name}.{propertyName} is missing the [Property] decorator.");
 
             Assert.Multiple(() =>

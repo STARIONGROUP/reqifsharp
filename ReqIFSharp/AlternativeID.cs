@@ -53,7 +53,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the optional alternative identifier, which may be a requirements management tool identifier or <see cref="ReqIF"/> tool identifier
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string Identifier { get; set; }
 
         /// <summary>

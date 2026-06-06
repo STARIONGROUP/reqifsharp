@@ -81,7 +81,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the maximum permissible string length
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public long MaxLength { get; set; }
 
         /// <summary>

@@ -85,13 +85,13 @@ namespace ReqIFSharp
         /// Gets or sets the owned default value that is used if no attribute value is supplied 
         /// by the user of the requirements authoring tool.
         /// </summary>        
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
         public AttributeValueBoolean DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public DatatypeDefinitionBoolean Type { get; set; }
 
         /// <summary>

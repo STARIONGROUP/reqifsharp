@@ -97,7 +97,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public double TheValue { get; set; }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the reference to the value definition
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public AttributeDefinitionReal Definition { get; set; }
 
         /// <summary>

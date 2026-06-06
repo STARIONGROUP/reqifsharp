@@ -55,25 +55,25 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Uri of the <see cref="ExternalObject"/>, this may be a relative uri or an absolute uri
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public string Uri { get; set; }
 
         /// <summary>
         /// Gets or sets the MimeType of the external object represented as a string
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public string MimeType { get; set; }
 
         /// <summary>
         /// Gets or sets the height of the external object in case it is an image
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the external object in case it is an image
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
         public int? Width { get; set; }
         
         /// <summary>

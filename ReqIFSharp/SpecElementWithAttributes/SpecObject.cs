@@ -86,7 +86,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the <see cref="SpecObject"/> reference.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public SpecObjectType Type { get; set; }
 
         /// <summary>

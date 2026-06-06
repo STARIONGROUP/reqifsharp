@@ -99,37 +99,37 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the <see cref="DatatypeDefinition"/>s
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<DatatypeDefinition> DataTypes => this.dataTypes;
 
         /// <summary>
         /// Gets the <see cref="SpecType"/>s
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecType> SpecTypes => this.specTypes;
 
         /// <summary>
         /// Gets the <see cref="SpecObject"/>
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecObject> SpecObjects => this.specObjects;
 
         /// <summary>
         /// Gets the <see cref="SpecRelation"/>
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<SpecRelation> SpecRelations => this.specRelations;
 
         /// <summary>
         /// Gets the <see cref="Specification"/>
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<Specification> Specifications => this.specifications;
 
         /// <summary>
         /// Gets the <see cref="RelationGroup"/>
         /// </summary>
-        [Property(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
         public List<RelationGroup> SpecRelationGroups => this.specRelationGroups;
 
         /// <summary>

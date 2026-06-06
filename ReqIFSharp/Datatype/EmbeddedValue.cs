@@ -68,7 +68,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the numerical value corresponding to the enumeration literal.
         /// </summary>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public long Key { get; set; }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace ReqIFSharp
         /// <example>
         /// example: a color
         /// </example>
-        [Property(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
         public string OtherContent { get; set; }
 
         /// <summary>
