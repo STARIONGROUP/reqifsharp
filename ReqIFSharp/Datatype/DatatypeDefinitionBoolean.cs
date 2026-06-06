@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// This element defines a data type for the representation of Boolean data values in the Exchange Document.
     /// </remarks>
-    [ReqIfClass(name: "DATATYPE-DEFINITION-BOOLEAN")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-BOOLEAN", isAbstract: false)]
     public class DatatypeDefinitionBoolean : DatatypeDefinitionSimple
     {
         /// <summary>

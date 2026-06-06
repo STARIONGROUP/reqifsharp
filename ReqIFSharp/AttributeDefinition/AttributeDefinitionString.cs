@@ -39,7 +39,7 @@ namespace ReqIFSharp
     /// An <see cref="AttributeDefinitionString"/> element MAY contain a default value that represents the value that is used as an attribute
     /// value if no attribute value is supplied by the user of the requirements authoring tool.
     /// </remarks>
-    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-STRING")]
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-STRING", isAbstract: false)]
     public class AttributeDefinitionString : AttributeDefinitionSimple
     {
         /// <summary>
@@ -85,13 +85,13 @@ namespace ReqIFSharp
         /// Gets or sets the owned default value that is used if no attribute value is supplied 
         /// by the user of the requirements authoring tool.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeValueString DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public DatatypeDefinitionString Type { get; set; }
 
         /// <summary>

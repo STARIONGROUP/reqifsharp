@@ -39,7 +39,7 @@ namespace ReqIFSharp
     /// The tree is created by references of <see cref="SpecHierarchy"/> instances to other <see cref="SpecHierarchy"/> instances.
     /// Each node has additionally a reference to a <see cref="SpecObject"/> resulting in a hierarchical structure of <see cref="SpecObject"/>s
     /// </remarks>
-    [ReqIfClass(name: "SPEC-HIERARCHY")]
+    [ReqIfClass(name: "SPEC-HIERARCHY", isAbstract: false)]
     public class SpecHierarchy : AccessControlledElement
     {
         /// <summary>
@@ -130,19 +130,19 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the Down links to next level of owned SpecHierarchy.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<SpecHierarchy> Children => this.children;
 
         /// <summary>
         /// Gets the attributes whose values are editable for the <see cref="SpecHierarchy"/> by a tool user
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<AttributeDefinition> EditableAtts => this.editableAtts;
 
         /// <summary>
         /// Gets or sets the reference to the associated <see cref="SpecObject"/>
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public SpecObject Object { get; set; }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace ReqIFSharp
         /// The root node of the table hierarchy is related to the SpecObject element that is the root of the table by the object
         /// association.
         /// </remarks>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public bool IsTableInternal { get; set; }
 
         /// <summary>

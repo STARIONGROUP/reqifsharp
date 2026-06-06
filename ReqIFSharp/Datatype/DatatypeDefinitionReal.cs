@@ -32,7 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// This element defines a data type for the representation of Real data values in the Exchange Document.
     /// </summary>
-    [ReqIfClass(name: "DATATYPE-DEFINITION-REAL")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-REAL", isAbstract: false)]
     public class DatatypeDefinitionReal : DatatypeDefinitionSimple
     {
         /// <summary>
@@ -78,19 +78,19 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets a value that Denotes the supported maximum precision of real numbers represented by this data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public long Accuracy { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public double Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest positive data value representable by this data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public double Max { get; set; }
 
         /// <summary>

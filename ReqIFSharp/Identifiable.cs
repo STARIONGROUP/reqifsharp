@@ -78,7 +78,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the optional additional description for the information element.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string Description { get; set; }
 
         /// <summary>
@@ -87,7 +87,7 @@ namespace ReqIFSharp
         /// <remarks>
         /// The value of the identifier must be a well-formed <code>xsd:ID</code>.
         /// </remarks>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string Identifier { get; set; }
 
         /// <summary>
@@ -98,19 +98,19 @@ namespace ReqIFSharp
         /// <example>
         /// date time formatting: 2005-03-04T10:24:18+01:00 (MET time zone).
         /// </example>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public DateTime LastChange { get; set; }
 
         /// <summary>
         /// Gets or sets the human-readable name for the information element.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string LongName { get; set; }
 
         /// <summary>
         /// Gets or sets optional alternative identification element.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AlternativeId AlternativeId { get; set; }
 
         /// <summary>

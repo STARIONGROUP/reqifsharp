@@ -37,7 +37,7 @@ namespace ReqIFSharp
     /// The representation of data values shall comply with the definitions in http://www.w3.org/TR/xmlschema-2/#integer
     /// ReqIfSharp supports 64-bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
-    [ReqIfClass(name: "DATATYPE-DEFINITION-INTEGER")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-INTEGER", isAbstract: false)]
     public class DatatypeDefinitionInteger : DatatypeDefinitionSimple
     {
         /// <summary>
@@ -83,13 +83,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets a value that denotes the largest negative data value representable by this data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public long Min { get; set; }
 
         /// <summary>
         /// Gets or sets a value that denotes the largest positive data value representable by this data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public long Max { get; set; }
 
         /// <summary>

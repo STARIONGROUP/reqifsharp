@@ -35,7 +35,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// This element defines a data type for the representation of String data values in the Exchange Document.
     /// </remarks>
-    [ReqIfClass(name: "DATATYPE-DEFINITION-STRING")]
+    [ReqIfClass(name: "DATATYPE-DEFINITION-STRING", isAbstract: false)]
     public class DatatypeDefinitionString : DatatypeDefinitionSimple
     {
         /// <summary>
@@ -81,7 +81,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the maximum permissible string length
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public long MaxLength { get; set; }
 
         /// <summary>

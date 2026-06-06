@@ -33,7 +33,7 @@ namespace ReqIFSharp
     /// <summary>
     /// Defines relations (links) between two <see cref="SpecObject"/> instances.
     /// </summary>
-    [ReqIfClass(name: "SPEC-RELATION")]
+    [ReqIfClass(name: "SPEC-RELATION", isAbstract: false)]
     public class SpecRelation : SpecElementWithAttributes
     {
         /// <summary>
@@ -81,19 +81,19 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Source object of the relationship.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public SpecObject Source { get; set; }
 
         /// <summary>
         /// Gets or sets the Target object of the relationship.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public SpecObject Target { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="SpecRelationType"/> of the relationship
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public SpecRelationType Type { get; set; }
 
         /// <summary>

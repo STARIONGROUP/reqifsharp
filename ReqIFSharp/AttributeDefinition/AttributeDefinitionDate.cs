@@ -40,7 +40,7 @@ namespace ReqIFSharp
     /// An <see cref="AttributeDefinitionDate"/> element MAY contain a default value that represents the value that is used as an attribute
     /// value if no attribute value is supplied by the user of the requirements authoring tool
     /// </remarks>    
-    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-DATE")]
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-DATE", isAbstract: false)]
     public class AttributeDefinitionDate : AttributeDefinitionSimple
     {
         /// <summary>
@@ -86,13 +86,13 @@ namespace ReqIFSharp
         /// Gets or sets the owned default value that is used if no attribute value is supplied 
         /// by the user of the requirements authoring tool.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeValueDate DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public DatatypeDefinitionDate Type { get; set; }
 
         /// <summary>

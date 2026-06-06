@@ -67,7 +67,7 @@ namespace ReqIFSharp
         /// True means that the element’s contents may be modified by the user of a tool containing the element.
         /// False or leaving isEditable out means that the element is read-only to the user of a tool containing the element.
         /// </remarks>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public bool IsEditable { get; set; }
 
         /// <summary>

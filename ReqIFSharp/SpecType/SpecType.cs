@@ -92,7 +92,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the set of attribute definitions.
         /// </summary>        
-        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<AttributeDefinition> SpecAttributes => this.specAttributes;
 
         /// <summary>

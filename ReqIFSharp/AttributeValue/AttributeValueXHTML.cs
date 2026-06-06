@@ -37,7 +37,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueXHTML"/> class is to define an attribute value with XHTML contents.
     /// </summary>
-    [ReqIfClass(name: "ATTRIBUTE-VALUE-XHTML")]
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-XHTML", isAbstract: false)]
     public class AttributeValueXHTML : AttributeValue
     {
         /// <summary>
@@ -104,13 +104,13 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the XHTML Content
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string TheValue { get; set; }
 
         /// <summary>
         /// Gets or sets the Linkage to the original attribute value that has been saved if isSimplified is true.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string TheOriginalValue { get; set; }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeDefinitionXHTML Definition { get; set; }
 
         /// <summary>
@@ -184,7 +184,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets a value indicating whether the attribute value is a simplified representation of the original value.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public bool IsSimplified { get; set; }
 
         /// <summary>

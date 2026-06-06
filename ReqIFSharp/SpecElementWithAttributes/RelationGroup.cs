@@ -40,7 +40,7 @@ namespace ReqIFSharp
     /// <example>
     /// a <see cref="RelationGroup"/> instance may represent a set of relations between a customer requirements <see cref="Specification"/> and a system requirements <see cref="Specification"/>.
     /// </example>
-    [ReqIfClass(name: "RELATION-GROUP")]
+    [ReqIfClass(name: "RELATION-GROUP", isAbstract: false)]
     public class RelationGroup : SpecElementWithAttributes
     {
         /// <summary>
@@ -94,25 +94,25 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the <see cref="RelationGroupType"/> reference
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public RelationGroupType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Specification"/> that contains <see cref="SpecObject"/> instances that are source objects of the relations.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public Specification SourceSpecification { get; set; }
 
         /// <summary>
         /// Gets or sets the <see cref="Specification"/> that contains <see cref="SpecObject"/> instances that are target objects of the relations.
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public Specification TargetSpecification { get; set; }
 
         /// <summary>
         /// Gets the grouped <see cref="SpecRelation"/>s
         /// </summary>
-        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue)]
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<SpecRelation> SpecRelations => this.specRelations;
 
         /// <summary>
