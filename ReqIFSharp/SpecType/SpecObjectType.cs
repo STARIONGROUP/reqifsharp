@@ -27,6 +27,7 @@ namespace ReqIFSharp
     /// Inherits a set of attribute definitions from SpecType. By using SpecObjectType elements, multiple requirements can be
     /// associated with the same set of attribute definitions (attribute names, default values, data types, etc.).
     /// </summary>
+    [ReqIfClass(name: "SPEC-OBJECT-TYPE", isAbstract: false)]
     public class SpecObjectType : SpecType
     {
         /// <summary>

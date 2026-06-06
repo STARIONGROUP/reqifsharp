@@ -33,6 +33,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// The specification for the XTHML object element defines several XML attributes. For ReqIF, only a subset of these attributes is relevant and used.
     /// </remarks>
+    [ReqIfClass(name: "EXTERNAL-OBJECT", isAbstract: false)]
     public class ExternalObject
     {
         /// <summary>
@@ -54,21 +55,25 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Uri of the <see cref="ExternalObject"/>, this may be a relative uri or an absolute uri
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string Uri { get; set; }
 
         /// <summary>
         /// Gets or sets the MimeType of the external object represented as a string
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string MimeType { get; set; }
 
         /// <summary>
         /// Gets or sets the height of the external object in case it is an image
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public int? Height { get; set; }
 
         /// <summary>
         /// Gets or sets the width of the external object in case it is an image
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public int? Width { get; set; }
         
         /// <summary>

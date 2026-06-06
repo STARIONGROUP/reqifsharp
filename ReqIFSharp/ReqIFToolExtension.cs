@@ -29,6 +29,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="ReqIFToolExtension"/> class allows the optional inclusion of tool-specific information into a ReqIF Exchange Document.
     /// </summary>
+    [ReqIfClass(name: "REQ-IF-TOOL-EXTENSION", isAbstract: false)]
     public class ReqIFToolExtension
     {
         /// <summary>
@@ -51,6 +52,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the InnerXml of the <see cref="ReqIFToolExtension"/>
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string InnerXml { get; set; }
 
         /// <summary>

@@ -37,6 +37,7 @@ namespace ReqIFSharp
     /// <remarks>
     /// ReqIfSharp supports 64 bit signed integers (long) with the following range: -9223372036854775808 to 9223372036854775807
     /// </remarks>
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-INTEGER", isAbstract: false)]
     public class AttributeValueInteger : AttributeValueSimple
     {
         /// <summary>
@@ -99,6 +100,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public long TheValue { get; set; }
 
         /// <summary>
@@ -124,6 +126,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Reference to the value definition.
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeDefinitionInteger Definition { get; set; }
 
         /// <summary>

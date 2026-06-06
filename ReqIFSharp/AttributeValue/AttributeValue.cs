@@ -29,6 +29,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="AttributeDefinition"/> is the base class for attribute values.
     /// </summary>
+    [ReqIfClass(name: "ATTRIBUTE-VALUE", isAbstract: true)]
     public abstract class AttributeValue
     {
         /// <summary>

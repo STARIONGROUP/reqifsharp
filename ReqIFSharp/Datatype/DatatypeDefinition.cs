@@ -30,6 +30,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="DatatypeDefinition"/> is the base class for all data types available to the Exchange Document.
     /// </summary>
+    [ReqIfClass(name: "DATATYPE-DEFINITION", isAbstract: true)]
     public abstract class DatatypeDefinition : Identifiable
     {
         /// <summary>

@@ -34,6 +34,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueReal"/> class is to define a real attribute value.
     /// </summary>
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-REAL", isAbstract: false)]
     public class AttributeValueReal : AttributeValueSimple
     {
         /// <summary>
@@ -96,6 +97,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the attribute value
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public double TheValue { get; set; }
 
         /// <summary>
@@ -121,6 +123,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the reference to the value definition
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeDefinitionReal Definition { get; set; }
 
         /// <summary>

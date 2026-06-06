@@ -38,6 +38,7 @@ namespace ReqIFSharp
     /// The <see cref="SpecObject"/> instance itself does not carry the requirements text or any other user defined content.
     /// This data is stored in <see cref="AttributeValue"/> instances that are associated to the <see cref="SpecObject"/> instance.
     /// </remarks>
+    [ReqIfClass(name: "SPEC-OBJECT", isAbstract: false)]
     public class SpecObject : SpecElementWithAttributes
     {
         /// <summary>
@@ -85,6 +86,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the <see cref="SpecObject"/> reference.
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public SpecObjectType Type { get; set; }
 
         /// <summary>

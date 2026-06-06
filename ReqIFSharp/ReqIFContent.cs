@@ -32,6 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="ReqIFContent"/> class represents the mandatory content of a ReqIF Exchange Document.
     /// </summary>
+    [ReqIfClass(name: "REQ-IF-CONTENT", isAbstract: false)]
     public class ReqIFContent
     {
         /// <summary>
@@ -98,31 +99,37 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the <see cref="DatatypeDefinition"/>s
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<DatatypeDefinition> DataTypes => this.dataTypes;
 
         /// <summary>
         /// Gets the <see cref="SpecType"/>s
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<SpecType> SpecTypes => this.specTypes;
 
         /// <summary>
         /// Gets the <see cref="SpecObject"/>
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<SpecObject> SpecObjects => this.specObjects;
 
         /// <summary>
         /// Gets the <see cref="SpecRelation"/>
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<SpecRelation> SpecRelations => this.specRelations;
 
         /// <summary>
         /// Gets the <see cref="Specification"/>
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<Specification> Specifications => this.specifications;
 
         /// <summary>
         /// Gets the <see cref="RelationGroup"/>
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<RelationGroup> SpecRelationGroups => this.specRelationGroups;
 
         /// <summary>

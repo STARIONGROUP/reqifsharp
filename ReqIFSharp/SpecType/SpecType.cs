@@ -33,6 +33,7 @@ namespace ReqIFSharp
     /// Contains a set of attribute definitions. By using an instance of a subclass of <see cref="SpecType"/>, multiple elements can be
     /// associated with the same set of attribute definitions (attribute names, default values, data types, etc.).
     /// </summary>
+    [ReqIfClass(name: "SPEC-TYPE", isAbstract: true)]
     public abstract class SpecType : Identifiable
     {
         /// <summary>
@@ -91,6 +92,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the set of attribute definitions.
         /// </summary>        
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<AttributeDefinition> SpecAttributes => this.specAttributes;
 
         /// <summary>

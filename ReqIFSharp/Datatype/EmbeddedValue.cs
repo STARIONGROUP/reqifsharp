@@ -32,6 +32,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="EmbeddedValue"/> class represents additional information related to enumeration literals.
     /// </summary>
+    [ReqIfClass(name: "EMBEDDED-VALUE", isAbstract: false)]
     public class EmbeddedValue
     {
         /// <summary>
@@ -67,6 +68,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the numerical value corresponding to the enumeration literal.
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public long Key { get; set; }
 
         /// <summary>
@@ -75,6 +77,7 @@ namespace ReqIFSharp
         /// <example>
         /// example: a color
         /// </example>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string OtherContent { get; set; }
 
         /// <summary>

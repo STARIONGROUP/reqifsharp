@@ -25,6 +25,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The <see cref="AttributeValueSimple"/> is the base class for simple type attribute values.
     /// </summary>
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-SIMPLE", isAbstract: true)]
     public abstract class AttributeValueSimple : AttributeValue
     {
         /// <summary>

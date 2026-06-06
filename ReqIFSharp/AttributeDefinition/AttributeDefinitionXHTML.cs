@@ -39,6 +39,7 @@ namespace ReqIFSharp
     /// An <see cref="AttributeDefinitionXHTML"/> element MAY contain a default value that represents the value that is used as an attribute
     /// value if no attribute value is supplied by the user of the requirements authoring tool.
     /// </remarks>
+    [ReqIfClass(name: "ATTRIBUTE-DEFINITION-XHTML", isAbstract: false)]
     public class AttributeDefinitionXHTML : AttributeDefinition
     {
         /// <summary>
@@ -84,11 +85,13 @@ namespace ReqIFSharp
         /// Gets or sets the owned default value that is used if no attribute value is supplied 
         /// by the user of the requirements authoring tool.
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.Composite, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeValueXHTML DefaultValue { get; set; }
 
         /// <summary>
         /// Gets or sets the data type.
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public DatatypeDefinitionXHTML Type { get; set; }
 
         /// <summary>

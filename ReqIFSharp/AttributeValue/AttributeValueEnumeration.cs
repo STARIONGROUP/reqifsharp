@@ -34,6 +34,7 @@ namespace ReqIFSharp
     /// <summary>
     /// The purpose of the <see cref="AttributeValueEnumeration"/> class is to define an enumeration attribute value.
     /// </summary>
+    [ReqIfClass(name: "ATTRIBUTE-VALUE-ENUMERATION", isAbstract: false)]
     public class AttributeValueEnumeration : AttributeValue
     {
         /// <summary>
@@ -101,6 +102,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets <see cref="EnumValue"/>s that are chosen from a set of specified values
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: int.MaxValue, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public List<EnumValue> Values => this.values;
 
         /// <summary>
@@ -127,6 +129,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.
         /// </summary>
+        [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 1, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public AttributeDefinitionEnumeration Definition { get; set; }
 
         /// <summary>
