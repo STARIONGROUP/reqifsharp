@@ -38,6 +38,11 @@ namespace ReqIFSharp
         public const string XHTMLNameSpaceUri = @"http://www.w3.org/1999/xhtml";
 
         /// <summary>
+        /// The reserved URI used by the XML parser for namespace declaration attributes (xmlns / xmlns:prefix)
+        /// </summary>
+        public const string XmlNamespaceDeclarationUri = @"http://www.w3.org/2000/xmlns/";
+
+        /// <summary>
         /// Creates the XHTML namespace attribute in case the <see cref="ReqIF"/> document
         /// contains XHTML data
         /// </summary>
@@ -56,6 +61,7 @@ namespace ReqIFSharp
                 {
                     LocalName = "xhtml",
                     Prefix = "xmlns",
+                    NamespaceUri = XmlNamespaceDeclarationUri,
                     Value = XHTMLNameSpaceUri
                 };
 

@@ -116,6 +116,7 @@ namespace ReqIFSharp
                     {
                         Prefix = reader.Prefix,
                         LocalName = reader.LocalName,
+                        NamespaceUri = reader.NamespaceURI,
                         Value = reader.Value
                     };
 
@@ -187,6 +188,7 @@ namespace ReqIFSharp
                     {
                         Prefix = reader.Prefix,
                         LocalName = reader.LocalName,
+                        NamespaceUri = reader.NamespaceURI,
                         Value = reader.Value
                     };
 
@@ -290,30 +292,22 @@ namespace ReqIFSharp
         /// </param>
         private void WriteNameSpaceAttributes(XmlWriter writer)
         {
-            if (attributes.TrueForAll(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
+            foreach (var xmlAttribute in this.QueryNameSpaceAttributes())
             {
-                var xmlAttribute = DefaultXmlAttributeFactory.CreateXHTMLNameSpaceAttribute(this);
-                if (xmlAttribute != null)
+                if (xmlAttribute.Prefix == "xmlns")
                 {
-                    this.attributes.Add(xmlAttribute);
+                    // prefixed namespace declaration: xmlns:prefix="uri"
+                    writer.WriteAttributeString(xmlAttribute.Prefix, xmlAttribute.LocalName, null, xmlAttribute.Value);
                 }
-            }
-
-            foreach (var xmlAttribute in this.attributes)
-            {
-                if (xmlAttribute.Prefix != string.Empty)
+                else if (xmlAttribute.Prefix != string.Empty)
                 {
-                    if (xmlAttribute.Prefix == "xmlns")
-                    {
-                        writer.WriteAttributeString(xmlAttribute.Prefix, xmlAttribute.LocalName, null, xmlAttribute.Value);
-                    }
-                    else
-                    {
-                        writer.WriteAttributeString(xmlAttribute.LocalName, xmlAttribute.Prefix, xmlAttribute.Value);
-                    }
+                    // ordinary prefixed attribute (e.g. xsi:schemaLocation): the namespace URI the
+                    // prefix is bound to is required to emit it faithfully
+                    writer.WriteAttributeString(xmlAttribute.Prefix, xmlAttribute.LocalName, xmlAttribute.NamespaceUri, xmlAttribute.Value);
                 }
                 else
                 {
+                    // default namespace declaration (xmlns="...") or an unprefixed attribute
                     writer.WriteAttributeString(xmlAttribute.LocalName, xmlAttribute.Value);
                 }
             }
@@ -327,33 +321,50 @@ namespace ReqIFSharp
         /// </param>
         private async Task WriteNameSpaceAttributesAsync(XmlWriter writer)
         {
-            if (attributes.TrueForAll(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
+            foreach (var xmlAttribute in this.QueryNameSpaceAttributes())
+            {
+                if (xmlAttribute.Prefix == "xmlns")
+                {
+                    // prefixed namespace declaration: xmlns:prefix="uri"
+                    await writer.WriteAttributeStringAsync(xmlAttribute.Prefix, xmlAttribute.LocalName, null, xmlAttribute.Value);
+                }
+                else if (xmlAttribute.Prefix != string.Empty)
+                {
+                    // ordinary prefixed attribute (e.g. xsi:schemaLocation): the namespace URI the
+                    // prefix is bound to is required to emit it faithfully
+                    await writer.WriteAttributeStringAsync(xmlAttribute.Prefix, xmlAttribute.LocalName, xmlAttribute.NamespaceUri, xmlAttribute.Value);
+                }
+                else
+                {
+                    // default namespace declaration (xmlns="...") or an unprefixed attribute
+                    await writer.WriteAttributeStringAsync(null, xmlAttribute.LocalName, null, xmlAttribute.Value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the namespace attributes that are to be written to the REQ-IF XML element: the attributes
+        /// captured when the document was read, plus the XHTML namespace declaration when the document
+        /// contains XHTML data and does not already declare it.
+        /// </summary>
+        /// <returns>
+        /// the <see cref="IEnumerable{XmlAttribute}"/> to serialize; the captured <see cref="attributes"/>
+        /// are not mutated so the <see cref="ReqIF"/> can be serialized more than once.
+        /// </returns>
+        private IEnumerable<XmlAttribute> QueryNameSpaceAttributes()
+        {
+            var namespaceAttributes = new List<XmlAttribute>(this.attributes);
+
+            if (namespaceAttributes.TrueForAll(x => x.Value != DefaultXmlAttributeFactory.XHTMLNameSpaceUri))
             {
                 var xmlAttribute = DefaultXmlAttributeFactory.CreateXHTMLNameSpaceAttribute(this);
                 if (xmlAttribute != null)
                 {
-                    this.attributes.Add(xmlAttribute);
+                    namespaceAttributes.Add(xmlAttribute);
                 }
             }
 
-            foreach (var xmlAttribute in this.attributes)
-            {
-                if (xmlAttribute.Prefix != string.Empty)
-                {
-                    if (xmlAttribute.Prefix == "xmlns")
-                    {
-                        await writer.WriteAttributeStringAsync(xmlAttribute.Prefix, xmlAttribute.LocalName, null, xmlAttribute.Value);
-                    }
-                    else
-                    {
-                        await writer.WriteAttributeStringAsync(null, xmlAttribute.LocalName, xmlAttribute.Prefix, xmlAttribute.Value);
-                    }
-                }
-                else
-                {
-                    await writer.WriteAttributeStringAsync(null, xmlAttribute.LocalName, null, xmlAttribute.Value);
-                }
-            }
+            return namespaceAttributes;
         }
 
         /// <summary>

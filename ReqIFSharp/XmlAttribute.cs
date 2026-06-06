@@ -36,6 +36,17 @@ namespace ReqIFSharp
         internal string LocalName { get; set; }
 
         /// <summary>
+        /// Gets or sets the namespace URI of the attribute.
+        /// </summary>
+        /// <remarks>
+        /// For namespace declarations (<c>xmlns</c> / <c>xmlns:prefix</c>) this is the reserved
+        /// <c>http://www.w3.org/2000/xmlns/</c> URI; for ordinary prefixed attributes (e.g.
+        /// <c>xsi:schemaLocation</c>) it is the URI the prefix is bound to. Captured on read so the
+        /// attribute can be re-emitted faithfully.
+        /// </remarks>
+        internal string NamespaceUri { get; set; }
+
+        /// <summary>
         /// Gets or sets the value of the attribute.
         /// </summary>
         internal string Value { get; set; }
