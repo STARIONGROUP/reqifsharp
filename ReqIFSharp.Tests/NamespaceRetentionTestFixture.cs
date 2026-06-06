@@ -253,7 +253,7 @@ namespace ReqIFSharp.Tests
         /// <summary>
         /// Reads the <c>REQ-IF</c> root attributes of every <c>.reqif</c> entry contained in a <c>.reqifz</c> archive.
         /// </summary>
-        private static IList<IDictionary<string, string>> ExtractArchiveRootAttributes(Stream reqifzStream)
+        private static List<IDictionary<string, string>> ExtractArchiveRootAttributes(Stream reqifzStream)
         {
             if (reqifzStream.CanSeek)
             {
