@@ -1,0 +1,13 @@
+<Project>
+
+    <PropertyGroup>
+        <Company>Starion Group S.A.</Company>
+        <Copyright>Copyright 2017-2026 Starion Group S.A.</Copyright>
+        <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
+        <RepositoryType>Git</RepositoryType>
+        <Deterministic>true</Deterministic>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+    </PropertyGroup>
+
+</Project>

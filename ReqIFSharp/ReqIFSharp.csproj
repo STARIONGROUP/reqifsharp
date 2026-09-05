@@ -6,18 +6,11 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Version>10.1.0</Version>
         <LangVersion>12.0</LangVersion>
-        <Deterministic>true</Deterministic>
         <Title>ReqIFSharp</Title>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
-        <Company>Starion Group S.A.</Company>
-        <Copyright>Copyright 2017-2026 Starion Group S.A.</Copyright>
         <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/STARIONGROUP/reqifsharp.git</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
-        <NeutralLanguage>en-US</NeutralLanguage>
-        <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
         <PackageTags>ReqIF mbse modeltopia</PackageTags>
         <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
@@ -98,10 +91,10 @@
             consumers - especially those still on older Microsoft.Extensions.* lines - resolve the
             package without being forced onto the latest major. NuGet will float consumers up to a
             higher version when their own graph requires it. Do not raise this floor without a real
-            API need.
+            API need. The floor itself is set in Directory.Packages.props.
         -->
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
-        <PackageReference Include="Microsoft.Sbom.Targets" Version="4.1.5" PrivateAssets="all" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+        <PackageReference Include="Microsoft.Sbom.Targets" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

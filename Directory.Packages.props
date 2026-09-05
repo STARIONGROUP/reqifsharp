@@ -1,0 +1,31 @@
+<Project>
+
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!--
+            The version of Microsoft.Extensions.Logging.Abstractions is deliberately floored at 
+			6.0.0 (the minimum that contains every API we use:ILogger/ILoggerFactory, CreateLogger<T>, 
+			NullLogger<T> and the Log* message-template extensions). A PackageReference version is a 
+			transitive *minimum*, so keeping it low lets consumers, especially those still on older Microsoft.Extensions.* lines, resolve the package without being forced onto the latest major. 
+			NuGet will float consumers up to a higher version when their own graph requires it.
+			Do not raise this floor without a real API need.
+        -->
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+        <PackageVersion Include="Microsoft.Sbom.Targets" Version="4.1.5" />
+
+        <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="10.0.11" />
+        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+        <PackageVersion Include="NUnit" Version="4.6.1" />
+        <PackageVersion Include="NUnit.Console" Version="3.22.0" />
+        <PackageVersion Include="NUnit3TestAdapter" Version="6.3.0" />
+        <PackageVersion Include="coverlet.collector" Version="10.0.1" />
+        <PackageVersion Include="coverlet.msbuild" Version="10.0.1" />
+        <PackageVersion Include="Serilog" Version="4.4.0" />
+        <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
+        <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
+    </ItemGroup>
+
+</Project>
