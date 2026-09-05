@@ -279,7 +279,7 @@ namespace ReqIFSharp.Tests
         /// <summary>
         /// Collects the union of namespace declarations (<c>xmlns</c> / <c>xmlns:prefix</c>) across the supplied documents.
         /// </summary>
-        private static IDictionary<string, string> UnionNamespaceDeclarations(IEnumerable<IDictionary<string, string>> documents)
+        private static Dictionary<string, string> UnionNamespaceDeclarations(IEnumerable<IDictionary<string, string>> documents)
         {
             var union = new Dictionary<string, string>();
 
@@ -301,7 +301,7 @@ namespace ReqIFSharp.Tests
         /// Reads the attributes declared on the <c>REQ-IF</c> root element of a serialized document, keyed by
         /// their qualified name (e.g. <c>xmlns</c>, <c>xmlns:configuration</c>, <c>xsi:schemaLocation</c>).
         /// </summary>
-        private static IDictionary<string, string> ExtractRootAttributes(Stream stream)
+        private static Dictionary<string, string> ExtractRootAttributes(Stream stream)
         {
             if (stream.CanSeek)
             {
