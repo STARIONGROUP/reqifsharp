@@ -117,7 +117,7 @@ namespace ReqIFSharp
                 switch (reader.LocalName)
                 {
                     case "SOURCE":
-                        if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                        if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
                         {
                             var reference = reader.ReadElementContentAsString();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
@@ -135,7 +135,7 @@ namespace ReqIFSharp
                         }
                         break;
                     case "TARGET":
-                        if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                        if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
                         {
                             var reference = reader.ReadElementContentAsString();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
@@ -197,7 +197,7 @@ namespace ReqIFSharp
                 switch (reader.LocalName)
                 {
                     case "SOURCE":
-                        if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                        if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
                         {
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
@@ -215,7 +215,7 @@ namespace ReqIFSharp
                         }
                         break;
                     case "TARGET":
-                        if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+                        if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
                         {
                             var reference = await reader.ReadElementContentAsStringAsync();
                             var specObject = this.ReqIFContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
@@ -284,7 +284,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (reader.ReadToDescendant("SPEC-RELATION-TYPE-REF"))
+            if (reader.ReadToDescendant("SPEC-RELATION-TYPE-REF", reader.NamespaceURI))
             {
                 var reference = reader.ReadElementContentAsString();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
@@ -326,7 +326,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task ReadSpecTypeInternalAsync(XmlReader reader)
         {
-            if (reader.ReadToDescendant("SPEC-RELATION-TYPE-REF"))
+            if (reader.ReadToDescendant("SPEC-RELATION-TYPE-REF", reader.NamespaceURI))
             {
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);

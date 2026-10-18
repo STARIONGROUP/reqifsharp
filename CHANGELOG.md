@@ -8,6 +8,14 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 
 ## [Unreleased]
 
+### Changed
+
+- A `REQ-IF` root element in a namespace other than the ReqIF namespace (`http://www.omg.org/spec/ReqIF/20110401/reqif.xsd`) is no longer read as a ReqIF document; it is skipped and a warning is logged. Before, such an element was read when it had no prefix. A root in no namespace is still read ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
+
+### Fixed
+
+- A document that binds the ReqIF namespace to a prefix (`<reqif:REQ-IF xmlns:reqif="...">`) was read as zero documents, and type, source/target and relation-group references in it were not read. Elements are now matched on their local name and namespace ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
+
 ## [10.1.2] - 2026-10-18
 
 ReqIFSharp.Extensions 5.2.2

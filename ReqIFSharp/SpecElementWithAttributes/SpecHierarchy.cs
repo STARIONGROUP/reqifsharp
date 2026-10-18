@@ -381,7 +381,7 @@ namespace ReqIFSharp
         /// </param>
         private void DeserializeObject(XmlReader reader)
         {
-            if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+            if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
             {
                 var reference = reader.ReadElementContentAsString();
                 var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
@@ -407,7 +407,7 @@ namespace ReqIFSharp
         {
             token.ThrowIfCancellationRequested();
 
-            if (reader.ReadToDescendant("SPEC-OBJECT-REF"))
+            if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
             {
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
