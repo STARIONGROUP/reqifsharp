@@ -12,7 +12,19 @@ requirements-interchange documents. The repository ships two NuGet packages:
   `ReqIFLoaderService`, built on top of the core. Targets `netstandard2.0`.
 
 The two packages version independently (e.g. ReqIFSharp `10.x`, ReqIFSharp.Extensions `5.x`).
-Test projects target `net10.0` and use NUnit. `LangVersion` is pinned to `12.0`.
+Test projects target `net10.0` and use NUnit. `LangVersion` is pinned to `14.0` (in `Directory.Build.props`).
+Building requires the .NET 10 SDK (`global.json`, rolls forward to the latest 10.0 feature band).
+
+**MSBuild layout.** `Directory.Build.props` holds settings for every project (company,
+copyright, repository, `LangVersion`, `GenerateDocumentationFile`). Packaging settings shared
+by the published libraries (package metadata, README/LICENSE/NOTICE pack items, the
+`Microsoft.Sbom.Targets` reference) live in `Directory.Build.targets`, guarded by
+`'$(IsPackable)' != 'false'`; it must be a `.targets` file because `IsPackable` is set in the
+project body, after `.props` is evaluated. `GenerateDocumentationFile` cannot move there: the
+SDK derives the documentation-file settings from it before `.targets` is evaluated. Test
+projects therefore set both `<IsPackable>false</IsPackable>` and
+`<GenerateDocumentationFile>false</GenerateDocumentationFile>`. The library `.csproj` files keep
+only per-package settings (version, title, description, id, icon, authors, release notes).
 
 ## Common commands
 

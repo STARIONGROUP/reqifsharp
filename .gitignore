@@ -257,3 +257,4 @@ paket-files/
 /TestResult.txt
 
 /.claude/settings.local.json
+/.claude/agent-memory-local/

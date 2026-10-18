@@ -1,0 +1,27 @@
+<Project>
+
+    <!--
+        Packaging settings shared by every packable project. They live in this file rather than in
+        Directory.Build.props because IsPackable is set in the project file itself, which is evaluated
+        after Directory.Build.props and before this file.
+    -->
+    <PropertyGroup Condition="'$(IsPackable)' != 'false'">
+        <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
+        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+        <PackageTags>ReqIF mbse modeltopia</PackageTags>
+        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
+        <IncludeSource>true</IncludeSource>
+        <IncludeSymbols>true</IncludeSymbols>
+        <GenerateSBOM>true</GenerateSBOM>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(IsPackable)' != 'false'">
+        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" />
+        <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="\" />
+        <None Include="$(MSBuildThisFileDirectory)NOTICE" Pack="true" PackagePath="\" />
+        <PackageReference Include="Microsoft.Sbom.Targets" PrivateAssets="all" />
+    </ItemGroup>
+
+</Project>

@@ -8,6 +8,12 @@
         <Deterministic>true</Deterministic>
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
+        <LangVersion>14.0</LangVersion>
+        <!--
+            Set here rather than in Directory.Build.targets: the SDK turns it into the documentation
+            file settings before Directory.Build.targets is evaluated. Test projects switch it off.
+        -->
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
     </PropertyGroup>
 
 </Project>
