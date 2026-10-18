@@ -146,10 +146,10 @@ namespace ReqIFSharp
                             this.Identifier = reader.GetAttribute("IDENTIFIER");
                             break;
                         case "COMMENT":
-                            this.Comment = reader.ReadElementContentAsString();
+                            this.Comment = reader.ReadElementContentAsStringToEndElement();
                             break;
                         case "CREATION-TIME":
-                            var creationTimeValue = reader.ReadElementContentAsString();
+                            var creationTimeValue = reader.ReadElementContentAsStringToEndElement();
                             if (!string.IsNullOrWhiteSpace(creationTimeValue))
                             {
                                 try
@@ -163,19 +163,19 @@ namespace ReqIFSharp
                             }
                             break;
                         case "REPOSITORY-ID":
-                            this.RepositoryId = reader.ReadElementContentAsString();
+                            this.RepositoryId = reader.ReadElementContentAsStringToEndElement();
                             break;
                         case "REQ-IF-TOOL-ID":
-                            this.ReqIFToolId = reader.ReadElementContentAsString();
+                            this.ReqIFToolId = reader.ReadElementContentAsStringToEndElement();
                             break;
                         case "REQ-IF-VERSION":
-                            this.ReqIFVersion = reader.ReadElementContentAsString();
+                            this.ReqIFVersion = reader.ReadElementContentAsStringToEndElement();
                             break;
                         case "SOURCE-TOOL-ID":
-                            this.SourceToolId = reader.ReadElementContentAsString();
+                            this.SourceToolId = reader.ReadElementContentAsStringToEndElement();
                             break;
                         case "TITLE":
-                            this.Title = reader.ReadElementContentAsString();
+                            this.Title = reader.ReadElementContentAsStringToEndElement();
                             break;
                         default:
                             this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
@@ -210,10 +210,10 @@ namespace ReqIFSharp
                             this.Identifier = reader.GetAttribute("IDENTIFIER");
                             break;
                         case "COMMENT":
-                            this.Comment = await reader.ReadElementContentAsStringAsync();
+                            this.Comment = await reader.ReadElementContentAsStringToEndElementAsync();
                             break;
                         case "CREATION-TIME":
-                            var creationTimeValue = await reader.ReadElementContentAsStringAsync();
+                            var creationTimeValue = await reader.ReadElementContentAsStringToEndElementAsync();
                             if (!string.IsNullOrWhiteSpace(creationTimeValue))
                             {
                                 try
@@ -227,19 +227,19 @@ namespace ReqIFSharp
                             }
                             break;
                         case "REPOSITORY-ID":
-                            this.RepositoryId = await reader.ReadElementContentAsStringAsync();
+                            this.RepositoryId = await reader.ReadElementContentAsStringToEndElementAsync();
                             break;
                         case "REQ-IF-TOOL-ID":
-                            this.ReqIFToolId = await reader.ReadElementContentAsStringAsync();
+                            this.ReqIFToolId = await reader.ReadElementContentAsStringToEndElementAsync();
                             break;
                         case "REQ-IF-VERSION":
-                            this.ReqIFVersion = await reader.ReadElementContentAsStringAsync();
+                            this.ReqIFVersion = await reader.ReadElementContentAsStringToEndElementAsync();
                             break;
                         case "SOURCE-TOOL-ID":
-                            this.SourceToolId = await reader.ReadElementContentAsStringAsync();
+                            this.SourceToolId = await reader.ReadElementContentAsStringToEndElementAsync();
                             break;
                         case "TITLE":
-                            this.Title = await reader.ReadElementContentAsStringAsync();
+                            this.Title = await reader.ReadElementContentAsStringToEndElementAsync();
                             break;
                         default:
                             this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);

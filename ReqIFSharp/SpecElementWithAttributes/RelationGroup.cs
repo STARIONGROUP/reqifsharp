@@ -209,11 +209,10 @@ namespace ReqIFSharp
                         }
                         break;
                     case "SPEC-RELATIONS":
-                        reader.ReadStartElement();
-
-                        this.DeserializeSpecRelations(reader);
-
-                        reader.ReadEndElement();
+                        using (var specRelationsSubtree = reader.ReadSubtree())
+                        {
+                            this.DeserializeSpecRelations(specRelationsSubtree);
+                        }
                         break;
                     default:
                         this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
@@ -297,11 +296,10 @@ namespace ReqIFSharp
                         }
                         break;
                     case "SPEC-RELATIONS":
-                        reader.ReadStartElement();
-
-                        await this.DeserializeSpecRelationsAsync(reader, token);
-
-                        reader.ReadEndElement();
+                        using (var specRelationsSubtree = reader.ReadSubtree())
+                        {
+                            await this.DeserializeSpecRelationsAsync(specRelationsSubtree, token);
+                        }
                         break;
                     default:
                         this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
@@ -407,13 +405,18 @@ namespace ReqIFSharp
         /// Deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
         /// </summary>
         /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
+        /// an <see cref="XmlReader"/> over the subtree of the <code>SPEC-RELATIONS</code> element
         /// </param>
         private void DeserializeSpecRelations(XmlReader reader)
         {
-            while (reader.Read() && reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF", StringComparison.Ordinal))
+            while (reader.Read())
             {
-                var reference = reader.ReadElementContentAsString();
+                if (!this.IsSpecRelationRef(reader))
+                {
+                    continue;
+                }
+
+                var reference = reader.ReadElementContentAsStringToEndElement();
                 var specRelation = this.CoreContent.SpecRelations.SingleOrDefault(x => x.Identifier == reference);
                 if (specRelation != null)
                 {
@@ -430,18 +433,23 @@ namespace ReqIFSharp
         /// Asynchronously deserialize the <see cref="SpecRelation"/>s contained by the <code>SPEC-RELATIONS</code> element.
         /// </summary>
         /// <param name="reader">
-        /// an instance of <see cref="XmlReader"/>
+        /// an <see cref="XmlReader"/> over the subtree of the <code>SPEC-RELATIONS</code> element
         /// </param>
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
         private async Task DeserializeSpecRelationsAsync(XmlReader reader, CancellationToken token)
         {
-            while (await reader.ReadAsync() && await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("SPEC-RELATION-REF", StringComparison.Ordinal))
+            while (await reader.ReadAsync())
             {
                 token.ThrowIfCancellationRequested();
 
-                var reference = await reader.ReadElementContentAsStringAsync();
+                if (!this.IsSpecRelationRef(reader))
+                {
+                    continue;
+                }
+
+                var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                 var specRelation = this.CoreContent.SpecRelations.SingleOrDefault(x => x.Identifier == reference);
                 if (specRelation != null)
                 {
@@ -452,6 +460,34 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The SpecRelation:{Reference} could not be found and has been not been added to RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
+        }
+
+        /// <summary>
+        /// Checks whether the reader is on a <code>SPEC-RELATION-REF</code> child of the <code>SPEC-RELATIONS</code> element.
+        /// Any other child element is not supported: a warning is logged and the element, with its content, is skipped.
+        /// </summary>
+        /// <param name="reader">
+        /// an <see cref="XmlReader"/> over the subtree of the <code>SPEC-RELATIONS</code> element
+        /// </param>
+        /// <returns>
+        /// true when the reader is on a <code>SPEC-RELATION-REF</code> element that is a direct child of <code>SPEC-RELATIONS</code>
+        /// </returns>
+        private bool IsSpecRelationRef(XmlReader reader)
+        {
+            if (reader.NodeType != XmlNodeType.Element || reader.Depth != 1)
+            {
+                return false;
+            }
+
+            if (reader.LocalName.StartsWith("SPEC-RELATION-REF", StringComparison.Ordinal))
+            {
+                return true;
+            }
+
+            var xmlLineInfo = reader as IXmlLineInfo;
+            this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported in SPEC-RELATIONS of RelationGroup:{Identifier} and has been skipped", reader.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition, this.Identifier);
+
+            return false;
         }
 
         /// <summary>

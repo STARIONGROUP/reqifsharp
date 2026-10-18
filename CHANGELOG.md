@@ -11,10 +11,12 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 ### Changed
 
 - A `REQ-IF` root element in a namespace other than the ReqIF namespace (`http://www.omg.org/spec/ReqIF/20110401/reqif.xsd`) is no longer read as a ReqIF document; it is skipped and a warning is logged. Before, such an element was read when it had no prefix. A root in no namespace is still read ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
+- An element other than `SPEC-RELATION-REF` inside the `SPEC-RELATIONS` of a relation group is now skipped with a warning, and the references after it are read. Before, it caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
 
 ### Fixed
 
 - A document that binds the ReqIF namespace to a prefix (`<reqif:REQ-IF xmlns:reqif="...">`) was read as zero documents, and type, source/target and relation-group references in it were not read. Elements are now matched on their local name and namespace ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
+- A document without whitespace between its elements (minified XML) lost data without an error: every other header field (such as `CREATION-TIME` and `REQ-IF-TOOL-ID`) and every other enumeration value of an attribute value was skipped, and the spec relations of a relation group were not read or caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
 
 ## [10.1.2] - 2026-10-18
 
