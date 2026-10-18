@@ -176,7 +176,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF"))
+            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF", reader.NamespaceURI))
             {
                 var reference = reader.ReadElementContentAsString();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
@@ -213,7 +213,7 @@ namespace ReqIFSharp
         /// </param>
         private async Task ReadSpecTypeInternalAsync(XmlReader reader)
         {
-            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF"))
+            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF", reader.NamespaceURI))
             {
                 var reference = await reader.ReadElementContentAsStringAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);

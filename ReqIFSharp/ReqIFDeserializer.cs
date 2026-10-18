@@ -293,7 +293,7 @@ namespace ReqIFSharp
 
                         while (xmlReader.Read())
                         {
-                            if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                            if (IsReqIFRootElement(xmlReader))
                             {
                                 var reqif = new ReqIF(this.loggerFactory);
                                 reqif.ReadXml(xmlReader);
@@ -335,7 +335,7 @@ namespace ReqIFSharp
 
                                 while (xmlReader.Read())
                                 {
-                                    if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                                    if (IsReqIFRootElement(xmlReader))
                                     {
                                         var reqif = new ReqIF(this.loggerFactory);
                                         reqif.ReadXml(xmlReader);
@@ -401,7 +401,7 @@ namespace ReqIFSharp
 
                         while (await xmlReader.ReadAsync())
                         {
-                            if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                            if (IsReqIFRootElement(xmlReader))
                             {
                                 var reqif = new ReqIF(loggerFactory);
                                 await reqif.ReadXmlAsync(xmlReader, token);
@@ -445,7 +445,7 @@ namespace ReqIFSharp
                             {
                                 while (await xmlReader.ReadAsync())
                                 {
-                                    if ((xmlReader.NodeType == XmlNodeType.Element) && (xmlReader.Name == "REQ-IF"))
+                                    if (IsReqIFRootElement(xmlReader))
                                     {
                                         var reqif = new ReqIF(loggerFactory);
                                         await reqif.ReadXmlAsync(xmlReader, token);
@@ -465,6 +465,38 @@ namespace ReqIFSharp
             }
 
             throw new SerializationException($"The {nameof(stream)} could not be deserialized");
+        }
+
+        /// <summary>
+        /// Checks whether the <see cref="XmlReader"/> is positioned on a REQ-IF root element.
+        /// The element is matched on its local name and namespace, so a prefixed root (reqif:REQ-IF) is found too.
+        /// A root without a namespace is still accepted, as it was before. A REQ-IF element in any other
+        /// namespace is not a ReqIF document; it is skipped and a warning is logged.
+        /// </summary>
+        /// <param name="xmlReader">
+        /// The <see cref="XmlReader"/> to check
+        /// </param>
+        /// <returns>
+        /// true when the current node is a REQ-IF element in the ReqIF namespace or in no namespace
+        /// </returns>
+        private bool IsReqIFRootElement(XmlReader xmlReader)
+        {
+            if (xmlReader.NodeType != XmlNodeType.Element || xmlReader.LocalName != "REQ-IF")
+            {
+                return false;
+            }
+
+            if (xmlReader.NamespaceURI == DefaultXmlAttributeFactory.ReqIFSchemaUri || xmlReader.NamespaceURI.Length == 0)
+            {
+                return true;
+            }
+
+            var xmlLineInfo = xmlReader as IXmlLineInfo;
+
+            this.logger.LogWarning("The REQ-IF element at line:position {LineNumber}:{LinePosition} is in the namespace {NamespaceUri} instead of {ReqIFNamespaceUri} and has been skipped",
+                xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition, xmlReader.NamespaceURI, DefaultXmlAttributeFactory.ReqIFSchemaUri);
+
+            return false;
         }
 
         /// <summary>

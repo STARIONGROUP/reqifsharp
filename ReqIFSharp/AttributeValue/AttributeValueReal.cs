@@ -175,7 +175,7 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-REAL-REF"))
+                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-REAL-REF", reader.NamespaceURI))
                 {
                     var reference = reader.ReadElementContentAsString();
 
@@ -205,7 +205,7 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
-                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-REAL-REF"))
+                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-REAL-REF", reader.NamespaceURI))
                 {
                     var reference = await reader.ReadElementContentAsStringAsync();
 
