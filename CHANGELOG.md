@@ -8,11 +8,16 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 
 ## [Unreleased]
 
+## [10.1.2] - 2026-10-18
+
+ReqIFSharp.Extensions 5.2.2
+
 ### Changed
 
-- Update Microsoft.Sbom.Targets to version 4.1.13 ([#81](https://github.com/STARIONGROUP/ReqIFSharp/issues/81)).
+- Update Microsoft.Sbom.Targets to version 4.1.13 ([#81](https://github.com/STARIONGROUP/ReqIFSharp/issues/81)); also for ReqIFSharp.Extensions.
 - Centralize the shared MSBuild and package settings in `Directory.Build.props` and `Directory.Build.targets` ([#83](https://github.com/STARIONGROUP/ReqIFSharp/issues/83)).
 - Building from source requires the .NET 10 SDK (`global.json`) and C# 14 ([#83](https://github.com/STARIONGROUP/ReqIFSharp/issues/83)).
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.1.2.
 
 ## [10.1.1] - 2026-09-05
 
@@ -499,7 +504,8 @@ ReqIFSharp.Extensions 1.0.0-RC1
 
 - First public release under the Apache 2.0 license, after extensive testing on CDP4™.
 
-[Unreleased]: https://github.com/STARIONGROUP/ReqIFSharp/compare/10.1.1...development
+[Unreleased]: https://github.com/STARIONGROUP/ReqIFSharp/compare/10.1.2...development
+[10.1.2]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.1.2
 [10.1.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.1.1
 [10.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.1.0
 [10.0.6]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.6

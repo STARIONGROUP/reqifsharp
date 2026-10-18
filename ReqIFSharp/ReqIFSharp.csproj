@@ -4,14 +4,15 @@
 
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
-        <Version>10.1.1</Version>
+        <Version>10.1.2</Version>
         <Title>ReqIFSharp</Title>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
         <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
         <Authors>Sam Gerené, Alexander van Delft</Authors>
         <PackageReleaseNotes>
-            - [Update] dependencies
+            - [Update] Microsoft.Sbom.Targets to version 4.1.13
+            - [Refactor] centralize shared MSBuild and package settings; building from source requires the .NET 10 SDK and C# 14
         </PackageReleaseNotes>
     </PropertyGroup>
 
