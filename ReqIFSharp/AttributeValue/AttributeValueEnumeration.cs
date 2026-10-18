@@ -199,7 +199,7 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ENUM-VALUE-REF":
-                                reference = subtree.ReadElementContentAsString();
+                                reference = subtree.ReadElementContentAsStringToEndElement();
 
                                 var enumValue = this.ReqIFContent.DataTypes.OfType<DatatypeDefinitionEnumeration>().SelectMany(x => x.SpecifiedValues).SingleOrDefault(x => x.Identifier == reference);
                                 if (enumValue != null)
@@ -251,7 +251,7 @@ namespace ReqIFSharp
                                 }
                                 break;
                             case "ENUM-VALUE-REF":
-                                reference = await subtree.ReadElementContentAsStringAsync();
+                                reference = await subtree.ReadElementContentAsStringToEndElementAsync();
 
                                 var enumValue = this.ReqIFContent.DataTypes.OfType<DatatypeDefinitionEnumeration>().SelectMany(x => x.SpecifiedValues).SingleOrDefault(x => x.Identifier == reference);
                                 if (enumValue != null)
