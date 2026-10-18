@@ -238,7 +238,7 @@ namespace ReqIFSharp.Tests
         /// Asserts that every attribute in <paramref name="source"/> is present in <paramref name="serialized"/>
         /// with the same value (the serializer may add declarations such as the XHTML namespace, but must not drop any).
         /// </summary>
-        private static void AssertAttributesRetained(IDictionary<string, string> source, IDictionary<string, string> serialized, string context)
+        private static void AssertAttributesRetained(IDictionary<string, string> source, Dictionary<string, string> serialized, string context)
         {
             Assert.Multiple(() =>
             {

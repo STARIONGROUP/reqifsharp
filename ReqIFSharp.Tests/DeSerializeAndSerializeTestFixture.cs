@@ -79,7 +79,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "ProR_Traceability-Template-v1.0-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token));
+            await Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token));
         }
 
         [Test]
@@ -109,7 +109,7 @@ namespace ReqIFSharp.Tests
             var resultFileUri = Path.Combine(TestContext.CurrentContext.TestDirectory, "Datatype-Demo-async-reserialize.reqif");
 
             var serializer = new ReqIFSerializer();
-            Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token));
+            await Assert.DoesNotThrowAsync(async () => await serializer.SerializeAsync(reqIfs, resultFileUri, cancellationTokenSource.Token));
         }
 
         [Test]
