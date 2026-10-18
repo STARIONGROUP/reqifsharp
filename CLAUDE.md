@@ -12,7 +12,7 @@ requirements-interchange documents. The repository ships two NuGet packages:
   `ReqIFLoaderService`, built on top of the core. Targets `netstandard2.0`.
 
 The two packages version independently (e.g. ReqIFSharp `10.x`, ReqIFSharp.Extensions `5.x`).
-Test projects target `net10.0` and use NUnit. `LangVersion` is pinned to `12.0`.
+Test projects target `net10.0` and use NUnit. `LangVersion` is pinned to `14.0` (in `Directory.Build.props`).
 
 ## Common commands
 

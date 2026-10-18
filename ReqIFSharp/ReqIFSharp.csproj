@@ -5,25 +5,14 @@
     <PropertyGroup>
         <TargetFramework>netstandard2.0</TargetFramework>
         <Version>10.1.1</Version>
-        <LangVersion>12.0</LangVersion>
         <Title>ReqIFSharp</Title>
         <Description>A .NET library to deserialize (read) and serialize (write) OMG ReqIF documents.</Description>
         <PackageId>ReqIFSharp</PackageId>
-        <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageIcon>reqifsharp-logo-small.png</PackageIcon>
-        <PackageTags>ReqIF mbse modeltopia</PackageTags>
-        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
         <Authors>Sam Gerené, Alexander van Delft</Authors>
-        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-        <IncludeSource>true</IncludeSource>
-        <IncludeSymbols>true</IncludeSymbols>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateSBOM>true</GenerateSBOM>
         <PackageReleaseNotes>
             - [Update] dependencies
         </PackageReleaseNotes>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
 
     <ItemGroup>
@@ -76,9 +65,6 @@
 
     <ItemGroup>
         <None Include="..\reqifsharp-logo-small.png" Pack="true" PackagePath="" />
-        <None Include="..\README.md" Pack="true" PackagePath="\" />
-        <None Include="..\LICENSE" Pack="true" PackagePath="\" />
-        <None Include="..\NOTICE" Pack="true" PackagePath="\" />
     </ItemGroup>
 
     <ItemGroup>
@@ -92,7 +78,6 @@
             API need. The floor itself is set in Directory.Packages.props.
         -->
         <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
-        <PackageReference Include="Microsoft.Sbom.Targets" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>
