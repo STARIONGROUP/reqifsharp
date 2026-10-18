@@ -1,0 +1,550 @@
+# Changelog
+
+All notable changes to ReqIFSharp are documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and the project follows [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Numbers such as [#67](https://github.com/STARIONGROUP/ReqIFSharp/issues/67) refer to the issue or pull request of the change.
+
+The repository ships two NuGet packages that version independently: **ReqIFSharp** and **ReqIFSharp.Extensions**. Each release is listed under its ReqIFSharp version; the ReqIFSharp.Extensions version released with it is named below the heading, and changes that only concern ReqIFSharp.Extensions are marked as such. A release of ReqIFSharp.Extensions alone is headed by its own name and version. Dates are the dates the packages were published on NuGet.
+
+## [Unreleased]
+
+### Changed
+
+- Update Microsoft.Sbom.Targets to version 4.1.13 ([#81](https://github.com/STARIONGROUP/ReqIFSharp/issues/81)).
+- Centralize the shared MSBuild and package settings in `Directory.Build.props` and `Directory.Build.targets` ([#83](https://github.com/STARIONGROUP/ReqIFSharp/issues/83)).
+- Building from source requires the .NET 10 SDK (`global.json`) and C# 14 ([#83](https://github.com/STARIONGROUP/ReqIFSharp/issues/83)).
+
+## [10.1.1] - 2026-09-05
+
+ReqIFSharp.Extensions 5.2.1
+
+### Changed
+
+- Update dependencies.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.1.1.
+
+## [10.1.0] - 2026-06-06
+
+ReqIFSharp.Extensions 5.2.0
+
+### Added
+
+- UML-like metadata decorators on the model ([#27](https://github.com/STARIONGROUP/ReqIFSharp/issues/27)).
+
+### Changed
+
+- Lower the minimum required version of Microsoft.Extensions.Logging.Abstractions to 6.0.0 ([#77](https://github.com/STARIONGROUP/ReqIFSharp/issues/77)).
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.1.0.
+
+### Fixed
+
+- Retain the namespaces and attributes of the root element when a document is read and written again ([#44](https://github.com/STARIONGROUP/ReqIFSharp/issues/44)).
+
+## [10.0.6] - 2026-05-18
+
+ReqIFSharp.Extensions 5.1.0
+
+### Added
+
+- Deterministic builds and packing in CI, so packages are reproducible ([#71](https://github.com/STARIONGROUP/ReqIFSharp/issues/71)).
+
+### Changed
+
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.6.
+
+### Fixed
+
+- Dispose the manifest resource stream in `GetSchemaFromResource` ([#69](https://github.com/STARIONGROUP/ReqIFSharp/issues/69)).
+- ReqIFSharp.Extensions: remove the trailing space from `ExternalObject.CreateUrl` ([#68](https://github.com/STARIONGROUP/ReqIFSharp/issues/68)).
+- ReqIFSharp.Extensions: honor the `CancellationToken` in `QueryBase64PayloadsAsync` ([#67](https://github.com/STARIONGROUP/ReqIFSharp/issues/67)).
+- ReqIFSharp.Extensions: dispose the streams of `ReqIFLoaderService` deterministically ([#66](https://github.com/STARIONGROUP/ReqIFSharp/issues/66)).
+
+## [10.0.5] - 2026-05-14
+
+ReqIFSharp.Extensions 5.0.5
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 10.0.8.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.5.
+
+## [10.0.4] - 2026-04-24
+
+ReqIFSharp.Extensions 5.0.4
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 10.0.7.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.4.
+
+## [10.0.3] - 2026-02-20
+
+ReqIFSharp.Extensions 5.0.3
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 10.0.3.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.3.
+
+## [10.0.2] - 2025-12-20
+
+ReqIFSharp.Extensions 5.0.2
+
+### Changed
+
+- Update Microsoft.Sbom.Targets to version 4.1.5.
+- Update Microsoft.Extensions.Logging.Abstractions to version 10.0.1.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.2.
+
+## [10.0.1] - 2025-11-30
+
+ReqIFSharp.Extensions 5.0.1
+
+### Added
+
+- Include the LICENSE and NOTICE files in the NuGet package; the NOTICE file is updated.
+
+### Changed
+
+- Update Microsoft.Sbom.Targets to version 4.1.4.
+- Update Microsoft.Extensions.Logging.Abstractions to version 10.0.0.
+- Call `token.ThrowIfCancellationRequested()` directly.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.1.
+
+## [10.0.0] - 2025-11-12
+
+ReqIFSharp.Extensions 5.0.0
+
+### Added
+
+- Read `SpecHierarchy.IS-TABLE-INTERNAL`.
+
+### Changed
+
+- **Breaking:** all `int` properties are now `long`. The ReqIF specification defines integers as mathematically unbounded; `long` is the practical choice.
+- When `XmlConvert` throws an overflow exception while reading an XML attribute, the property is set to its default value ([#60](https://github.com/STARIONGROUP/ReqIFSharp/issues/60)).
+- Log the line number and line position when an element is not known.
+- Update Microsoft.Sbom.Targets to version 4.1.3.
+- ReqIFSharp.Extensions: update to ReqIFSharp 10.0.0.
+
+## [9.2.4] - 2025-10-18
+
+ReqIFSharp.Extensions 4.2.3
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 9.0.10.
+- ReqIFSharp.Extensions: update to ReqIFSharp 9.2.4.
+
+## [9.2.3] - 2025-10-04
+
+ReqIFSharp.Extensions 4.2.2
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 9.0.9.
+- ReqIFSharp.Extensions: update to ReqIFSharp 9.2.3.
+
+## [9.2.2] - 2025-09-04
+
+No ReqIFSharp.Extensions release.
+
+### Changed
+
+- Update Microsoft.Sbom.Targets to version 4.1.2.
+
+## [9.2.1] - 2025-08-08
+
+ReqIFSharp.Extensions 4.2.1
+
+### Added
+
+- Generate an SBOM and include it in the NuGet package; also for ReqIFSharp.Extensions.
+- Include the XML documentation in the NuGet package; also for ReqIFSharp.Extensions.
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 9.0.8.
+- Improve the documentation.
+- ReqIFSharp.Extensions: update to ReqIFSharp 9.2.1.
+
+## [9.2.0] - 2025-07-16
+
+ReqIFSharp.Extensions 4.2.0
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 9.0.7.
+- ReqIFSharp.Extensions: update to ReqIFSharp 9.2.0.
+
+## [9.1.0] - 2025-02-19
+
+ReqIFSharp.Extensions 4.1.0
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 9.0.2.
+- ReqIFSharp.Extensions: update to ReqIFSharp 9.1.0.
+
+## [9.0.0] - 2025-01-19
+
+ReqIFSharp.Extensions 4.0.0
+
+### Added
+
+- ReqIFSharp.Extensions: `ReqIFLoaderService` implements `IDisposable`.
+- ReqIFSharp.Extensions: `ReqIFLoaderService` constructor that takes an `ILoggerFactory`.
+
+### Changed
+
+- **Breaking:** async methods that return a `Task` are renamed to end in `...Async`; also in ReqIFSharp.Extensions.
+- Improve the exceptions thrown by async methods, using `nameof` throughout.
+- Improve logging.
+- Update Microsoft.Extensions.Logging.Abstractions to version 9.0.1.
+- ReqIFSharp.Extensions: improve argument validation.
+- ReqIFSharp.Extensions: update to ReqIFSharp 9.0.0.
+
+## [8.1.1] - 2024-10-19
+
+ReqIFSharp.Extensions 3.1.1
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 8.0.2.
+- ReqIFSharp.Extensions: update to ReqIFSharp 8.1.1.
+
+## [8.1.0] - 2024-05-14
+
+ReqIFSharp.Extensions 3.1.0
+
+### Changed
+
+- Apply SonarQube improvements.
+- ReqIFSharp.Extensions: update to ReqIFSharp 8.1.0.
+
+### Fixed
+
+- (De)serialization of `AlternativeID` ([#54](https://github.com/STARIONGROUP/ReqIFSharp/issues/54)).
+- Serialization of the `xml:lang` attribute.
+
+## [8.0.0] - 2024-04-27
+
+ReqIFSharp.Extensions 3.0.0
+
+### Changed
+
+- Copyright holder is now Starion Group S.A.; also for ReqIFSharp.Extensions.
+
+## [7.1.1] - 2024-04-13
+
+ReqIFSharp.Extensions 2.1.1
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 8.0.1.
+- ReqIFSharp.Extensions: update to ReqIFSharp 7.1.1.
+
+## [7.1.0] - 2023-12-07
+
+ReqIFSharp.Extensions 2.1.0
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 8.0.0.
+- ReqIFSharp.Extensions: update to ReqIFSharp 7.1.0.
+
+## [7.0.1] - 2023-07-15
+
+ReqIFSharp.Extensions 2.0.1
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 7.0.1.
+- ReqIFSharp.Extensions: update to ReqIFSharp 7.0.1.
+
+## [7.0.0] - 2022-11-09
+
+ReqIFSharp.Extensions 2.0.0
+
+### Changed
+
+- Update Microsoft.Extensions.Logging.Abstractions to version 7.0.0.
+- ReqIFSharp.Extensions: update to ReqIFSharp 7.0.0.
+
+## [6.0.1] - 2022-08-04
+
+ReqIFSharp.Extensions 1.0.1, the first stable release of ReqIFSharp.Extensions.
+
+### Added
+
+- `SupportedFileExtensionKind` on the deserializer ([#47](https://github.com/STARIONGROUP/ReqIFSharp/issues/47)).
+- Serialize to the `reqif`, `reqifz` and `zip` formats ([#23](https://github.com/STARIONGROUP/ReqIFSharp/issues/23)).
+
+### Changed
+
+- **Breaking:** `IReqIFSerializer` and `ReqIFSerializer` are made symmetrical to the `IReqIFDeSerializer` interface.
+- Update Microsoft.Extensions.Logging.Abstractions to version 6.0.1.
+- ReqIFSharp.Extensions: update to ReqIFSharp 6.0.1.
+
+### Fixed
+
+- Set the stream to position 0 before creating the `XmlReader` ([#43](https://github.com/STARIONGROUP/ReqIFSharp/issues/43)).
+- `ZipArchiveEntry` disposed error when `ReqIFSerializer.SerializeAsync` writes a large `.reqifz` file.
+
+## [ReqIFSharp.Extensions 1.0.0-RC3] - 2022-07-23
+
+Release of ReqIFSharp.Extensions only; it uses ReqIFSharp 6.0.0-RC1.
+
+### Added
+
+- ReqIFSharp.Extensions: `SpecRelationTypeExtensions.QueryReferencingSpecRelations`.
+- ReqIFSharp.Extensions: `SpecificationTypeExtensions.QueryReferencingSpecifications`.
+- ReqIFSharp.Extensions: `SpecObjectTypeExtensions.QueryReferencingSpecObjects`.
+- ReqIFSharp.Extensions: a dedicated package icon.
+
+### Changed
+
+- ReqIFSharp.Extensions: improve exception messages.
+
+## [6.0.0-RC1] - 2022-07-22
+
+ReqIFSharp.Extensions 1.0.0-RC2
+
+Pre-release of the changes listed under 6.0.1, except the logging update and the `ZipArchiveEntry` fix.
+
+### Changed
+
+- ReqIFSharp.Extensions: update to ReqIFSharp 6.0.0-RC1.
+
+## [5.0.3] - 2022-06-10
+
+ReqIFSharp.Extensions 1.0.0-RC1
+
+### Added
+
+- ReqIFSharp.Extensions: first pre-release of the package. It provides query extension methods on the ReqIFSharp model (attribute definitions and values, datatype definitions, external objects, spec hierarchies, spec objects, specifications) and the `ReqIFLoaderService`.
+
+### Changed
+
+- Improve the XML documentation.
+
+## [5.0.2] - 2022-04-07
+
+### Changed
+
+- Improve the code quality of `ReqIF.cs` as reported by SonarQube.
+
+## [5.0.1] - 2022-01-20
+
+### Fixed
+
+- `ExternalObject` deserialization when the `data` attribute is not the first attribute of the `xhtml:object` element ([#39](https://github.com/STARIONGROUP/ReqIFSharp/issues/39)).
+
+## [5.0.0] - 2022-01-01
+
+### Added
+
+- Deserialize from a stream, also through the `IReqIFDeSerializer` interface ([#22](https://github.com/STARIONGROUP/ReqIFSharp/issues/22)).
+- Async deserialization ([#24](https://github.com/STARIONGROUP/ReqIFSharp/issues/24)).
+- `ExtractUnformattedTextFromValue` to extract the unformatted text from an XHTML attribute ([#25](https://github.com/STARIONGROUP/ReqIFSharp/issues/25)).
+- Serialize to a stream ([#29](https://github.com/STARIONGROUP/ReqIFSharp/issues/29)).
+- Async serialization ([#31](https://github.com/STARIONGROUP/ReqIFSharp/issues/31)).
+- Logging through Microsoft.Extensions.Logging.Abstractions ([#36](https://github.com/STARIONGROUP/ReqIFSharp/issues/36)).
+- `CreateExternalObjectsAsync`.
+
+### Changed
+
+- `ExternalObject.QueryLocalData` is refactored ([#22](https://github.com/STARIONGROUP/ReqIFSharp/issues/22)).
+- `ReqIFSerializer` no longer uses `XmlSerializer`; all work is done with `XmlReader` and `XmlWriter` ([#30](https://github.com/STARIONGROUP/ReqIFSharp/issues/30)).
+- `CreateExternalObjects` uses an `XmlReader`.
+- **Breaking:** the read and write (async) XML methods are internal; they are not part of the public API.
+
+### Removed
+
+- **Breaking:** validation features of `IReqIFSerializer` and `ReqIFSerializer`.
+- **Breaking:** the use of `IXmlSerializable`, including the `GetSchema()` method.
+
+### Fixed
+
+- Deserialization of `AlternativeId` for `DatatypeDefinition`, `SpecHierarchy` and `SpecType` ([#33](https://github.com/STARIONGROUP/ReqIFSharp/issues/33)).
+
+## [4.0.0] - 2021-11-10
+
+### Changed
+
+- Serialization of the `DefaultValue` property of `Identifiable` ([#21](https://github.com/STARIONGROUP/ReqIFSharp/issues/21)).
+- Update the icon and license properties of the project file.
+
+### Removed
+
+- **Breaking:** the `netstandard1.6` and `net45` targets ([#20](https://github.com/STARIONGROUP/ReqIFSharp/issues/20)).
+
+## [3.1.0] - 2021-06-18
+
+### Added
+
+- `ExternalObject` class to access the external objects referenced in `AttributeValueXHTML` instances ([#18](https://github.com/STARIONGROUP/ReqIFSharp/issues/18)).
+
+## [3.0.1] - 2021-06-16
+
+### Fixed
+
+- Serialization of the default values of attribute definitions ([#17](https://github.com/STARIONGROUP/ReqIFSharp/issues/17)).
+
+## [3.0.0] - 2021-03-21
+
+### Changed
+
+- **Breaking:** `IReqIFDeSerializer` returns an `IEnumerable` of `ReqIF` to improve `.reqifz` support.
+
+### Fixed
+
+- Deserialization and serialization of `TOOL-EXTENSIONS` ([#16](https://github.com/STARIONGROUP/ReqIFSharp/issues/16)).
+
+## [2.0.0] - 2019-10-24
+
+### Changed
+
+- **Breaking:** 32-bit integers (`int`) are replaced by 64-bit integers (`long`) ([#13](https://github.com/STARIONGROUP/ReqIFSharp/issues/13)).
+
+## [1.4.1] - 2019-02-11
+
+### Changed
+
+- Serialization of the `IS-SIMPLIFIED` property of the `AttributeValueXHTML` class ([#11](https://github.com/STARIONGROUP/ReqIFSharp/issues/11)).
+
+## [1.4.0] - 2018-11-13
+
+### Added
+
+- Create a mock object when a referenced object is not found in the sources ([#10](https://github.com/STARIONGROUP/ReqIFSharp/issues/10)).
+
+### Changed
+
+- `AttributeValueXHTML` uses `XmlConvert` instead of `bool.Parse` and `bool.ToString()`.
+
+## [1.3.2] - 2018-06-04
+
+### Added
+
+- Read the `MAX-LENGTH` attribute of `DatatypeDefinitionString`.
+- Read the `ACCURACY` attribute of `DatatypeDefinitionReal`.
+
+### Changed
+
+- `ReadXml` of `DatatypeDefinitionInteger`, `DatatypeDefinitionReal` and `DatatypeDefinitionString` uses the `XmlReader`.
+
+### Fixed
+
+- (De)serialization of the datatype definition classes uses `XmlConvert` instead of `int.Parse` and `double.Parse`.
+
+## [1.3.1] - 2018-06-02
+
+### Fixed
+
+- `ReadXml` of `AttributeDefinition.IsMultiValued`.
+- `ReadXml` of `DatatypeDefinitionInteger.Max` and `DatatypeDefinitionInteger.Min`.
+
+## [1.3.0] - 2018-03-27
+
+### Added
+
+- Support for `.reqifz` files.
+
+## [1.2.0] - 2018-01-07
+
+### Added
+
+- `AttributeValue.ValueObject` convenience property to get and set the value of any concrete `AttributeValue` from the abstract type.
+
+## [1.1.0] - 2017-08-02
+
+### Added
+
+- Support for `netstandard1.6`.
+
+## [1.0.6] - 2017-07-31
+
+### Changed
+
+- Upgrade the project to the Visual Studio 2017 project file format; update the NuGet authors and icon URL.
+
+## [1.0.5] - 2017-06-28
+
+### Fixed
+
+- Processing of the default values of attributes.
+
+## [1.0.4] - 2017-06-27
+
+### Fixed
+
+- Reading the default value of an `AttributeDefinition`.
+
+## [1.0.3] - 2017-06-20
+
+### Fixed
+
+- Handling of XHTML attributes.
+
+## [1.0.2] - 2017-01-20
+
+### Fixed
+
+- The source and target of a specification during deserialization.
+
+## [1.0.1] - 2017-01-12
+
+### Added
+
+- First public release under the Apache 2.0 license, after extensive testing on CDP4™.
+
+[Unreleased]: https://github.com/STARIONGROUP/ReqIFSharp/compare/10.1.1...development
+[10.1.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.1.1
+[10.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.1.0
+[10.0.6]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.6
+[10.0.5]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.5
+[10.0.4]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.4
+[10.0.3]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.3
+[10.0.2]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.2
+[10.0.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.1
+[10.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/10.0.0
+[9.2.4]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/9.2.4
+[9.2.3]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/9.2.3
+[9.2.2]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/9.2.2
+[9.2.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-9.2.1
+[9.2.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-9.2.0
+[9.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-9.1.0
+[9.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-9.0.0
+[8.1.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-8.1.1
+[8.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-8.1.0
+[8.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-8.0.0
+[7.1.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-7.1.1
+[7.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-7.1.0
+[7.0.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-7.0.1
+[7.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-7.0.0
+[6.0.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp-6.0.1
+[ReqIFSharp.Extensions 1.0.0-RC3]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/reqifsharp.extensions-1.0.0-RC3
+[6.0.0-RC1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/6.0.0-RC1
+[5.0.3]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/RS-5.0.3
+[5.0.2]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/5.0.2
+[5.0.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/5.0.1
+[5.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/5.0.0
+[4.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/4.0.0
+[3.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/3.1.0
+[3.0.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/3.0.1
+[3.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/3.0.0
+[2.0.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/2.0.0
+[1.4.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/1.4.1
+[1.4.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/1.4.0
+[1.3.2]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/1.3.2
+[1.3.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/1.3.1
+[1.3.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/V1.3.0
+[1.2.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/V1.2.0
+[1.1.0]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/V1.1.0
+[1.0.6]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/v1.0.6
+[1.0.5]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/v1.0.5
+[1.0.4]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/v1.0.4
+[1.0.3]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/v1.0.3
+[1.0.2]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/v1.0.2
+[1.0.1]: https://github.com/STARIONGROUP/ReqIFSharp/releases/tag/v1.0.1
