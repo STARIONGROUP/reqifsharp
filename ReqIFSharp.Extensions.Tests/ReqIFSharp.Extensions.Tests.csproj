@@ -6,6 +6,7 @@
         <Description>Nunit test suite for the ReqIFSharp.Extensions library</Description>
         <Nullable>disable</Nullable>
         <IsPackable>false</IsPackable>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
     </PropertyGroup>
 
     <ItemGroup>

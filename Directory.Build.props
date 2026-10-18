@@ -9,35 +9,11 @@
         <NeutralLanguage>en-US</NeutralLanguage>
         <SatelliteResourceLanguages>en-US</SatelliteResourceLanguages>
         <LangVersion>14.0</LangVersion>
-    </PropertyGroup>
-
-    <!--
-        Test projects are identified by name: IsPackable is set in the project file itself, which is
-        evaluated after this file, so it cannot be used as a condition here.
-    -->
-    <PropertyGroup>
-        <IsReqIFSharpTestProject>$(MSBuildProjectName.EndsWith('.Tests'))</IsReqIFSharpTestProject>
-    </PropertyGroup>
-
-    <!-- packaging settings shared by the published library projects -->
-    <PropertyGroup Condition="'$(IsReqIFSharpTestProject)' != 'true'">
-        <PackageProjectUrl>https://reqifsharp.org</PackageProjectUrl>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <PackageTags>ReqIF mbse modeltopia</PackageTags>
-        <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
-        <RequireLicenseAcceptance>false</RequireLicenseAcceptance>
-        <IncludeSource>true</IncludeSource>
-        <IncludeSymbols>true</IncludeSymbols>
+        <!--
+            Set here rather than in Directory.Build.targets: the SDK turns it into the documentation
+            file settings before Directory.Build.targets is evaluated. Test projects switch it off.
+        -->
         <GenerateDocumentationFile>true</GenerateDocumentationFile>
-        <GenerateSBOM>true</GenerateSBOM>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
     </PropertyGroup>
-
-    <ItemGroup Condition="'$(IsReqIFSharpTestProject)' != 'true'">
-        <None Include="$(MSBuildThisFileDirectory)README.md" Pack="true" PackagePath="\" />
-        <None Include="$(MSBuildThisFileDirectory)LICENSE" Pack="true" PackagePath="\" />
-        <None Include="$(MSBuildThisFileDirectory)NOTICE" Pack="true" PackagePath="\" />
-        <PackageReference Include="Microsoft.Sbom.Targets" PrivateAssets="all" />
-    </ItemGroup>
 
 </Project>
