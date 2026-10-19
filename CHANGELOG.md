@@ -20,6 +20,7 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 - A document without whitespace between its elements (minified XML) lost data without an error: every other header field (such as `CREATION-TIME` and `REQ-IF-TOOL-ID`) and every other enumeration value of an attribute value was skipped, and the spec relations of a relation group were not read or caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
 - `AttributeValueXHTML.TheOriginalValue` was not read from `THE-ORIGINAL-VALUE`, so it was always `null` after reading, and a document that was read and written again lost the original values of its simplified XHTML attribute values ([#95](https://github.com/STARIONGROUP/ReqIFSharp/issues/95)).
 - Attribute values did not log anything, also when an `ILoggerFactory` was passed to the deserializer: the `AttributeValue` constructors did not keep the logger factory. An enumeration attribute value no longer reports its own element and its `DEFINITION` and `VALUES` elements as not supported ([#97](https://github.com/STARIONGROUP/ReqIFSharp/issues/97)).
+- `new AttributeValueXHTML(loggerFactory)` left `ExternalObjects` `null`, so `QueryExternalObjects` and `QueryBase64PayloadsAsync` of ReqIFSharp.Extensions threw for a spec element that held such a value. `new AttributeValueXHTML()` left its logger `null`, so reading into it threw ([#98](https://github.com/STARIONGROUP/ReqIFSharp/issues/98)).
 
 ## [10.1.2] - 2026-10-18
 
