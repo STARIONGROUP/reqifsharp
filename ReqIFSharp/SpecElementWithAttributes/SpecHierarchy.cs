@@ -186,6 +186,11 @@ namespace ReqIFSharp
             {
                 if (specHierarchySubtree.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (specHierarchySubtree.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (specHierarchySubtree.LocalName)
@@ -236,6 +241,11 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -381,9 +391,9 @@ namespace ReqIFSharp
         /// </param>
         private void DeserializeObject(XmlReader reader)
         {
-            if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
+            if (reader.ReadToReqIFDescendant("SPEC-OBJECT-REF", this.logger))
             {
-                var reference = reader.ReadElementContentAsString();
+                var reference = reader.ReadElementContentAsStringToEndElement();
                 var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                 this.Object = specObject;
 
@@ -392,6 +402,8 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The SpecObject:{Reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
                 }
             }
+
+            reader.SkipForeignElementsToEnd(this.logger);
         }
 
         /// <summary>
@@ -407,9 +419,9 @@ namespace ReqIFSharp
         {
             token.ThrowIfCancellationRequested();
 
-            if (reader.ReadToDescendant("SPEC-OBJECT-REF", reader.NamespaceURI))
+            if (await reader.ReadToReqIFDescendantAsync("SPEC-OBJECT-REF", this.logger, token))
             {
-                var reference = await reader.ReadElementContentAsStringAsync();
+                var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                 var specObject = this.ReqIfContent.SpecObjects.SingleOrDefault(x => x.Identifier == reference);
                 this.Object = specObject;
 
@@ -418,6 +430,8 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The SpecObject:{Reference} could not be found and has been set to null on SpecHierarchy:{Identifier}", reference, Identifier);
                 }
             }
+
+            await reader.SkipForeignElementsToEndAsync(this.logger, token);
         }
 
         /// <summary>
@@ -430,6 +444,11 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
                     if (bool.TryParse(reader.GetAttribute("IS-TABLE-INTERNAL"), out var isTableInternal))
@@ -461,6 +480,11 @@ namespace ReqIFSharp
             while (await reader.ReadAsync())
             {
                 token.ThrowIfCancellationRequested();
+
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {

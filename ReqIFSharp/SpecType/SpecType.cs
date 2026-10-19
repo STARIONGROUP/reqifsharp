@@ -114,6 +114,11 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (reader.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -126,6 +131,11 @@ namespace ReqIFSharp
                             {
                                 while (specAttributesSubTree.Read())
                                 {
+                                    if (specAttributesSubTree.SkipForeignElement(this.logger))
+                                    {
+                                        continue;
+                                    }
+
                                     if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-", StringComparison.Ordinal))
                                     {
                                         this.CreateAttributeDefinition(reader, reader.LocalName);
@@ -160,6 +170,11 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -174,6 +189,11 @@ namespace ReqIFSharp
                                 while (await specAttributesSubTree.ReadAsync())
                                 {
                                     token.ThrowIfCancellationRequested();
+
+                                    if (await specAttributesSubTree.SkipForeignElementAsync(this.logger, token))
+                                    {
+                                        continue;
+                                    }
 
                                     if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("ATTRIBUTE-DEFINITION-", StringComparison.Ordinal))
                                     {

@@ -255,6 +255,12 @@ namespace ReqIFSharp
                         continue;
                     }
 
+                    if (subtree.SkipForeignElement(this.logger))
+                    {
+                        subtree.Read();
+                        continue;
+                    }
+
                     switch (subtree.LocalName)
                     {
                         case "DEFINITION":
@@ -320,12 +326,18 @@ namespace ReqIFSharp
                         continue;
                     }
 
+                    if (await subtree.SkipForeignElementAsync(this.logger, token))
+                    {
+                        await subtree.ReadAsync();
+                        continue;
+                    }
+
                     switch (subtree.LocalName)
                     {
                         case "DEFINITION":
                             using (var definitionSubtree = subtree.ReadSubtree())
                             {
-                                await this.ReadDefinitionAsync(definitionSubtree);
+                                await this.ReadDefinitionAsync(definitionSubtree, token);
                             }
 
                             await subtree.ReadAsync();
@@ -361,10 +373,12 @@ namespace ReqIFSharp
         {
             reader.MoveToContent();
 
-            if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-XHTML-REF", reader.NamespaceURI))
+            if (reader.ReadToReqIFDescendant("ATTRIBUTE-DEFINITION-XHTML-REF", this.logger))
             {
-                this.SetDefinition(reader.ReadElementContentAsString());
+                this.SetDefinition(reader.ReadElementContentAsStringToEndElement());
             }
+
+            reader.SkipForeignElementsToEnd(this.logger);
         }
 
         /// <summary>
@@ -373,14 +387,19 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an <see cref="XmlReader"/> over the subtree of the DEFINITION element
         /// </param>
-        private async Task ReadDefinitionAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadDefinitionAsync(XmlReader reader, CancellationToken token)
         {
             await reader.MoveToContentAsync();
 
-            if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-XHTML-REF", reader.NamespaceURI))
+            if (await reader.ReadToReqIFDescendantAsync("ATTRIBUTE-DEFINITION-XHTML-REF", this.logger, token))
             {
-                this.SetDefinition(await reader.ReadElementContentAsStringAsync());
+                this.SetDefinition(await reader.ReadElementContentAsStringToEndElementAsync());
             }
+
+            await reader.SkipForeignElementsToEndAsync(this.logger, token);
         }
 
         /// <summary>

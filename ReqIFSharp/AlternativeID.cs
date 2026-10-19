@@ -25,6 +25,8 @@ namespace ReqIFSharp
     using System.Threading.Tasks;
     using System.Xml;
 
+    using Microsoft.Extensions.Logging;
+
     /// <summary>
     /// The purpose of the <see cref="AlternativeId"/> class is to provide an alternative, tool-specific identification.
     /// </summary>
@@ -104,12 +106,20 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        internal void ReadXml(XmlReader reader)
+        /// <param name="logger">
+        /// The <see cref="ILogger"/> used to log elements that are skipped, or null
+        /// </param>
+        internal void ReadXml(XmlReader reader, ILogger logger = null)
         {
             while (reader.Read())
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (reader.SkipForeignElement(logger))
+                    {
+                        continue;
+                    }
+
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":
@@ -129,12 +139,20 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
-        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
+        /// <param name="logger">
+        /// The <see cref="ILogger"/> used to log elements that are skipped, or null
+        /// </param>
+        internal async Task ReadXmlAsync(XmlReader reader, CancellationToken token, ILogger logger = null)
         {
             while (await reader.ReadAsync())
             {
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(logger, token))
+                    {
+                        continue;
+                    }
+
                     switch (reader.LocalName)
                     {
                         case "ALTERNATIVE-ID":

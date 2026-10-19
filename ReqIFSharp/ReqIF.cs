@@ -128,6 +128,11 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (reader.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -147,6 +152,11 @@ namespace ReqIFSharp
 
                             while (toolExtensionsXmlReader.Read())
                             {
+                                if (toolExtensionsXmlReader.SkipForeignElement(this.logger))
+                                {
+                                    continue;
+                                }
+
                                 if (toolExtensionsXmlReader.MoveToContent() == XmlNodeType.Element && toolExtensionsXmlReader.LocalName == "REQ-IF-TOOL-EXTENSION")
                                 {
                                     var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();
@@ -202,6 +212,11 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -221,6 +236,11 @@ namespace ReqIFSharp
 
                             while (await toolExtensionsXmlReader.ReadAsync())
                             {
+                                if (await toolExtensionsXmlReader.SkipForeignElementAsync(this.logger, token))
+                                {
+                                    continue;
+                                }
+
                                 if (await toolExtensionsXmlReader.MoveToContentAsync() == XmlNodeType.Element && toolExtensionsXmlReader.LocalName == "REQ-IF-TOOL-EXTENSION")
                                 {
                                     var reqIfToolExtensionSubTreeXmlReader = toolExtensionsXmlReader.ReadSubtree();

@@ -149,6 +149,11 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (reader.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -220,6 +225,11 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -284,6 +294,11 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-", StringComparison.Ordinal))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this, this.loggerFactory);
@@ -307,6 +322,11 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName.StartsWith("DATATYPE-DEFINITION-", StringComparison.Ordinal))
                 {
                     var datatypeDefinition = ReqIfFactory.DatatypeDefinitionConstruct(reader.LocalName, this, this.loggerFactory);
@@ -327,6 +347,11 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (reader.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     var xmlname = reader.LocalName;
 
                     if (xmlname == "SPEC-OBJECT-TYPE" || xmlname == "SPECIFICATION-TYPE"
@@ -361,6 +386,11 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
+
                     var xmlname = reader.LocalName;
 
                     if (xmlname == "SPEC-OBJECT-TYPE" || xmlname == "SPECIFICATION-TYPE"
@@ -388,6 +418,11 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECT")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -416,6 +451,11 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-OBJECT")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -439,6 +479,11 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -467,6 +512,11 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-RELATION")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -490,6 +540,11 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPECIFICATION")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -518,6 +573,11 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPECIFICATION")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -541,6 +601,11 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "RELATION-GROUP")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -567,6 +632,11 @@ namespace ReqIFSharp
         {
             while (await reader.ReadAsync())
             {
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
+
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "RELATION-GROUP")
                 {
                     using (var subtree = reader.ReadSubtree())

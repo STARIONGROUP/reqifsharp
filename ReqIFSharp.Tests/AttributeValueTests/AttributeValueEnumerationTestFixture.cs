@@ -23,8 +23,10 @@ namespace ReqIFSharp.Tests
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
@@ -34,6 +36,7 @@ namespace ReqIFSharp.Tests
     using ReqIFSharp;
 
     using Serilog;
+    using Serilog.Events;
 
     /// <summary>
     /// Suite of tests for the <see cref="AttributeValueEnumeration"/>
@@ -170,6 +173,69 @@ namespace ReqIFSharp.Tests
                 () => attributeValue.ObjectValue = "true",
                 Throws.Exception.TypeOf<InvalidOperationException>()
                     .With.Message.Contains("The value to set is not an IEnumerable<EnumValue>."));
+        }
+
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task Verify_that_an_unknown_ReqIF_element_in_an_enumeration_value_is_reported_as_not_supported(bool async)
+        {
+            const string xml = "<ATTRIBUTE-VALUE-ENUMERATION xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\"><DEFINITION/><VALUES><UNKNOWN/></VALUES></ATTRIBUTE-VALUE-ENUMERATION>";
+
+            var sink = new TestLogEventSink();
+            var serilogLogger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Sink(sink).CreateLogger();
+
+            using var testLoggerFactory = LoggerFactory.Create(builder => builder.AddSerilog(serilogLogger, dispose: true));
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = async });
+            reader.MoveToContent();
+
+            var attributeValueEnumeration = new AttributeValueEnumeration(testLoggerFactory);
+
+            if (async)
+            {
+                await attributeValueEnumeration.ReadXmlAsync(reader, CancellationToken.None);
+            }
+            else
+            {
+                attributeValueEnumeration.ReadXml(reader);
+            }
+
+            var warnings = sink.Events.Where(e => e.Level == LogEventLevel.Warning).Select(e => e.RenderMessage()).ToList();
+
+            // also the positive control of Verify_that_reading_enumeration_values_logs_no_warnings, which filters on the same SourceContext
+            var fromEnumeration = sink.Events.Where(e => e.Level == LogEventLevel.Warning && e.Properties.TryGetValue("SourceContext", out var source) && source.ToString().Contains(nameof(AttributeValueEnumeration))).ToList();
+
+            Assert.That(warnings, Has.Count.EqualTo(1));
+            Assert.That(warnings[0], Does.Contain("UNKNOWN").And.Contain("is not supported"));
+            Assert.That(fromEnumeration, Has.Count.EqualTo(1));
+        }
+
+        [TestCase("Datatype-Demo.reqif", false)]
+        [TestCase("Datatype-Demo.reqif", true)]
+        [TestCase("reqifsharpgenerated.reqif", false)]
+        [TestCase("reqifsharpgenerated.reqif", true)]
+        public async Task Verify_that_reading_enumeration_values_logs_no_warnings(string fileName, bool async)
+        {
+            var sink = new TestLogEventSink();
+            var serilogLogger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Sink(sink).CreateLogger();
+
+            using var testLoggerFactory = LoggerFactory.Create(builder => builder.AddSerilog(serilogLogger, dispose: true));
+            using var stream = File.OpenRead(Path.Combine(TestContext.CurrentContext.TestDirectory, "TestData", fileName));
+
+            var deserializer = new ReqIFDeserializer(testLoggerFactory);
+
+            var reqifs = async
+                ? (await deserializer.DeserializeAsync(stream, SupportedFileExtensionKind.Reqif, CancellationToken.None)).ToList()
+                : deserializer.Deserialize(stream, SupportedFileExtensionKind.Reqif).ToList();
+
+            var enumerationValues = reqifs.SelectMany(x => x.CoreContent.SpecObjects).SelectMany(x => x.Values).OfType<AttributeValueEnumeration>().ToList();
+
+            var warnings = sink.Events
+                .Where(e => e.Level == LogEventLevel.Warning && e.Properties.TryGetValue("SourceContext", out var source) && source.ToString().Contains(nameof(AttributeValueEnumeration)))
+                .Select(e => e.RenderMessage())
+                .ToList();
+
+            Assert.That(enumerationValues, Is.Not.Empty, "the document must contain enumeration values");
+            Assert.That(warnings, Is.Empty);
         }
     }
 }

@@ -12,12 +12,14 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 
 - A `REQ-IF` root element in a namespace other than the ReqIF namespace (`http://www.omg.org/spec/ReqIF/20110401/reqif.xsd`) is no longer read as a ReqIF document; it is skipped and a warning is logged. Before, such an element was read when it had no prefix. A root in no namespace is still read ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
 - An element other than `SPEC-RELATION-REF` inside the `SPEC-RELATIONS` of a relation group is now skipped with a warning, and the references after it are read. Before, it caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
+- An element that has the name of a ReqIF element but is in another namespace (for example `<other:THE-VALUE xmlns:other="...">`) is no longer read as that ReqIF element. It is skipped, with its content, and a warning is logged. Elements in the ReqIF namespace or in no namespace are read as before, in any document ([#97](https://github.com/STARIONGROUP/ReqIFSharp/issues/97)).
 
 ### Fixed
 
 - A document that binds the ReqIF namespace to a prefix (`<reqif:REQ-IF xmlns:reqif="...">`) was read as zero documents, and type, source/target and relation-group references in it were not read. Elements are now matched on their local name and namespace ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
 - A document without whitespace between its elements (minified XML) lost data without an error: every other header field (such as `CREATION-TIME` and `REQ-IF-TOOL-ID`) and every other enumeration value of an attribute value was skipped, and the spec relations of a relation group were not read or caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
 - `AttributeValueXHTML.TheOriginalValue` was not read from `THE-ORIGINAL-VALUE`, so it was always `null` after reading, and a document that was read and written again lost the original values of its simplified XHTML attribute values ([#95](https://github.com/STARIONGROUP/ReqIFSharp/issues/95)).
+- Attribute values did not log anything, also when an `ILoggerFactory` was passed to the deserializer: the `AttributeValue` constructors did not keep the logger factory. An enumeration attribute value no longer reports its own element and its `DEFINITION` and `VALUES` elements as not supported ([#97](https://github.com/STARIONGROUP/ReqIFSharp/issues/97)).
 
 ## [10.1.2] - 2026-10-18
 

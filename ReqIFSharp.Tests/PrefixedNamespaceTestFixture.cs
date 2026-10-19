@@ -23,7 +23,6 @@ namespace ReqIFSharp.Tests
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
-    using System.Xml.Linq;
 
     using Microsoft.Extensions.Logging;
 
@@ -75,7 +74,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_a_prefixed_document_is_read_the_same_as_the_original(string fileName)
         {
             var original = TestDocuments.Read(fileName);
-            var prefixed = CreatePrefixedCopy(original);
+            var prefixed = TestDocuments.Prefix(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -92,7 +91,7 @@ namespace ReqIFSharp.Tests
         public async Task Verify_that_a_prefixed_document_is_read_the_same_as_the_original_async(string fileName)
         {
             var original = TestDocuments.Read(fileName);
-            var prefixed = CreatePrefixedCopy(original);
+            var prefixed = TestDocuments.Prefix(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -109,7 +108,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_a_document_without_namespace_is_read_the_same_as_the_original()
         {
             var original = TestDocuments.Read("reqifsharpgenerated.reqif");
-            var withoutNamespace = CreateCopyWithoutNamespace(original);
+            var withoutNamespace = TestDocuments.RemoveNamespace(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -126,7 +125,7 @@ namespace ReqIFSharp.Tests
         public async Task Verify_that_a_document_without_namespace_is_read_the_same_as_the_original_async()
         {
             var original = TestDocuments.Read("reqifsharpgenerated.reqif");
-            var withoutNamespace = CreateCopyWithoutNamespace(original);
+            var withoutNamespace = TestDocuments.RemoveNamespace(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -169,58 +168,6 @@ namespace ReqIFSharp.Tests
 
             Assert.That(warnings, Has.Count.EqualTo(1));
             Assert.That(warnings[0].RenderMessage(), Does.Contain("http://example.com/not-reqif"));
-        }
-
-        /// <summary>
-        /// Returns a copy of the document in which every ReqIF element is written as reqif:...
-        /// </summary>
-        private static string CreatePrefixedCopy(string original)
-        {
-            // keep the original whitespace, so that the copy differs from the original only in its prefixes
-            var document = XDocument.Parse(original, LoadOptions.PreserveWhitespace);
-
-            RemoveReqIFNamespaceDeclarations(document);
-
-            document.Root!.SetAttributeValue(XNamespace.Xmlns + "reqif", TestDocuments.ReqIFNamespace.NamespaceName);
-
-            var prefixed = document.ToString(SaveOptions.DisableFormatting);
-
-            Assert.That(prefixed, Does.Contain("<reqif:REQ-IF "), "the copy must use the reqif prefix");
-            Assert.That(prefixed, Does.Not.Contain("<REQ-IF "), "the copy must not use the default namespace for ReqIF elements");
-
-            return prefixed;
-        }
-
-        /// <summary>
-        /// Returns a copy of the document in which the ReqIF elements are in no namespace
-        /// </summary>
-        private static string CreateCopyWithoutNamespace(string original)
-        {
-            var document = XDocument.Parse(original, LoadOptions.PreserveWhitespace);
-
-            RemoveReqIFNamespaceDeclarations(document);
-
-            foreach (var element in document.Descendants().Where(e => e.Name.Namespace == TestDocuments.ReqIFNamespace))
-            {
-                element.Name = XNamespace.None + element.Name.LocalName;
-            }
-
-            var withoutNamespace = document.ToString(SaveOptions.DisableFormatting);
-
-            Assert.That(withoutNamespace, Does.Contain("<REQ-IF "), "the copy must contain an unprefixed root");
-            Assert.That(withoutNamespace, Does.Not.Contain(TestDocuments.ReqIFNamespace.NamespaceName), "the copy must not declare the ReqIF namespace");
-
-            return withoutNamespace;
-        }
-
-        private static void RemoveReqIFNamespaceDeclarations(XDocument document)
-        {
-            foreach (var element in document.Descendants())
-            {
-                element.Attributes()
-                    .Where(a => a.IsNamespaceDeclaration && a.Value == TestDocuments.ReqIFNamespace.NamespaceName)
-                    .Remove();
-            }
         }
     }
 }
