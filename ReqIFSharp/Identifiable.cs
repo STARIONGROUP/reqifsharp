@@ -242,7 +242,7 @@ namespace ReqIFSharp
 
             using (var alternativeIdSubtree = reader.ReadSubtree())
             {
-                alternativeId.ReadXml(alternativeIdSubtree);
+                alternativeId.ReadXml(alternativeIdSubtree, this.logger);
             }
         }
 
@@ -280,7 +280,7 @@ namespace ReqIFSharp
 
             using (var alternativeIdSubtree = reader.ReadSubtree())
             {
-                await alternativeId.ReadXmlAsync(alternativeIdSubtree, token);
+                await alternativeId.ReadXmlAsync(alternativeIdSubtree, token, this.logger);
             }
         }
     }

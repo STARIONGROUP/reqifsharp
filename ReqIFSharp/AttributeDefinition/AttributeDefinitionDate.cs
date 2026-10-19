@@ -141,6 +141,11 @@ namespace ReqIFSharp
             {
                 if (reader.MoveToContent() == XmlNodeType.Element)
                 {
+                    if (reader.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -157,7 +162,7 @@ namespace ReqIFSharp
                             }
                             break;
                         case "DATATYPE-DEFINITION-DATE-REF":
-                            var reference = reader.ReadElementContentAsString();
+                            var reference = reader.ReadElementContentAsStringToEndElement();
                             var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
 
@@ -193,6 +198,11 @@ namespace ReqIFSharp
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element)
                 {
+                    if (await reader.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
+
                     var xmlLineInfo = reader as IXmlLineInfo;
 
                     switch (reader.LocalName)
@@ -209,7 +219,7 @@ namespace ReqIFSharp
                             }
                             break;
                         case "DATATYPE-DEFINITION-DATE-REF":
-                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                             var datatypeDefinition = (DatatypeDefinitionDate)this.SpecType.ReqIFContent.DataTypes.SingleOrDefault(x => x.Identifier == reference);
                             this.Type = datatypeDefinition;
 

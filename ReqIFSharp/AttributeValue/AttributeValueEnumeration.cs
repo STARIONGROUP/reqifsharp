@@ -183,6 +183,11 @@ namespace ReqIFSharp
                 {
                     if (subtree.MoveToContent() == XmlNodeType.Element)
                     {
+                        if (subtree.SkipForeignElement(this.logger))
+                        {
+                            continue;
+                        }
+
                         var xmlLineInfo = reader as IXmlLineInfo;
 
                         string reference;
@@ -190,7 +195,7 @@ namespace ReqIFSharp
                         switch (subtree.LocalName)
                         {
                             case "ATTRIBUTE-DEFINITION-ENUMERATION-REF":
-                                reference = subtree.ReadElementContentAsString();
+                                reference = subtree.ReadElementContentAsStringToEndElement();
 
                                 this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionEnumeration>().SingleOrDefault(x => x.Identifier == reference);
                                 if (this.Definition == null)
@@ -206,6 +211,11 @@ namespace ReqIFSharp
                                 {
                                     this.values.Add(enumValue);
                                 }
+                                break;
+                            case "ATTRIBUTE-VALUE-ENUMERATION":
+                            case "DEFINITION":
+                            case "VALUES":
+                                // the element itself and the wrappers of the references, which are read below them
                                 break;
                             default:
                                 this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", subtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
@@ -235,6 +245,11 @@ namespace ReqIFSharp
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
+                        if (await subtree.SkipForeignElementAsync(this.logger, token))
+                        {
+                            continue;
+                        }
+
                         var xmlLineInfo = reader as IXmlLineInfo;
 
                         string reference;
@@ -242,7 +257,7 @@ namespace ReqIFSharp
                         switch (subtree.LocalName)
                         {
                             case "ATTRIBUTE-DEFINITION-ENUMERATION-REF":
-                                reference = await subtree.ReadElementContentAsStringAsync();
+                                reference = await subtree.ReadElementContentAsStringToEndElementAsync();
 
                                 this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionEnumeration>().SingleOrDefault(x => x.Identifier == reference);
                                 if (this.Definition == null)
@@ -258,6 +273,11 @@ namespace ReqIFSharp
                                 {
                                     this.values.Add(enumValue);
                                 }
+                                break;
+                            case "ATTRIBUTE-VALUE-ENUMERATION":
+                            case "DEFINITION":
+                            case "VALUES":
+                                // the element itself and the wrappers of the references, which are read below them
                                 break;
                             default:
                                 this.logger.LogWarning("The {LocalName} element at line:position {LineNumber}:{LinePosition} is not supported", subtree.LocalName, xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);

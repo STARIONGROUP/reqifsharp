@@ -173,9 +173,9 @@ namespace ReqIFSharp
                 switch (reader.LocalName)
                 {
                     case "SOURCE-SPECIFICATION":
-                        if (reader.ReadToDescendant("SPECIFICATION-REF", reader.NamespaceURI))
+                        if (reader.ReadToReqIFDescendant("SPECIFICATION-REF", this.logger))
                         {
-                            var reference = reader.ReadElementContentAsString();
+                            var reference = reader.ReadElementContentAsStringToEndElement();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.SourceSpecification = specification
                                                        ?? new Specification(this.ReqIFContent, this.loggerFactory)
@@ -191,9 +191,9 @@ namespace ReqIFSharp
                         }
                         break;
                     case "TARGET-SPECIFICATION":
-                        if (reader.ReadToDescendant("SPECIFICATION-REF", reader.NamespaceURI))
+                        if (reader.ReadToReqIFDescendant("SPECIFICATION-REF", this.logger))
                         {
-                            var reference = reader.ReadElementContentAsString();
+                            var reference = reader.ReadElementContentAsStringToEndElement();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.TargetSpecification = specification
                                                        ?? new Specification(this.ReqIFContent, this.loggerFactory)
@@ -262,9 +262,9 @@ namespace ReqIFSharp
                 switch (reader.LocalName)
                 {
                     case "SOURCE-SPECIFICATION":
-                        if (reader.ReadToDescendant("SPECIFICATION-REF", reader.NamespaceURI))
+                        if (await reader.ReadToReqIFDescendantAsync("SPECIFICATION-REF", this.logger, token))
                         {
-                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.SourceSpecification = specification
                                                        ?? new Specification(this.ReqIFContent, this.loggerFactory)
@@ -279,9 +279,9 @@ namespace ReqIFSharp
                         }
                         break;
                     case "TARGET-SPECIFICATION":
-                        if (reader.ReadToDescendant("SPECIFICATION-REF", reader.NamespaceURI))
+                        if (await reader.ReadToReqIFDescendantAsync("SPECIFICATION-REF", this.logger, token))
                         {
-                            var reference = await reader.ReadElementContentAsStringAsync();
+                            var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                             var specification = this.CoreContent.Specifications.SingleOrDefault(x => x.Identifier == reference);
                             this.TargetSpecification = specification
                                                        ?? new Specification(this.ReqIFContent, this.loggerFactory)
@@ -321,9 +321,9 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF", reader.NamespaceURI))
+            if (reader.ReadToReqIFDescendant("RELATION-GROUP-TYPE-REF", this.logger))
             {
-                var reference = reader.ReadElementContentAsString();
+                var reference = reader.ReadElementContentAsStringToEndElement();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (RelationGroupType)specType;
 
@@ -332,6 +332,8 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The RelationGroupType:{Reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
+
+            reader.SkipForeignElementsToEnd(this.logger);
         }
 
         /// <summary>
@@ -352,7 +354,7 @@ namespace ReqIFSharp
 
             token.ThrowIfCancellationRequested();
 
-            return this.ReadSpecTypeInternalAsync(reader);
+            return this.ReadSpecTypeInternalAsync(reader, token);
         }
 
         /// <summary>
@@ -361,11 +363,14 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task ReadSpecTypeInternalAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
         {
-            if (reader.ReadToDescendant("RELATION-GROUP-TYPE-REF", reader.NamespaceURI))
+            if (await reader.ReadToReqIFDescendantAsync("RELATION-GROUP-TYPE-REF", this.logger, token))
             {
-                var reference = await reader.ReadElementContentAsStringAsync();
+                var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (RelationGroupType)specType;
 
@@ -374,6 +379,8 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The RelationGroupType:{Reference} could not be found and has been set to null on RelationGroup:{Identifier}", reference, Identifier);
                 }
             }
+
+            await reader.SkipForeignElementsToEndAsync(this.logger, token);
         }
 
         /// <summary>
@@ -411,7 +418,7 @@ namespace ReqIFSharp
         {
             while (reader.Read())
             {
-                if (!this.IsSpecRelationRef(reader))
+                if (reader.SkipForeignElement(this.logger) || !this.IsSpecRelationRef(reader))
                 {
                     continue;
                 }
@@ -444,7 +451,7 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
-                if (!this.IsSpecRelationRef(reader))
+                if (await reader.SkipForeignElementAsync(this.logger, token) || !this.IsSpecRelationRef(reader))
                 {
                     continue;
                 }

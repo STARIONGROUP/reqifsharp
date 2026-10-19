@@ -20,13 +20,21 @@
 
 namespace ReqIFSharp.Tests
 {
+    using System;
     using System.IO;
+    using System.Linq;
+    using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
+
+    using Microsoft.Extensions.Logging;
 
     using NUnit.Framework;
 
     using ReqIFSharp;
+
+    using Serilog;
+    using Serilog.Events;
 
     /// <summary>
     /// Suite of tests for the <see cref="XmlReaderExtensions"/> class
@@ -183,6 +191,267 @@ namespace ReqIFSharp.Tests
             Assert.That(exception.Message, Does.Contain("The A element may only contain text"));
             Assert.That(exception.LineNumber, Is.Zero);
             Assert.That(exception.LinePosition, Is.Zero);
+        }
+
+        [TestCase("<ROOT><o:A xmlns:o=\"http://example.com/other\"><B>text</B></o:A><C/></ROOT>")]
+        [TestCase("<ROOT><A xmlns=\"http://example.com/other\"><B>text</B></A><C/></ROOT>")]
+        public async Task Verify_that_a_foreign_element_is_skipped_and_the_reader_is_left_on_its_end_tag(string xml)
+        {
+            using (var reader = CreateReaderOnFirstChild(xml))
+            {
+                Assert.That(reader.SkipForeignElement(null), Is.True);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.EndElement));
+                Assert.That(reader.LocalName, Is.EqualTo("A"));
+
+                reader.Read();
+                Assert.That(reader.LocalName, Is.EqualTo("C"), "the next Read must land on the next sibling");
+            }
+
+            using (var reader = CreateReaderOnFirstChild(xml, true))
+            {
+                Assert.That(await reader.SkipForeignElementAsync(null, CancellationToken.None), Is.True);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.EndElement));
+                Assert.That(reader.LocalName, Is.EqualTo("A"));
+
+                await reader.ReadAsync();
+                Assert.That(reader.LocalName, Is.EqualTo("C"), "the next Read must land on the next sibling");
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_an_empty_foreign_element_is_skipped_and_the_reader_stays_on_it()
+        {
+            const string xml = "<ROOT><o:A xmlns:o=\"http://example.com/other\"/><C/></ROOT>";
+
+            using (var reader = CreateReaderOnFirstChild(xml))
+            {
+                Assert.That(reader.SkipForeignElement(null), Is.True);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Element));
+                Assert.That(reader.LocalName, Is.EqualTo("A"));
+
+                reader.Read();
+                Assert.That(reader.LocalName, Is.EqualTo("C"));
+            }
+
+            using (var reader = CreateReaderOnFirstChild(xml, true))
+            {
+                Assert.That(await reader.SkipForeignElementAsync(null, CancellationToken.None), Is.True);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Element));
+                Assert.That(reader.LocalName, Is.EqualTo("A"));
+
+                await reader.ReadAsync();
+                Assert.That(reader.LocalName, Is.EqualTo("C"));
+            }
+        }
+
+        [TestCase("<ROOT><A xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\"><B/></A></ROOT>")]
+        [TestCase("<ROOT><reqif:A xmlns:reqif=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\"><B/></reqif:A></ROOT>")]
+        [TestCase("<ROOT><A><B/></A></ROOT>")]
+        public async Task Verify_that_an_element_in_the_ReqIF_namespace_or_in_no_namespace_is_not_skipped(string xml)
+        {
+            using (var reader = CreateReaderOnFirstChild(xml))
+            {
+                Assert.That(reader.SkipForeignElement(null), Is.False);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Element));
+                Assert.That(reader.LocalName, Is.EqualTo("A"), "the reader must not move");
+            }
+
+            using (var reader = CreateReaderOnFirstChild(xml, true))
+            {
+                Assert.That(await reader.SkipForeignElementAsync(null, CancellationToken.None), Is.False);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Element));
+                Assert.That(reader.LocalName, Is.EqualTo("A"), "the reader must not move");
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_a_reader_that_is_not_on_an_element_is_not_skipped()
+        {
+            using (var reader = CreateReaderOnFirstChild("<ROOT><A>text</A></ROOT>"))
+            {
+                reader.Read();
+
+                Assert.That(reader.SkipForeignElement(null), Is.False);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Text));
+            }
+
+            using (var reader = CreateReaderOnFirstChild("<ROOT><A>text</A></ROOT>", true))
+            {
+                await reader.ReadAsync();
+
+                Assert.That(await reader.SkipForeignElementAsync(null, CancellationToken.None), Is.False);
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Text));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_a_warning_with_the_name_namespace_and_line_is_logged_for_a_skipped_element()
+        {
+            const string xml = "<ROOT>\n  <o:A xmlns:o=\"http://example.com/other\"/></ROOT>";
+
+            foreach (var async in new[] { false, true })
+            {
+                var sink = new TestLogEventSink();
+                var serilogLogger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Sink(sink).CreateLogger();
+
+                using var loggerFactory = LoggerFactory.Create(builder => builder.AddSerilog(serilogLogger, dispose: true));
+                var logger = loggerFactory.CreateLogger<XmlReaderExtensionsTestFixture>();
+
+                using var reader = CreateReaderOnFirstChild(xml, async);
+
+                var skipped = async ? await reader.SkipForeignElementAsync(logger, CancellationToken.None) : reader.SkipForeignElement(logger);
+
+                var warning = sink.Events.Single(e => e.Level == LogEventLevel.Warning).RenderMessage();
+
+                Assert.That(skipped, Is.True);
+                Assert.That(warning, Does.Contain("o:A").And.Contain("2:4").And.Contain("http://example.com/other").And.Contain("has been skipped"), $"async: {async}");
+            }
+        }
+
+        [Test]
+        public void Verify_that_skipping_a_foreign_element_asynchronously_can_be_cancelled()
+        {
+            using var reader = CreateReaderOnFirstChild("<ROOT><o:A xmlns:o=\"http://example.com/other\"><B/><B/></o:A></ROOT>", true);
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            Assert.That(async () => await reader.SkipForeignElementAsync(null, cts.Token), Throws.InstanceOf<OperationCanceledException>());
+        }
+
+        [Test]
+        public async Task Verify_that_ReadToReqIFDescendant_finds_a_ReqIF_descendant_and_skips_foreign_ones()
+        {
+            const string xml = "<ROOT><A><o:B xmlns:o=\"http://example.com/other\">x</o:B><C><B>y</B></C></A></ROOT>";
+
+            foreach (var async in new[] { false, true })
+            {
+                var (logger, warnings) = CreateLogger();
+                using var reader = CreateReaderOnFirstChild(xml, async);
+
+                var found = async ? await reader.ReadToReqIFDescendantAsync("B", logger, CancellationToken.None) : reader.ReadToReqIFDescendant("B", logger);
+
+                Assert.That(found, Is.True, $"async: {async}");
+                Assert.That(reader.LocalName, Is.EqualTo("B"));
+                Assert.That(reader.NamespaceURI, Is.Empty, "the reader must be on the ReqIF B, not on the foreign one");
+                Assert.That(reader.Depth, Is.EqualTo(3), "the B in C");
+                Assert.That(warnings(), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadToReqIFDescendant_does_not_search_past_the_element_it_started_on()
+        {
+            const string xml = "<ROOT><A><o:B xmlns:o=\"http://example.com/other\"/></A><B/></ROOT>";
+
+            foreach (var async in new[] { false, true })
+            {
+                var (logger, warnings) = CreateLogger();
+                using var reader = CreateReaderOnFirstChild(xml, async);
+
+                var found = async ? await reader.ReadToReqIFDescendantAsync("B", logger, CancellationToken.None) : reader.ReadToReqIFDescendant("B", logger);
+
+                Assert.That(found, Is.False, $"async: {async}");
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.EndElement));
+                Assert.That(reader.LocalName, Is.EqualTo("A"), "the reader must stop on the end tag of A, before its sibling B");
+                Assert.That(warnings(), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadToReqIFDescendant_on_an_empty_element_returns_false_and_does_not_move()
+        {
+            foreach (var async in new[] { false, true })
+            {
+                using var reader = CreateReaderOnFirstChild("<ROOT><A/><B/></ROOT>", async);
+
+                var found = async ? await reader.ReadToReqIFDescendantAsync("B", null, CancellationToken.None) : reader.ReadToReqIFDescendant("B", null);
+
+                Assert.That(found, Is.False, $"async: {async}");
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Element));
+                Assert.That(reader.LocalName, Is.EqualTo("A"));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadToReqIFDescendant_on_a_foreign_element_skips_it_and_returns_false()
+        {
+            const string xml = "<ROOT><o:A xmlns:o=\"http://example.com/other\"><B/></o:A><C/></ROOT>";
+
+            foreach (var async in new[] { false, true })
+            {
+                var (logger, warnings) = CreateLogger();
+                using var reader = CreateReaderOnFirstChild(xml, async);
+
+                var found = async ? await reader.ReadToReqIFDescendantAsync("B", logger, CancellationToken.None) : reader.ReadToReqIFDescendant("B", logger);
+
+                Assert.That(found, Is.False, $"async: {async}");
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.EndElement));
+                Assert.That(reader.LocalName, Is.EqualTo("A"), "the reader must be on the end tag of the skipped element");
+                Assert.That(warnings(), Is.EqualTo(1));
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_foreign_elements_to_the_end_of_a_subtree_are_skipped_with_a_warning()
+        {
+            const string xml = "<ROOT><A><B/><o:X xmlns:o=\"http://example.com/other\"><o:Y/></o:X><o:Z xmlns:o=\"http://example.com/other\"/></A><C/></ROOT>";
+
+            foreach (var async in new[] { false, true })
+            {
+                var (logger, warnings) = CreateLogger();
+                using var reader = CreateReaderOnFirstChild(xml, async);
+
+                using (var subtree = reader.ReadSubtree())
+                {
+                    if (async)
+                    {
+                        await subtree.SkipForeignElementsToEndAsync(logger, CancellationToken.None);
+                    }
+                    else
+                    {
+                        subtree.SkipForeignElementsToEnd(logger);
+                    }
+
+                    Assert.That(subtree.EOF, Is.True, $"async: {async}");
+                }
+
+                Assert.That(warnings(), Is.EqualTo(2), "X and Z, not Y inside X");
+
+                reader.Read();
+                Assert.That(reader.LocalName, Is.EqualTo("C"), "the outer reader must continue after A");
+            }
+        }
+
+        [Test]
+        public void Verify_that_the_asynchronous_reference_helpers_can_be_cancelled()
+        {
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            using (var reader = CreateReaderOnFirstChild("<ROOT><A><B/><C/></A></ROOT>", true))
+            {
+                Assert.That(async () => await reader.ReadToReqIFDescendantAsync("C", null, cts.Token), Throws.InstanceOf<OperationCanceledException>());
+            }
+
+            using (var reader = CreateReaderOnFirstChild("<ROOT><A><B/><C/></A></ROOT>", true))
+            {
+                using var subtree = reader.ReadSubtree();
+
+                Assert.That(async () => await subtree.SkipForeignElementsToEndAsync(null, cts.Token), Throws.InstanceOf<OperationCanceledException>());
+            }
+        }
+
+        /// <summary>
+        /// Creates a logger and a function that counts the warnings logged to it
+        /// </summary>
+        private static (Microsoft.Extensions.Logging.ILogger Logger, Func<int> Warnings) CreateLogger()
+        {
+            var sink = new TestLogEventSink();
+            var serilogLogger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Sink(sink).CreateLogger();
+            var loggerFactory = LoggerFactory.Create(builder => builder.AddSerilog(serilogLogger, dispose: true));
+
+            return (loggerFactory.CreateLogger<XmlReaderExtensionsTestFixture>(), () => sink.Events.Count(e => e.Level == LogEventLevel.Warning));
         }
 
         /// <summary>

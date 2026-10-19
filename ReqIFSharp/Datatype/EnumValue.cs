@@ -25,6 +25,7 @@ namespace ReqIFSharp
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
+    using Microsoft.Extensions.Logging.Abstractions;
 
     /// <summary>
     /// The class <see cref="EnumValue"/> represents enumeration literals.
@@ -33,10 +34,16 @@ namespace ReqIFSharp
     public class EnumValue : Identifiable
     {
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<EnumValue> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="EnumValue"/> class.
         /// </summary>
         public EnumValue()
         {
+            this.logger = NullLogger<EnumValue>.Instance;
         }
 
         /// <summary>
@@ -48,6 +55,7 @@ namespace ReqIFSharp
         public EnumValue(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<EnumValue>.Instance : this.loggerFactory.CreateLogger<EnumValue>();
         }
 
         /// <summary>
@@ -62,6 +70,8 @@ namespace ReqIFSharp
         internal EnumValue(DatatypeDefinitionEnumeration datatypeDefinitionEnumeration, ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<EnumValue>.Instance : this.loggerFactory.CreateLogger<EnumValue>();
+
             this.DataTpeDefEnum = datatypeDefinitionEnumeration;
             this.DataTpeDefEnum.SpecifiedValues.Add(this);
         }
@@ -91,6 +101,11 @@ namespace ReqIFSharp
             {
                 while (subtree.Read())
                 {
+                    if (subtree.SkipForeignElement(this.logger))
+                    {
+                        continue;
+                    }
+
                     if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
                     {
                         var embeddedValue = new EmbeddedValue(this, this.loggerFactory);
@@ -118,6 +133,11 @@ namespace ReqIFSharp
                 while (await subtree.ReadAsync())
                 {
                     token.ThrowIfCancellationRequested();
+
+                    if (await subtree.SkipForeignElementAsync(this.logger, token))
+                    {
+                        continue;
+                    }
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "EMBEDDED-VALUE")
                     {

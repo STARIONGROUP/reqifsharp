@@ -142,6 +142,11 @@ namespace ReqIFSharp
 
                     if (specElementWithAttributesReader.MoveToContent() == XmlNodeType.Element)
                     {
+                        if (specElementWithAttributesReader.SkipForeignElement(this.logger))
+                        {
+                            continue;
+                        }
+
                         switch (specElementWithAttributesReader.LocalName)
                         {
                             case "ALTERNATIVE-ID":
@@ -249,6 +254,11 @@ namespace ReqIFSharp
 
                     if (await specElementWithAttributesReader.MoveToContentAsync() == XmlNodeType.Element)
                     {
+                        if (await specElementWithAttributesReader.SkipForeignElementAsync(this.logger, token))
+                        {
+                            continue;
+                        }
+
                         var xmlLineInfo = reader as IXmlLineInfo;
 
                         switch (specElementWithAttributesReader.LocalName)

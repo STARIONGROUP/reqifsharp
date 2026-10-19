@@ -44,10 +44,16 @@ namespace ReqIFSharp
         private readonly List<SpecHierarchy> children = new List<SpecHierarchy>();
 
         /// <summary>
+        /// The <see cref="ILogger"/> used to log
+        /// </summary>
+        private readonly ILogger<Specification> logger;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Specification"/> class.
         /// </summary>
         public Specification()
         {
+            this.logger = NullLogger<Specification>.Instance;
         }
 
         /// <summary>
@@ -59,6 +65,7 @@ namespace ReqIFSharp
         public Specification(ILoggerFactory loggerFactory)
             : base(loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<Specification>.Instance : this.loggerFactory.CreateLogger<Specification>();
         }
 
         /// <summary>
@@ -73,6 +80,8 @@ namespace ReqIFSharp
         internal Specification(ReqIFContent reqIfContent, ILoggerFactory loggerFactory)
             : base(reqIfContent, loggerFactory)
         {
+            this.logger = this.loggerFactory == null ? NullLogger<Specification>.Instance : this.loggerFactory.CreateLogger<Specification>();
+
             this.ReqIFContent.Specifications.Add(this);
         }
 
@@ -176,12 +185,14 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF", reader.NamespaceURI))
+            if (reader.ReadToReqIFDescendant("SPECIFICATION-TYPE-REF", this.logger))
             {
-                var reference = reader.ReadElementContentAsString();
+                var reference = reader.ReadElementContentAsStringToEndElement();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecificationType)specType;
             }
+
+            reader.SkipForeignElementsToEnd(this.logger);
         }
 
         /// <summary>
@@ -202,7 +213,7 @@ namespace ReqIFSharp
 
             token.ThrowIfCancellationRequested();
 
-            return this.ReadSpecTypeInternalAsync(reader);
+            return this.ReadSpecTypeInternalAsync(reader, token);
         }
 
         /// <summary>
@@ -211,14 +222,19 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task ReadSpecTypeInternalAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
         {
-            if (reader.ReadToDescendant("SPECIFICATION-TYPE-REF", reader.NamespaceURI))
+            if (await reader.ReadToReqIFDescendantAsync("SPECIFICATION-TYPE-REF", this.logger, token))
             {
-                var reference = await reader.ReadElementContentAsStringAsync();
+                var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecificationType)specType;
             }
+
+            await reader.SkipForeignElementsToEndAsync(this.logger, token);
         }
         /// <summary>
         /// Reads the <see cref="SpecHierarchy"/> which is specific to the <see cref="Specification"/> class.
@@ -235,6 +251,11 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
+                if (reader.SkipForeignElement(this.logger))
+                {
+                    continue;
+                }
+
                 if (reader.MoveToContent() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {
                     using (var subtree = reader.ReadSubtree())
@@ -283,6 +304,11 @@ namespace ReqIFSharp
             while (await reader.ReadAsync())
             {
                 token.ThrowIfCancellationRequested();
+
+                if (await reader.SkipForeignElementAsync(this.logger, token))
+                {
+                    continue;
+                }
 
                 if (await reader.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "SPEC-HIERARCHY")
                 {

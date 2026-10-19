@@ -134,9 +134,9 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(reader));
             }
 
-            if (reader.ReadToDescendant("SPEC-OBJECT-TYPE-REF", reader.NamespaceURI))
+            if (reader.ReadToReqIFDescendant("SPEC-OBJECT-TYPE-REF", this.logger))
             {
-                var reference = reader.ReadElementContentAsString();
+                var reference = reader.ReadElementContentAsStringToEndElement();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecObjectType)specType;
 
@@ -145,6 +145,8 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The SpecObjectType:{Reference} could not be found and has been set to null on SpecObject:{Identifier}", reference, Identifier);
                 }
             }
+
+            reader.SkipForeignElementsToEnd(this.logger);
         }
 
         /// <summary>
@@ -165,7 +167,7 @@ namespace ReqIFSharp
 
             token.ThrowIfCancellationRequested();
 
-            return this.ReadSpecTypeInternalAsync(reader);
+            return this.ReadSpecTypeInternalAsync(reader, token);
         }
 
         /// <summary>
@@ -174,11 +176,14 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
-        private async Task ReadSpecTypeInternalAsync(XmlReader reader)
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        private async Task ReadSpecTypeInternalAsync(XmlReader reader, CancellationToken token)
         {
-            if (reader.ReadToDescendant("SPEC-OBJECT-TYPE-REF", reader.NamespaceURI))
+            if (await reader.ReadToReqIFDescendantAsync("SPEC-OBJECT-TYPE-REF", this.logger, token))
             {
-                var reference = await reader.ReadElementContentAsStringAsync();
+                var reference = await reader.ReadElementContentAsStringToEndElementAsync();
                 var specType = this.ReqIFContent.SpecTypes.SingleOrDefault(x => x.Identifier == reference);
                 this.Type = (SpecObjectType)specType;
 
@@ -187,6 +192,8 @@ namespace ReqIFSharp
                     this.logger.LogTrace("The SpecObjectType:{Reference} could not be found and has been set to null on SpecObject:{Identifier}", reference, Identifier);
                 }
             }
+
+            await reader.SkipForeignElementsToEndAsync(this.logger, token);
         }
 
         /// <summary>

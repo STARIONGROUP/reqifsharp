@@ -178,9 +178,9 @@ namespace ReqIFSharp
 
             while (reader.Read())
             {
-                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-INTEGER-REF", reader.NamespaceURI))
+                if (reader.ReadToReqIFDescendant("ATTRIBUTE-DEFINITION-INTEGER-REF", this.logger))
                 {
-                    var reference = reader.ReadElementContentAsString();
+                    var reference = reader.ReadElementContentAsStringToEndElement();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionInteger>().SingleOrDefault(x => x.Identifier == reference);
                     if (this.Definition == null)
@@ -208,9 +208,9 @@ namespace ReqIFSharp
             {
                 token.ThrowIfCancellationRequested();
 
-                if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-INTEGER-REF", reader.NamespaceURI))
+                if (await reader.ReadToReqIFDescendantAsync("ATTRIBUTE-DEFINITION-INTEGER-REF", this.logger, token))
                 {
-                    var reference = await reader.ReadElementContentAsStringAsync();
+                    var reference = await reader.ReadElementContentAsStringToEndElementAsync();
 
                     this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionInteger>().SingleOrDefault(x => x.Identifier == reference);
                     if (this.Definition == null)

@@ -107,6 +107,11 @@ namespace ReqIFSharp
                 {
                     if (subtree.MoveToContent() == XmlNodeType.Element)
                     {
+                        if (subtree.SkipForeignElement(this.logger))
+                        {
+                            continue;
+                        }
+
                         var xmlLineInfo = reader as IXmlLineInfo;
 
                         switch (subtree.LocalName)
@@ -150,6 +155,11 @@ namespace ReqIFSharp
 
                     if (await subtree.MoveToContentAsync() == XmlNodeType.Element)
                     {
+                        if (await subtree.SkipForeignElementAsync(this.logger, token))
+                        {
+                            continue;
+                        }
+
                         var xmlLineInfo = reader as IXmlLineInfo;
 
                         switch (subtree.LocalName)

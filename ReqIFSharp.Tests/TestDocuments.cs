@@ -120,6 +120,58 @@ namespace ReqIFSharp.Tests
         }
 
         /// <summary>
+        /// Returns a copy of the document in which every ReqIF element is written as reqif:...
+        /// </summary>
+        public static string Prefix(string original)
+        {
+            // keep the original whitespace, so that the copy differs from the original only in its prefixes
+            var document = XDocument.Parse(original, LoadOptions.PreserveWhitespace);
+
+            RemoveReqIFNamespaceDeclarations(document);
+
+            document.Root!.SetAttributeValue(XNamespace.Xmlns + "reqif", ReqIFNamespace.NamespaceName);
+
+            var prefixed = document.ToString(SaveOptions.DisableFormatting);
+
+            Assert.That(prefixed, Does.Contain("<reqif:REQ-IF "), "the copy must use the reqif prefix");
+            Assert.That(prefixed, Does.Not.Contain("<REQ-IF "), "the copy must not use the default namespace for ReqIF elements");
+
+            return prefixed;
+        }
+
+        /// <summary>
+        /// Returns a copy of the document in which the ReqIF elements are in no namespace
+        /// </summary>
+        public static string RemoveNamespace(string original)
+        {
+            var document = XDocument.Parse(original, LoadOptions.PreserveWhitespace);
+
+            RemoveReqIFNamespaceDeclarations(document);
+
+            foreach (var element in document.Descendants().Where(e => e.Name.Namespace == ReqIFNamespace))
+            {
+                element.Name = XNamespace.None + element.Name.LocalName;
+            }
+
+            var withoutNamespace = document.ToString(SaveOptions.DisableFormatting);
+
+            Assert.That(withoutNamespace, Does.Contain("<REQ-IF "), "the copy must contain an unprefixed root");
+            Assert.That(XDocument.Parse(withoutNamespace).Descendants().Any(e => e.Name.Namespace == ReqIFNamespace), Is.False, "the copy must not contain elements in the ReqIF namespace");
+
+            return withoutNamespace;
+        }
+
+        private static void RemoveReqIFNamespaceDeclarations(XDocument document)
+        {
+            foreach (var element in document.Descendants())
+            {
+                element.Attributes()
+                    .Where(a => a.IsNamespaceDeclaration && a.Value == ReqIFNamespace.NamespaceName)
+                    .Remove();
+            }
+        }
+
+        /// <summary>
         /// Compares two object graphs by serializing both and comparing the XML, ignoring namespace declarations
         /// (which differ by design between an original and some of its copies).
         /// </summary>

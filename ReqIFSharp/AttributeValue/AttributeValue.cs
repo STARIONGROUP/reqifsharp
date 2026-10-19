@@ -49,6 +49,7 @@ namespace ReqIFSharp
         /// </summary>
         protected AttributeValue(ILoggerFactory loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
         }
 
         /// <summary>
@@ -65,6 +66,7 @@ namespace ReqIFSharp
         /// </param>
         protected AttributeValue(AttributeDefinition attributeDefinition, ILoggerFactory loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
             this.AttributeDefinition = attributeDefinition;
             this.ReqIFContent = this.AttributeDefinition.SpecType.ReqIFContent;
         }
@@ -80,6 +82,7 @@ namespace ReqIFSharp
         /// </param>
         protected AttributeValue(SpecElementWithAttributes specElAt, ILoggerFactory loggerFactory)
         {
+            this.loggerFactory = loggerFactory;
             this.SpecElAt = specElAt;
             this.SpecElAt.Values.Add(this);
             this.ReqIFContent = this.SpecElAt.ReqIFContent;
