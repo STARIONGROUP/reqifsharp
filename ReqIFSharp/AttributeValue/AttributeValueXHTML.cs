@@ -25,6 +25,7 @@ namespace ReqIFSharp
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
+    using System.Net;
     using System.Runtime.Serialization;
     using System.Text;
     using System.Threading;
@@ -44,6 +45,23 @@ namespace ReqIFSharp
         /// The <see cref="ILogger"/> used to log
         /// </summary>
         private readonly ILogger<AttributeValueXHTML> logger;
+
+        /// <summary>
+        /// The XHTML elements that start and end a line in <see cref="ExtractNormalizedTextFromValue"/>
+        /// </summary>
+        private static readonly HashSet<string> LineElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "address", "blockquote", "br", "caption", "dd", "div", "dl", "dt", "h1", "h2", "h3", "h4", "h5", "h6",
+            "hr", "li", "ol", "p", "pre", "table", "tbody", "tfoot", "thead", "tr", "ul"
+        };
+
+        /// <summary>
+        /// The XHTML elements that are separated by a space in <see cref="ExtractNormalizedTextFromValue"/>
+        /// </summary>
+        private static readonly HashSet<string> CellElements = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "td", "th"
+        };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeValueXHTML"/> class.
@@ -220,6 +238,208 @@ namespace ReqIFSharp
             }
 
             return result.Any() ? string.Join(" ", result) : string.Empty;
+        }
+
+        /// <summary>
+        /// Extracts the text of the value as plain text with normalized whitespace: outside <c>pre</c> elements, every run
+        /// of whitespace (space, tab, carriage return and line feed) is collapsed to one space, and each line is trimmed.
+        /// Text is joined as it is written in the XHTML, so no space is added around inline elements such as <c>b</c> or
+        /// <c>span</c>.
+        /// </summary>
+        /// <remarks>
+        /// Block elements (such as <c>p</c>, <c>div</c>, <c>li</c>, the headings and table rows) and <c>br</c> separate
+        /// lines, and table cells are separated by a space. Unlike <see cref="ExtractUnformattedTextFromValue"/>, all
+        /// top-level elements of the value are read. Non-breaking spaces (U+00A0, <c>&amp;#160;</c>) are kept as they
+        /// are: they are not collapsed, not replaced and not trimmed. HTML named entities such as <c>&amp;nbsp;</c> and
+        /// <c>&amp;eacute;</c>, which no DTD declares in ReqIF, are turned into their characters.
+        /// <para>
+        /// The text of a <c>pre</c> element is kept as written: its spaces, tabs and indentation are not collapsed, and
+        /// each of its lines is a line of the result. Blank lines at the start and end of a <c>pre</c> element are left
+        /// out, and blank lines inside it are kept only when <paramref name="keepLineBreaks"/> is true.
+        /// </para>
+        /// </remarks>
+        /// <param name="keepLineBreaks">
+        /// true to separate the lines with a line feed (<c>\n</c>); false to separate them with a space
+        /// </param>
+        /// <returns>
+        /// The plain text; an empty string when the value is empty
+        /// </returns>
+        /// <exception cref="XmlException">
+        /// The value is not well-formed XML, or it uses an entity that is neither an XML entity nor an HTML named entity
+        /// </exception>
+        public string ExtractNormalizedTextFromValue(bool keepLineBreaks = false)
+        {
+            if (string.IsNullOrEmpty(this.TheValue))
+            {
+                return string.Empty;
+            }
+
+            // every line, with whether it is part of a pre block, whose whitespace is kept as written
+            var lines = new List<(StringBuilder Text, bool Preformatted)> { (new StringBuilder(), false) };
+            var preDepth = 0;
+
+            // the value is read as a fragment: it may hold several top-level elements and text, and prefixes without a
+            // namespace declaration; line and position of an error are those in the value
+            using (var xmlTextReader = new XmlTextReader(this.TheValue, XmlNodeType.Element, new XmlParserContext(null, null, null, XmlSpace.None)))
+            {
+                xmlTextReader.Namespaces = false;
+                xmlTextReader.DtdProcessing = DtdProcessing.Prohibit;
+                xmlTextReader.XmlResolver = null;
+                xmlTextReader.WhitespaceHandling = WhitespaceHandling.All;
+
+                while (xmlTextReader.Read())
+                {
+                    switch (xmlTextReader.NodeType)
+                    {
+                        case XmlNodeType.Text:
+                        case XmlNodeType.CDATA:
+                        case XmlNodeType.Whitespace:
+                        case XmlNodeType.SignificantWhitespace:
+                            AppendText(lines, xmlTextReader.Value, preDepth > 0);
+                            break;
+                        case XmlNodeType.EntityReference:
+                            // an HTML named entity such as &nbsp;, which no DTD declares: the reader does not expand it
+                            AppendText(lines, DecodeHtmlEntity(xmlTextReader), preDepth > 0);
+                            break;
+                        case XmlNodeType.Element:
+                        case XmlNodeType.EndElement:
+                            var name = xmlTextReader.Name.Substring(xmlTextReader.Name.LastIndexOf(':') + 1);
+
+                            if (string.Equals(name, "pre", StringComparison.OrdinalIgnoreCase) && !xmlTextReader.IsEmptyElement)
+                            {
+                                preDepth += xmlTextReader.NodeType == XmlNodeType.Element ? 1 : -1;
+                            }
+
+                            if (LineElements.Contains(name))
+                            {
+                                lines.Add((new StringBuilder(), preDepth > 0));
+                            }
+                            else if (CellElements.Contains(name))
+                            {
+                                lines[lines.Count - 1].Text.Append(' ');
+                            }
+
+                            break;
+                    }
+                }
+            }
+
+            var result = new List<string>();
+            var index = 0;
+
+            while (index < lines.Count)
+            {
+                if (!lines[index].Preformatted)
+                {
+                    var line = CollapseWhitespace(lines[index].Text.ToString());
+
+                    if (line.Length > 0)
+                    {
+                        result.Add(line);
+                    }
+
+                    index++;
+                    continue;
+                }
+
+                // a pre block: its lines as written, without the blank lines at its start and end
+                var block = new List<string>();
+
+                while (index < lines.Count && lines[index].Preformatted)
+                {
+                    block.Add(lines[index].Text.ToString());
+                    index++;
+                }
+
+                var first = block.FindIndex(x => !IsBlank(x));
+
+                if (first < 0)
+                {
+                    continue;
+                }
+
+                var kept = block.GetRange(first, block.FindLastIndex(x => !IsBlank(x)) - first + 1);
+
+                // on one line, the blank lines inside the block would only add spaces
+                result.AddRange(keepLineBreaks ? kept : kept.Where(x => !IsBlank(x)));
+            }
+
+            return string.Join(keepLineBreaks ? "\n" : " ", result);
+        }
+
+        /// <summary>
+        /// Appends text to the last line; in a pre block, every line break of the text starts a new line
+        /// </summary>
+        private static void AppendText(List<(StringBuilder Text, bool Preformatted)> lines, string text, bool preformatted)
+        {
+            if (!preformatted)
+            {
+                lines[lines.Count - 1].Text.Append(text);
+                return;
+            }
+
+            var parts = text.Replace("\r\n", "\n").Replace('\r', '\n').Split('\n');
+            lines[lines.Count - 1].Text.Append(parts[0]);
+
+            for (var i = 1; i < parts.Length; i++)
+            {
+                lines.Add((new StringBuilder(parts[i]), true));
+            }
+        }
+
+        /// <summary>
+        /// Returns the character(s) of the HTML named entity that the reader is on, such as <c>nbsp</c> or <c>eacute</c>
+        /// </summary>
+        /// <exception cref="XmlException">
+        /// The entity is not an HTML named entity
+        /// </exception>
+        private static string DecodeHtmlEntity(XmlTextReader reader)
+        {
+            var reference = $"&{reader.Name};";
+            var decoded = WebUtility.HtmlDecode(reference);
+
+            if (decoded == reference)
+            {
+                throw new XmlException($"The entity {reference} is not an XML or HTML entity", null, reader.LineNumber, reader.LinePosition);
+            }
+
+            return decoded;
+        }
+
+        /// <summary>
+        /// Checks whether a line holds only XML whitespace (space, tab, carriage return, line feed), or nothing
+        /// </summary>
+        private static bool IsBlank(string line)
+        {
+            return CollapseWhitespace(line).Length == 0;
+        }
+
+        /// <summary>
+        /// Collapses every run of XML whitespace (space, tab, carriage return, line feed) to one space and trims the result
+        /// </summary>
+        private static string CollapseWhitespace(string text)
+        {
+            var result = new StringBuilder(text.Length);
+            var whitespace = false;
+
+            foreach (var character in text)
+            {
+                if (character == ' ' || character == '\t' || character == '\r' || character == '\n')
+                {
+                    whitespace = true;
+                    continue;
+                }
+
+                if (whitespace && result.Length > 0)
+                {
+                    result.Append(' ');
+                }
+
+                whitespace = false;
+                result.Append(character);
+            }
+
+            return result.ToString();
         }
 
         /// <summary>

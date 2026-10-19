@@ -8,6 +8,10 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 
 ## [Unreleased]
 
+### Added
+
+- `AttributeValueXHTML.ExtractNormalizedTextFromValue(bool keepLineBreaks = false)` returns the text of an XHTML value as plain text: runs of spaces, tabs and line breaks are collapsed to one space (non-breaking spaces are kept), no space is added around inline elements, and block elements such as paragraphs and list items are separated by a space or, with `keepLineBreaks`, by a line feed. The text of a `pre` element is kept as written, and HTML named entities such as `&nbsp;` are turned into their characters. `ExtractUnformattedTextFromValue` is unchanged ([#92](https://github.com/STARIONGROUP/ReqIFSharp/issues/92)).
+
 ### Changed
 
 - A `REQ-IF` root element in a namespace other than the ReqIF namespace (`http://www.omg.org/spec/ReqIF/20110401/reqif.xsd`) is no longer read as a ReqIF document; it is skipped and a warning is logged. Before, such an element was read when it had no prefix. A root in no namespace is still read ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).

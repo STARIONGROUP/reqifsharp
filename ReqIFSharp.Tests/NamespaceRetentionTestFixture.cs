@@ -35,7 +35,7 @@ namespace ReqIFSharp.Tests
 
     /// <summary>
     /// Suite of tests that verify the namespace declarations and root attributes of a <see cref="ReqIF"/>
-    /// document are retained when it is deserialized and serialized to a new destination (issue #44).
+    /// document are retained when it is deserialized and serialized to a new destination.
     /// </summary>
     [TestFixture]
     public class NamespaceRetentionTestFixture

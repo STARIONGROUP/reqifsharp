@@ -75,7 +75,7 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
         [Test]
         public async Task Verify_that_the_external_objects_of_xhtml_values_created_with_a_public_constructor_can_be_queried()
         {
-            // GH-98: the ILoggerFactory constructor left ExternalObjects null
+            // every public constructor creates the list of external objects, so the queries do not throw
             var specObject = new SpecObject();
             specObject.Values.Add(new AttributeValueXHTML { TheValue = "<xhtml:p>text</xhtml:p>" });
             specObject.Values.Add(new AttributeValueXHTML(NullLoggerFactory.Instance) { TheValue = "<xhtml:p>text</xhtml:p>" });
