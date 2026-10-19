@@ -49,6 +49,8 @@ Requirements Document
   ...
 ```
 
+For text without the extra spaces around inline elements, and optionally with a line break between paragraphs, use `ExtractNormalizedTextFromValue()` (or `ExtractNormalizedTextFromValue(keepLineBreaks: true)`).
+
 ## Write one just as easily
 
 ```csharp
