@@ -127,6 +127,11 @@ namespace ReqIFSharp.Tests
             new object[] { FileName, "attribute value definition reference after ENUMERATION" },
             new object[] { FileName, "spec relation source wrapper" },
             new object[] { FileName, "relation group target specification wrapper" },
+            new object[] { FileName, "attribute value definition wrapper BOOLEAN" },
+            new object[] { FileName, "attribute value definition wrapper DATE" },
+            new object[] { FileName, "attribute value definition wrapper INTEGER" },
+            new object[] { FileName, "attribute value definition wrapper REAL" },
+            new object[] { FileName, "attribute value definition wrapper STRING" },
             new object[] { FileName, "attribute definition type reference after BOOLEAN" },
             new object[] { FileName, "attribute definition type reference after DATE" },
             new object[] { FileName, "attribute definition type reference after ENUMERATION" },
@@ -293,12 +298,14 @@ namespace ReqIFSharp.Tests
         public async Task Verify_that_an_attribute_value_created_with_a_logger_factory_logs_a_skipped_element(bool async)
         {
             const string enumerationXml = "<ATTRIBUTE-VALUE-ENUMERATION xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\"><VALUES><other:ENUM-VALUE-REF xmlns:other=\"http://example.com/other\">x</other:ENUM-VALUE-REF></VALUES></ATTRIBUTE-VALUE-ENUMERATION>";
+            const string stringXml = "<ATTRIBUTE-VALUE-STRING xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\" THE-VALUE=\"x\"><DEFINITION><other:ATTRIBUTE-DEFINITION-STRING-REF xmlns:other=\"http://example.com/other\">x</other:ATTRIBUTE-DEFINITION-STRING-REF></DEFINITION></ATTRIBUTE-VALUE-STRING>";
             const string xhtmlXml = "<ATTRIBUTE-VALUE-XHTML xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\"><other:THE-VALUE xmlns:other=\"http://example.com/other\">x</other:THE-VALUE></ATTRIBUTE-VALUE-XHTML>";
 
             foreach (var (xml, create) in new (string, Func<ILoggerFactory, AttributeValue>)[]
                      {
                          (enumerationXml, factory => new AttributeValueEnumeration(factory)),
-                         (xhtmlXml, factory => new AttributeValueXHTML(factory))
+                         (xhtmlXml, factory => new AttributeValueXHTML(factory)),
+                         (stringXml, factory => new AttributeValueString(factory))
                      })
             {
                 var sink = new TestLogEventSink();
@@ -509,6 +516,12 @@ namespace ReqIFSharp.Tests
                     break;
                 case "spec relation source wrapper":
                     AddForeignCopyWithOtherReference(root, First("SPEC-RELATION").Element(ns + "SOURCE")!, "SPEC-OBJECT-REF", Identifiers(root, "SPEC-OBJECT"));
+                    break;
+                case var _ when place.StartsWith("attribute value definition wrapper ", StringComparison.Ordinal):
+                    // a foreign DEFINITION after the ReqIF one, as a direct child of the attribute value
+                    var valueKind = place.Substring("attribute value definition wrapper ".Length);
+                    var valueDefinition = root.Descendants(ns + "SPEC-OBJECT").Descendants(ns + "ATTRIBUTE-VALUE-" + valueKind).First().Element(ns + "DEFINITION")!;
+                    AddForeignCopyWithOtherReference(root, valueDefinition, $"ATTRIBUTE-DEFINITION-{valueKind}-REF", Identifiers(root, "ATTRIBUTE-DEFINITION-" + valueKind));
                     break;
                 case "relation group target specification wrapper":
                     AddForeignCopyWithOtherReference(root, First("RELATION-GROUP").Element(ns + "TARGET-SPECIFICATION")!, "SPECIFICATION-REF", Identifiers(root, "SPECIFICATION"));

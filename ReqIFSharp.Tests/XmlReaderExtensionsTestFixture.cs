@@ -195,6 +195,7 @@ namespace ReqIFSharp.Tests
 
         [TestCase("<ROOT><o:A xmlns:o=\"http://example.com/other\"><B>text</B></o:A><C/></ROOT>")]
         [TestCase("<ROOT><A xmlns=\"http://example.com/other\"><B>text</B></A><C/></ROOT>")]
+        [TestCase("<ROOT><A xmlns=\"HTTP://WWW.OMG.ORG/SPEC/REQIF/20110401/REQIF.XSD\"><B>text</B></A><C/></ROOT>", Description = "namespaces are compared exactly: a different case is another namespace")]
         public async Task Verify_that_a_foreign_element_is_skipped_and_the_reader_is_left_on_its_end_tag(string xml)
         {
             using (var reader = CreateReaderOnFirstChild(xml))
@@ -420,6 +421,42 @@ namespace ReqIFSharp.Tests
 
                 reader.Read();
                 Assert.That(reader.LocalName, Is.EqualTo("C"), "the outer reader must continue after A");
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadToReqIFDescendant_on_an_end_tag_returns_false_and_does_not_move()
+        {
+            foreach (var async in new[] { false, true })
+            {
+                using var reader = CreateReaderOnFirstChild("<ROOT><A><B/></A><B/></ROOT>", async);
+
+                reader.Read();
+                reader.Read();
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.EndElement), "the reader must start on the end tag of A");
+
+                var found = async ? await reader.ReadToReqIFDescendantAsync("B", null, CancellationToken.None) : reader.ReadToReqIFDescendant("B", null);
+
+                Assert.That(found, Is.False, $"async: {async}");
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.EndElement));
+                Assert.That(reader.LocalName, Is.EqualTo("A"), "the reader must not move to the B after A");
+            }
+        }
+
+        [Test]
+        public async Task Verify_that_ReadToReqIFDescendant_on_whitespace_searches_the_next_element()
+        {
+            foreach (var async in new[] { false, true })
+            {
+                using var reader = CreateReaderOnFirstChild("<ROOT>  <A><B/></A></ROOT>", async);
+
+                Assert.That(reader.NodeType, Is.EqualTo(XmlNodeType.Whitespace), "the reader must start on the whitespace");
+
+                var found = async ? await reader.ReadToReqIFDescendantAsync("B", null, CancellationToken.None) : reader.ReadToReqIFDescendant("B", null);
+
+                Assert.That(found, Is.True, $"async: {async}");
+                Assert.That(reader.LocalName, Is.EqualTo("B"));
+                Assert.That(reader.Depth, Is.EqualTo(2), "the B in A");
             }
         }
 

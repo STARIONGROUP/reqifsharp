@@ -175,6 +175,40 @@ namespace ReqIFSharp.Tests
                     .With.Message.Contains("The value to set is not an IEnumerable<EnumValue>."));
         }
 
+        [TestCase(false)]
+        [TestCase(true)]
+        public async Task Verify_that_an_unknown_ReqIF_element_in_an_enumeration_value_is_reported_as_not_supported(bool async)
+        {
+            const string xml = "<ATTRIBUTE-VALUE-ENUMERATION xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\"><DEFINITION/><VALUES><UNKNOWN/></VALUES></ATTRIBUTE-VALUE-ENUMERATION>";
+
+            var sink = new TestLogEventSink();
+            var serilogLogger = new LoggerConfiguration().MinimumLevel.Verbose().WriteTo.Sink(sink).CreateLogger();
+
+            using var testLoggerFactory = LoggerFactory.Create(builder => builder.AddSerilog(serilogLogger, dispose: true));
+            using var reader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = async });
+            reader.MoveToContent();
+
+            var attributeValueEnumeration = new AttributeValueEnumeration(testLoggerFactory);
+
+            if (async)
+            {
+                await attributeValueEnumeration.ReadXmlAsync(reader, CancellationToken.None);
+            }
+            else
+            {
+                attributeValueEnumeration.ReadXml(reader);
+            }
+
+            var warnings = sink.Events.Where(e => e.Level == LogEventLevel.Warning).Select(e => e.RenderMessage()).ToList();
+
+            // also the positive control of Verify_that_reading_enumeration_values_logs_no_warnings, which filters on the same SourceContext
+            var fromEnumeration = sink.Events.Where(e => e.Level == LogEventLevel.Warning && e.Properties.TryGetValue("SourceContext", out var source) && source.ToString().Contains(nameof(AttributeValueEnumeration))).ToList();
+
+            Assert.That(warnings, Has.Count.EqualTo(1));
+            Assert.That(warnings[0], Does.Contain("UNKNOWN").And.Contain("is not supported"));
+            Assert.That(fromEnumeration, Has.Count.EqualTo(1));
+        }
+
         [TestCase("Datatype-Demo.reqif", false)]
         [TestCase("Datatype-Demo.reqif", true)]
         [TestCase("reqifsharpgenerated.reqif", false)]
