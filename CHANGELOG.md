@@ -17,6 +17,7 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 
 - A document that binds the ReqIF namespace to a prefix (`<reqif:REQ-IF xmlns:reqif="...">`) was read as zero documents, and type, source/target and relation-group references in it were not read. Elements are now matched on their local name and namespace ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
 - A document without whitespace between its elements (minified XML) lost data without an error: every other header field (such as `CREATION-TIME` and `REQ-IF-TOOL-ID`) and every other enumeration value of an attribute value was skipped, and the spec relations of a relation group were not read or caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
+- `AttributeValueXHTML.TheOriginalValue` was not read from `THE-ORIGINAL-VALUE`, so it was always `null` after reading, and a document that was read and written again lost the original values of its simplified XHTML attribute values ([#95](https://github.com/STARIONGROUP/ReqIFSharp/issues/95)).
 
 ## [10.1.2] - 2026-10-18
 

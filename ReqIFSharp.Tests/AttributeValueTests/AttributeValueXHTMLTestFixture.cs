@@ -129,6 +129,27 @@ namespace ReqIFSharp.Tests
         }
 
         [Test]
+        public void Verify_that_ReadXmlAsync_throws_exception_when_cancelled()
+        {
+            const string xml = "<ATTRIBUTE-VALUE-XHTML xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\">" +
+                               "<THE-VALUE><xhtml:p xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">text</xhtml:p></THE-VALUE>" +
+                               "</ATTRIBUTE-VALUE-XHTML>";
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            using var xmlReader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            xmlReader.MoveToContent();
+
+            var attributeValueXhtml = new AttributeValueXHTML(this.loggerFactory);
+
+            Assert.That(async () => await attributeValueXhtml.ReadXmlAsync(xmlReader, cts.Token),
+                Throws.Exception.InstanceOf<OperationCanceledException>());
+
+            Assert.That(attributeValueXhtml.TheValue, Is.Null, "nothing must be read after the cancellation");
+        }
+
+        [Test]
         public void Verify_That_WriteXmlAsync_Throws_Exception_when_cancelled()
         {
             using var memoryStream = new MemoryStream();

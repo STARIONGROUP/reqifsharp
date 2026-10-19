@@ -232,33 +232,55 @@ namespace ReqIFSharp
         /// <param name="reader">
         /// an instance of <see cref="XmlReader"/>
         /// </param>
+        /// <remarks>
+        /// Only the direct children (DEFINITION, THE-VALUE and THE-ORIGINAL-VALUE) are read, in any order.
+        /// <see cref="XmlReader.ReadInnerXml"/> and <see cref="XmlReader.Skip"/> already move the reader to the
+        /// next node, so the loop does not call <see cref="XmlReader.Read"/> after them; otherwise the next sibling
+        /// would be skipped when there is no whitespace between the elements.
+        /// </remarks>
         internal override void ReadXml(XmlReader reader)
         {
             this.ReadXmlAttributes(reader);
 
             using (var subtree = reader.ReadSubtree())
             {
-                while (subtree.Read())
+                subtree.MoveToContent();
+                subtree.Read();
+
+                while (!subtree.EOF)
                 {
-                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
+                    if (subtree.NodeType != XmlNodeType.Element || subtree.Depth != 1)
                     {
-                        var reference = reader.ReadElementContentAsString();
-                        this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionXHTML>().SingleOrDefault(x => x.Identifier == reference);
-                        if (this.Definition == null)
-                        {
-                            throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
-                        }
+                        subtree.Read();
+                        continue;
                     }
 
-                    if (subtree.MoveToContent() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")
+                    switch (subtree.LocalName)
                     {
-                        this.TheValue = subtree.ReadInnerXml().Trim();
+                        case "DEFINITION":
+                            using (var definitionSubtree = subtree.ReadSubtree())
+                            {
+                                this.ReadDefinition(definitionSubtree);
+                            }
 
-                        if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
-                        {
-                            var externalObjects = this.CreateExternalObjects(this.TheValue);
-                            this.ExternalObjects.AddRange(externalObjects);
-                        }
+                            subtree.Read();
+                            break;
+                        case "THE-VALUE":
+                            this.TheValue = subtree.ReadInnerXml().Trim();
+
+                            if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
+                            {
+                                var externalObjects = this.CreateExternalObjects(this.TheValue);
+                                this.ExternalObjects.AddRange(externalObjects);
+                            }
+
+                            break;
+                        case "THE-ORIGINAL-VALUE":
+                            this.TheOriginalValue = subtree.ReadInnerXml().Trim();
+                            break;
+                        default:
+                            subtree.Skip();
+                            break;
                     }
                 }
             }
@@ -273,37 +295,110 @@ namespace ReqIFSharp
         /// <param name="token">
         /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
         /// </param>
+        /// <remarks>
+        /// Only the direct children (DEFINITION, THE-VALUE and THE-ORIGINAL-VALUE) are read, in any order.
+        /// <see cref="XmlReader.ReadInnerXmlAsync"/> and <see cref="XmlReader.SkipAsync"/> already move the reader to the
+        /// next node, so the loop does not call <see cref="XmlReader.ReadAsync"/> after them; otherwise the next sibling
+        /// would be skipped when there is no whitespace between the elements.
+        /// </remarks>
         internal override async Task ReadXmlAsync(XmlReader reader, CancellationToken token)
         {
             this.ReadXmlAttributes(reader);
 
             using (var subtree = reader.ReadSubtree())
             {
-                while (await subtree.ReadAsync())
+                await subtree.MoveToContentAsync();
+                await subtree.ReadAsync();
+
+                while (!subtree.EOF)
                 {
                     token.ThrowIfCancellationRequested();
 
-                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "ATTRIBUTE-DEFINITION-XHTML-REF")
+                    if (subtree.NodeType != XmlNodeType.Element || subtree.Depth != 1)
                     {
-                        var reference = await reader.ReadElementContentAsStringAsync();
-                        this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionXHTML>().SingleOrDefault(x => x.Identifier == reference);
-                        if (this.Definition == null)
-                        {
-                            throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
-                        }
+                        await subtree.ReadAsync();
+                        continue;
                     }
 
-                    if (await subtree.MoveToContentAsync() == XmlNodeType.Element && reader.LocalName == "THE-VALUE")
+                    switch (subtree.LocalName)
                     {
-                        this.TheValue = (await subtree.ReadInnerXmlAsync()).Trim();
+                        case "DEFINITION":
+                            using (var definitionSubtree = subtree.ReadSubtree())
+                            {
+                                await this.ReadDefinitionAsync(definitionSubtree);
+                            }
 
-                        if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
-                        {
-                            var externalObjects =  await this.CreateExternalObjectsAsync(this.TheValue);
-                            this.ExternalObjects.AddRange(externalObjects);
-                        }
+                            await subtree.ReadAsync();
+                            break;
+                        case "THE-VALUE":
+                            this.TheValue = (await subtree.ReadInnerXmlAsync()).Trim();
+
+                            if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
+                            {
+                                var externalObjects = await this.CreateExternalObjectsAsync(this.TheValue);
+                                this.ExternalObjects.AddRange(externalObjects);
+                            }
+
+                            break;
+                        case "THE-ORIGINAL-VALUE":
+                            this.TheOriginalValue = (await subtree.ReadInnerXmlAsync()).Trim();
+                            break;
+                        default:
+                            await subtree.SkipAsync();
+                            break;
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Reads the <see cref="AttributeDefinitionXHTML"/> referenced by the DEFINITION element
+        /// </summary>
+        /// <param name="reader">
+        /// an <see cref="XmlReader"/> over the subtree of the DEFINITION element
+        /// </param>
+        private void ReadDefinition(XmlReader reader)
+        {
+            reader.MoveToContent();
+
+            if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-XHTML-REF", reader.NamespaceURI))
+            {
+                this.SetDefinition(reader.ReadElementContentAsString());
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously reads the <see cref="AttributeDefinitionXHTML"/> referenced by the DEFINITION element
+        /// </summary>
+        /// <param name="reader">
+        /// an <see cref="XmlReader"/> over the subtree of the DEFINITION element
+        /// </param>
+        private async Task ReadDefinitionAsync(XmlReader reader)
+        {
+            await reader.MoveToContentAsync();
+
+            if (reader.ReadToDescendant("ATTRIBUTE-DEFINITION-XHTML-REF", reader.NamespaceURI))
+            {
+                this.SetDefinition(await reader.ReadElementContentAsStringAsync());
+            }
+        }
+
+        /// <summary>
+        /// Sets the <see cref="Definition"/> to the <see cref="AttributeDefinitionXHTML"/> with the referenced identifier
+        /// </summary>
+        /// <param name="reference">
+        /// The identifier of the <see cref="AttributeDefinitionXHTML"/>
+        /// </param>
+        /// <exception cref="InvalidOperationException">
+        /// The <see cref="AttributeDefinitionXHTML"/> could not be found
+        /// </exception>
+        private void SetDefinition(string reference)
+        {
+            this.Definition = this.ReqIFContent.SpecTypes.SelectMany(x => x.SpecAttributes).OfType<AttributeDefinitionXHTML>().SingleOrDefault(x => x.Identifier == reference);
+
+            if (this.Definition == null)
+            {
+                throw new InvalidOperationException($"The attribute-definition XHTML {reference} could not be found for the value.");
             }
         }
 
