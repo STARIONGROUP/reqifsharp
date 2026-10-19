@@ -50,11 +50,11 @@ namespace ReqIFSharp
         /// </summary>
         public AttributeValueXHTML()
         {
-            this.ExternalObjects = new List<ExternalObject>();
+            this.logger = NullLogger<AttributeValueXHTML>.Instance;
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AttributeValueString"/> class.
+        /// Initializes a new instance of the <see cref="AttributeValueXHTML"/> class.
         /// </summary>
         /// <param name="loggerFactory">
         /// The (injected) <see cref="ILoggerFactory"/> used to set up logging
@@ -77,8 +77,6 @@ namespace ReqIFSharp
             : base(specElAt, loggerFactory)
         {
             this.logger = this.loggerFactory == null ? NullLogger<AttributeValueXHTML>.Instance : this.loggerFactory.CreateLogger<AttributeValueXHTML>();
-
-            this.ExternalObjects = new List<ExternalObject>();
         }
 
         /// <summary>
@@ -95,8 +93,6 @@ namespace ReqIFSharp
             : base(attributeDefinition, loggerFactory)
         {
             this.logger = this.loggerFactory == null ? NullLogger<AttributeValueXHTML>.Instance : this.loggerFactory.CreateLogger<AttributeValueXHTML>();
-
-            this.ExternalObjects = new List<ExternalObject>();
 
             this.OwningDefinition = attributeDefinition;
         }
@@ -136,7 +132,7 @@ namespace ReqIFSharp
         /// <summary>
         /// Gets the <see cref="List{ExternalObject}"/> that may be present as xhtml:object in the XHTML content
         /// </summary>
-        public List<ExternalObject> ExternalObjects { get; private set; }
+        public List<ExternalObject> ExternalObjects { get; private set; } = new List<ExternalObject>();
 
         /// <summary>
         /// Gets or sets the Reference to the attribute definition that relates the value to its data type.

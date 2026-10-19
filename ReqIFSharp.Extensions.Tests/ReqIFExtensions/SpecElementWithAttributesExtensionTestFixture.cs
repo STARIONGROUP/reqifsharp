@@ -26,6 +26,8 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
     using System.Threading;
     using System.Threading.Tasks;
 
+    using Microsoft.Extensions.Logging.Abstractions;
+
     using NUnit.Framework;
 
     using ReqIFSharp;
@@ -68,6 +70,19 @@ namespace ReqIFSharp.Extensions.Tests.ReqIFExtensions
             var externalObjects = specObject.QueryExternalObjects();
 
             Assert.That(externalObjects.Count, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task Verify_that_the_external_objects_of_xhtml_values_created_with_a_public_constructor_can_be_queried()
+        {
+            // GH-98: the ILoggerFactory constructor left ExternalObjects null
+            var specObject = new SpecObject();
+            specObject.Values.Add(new AttributeValueXHTML { TheValue = "<xhtml:p>text</xhtml:p>" });
+            specObject.Values.Add(new AttributeValueXHTML(NullLoggerFactory.Instance) { TheValue = "<xhtml:p>text</xhtml:p>" });
+            specObject.Values.Add(new AttributeValueXHTML(null) { TheValue = "<xhtml:p>text</xhtml:p>" });
+
+            Assert.That(specObject.QueryExternalObjects(), Is.Empty);
+            Assert.That(await specObject.QueryBase64PayloadsAsync(this.reqIFLoaderService), Is.Empty);
         }
 
         [Test]

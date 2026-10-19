@@ -24,6 +24,7 @@ namespace ReqIFSharp.Tests
     using System.IO;
     using System.Runtime.Serialization;
     using System.Threading;
+    using System.Threading.Tasks;
     using System.Xml;
 
     using Microsoft.Extensions.Logging;
@@ -126,6 +127,64 @@ namespace ReqIFSharp.Tests
 
             Assert.That(() => attributeValueXhtml.WriteXmlAsync(writer, cancellationTokenSource.Token),
                 Throws.Exception.TypeOf<SerializationException>());
+        }
+
+        [Test]
+        public void Verify_that_every_public_constructor_creates_an_empty_list_of_external_objects()
+        {
+            // GH-98: the ILoggerFactory constructor left ExternalObjects null
+            Assert.Multiple(() =>
+            {
+                Assert.That(new AttributeValueXHTML().ExternalObjects, Is.Not.Null.And.Empty);
+                Assert.That(new AttributeValueXHTML(this.loggerFactory).ExternalObjects, Is.Not.Null.And.Empty);
+                Assert.That(new AttributeValueXHTML(null).ExternalObjects, Is.Not.Null.And.Empty);
+            });
+        }
+
+        [Test]
+        public async Task Verify_that_a_value_created_with_the_parameterless_constructor_can_be_read()
+        {
+            // GH-98: the parameterless constructor left the logger null, so reading threw an ArgumentNullException
+            const string xml = "<ATTRIBUTE-VALUE-XHTML xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\" IS-SIMPLIFIED=\"true\">" +
+                               "<THE-VALUE><xhtml:p xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">text</xhtml:p></THE-VALUE>" +
+                               "</ATTRIBUTE-VALUE-XHTML>";
+
+            foreach (var async in new[] { false, true })
+            {
+                using var xmlReader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = async });
+                xmlReader.MoveToContent();
+
+                var attributeValueXhtml = new AttributeValueXHTML();
+
+                if (async)
+                {
+                    await attributeValueXhtml.ReadXmlAsync(xmlReader, CancellationToken.None);
+                }
+                else
+                {
+                    attributeValueXhtml.ReadXml(xmlReader);
+                }
+
+                Assert.That(attributeValueXhtml.TheValue, Does.Contain("text"), $"async: {async}");
+                Assert.That(attributeValueXhtml.IsSimplified, Is.True);
+            }
+        }
+
+        [Test]
+        public void Verify_that_ReadXmlAsync_of_a_value_created_with_the_parameterless_constructor_can_be_cancelled()
+        {
+            const string xml = "<ATTRIBUTE-VALUE-XHTML xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\">" +
+                               "<THE-VALUE><xhtml:p xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">text</xhtml:p></THE-VALUE>" +
+                               "</ATTRIBUTE-VALUE-XHTML>";
+
+            var cts = new CancellationTokenSource();
+            cts.Cancel();
+
+            using var xmlReader = XmlReader.Create(new StringReader(xml), new XmlReaderSettings { Async = true });
+            xmlReader.MoveToContent();
+
+            Assert.That(async () => await new AttributeValueXHTML().ReadXmlAsync(xmlReader, cts.Token),
+                Throws.Exception.InstanceOf<OperationCanceledException>());
         }
 
         [Test]
