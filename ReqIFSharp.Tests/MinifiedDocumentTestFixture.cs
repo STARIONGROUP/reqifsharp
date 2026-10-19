@@ -96,7 +96,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_a_minified_document_is_read_the_same_as_the_original(string fileName)
         {
             var original = TestDocuments.Read(fileName);
-            var minified = CreateMinifiedCopy(original);
+            var minified = TestDocuments.Minify(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -113,7 +113,7 @@ namespace ReqIFSharp.Tests
         public async Task Verify_that_a_minified_document_is_read_the_same_as_the_original_async(string fileName)
         {
             var original = TestDocuments.Read(fileName);
-            var minified = CreateMinifiedCopy(original);
+            var minified = TestDocuments.Minify(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -130,7 +130,7 @@ namespace ReqIFSharp.Tests
         public void Verify_that_the_spec_relations_of_a_relation_group_in_a_minified_document_are_read()
         {
             var original = CreateDocumentWithSpecRelationsInRelationGroup();
-            var minified = CreateMinifiedCopy(original);
+            var minified = TestDocuments.Minify(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -149,7 +149,7 @@ namespace ReqIFSharp.Tests
         public async Task Verify_that_the_spec_relations_of_a_relation_group_in_a_minified_document_are_read_async()
         {
             var original = CreateDocumentWithSpecRelationsInRelationGroup();
-            var minified = CreateMinifiedCopy(original);
+            var minified = TestDocuments.Minify(original);
 
             foreach (var kind in TestDocuments.Kinds)
             {
@@ -188,7 +188,7 @@ namespace ReqIFSharp.Tests
         {
             var original = CreateDocumentWithSpecRelationsInRelationGroup(insertBefore: "TYPE");
 
-            foreach (var xml in new[] { original, CreateMinifiedCopy(original) })
+            foreach (var xml in new[] { original, TestDocuments.Minify(original) })
             {
                 foreach (var kind in TestDocuments.Kinds)
                 {
@@ -213,7 +213,7 @@ namespace ReqIFSharp.Tests
 
             Assert.That(original, Does.Contain("<SPEC-RELATIONS />"), "the document must contain an empty SPEC-RELATIONS element");
 
-            foreach (var xml in new[] { original, CreateMinifiedCopy(original) })
+            foreach (var xml in new[] { original, TestDocuments.Minify(original) })
             {
                 foreach (var kind in TestDocuments.Kinds)
                 {
@@ -240,7 +240,7 @@ namespace ReqIFSharp.Tests
 
             var original = CreateDocumentWithSpecRelationsInRelationGroup(insertBefore: "TYPE", unsupportedChild: unsupported);
 
-            foreach (var xml in new[] { original, CreateMinifiedCopy(original) })
+            foreach (var xml in new[] { original, TestDocuments.Minify(original) })
             {
                 foreach (var kind in TestDocuments.Kinds)
                 {
@@ -340,34 +340,6 @@ namespace ReqIFSharp.Tests
                 Assert.That(header.SourceToolId, Is.EqualTo("a source tool"));
                 Assert.That(header.Title, Is.EqualTo("a title"));
             });
-        }
-
-        /// <summary>
-        /// Returns a copy of the document without the whitespace between its ReqIF elements. Whitespace inside
-        /// XHTML values and tool extensions is kept: it is content, read as raw XML.
-        /// </summary>
-        private static string CreateMinifiedCopy(string original)
-        {
-            var document = XDocument.Parse(original, LoadOptions.PreserveWhitespace);
-
-            var whitespace = document.DescendantNodes()
-                .OfType<XText>()
-                .Where(t => string.IsNullOrWhiteSpace(t.Value) && !IsRawXmlContent(t))
-                .ToList();
-
-            Assert.That(whitespace, Is.Not.Empty, "the original must contain whitespace between elements");
-
-            whitespace.ForEach(t => t.Remove());
-
-            return document.ToString(SaveOptions.DisableFormatting);
-        }
-
-        private static bool IsRawXmlContent(XText text)
-        {
-            return text.Ancestors().Any(a =>
-                a.Name.Namespace != TestDocuments.ReqIFNamespace
-                || a.Name.LocalName == "THE-VALUE"
-                || a.Name.LocalName == "REQ-IF-TOOL-EXTENSION");
         }
     }
 }

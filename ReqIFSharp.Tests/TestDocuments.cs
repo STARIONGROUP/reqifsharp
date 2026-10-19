@@ -91,6 +91,35 @@ namespace ReqIFSharp.Tests
         }
 
         /// <summary>
+        /// Returns a copy of the document without the whitespace between its ReqIF elements. Whitespace inside
+        /// XHTML values (THE-VALUE, THE-ORIGINAL-VALUE) and tool extensions is kept: it is content, read as raw XML.
+        /// </summary>
+        public static string Minify(string original)
+        {
+            var document = XDocument.Parse(original, LoadOptions.PreserveWhitespace);
+
+            var whitespace = document.DescendantNodes()
+                .OfType<XText>()
+                .Where(t => string.IsNullOrWhiteSpace(t.Value) && !IsRawXmlContent(t))
+                .ToList();
+
+            Assert.That(whitespace, Is.Not.Empty, "the original must contain whitespace between elements");
+
+            whitespace.ForEach(t => t.Remove());
+
+            return document.ToString(SaveOptions.DisableFormatting);
+        }
+
+        private static bool IsRawXmlContent(XText text)
+        {
+            return text.Ancestors().Any(a =>
+                a.Name.Namespace != ReqIFNamespace
+                || a.Name.LocalName == "THE-VALUE"
+                || a.Name.LocalName == "THE-ORIGINAL-VALUE"
+                || a.Name.LocalName == "REQ-IF-TOOL-EXTENSION");
+        }
+
+        /// <summary>
         /// Compares two object graphs by serializing both and comparing the XML, ignoring namespace declarations
         /// (which differ by design between an original and some of its copies).
         /// </summary>
