@@ -39,7 +39,7 @@ namespace ReqIFSharp.Tests
 
     /// <summary>
     /// Verifies that an element with the local name of a ReqIF element, but in another namespace, is not read as
-    /// a ReqIF element: it is skipped, with its content, and a warning is logged, see GH-97.
+    /// a ReqIF element: it is skipped, with its content, and a warning is logged.
     /// </summary>
     [TestFixture]
     public class ForeignNamespaceTestFixture
@@ -334,7 +334,7 @@ namespace ReqIFSharp.Tests
         [TestCase(true)]
         public async Task Verify_that_an_element_in_no_namespace_in_a_document_in_the_ReqIF_namespace_is_read(bool async)
         {
-            // elements in no namespace are read as ReqIF elements in any document, as they were before GH-97
+            // elements in no namespace are read as ReqIF elements in any document
             var document = XDocument.Parse(TestDocuments.Read(FileName));
             var title = document.Root!.Descendants(TestDocuments.ReqIFNamespace + "TITLE").Single();
             title.AddAfterSelf(new XElement(XNamespace.None + "TITLE", "title in no namespace"));

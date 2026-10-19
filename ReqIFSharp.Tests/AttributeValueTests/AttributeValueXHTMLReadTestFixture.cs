@@ -35,7 +35,7 @@ namespace ReqIFSharp.Tests
 
     /// <summary>
     /// Verifies that <see cref="AttributeValueXHTML"/> reads THE-VALUE, THE-ORIGINAL-VALUE and DEFINITION
-    /// in any order, in indented and minified documents, see GH-95.
+    /// in any order, in indented and minified documents.
     /// </summary>
     [TestFixture]
     public class AttributeValueXHTMLReadTestFixture

@@ -36,7 +36,7 @@ namespace ReqIFSharp.Tests
     /// <summary>
     /// Verifies that the REQ-IF root and the elements below it are matched on their local name and namespace,
     /// so that a document in which the ReqIF namespace is bound to a prefix (<c>reqif:REQ-IF</c>) is read
-    /// the same as the unprefixed original, see GH-87.
+    /// the same as the unprefixed original.
     /// </summary>
     [TestFixture]
     public class PrefixedNamespaceTestFixture

@@ -133,7 +133,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_every_public_constructor_creates_an_empty_list_of_external_objects()
         {
-            // GH-98: the ILoggerFactory constructor left ExternalObjects null
+            // also the ILoggerFactory constructor, which creates no list of its own
             Assert.Multiple(() =>
             {
                 Assert.That(new AttributeValueXHTML().ExternalObjects, Is.Not.Null.And.Empty);
@@ -145,7 +145,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public async Task Verify_that_a_value_created_with_the_parameterless_constructor_can_be_read()
         {
-            // GH-98: the parameterless constructor left the logger null, so reading threw an ArgumentNullException
+            // the parameterless constructor sets a logger, which reading uses
             const string xml = "<ATTRIBUTE-VALUE-XHTML xmlns=\"http://www.omg.org/spec/ReqIF/20110401/reqif.xsd\" IS-SIMPLIFIED=\"true\">" +
                                "<THE-VALUE><xhtml:p xmlns:xhtml=\"http://www.w3.org/1999/xhtml\">text</xhtml:p></THE-VALUE>" +
                                "</ATTRIBUTE-VALUE-XHTML>";
@@ -270,7 +270,7 @@ namespace ReqIFSharp.Tests
         [Test]
         public void Verify_that_normalized_text_has_no_extra_spaces_around_inline_elements()
         {
-            // the example of GH-92
+            // an inline element in a sentence, followed by punctuation
             var attributeValue = new AttributeValueXHTML
             {
                 TheValue = "<xhtml:div xmlns:xhtml=\"http://www.w3.org/1999/xhtml\"><xhtml:p>brew a cup in <xhtml:b>under 30 seconds</xhtml:b>.</xhtml:p></xhtml:div>"

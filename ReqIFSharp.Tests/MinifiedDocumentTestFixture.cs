@@ -39,7 +39,7 @@ namespace ReqIFSharp.Tests
 
     /// <summary>
     /// Verifies that a document without whitespace between its elements (minified XML) is read
-    /// the same as the indented original, see GH-94.
+    /// the same as the indented original.
     /// </summary>
     [TestFixture]
     public class MinifiedDocumentTestFixture
