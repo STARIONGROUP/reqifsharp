@@ -14,6 +14,7 @@ The repository ships two NuGet packages that version independently: **ReqIFSharp
 
 ### Changed
 
+- The source files carry the licence in short SPDX form (`SPDX-FileCopyrightText: 2017-2026 Starion Group S.A.`, `SPDX-License-Identifier: Apache-2.0`) instead of the full Apache-2.0 notice; the licence itself is unchanged, and `NOTICE` now gives the same years, 2017-2026 ([#103](https://github.com/STARIONGROUP/ReqIFSharp/issues/103)).
 - A `REQ-IF` root element in a namespace other than the ReqIF namespace (`http://www.omg.org/spec/ReqIF/20110401/reqif.xsd`) is no longer read as a ReqIF document; it is skipped and a warning is logged. Before, such an element was read when it had no prefix. A root in no namespace is still read ([#87](https://github.com/STARIONGROUP/ReqIFSharp/issues/87)).
 - An element other than `SPEC-RELATION-REF` inside the `SPEC-RELATIONS` of a relation group is now skipped with a warning, and the references after it are read. Before, it caused an `XmlException` ([#94](https://github.com/STARIONGROUP/ReqIFSharp/issues/94)).
 - An element that has the name of a ReqIF element but is in another namespace (for example `<other:THE-VALUE xmlns:other="...">`) is no longer read as that ReqIF element. It is skipped, with its content, and a warning is logged. Elements in the ReqIF namespace or in no namespace are read as before, in any document ([#97](https://github.com/STARIONGROUP/ReqIFSharp/issues/97)).

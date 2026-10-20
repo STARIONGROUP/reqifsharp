@@ -83,8 +83,10 @@ the extensions can be used by consuming applications (e.g. the web viewer).
 
 ## Conventions
 
-- Every source file starts with the Apache-2.0 Starion Group copyright header
-  (`Copyright 2017-2026 Starion Group S.A.`). Copy it onto any new file.
+- Every source file starts with the Starion Group header in short SPDX form: the
+  `<copyright file="..." company="Starion Group S.A.">` block holding
+  `SPDX-FileCopyrightText: 2017-2026 Starion Group S.A.` and
+  `SPDX-License-Identifier: Apache-2.0`. Copy it onto any new file, with that file's name.
 - Tests use NUnit 4 (`[TestFixture]` / `[Test]`); fixtures are named `*TestFixture`.
   Sample ReqIF inputs live in `ReqIFSharp.Tests/TestData` and are copied to output.
 - Every change that affects users of the packages (feature, fix, dependency update,
