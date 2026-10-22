@@ -39,6 +39,7 @@ namespace ReqIFSharp.Tests.Decorators
             "DatatypeDefinition", // AttributeDefinition base accessor that aliases the concrete Type
             "AttributeDefinition", // AttributeValue base accessor that aliases the concrete Definition
             "ExternalObjects",   // derived from the parsed XHTML content
+            "IsEditableSpecified", // records whether IS-EDITABLE is written, not a metamodel feature
             "OwningDefinition",  // back-reference to the owning AttributeDefinition
             "Definition",        // see note below - kept, handled explicitly (NOT excluded)
             "SpecElAt",          // back-reference to the owning SpecElementWithAttributes

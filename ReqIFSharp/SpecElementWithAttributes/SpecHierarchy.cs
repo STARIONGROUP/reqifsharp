@@ -308,11 +308,6 @@ namespace ReqIFSharp
 
             base.WriteXml(writer);
 
-            if (this.IsTableInternal)
-            {
-                writer.WriteAttributeString("IS-TABLE-INTERNAL", "true");
-            }
-
             this.WriteObject(writer);
 
             this.WriteEditableAtts(writer);
@@ -341,16 +336,46 @@ namespace ReqIFSharp
 
             await base.WriteXmlAsync(writer, token);
 
-            if (this.IsTableInternal)
-            {
-                await writer.WriteAttributeStringAsync(null, "IS-TABLE-INTERNAL",null, "true");
-            }
-
             await this.WriteObjectAsync(writer, token);
 
             await this.WriteEditableAttsAsync(writer, token);
 
             await this.WriteChildrenAsync(writer, token);
+        }
+
+        /// <summary>
+        /// Writes the IS-EDITABLE and IS-TABLE-INTERNAL attributes
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        internal override void WriteXmlAttributes(XmlWriter writer)
+        {
+            base.WriteXmlAttributes(writer);
+
+            if (this.IsTableInternal)
+            {
+                writer.WriteAttributeString("IS-TABLE-INTERNAL", "true");
+            }
+        }
+
+        /// <summary>
+        /// Asynchronously writes the IS-EDITABLE and IS-TABLE-INTERNAL attributes
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        internal override async Task WriteXmlAttributesAsync(XmlWriter writer, CancellationToken token)
+        {
+            await base.WriteXmlAttributesAsync(writer, token);
+
+            if (this.IsTableInternal)
+            {
+                await writer.WriteAttributeStringAsync(null, "IS-TABLE-INTERNAL", null, "true");
+            }
         }
 
         /// <summary>
