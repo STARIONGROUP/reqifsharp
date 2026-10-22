@@ -163,6 +163,8 @@ namespace ReqIFSharp
                 writer.WriteAttributeString("LONG-NAME", this.LongName);
             }
 
+            this.WriteXmlAttributes(writer);
+
             if (this.AlternativeId != null)
             {
                 writer.WriteStartElement("ALTERNATIVE-ID");
@@ -206,12 +208,42 @@ namespace ReqIFSharp
                 await writer.WriteAttributeStringAsync(null, "LONG-NAME", null, this.LongName);
             }
 
+            await this.WriteXmlAttributesAsync(writer, token);
+
             if (this.AlternativeId != null)
             {
                 await writer.WriteStartElementAsync(null, "ALTERNATIVE-ID", null);
                 await this.AlternativeId.WriteXmlAsync(writer, token);
                 await writer.WriteEndElementAsync();
             }
+        }
+
+        /// <summary>
+        /// Writes the XML attributes that a subclass adds to the element. It is called by <see cref="WriteXml"/>
+        /// after the attributes of the <see cref="Identifiable"/> and before its ALTERNATIVE-ID element, since an
+        /// attribute cannot be written after a child element.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        internal virtual void WriteXmlAttributes(XmlWriter writer)
+        {
+        }
+
+        /// <summary>
+        /// Asynchronously writes the XML attributes that a subclass adds to the element. It is called by
+        /// <see cref="WriteXmlAsync"/> after the attributes of the <see cref="Identifiable"/> and before its
+        /// ALTERNATIVE-ID element, since an attribute cannot be written after a child element.
+        /// </summary>
+        /// <param name="writer">
+        /// an instance of <see cref="XmlWriter"/>
+        /// </param>
+        /// <param name="token">
+        /// A cancellation token that can be used by other objects or threads to receive notice of cancellation.
+        /// </param>
+        internal virtual Task WriteXmlAttributesAsync(XmlWriter writer, CancellationToken token)
+        {
+            return Task.CompletedTask;
         }
 
         /// <summary>
