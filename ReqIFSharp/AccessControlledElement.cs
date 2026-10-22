@@ -98,16 +98,16 @@ namespace ReqIFSharp
 
             this.logger.LogTrace("reading IS-EDITABLE at line:position {LineNumber}:{LinePosition}", xmlLineInfo?.LineNumber, xmlLineInfo?.LinePosition);
 
-            var isEditable = reader.GetAttribute("IS-EDITABLE");
-            if (!string.IsNullOrWhiteSpace(isEditable))
+            var isEditableValue = reader.GetAttribute("IS-EDITABLE");
+            if (!string.IsNullOrWhiteSpace(isEditableValue))
             {
                 try
                 {
-                    this.IsEditable = XmlConvert.ToBoolean(isEditable);
+                    this.IsEditable = XmlConvert.ToBoolean(isEditableValue);
                 }
                 catch (Exception e)
                 {
-                    throw new SerializationException($"The AccessControlledElement.IS-EDITABLE {isEditable} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
+                    throw new SerializationException($"The AccessControlledElement.IS-EDITABLE {isEditableValue} at line:position {xmlLineInfo?.LineNumber}:{xmlLineInfo?.LinePosition} could not be converted to a BOOLEAN", e);
                 }
             }
         }

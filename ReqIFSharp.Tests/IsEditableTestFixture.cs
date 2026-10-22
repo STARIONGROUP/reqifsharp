@@ -31,6 +31,14 @@ namespace ReqIFSharp.Tests
         private const string FileName = "reqifsharpgenerated.reqif";
 
         /// <summary>
+        /// The elements that write attributes of their own next to those of an <see cref="Identifiable"/>
+        /// </summary>
+        private static readonly string[] ElementsWithOwnAttributes =
+        {
+            "DATATYPE-DEFINITION-INTEGER", "DATATYPE-DEFINITION-REAL", "DATATYPE-DEFINITION-STRING", "ATTRIBUTE-DEFINITION-ENUMERATION"
+        };
+
+        /// <summary>
         /// Returns the test document with IS-EDITABLE="false" on its first spec hierarchy and on its first
         /// attribute definition, IS-EDITABLE="true" on its second spec hierarchy and no IS-EDITABLE on its third
         /// </summary>
@@ -90,7 +98,7 @@ namespace ReqIFSharp.Tests
                 .Attribute("IS-EDITABLE")?.Value;
         }
 
-        private static void AssertRoundTrip(Stream output, string[] identifiers)
+        private static void AssertRoundTrip(MemoryStream output, string[] identifiers)
         {
             output.Position = 0;
             var document = XDocument.Load(output);
@@ -320,7 +328,7 @@ namespace ReqIFSharp.Tests
                 .ToList();
 
             var localNames = elements.Select(x => x.Name.LocalName).Distinct().ToList();
-            Assert.That(localNames, Is.SupersetOf(new[] { "DATATYPE-DEFINITION-INTEGER", "DATATYPE-DEFINITION-REAL", "DATATYPE-DEFINITION-STRING", "ATTRIBUTE-DEFINITION-ENUMERATION" }));
+            Assert.That(localNames, Is.SupersetOf(ElementsWithOwnAttributes));
             Assert.That(elements.Where(x => x.Element(ns + "ALTERNATIVE-ID") != null), Is.Not.Empty, "the test document should have a datatype with an alternative id");
 
             var reqifs = new ReqIFDeserializer().Deserialize(TestDocuments.ToStream(xml, SupportedFileExtensionKind.Reqif), SupportedFileExtensionKind.Reqif).ToList();
