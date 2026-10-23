@@ -25,6 +25,10 @@ namespace ReqIFSharp
     /// </summary>
     /// <remarks>
     /// The <see cref="RelationGroup"/> class represents a group of relations between a source <see cref="Specification"/> and a target <see cref="Specification"/>.
+    /// The ReqIF metamodel lets a relation group own attribute values, and they are read and written. The ReqIF XML schema
+    /// (reqif.xsd) has no VALUES element on RELATION-GROUP, so a document with such values is not valid against the schema
+    /// and other tools may reject it. The ProSTEP iViP ReqIF Implementation Guide calls this a bug in the schema and
+    /// recommends giving a <see cref="RelationGroupType"/> no attribute definitions.
     /// </remarks>
     /// <example>
     /// a <see cref="RelationGroup"/> instance may represent a set of relations between a customer requirements <see cref="Specification"/> and a system requirements <see cref="Specification"/>.

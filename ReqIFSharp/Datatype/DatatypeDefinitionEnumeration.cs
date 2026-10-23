@@ -81,6 +81,44 @@ namespace ReqIFSharp
         public List<EnumValue> SpecifiedValues => this.specifiedValues;
 
         /// <summary>
+        /// Creates an <see cref="EnumValue"/>, a literal of this enumeration, and adds it to <see cref="SpecifiedValues"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name of the literal, mandatory for an enum value
+        /// </param>
+        /// <param name="key">
+        /// The numeric value of the literal
+        /// </param>
+        /// <param name="otherContent">
+        /// Free text that tools may use, for example for a color; empty when null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="EnumValue"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now,
+        /// <see cref="EnumValue.DataTpeDefEnum"/> set to this enumeration and its <see cref="EnumValue.Properties"/> set
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty
+        /// </exception>
+        public EnumValue CreateEnumValue(string longName, long key, string otherContent = null)
+        {
+            ValidateLongName(longName);
+
+            var enumValue = new EnumValue(this, this.loggerFactory);
+
+            _ = new EmbeddedValue(enumValue, this.loggerFactory)
+            {
+                Key = key,
+                OtherContent = otherContent ?? string.Empty
+            };
+
+            enumValue.InitializeCreated(longName);
+            return enumValue;
+        }
+
+        /// <summary>
         /// Generates a <see cref="DatatypeDefinitionEnumeration"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">

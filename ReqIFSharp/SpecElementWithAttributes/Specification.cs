@@ -87,6 +87,41 @@ namespace ReqIFSharp
         public SpecificationType Type { get; set; }
 
         /// <summary>
+        /// Adds the <paramref name="specObject"/> to the top level of this specification
+        /// </summary>
+        /// <param name="specObject">
+        /// The <see cref="SpecObject"/> to add
+        /// </param>
+        /// <returns>
+        /// The new <see cref="SpecHierarchy"/> that points to the <paramref name="specObject"/> and is added to
+        /// <see cref="Children"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now and its
+        /// <see cref="SpecHierarchy.Root"/> and <see cref="SpecHierarchy.ReqIfContent"/> set
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="specObject"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="specObject"/> belongs to another <see cref="ReqIFContent"/>
+        /// </exception>
+        public SpecHierarchy AddChild(SpecObject specObject)
+        {
+            if (specObject == null)
+            {
+                throw new ArgumentNullException(nameof(specObject));
+            }
+
+            ReqIFContent.EnsureSameContent(this.ReqIFContent, specObject.ReqIFContent, specObject, nameof(specObject));
+
+            var specHierarchy = new SpecHierarchy(this, this.ReqIFContent, this.loggerFactory)
+            {
+                Object = specObject
+            };
+
+            specHierarchy.InitializeCreated(null);
+            return specHierarchy;
+        }
+
+        /// <summary>
         /// Converts a <see cref="Specification"/> object into its XML representation.
         /// </summary>
         /// <param name="writer">

@@ -477,7 +477,7 @@ namespace ReqIFSharp
                             subtree.Read();
                             break;
                         case "THE-VALUE":
-                            this.TheValue = subtree.ReadInnerXml().Trim();
+                            this.TheValue = subtree.ReadInnerXml();
 
                             if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
                             {
@@ -487,7 +487,7 @@ namespace ReqIFSharp
 
                             break;
                         case "THE-ORIGINAL-VALUE":
-                            this.TheOriginalValue = subtree.ReadInnerXml().Trim();
+                            this.TheOriginalValue = subtree.ReadInnerXml();
                             break;
                         default:
                             subtree.Skip();
@@ -548,7 +548,7 @@ namespace ReqIFSharp
                             await subtree.ReadAsync();
                             break;
                         case "THE-VALUE":
-                            this.TheValue = (await subtree.ReadInnerXmlAsync()).Trim();
+                            this.TheValue = await subtree.ReadInnerXmlAsync();
 
                             if (this.TheValue.Contains("xhtml:object") && this.TheValue.Contains("data"))
                             {
@@ -558,7 +558,7 @@ namespace ReqIFSharp
 
                             break;
                         case "THE-ORIGINAL-VALUE":
-                            this.TheOriginalValue = (await subtree.ReadInnerXmlAsync()).Trim();
+                            this.TheOriginalValue = await subtree.ReadInnerXmlAsync();
                             break;
                         default:
                             await subtree.SkipAsync();
@@ -653,6 +653,198 @@ namespace ReqIFSharp
         }
 
         /// <summary>
+        /// Creates an <see cref="XmlReader"/> for an XHTML fragment, in which the <code>xhtml</code> prefix is bound to the
+        /// XHTML namespace when the fragment does not declare it itself
+        /// </summary>
+        /// <param name="xhtml">
+        /// The XHTML fragment
+        /// </param>
+        /// <param name="bindXhtmlPrefix">
+        /// False to read the fragment without binding the <code>xhtml</code> prefix, so that a fragment that uses it without
+        /// declaring it is not well-formed
+        /// </param>
+        /// <returns>
+        /// The <see cref="XmlReader"/>, which reads asynchronously as well
+        /// </returns>
+        private static XmlReader CreateFragmentReader(string xhtml, bool bindXhtmlPrefix = true)
+        {
+            var settings = new XmlReaderSettings
+            {
+                Async = true,
+                ConformanceLevel = ConformanceLevel.Fragment,
+                DtdProcessing = DtdProcessing.Prohibit,
+                XmlResolver = null
+            };
+
+            if (!bindXhtmlPrefix)
+            {
+                return XmlReader.Create(new StringReader(xhtml), settings);
+            }
+
+            var nameTable = new NameTable();
+            var namespaceManager = new XmlNamespaceManager(nameTable);
+            namespaceManager.AddNamespace("xhtml", DefaultXmlAttributeFactory.XHTMLNameSpaceUri);
+            var context = new XmlParserContext(nameTable, namespaceManager, null, XmlSpace.None);
+
+            return XmlReader.Create(new StringReader(xhtml), settings, context);
+        }
+
+        /// <summary>
+        /// Checks that XHTML written in code can be the value of an <see cref="AttributeValueXHTML"/>: it is well-formed
+        /// XML with one root element, a <code>div</code> or <code>p</code> in the XHTML namespace, no text outside that
+        /// element and no XML declaration. The <code>xhtml</code> prefix may be used without declaring it.
+        /// </summary>
+        /// <remarks>
+        /// The content of the root element is not validated against the XHTML schema
+        /// </remarks>
+        /// <param name="xhtml">
+        /// The XHTML to check
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="xhtml"/> does not meet these rules
+        /// </exception>
+        internal static void EnsureValidValue(string xhtml)
+        {
+            var rootElements = 0;
+
+            try
+            {
+                using var reader = CreateFragmentReader(xhtml);
+
+                while (reader.Read())
+                {
+                    if (reader.Depth != 0)
+                    {
+                        continue;
+                    }
+
+                    switch (reader.NodeType)
+                    {
+                        case XmlNodeType.Element:
+                            rootElements++;
+
+                            if (rootElements > 1)
+                            {
+                                throw new ArgumentException("The XHTML must have one root element, but it has more", nameof(xhtml));
+                            }
+
+                            if (reader.NamespaceURI != DefaultXmlAttributeFactory.XHTMLNameSpaceUri || (reader.LocalName != "div" && reader.LocalName != "p"))
+                            {
+                                throw new ArgumentException($"The root element of the XHTML must be a div or p in the namespace {DefaultXmlAttributeFactory.XHTMLNameSpaceUri}, but it is {reader.Name}", nameof(xhtml));
+                            }
+
+                            break;
+                        case XmlNodeType.Text:
+                        case XmlNodeType.CDATA:
+                        case XmlNodeType.EntityReference:
+                            throw new ArgumentException("The XHTML may not have text outside its root element", nameof(xhtml));
+                        case XmlNodeType.XmlDeclaration:
+                            throw new ArgumentException("The XHTML may not start with an XML declaration: it is written inside the ReqIF document", nameof(xhtml));
+                    }
+                }
+            }
+            catch (XmlException exception)
+            {
+                throw new ArgumentException($"The XHTML is not well-formed: {exception.Message}", nameof(xhtml), exception);
+            }
+
+            if (rootElements == 0)
+            {
+                throw new ArgumentException("The XHTML must have a root element, a div or p in the XHTML namespace", nameof(xhtml));
+            }
+        }
+
+        /// <summary>
+        /// Adds the declaration of the <code>xhtml</code> prefix to the root element of XHTML written in code, when the XHTML
+        /// uses that prefix without declaring it. The value is then complete on its own, as a value read from a document is,
+        /// and is written well-formed whatever prefixes the document declares.
+        /// </summary>
+        /// <param name="xhtml">
+        /// XHTML that <see cref="EnsureValidValue"/> accepts
+        /// </param>
+        /// <returns>
+        /// The <paramref name="xhtml"/> with <code>xmlns:xhtml</code> added to its root element when needed, otherwise the
+        /// <paramref name="xhtml"/> itself
+        /// </returns>
+        internal static string DeclareXhtmlPrefix(string xhtml)
+        {
+            if (IsWellFormedWithoutXhtmlPrefix(xhtml))
+            {
+                return xhtml;
+            }
+
+            using var reader = CreateFragmentReader(xhtml);
+
+            while (reader.Read())
+            {
+                if (reader.NodeType == XmlNodeType.Element)
+                {
+                    var lineInfo = (IXmlLineInfo)reader;
+                    var offset = GetOffset(xhtml, lineInfo.LineNumber, lineInfo.LinePosition) + reader.Name.Length;
+
+                    return xhtml.Insert(offset, $" xmlns:xhtml=\"{DefaultXmlAttributeFactory.XHTMLNameSpaceUri}\"");
+                }
+            }
+
+            return xhtml;
+        }
+
+        /// <summary>
+        /// Tells whether an XHTML fragment is well-formed without the <code>xhtml</code> prefix being bound
+        /// </summary>
+        /// <param name="xhtml">
+        /// The XHTML fragment
+        /// </param>
+        /// <returns>
+        /// True when the fragment declares every prefix it uses
+        /// </returns>
+        private static bool IsWellFormedWithoutXhtmlPrefix(string xhtml)
+        {
+            try
+            {
+                using var reader = CreateFragmentReader(xhtml, false);
+
+                while (reader.Read())
+                {
+                }
+
+                return true;
+            }
+            catch (XmlException)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the position in a text of a line number and line position as reported by <see cref="IXmlLineInfo"/>
+        /// </summary>
+        /// <param name="text">
+        /// The text
+        /// </param>
+        /// <param name="lineNumber">
+        /// The line number, starting at 1
+        /// </param>
+        /// <param name="linePosition">
+        /// The position on the line, starting at 1
+        /// </param>
+        /// <returns>
+        /// The index in <paramref name="text"/>
+        /// </returns>
+        private static int GetOffset(string text, int lineNumber, int linePosition)
+        {
+            var offset = 0;
+
+            for (var line = 1; line < lineNumber; line++)
+            {
+                var lineBreak = text.IndexOfAny(new[] { '\r', '\n' }, offset);
+                offset = lineBreak + (text[lineBreak] == '\r' && lineBreak + 1 < text.Length && text[lineBreak + 1] == '\n' ? 2 : 1);
+            }
+
+            return offset + linePosition - 1;
+        }
+
+        /// <summary>
         /// Creates <see cref="ExternalObject"/>s from provided XHTML
         /// </summary>
         /// <param name="xhtml">
@@ -661,19 +853,13 @@ namespace ReqIFSharp
         /// <returns>
         /// An <see cref="IEnumerable{ExternalObject}"/> which may be empty
         /// </returns>
-        private IEnumerable<ExternalObject> CreateExternalObjects(string xhtml)
+        internal IEnumerable<ExternalObject> CreateExternalObjects(string xhtml)
         {
             var sw = Stopwatch.StartNew();
 
             var result = new List<ExternalObject>();
 
-            var settings = new XmlReaderSettings
-            {
-                Async = true,
-                ConformanceLevel = ConformanceLevel.Fragment
-            };
-
-            var xmlReader = XmlReader.Create(new StringReader(xhtml), settings);
+            using var xmlReader = CreateFragmentReader(xhtml);
             while (xmlReader.Read())
             {
                 if (xmlReader.MoveToContent() == XmlNodeType.Element && xmlReader.LocalName == "object")
@@ -727,13 +913,7 @@ namespace ReqIFSharp
 
             var result = new List<ExternalObject>();
 
-            var settings = new XmlReaderSettings
-            {
-                Async = true,
-                ConformanceLevel = ConformanceLevel.Fragment
-            };
-
-            var xmlReader = XmlReader.Create(new StringReader(xhtml), settings);
+            using var xmlReader = CreateFragmentReader(xhtml);
             while (xmlReader.Read())
             {
                 if (await xmlReader.MoveToContentAsync() == XmlNodeType.Element && xmlReader.LocalName == "object")

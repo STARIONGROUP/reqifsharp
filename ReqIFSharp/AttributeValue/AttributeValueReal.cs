@@ -10,7 +10,6 @@
 namespace ReqIFSharp
 {
     using System;
-    using System.Globalization;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Threading;
@@ -249,7 +248,7 @@ namespace ReqIFSharp
                 throw new SerializationException("The Definition property of an AttributeValueReal may not be null");
             }
             
-            writer.WriteAttributeString("THE-VALUE", this.TheValue.ToString(CultureInfo.InvariantCulture));
+            writer.WriteAttributeString("THE-VALUE", XmlConvert.ToString(this.TheValue));
             writer.WriteStartElement("DEFINITION");
             writer.WriteElementString("ATTRIBUTE-DEFINITION-REAL-REF", this.Definition.Identifier);
             writer.WriteEndElement();
@@ -276,7 +275,7 @@ namespace ReqIFSharp
 
             token.ThrowIfCancellationRequested();
 
-            await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, this.TheValue.ToString(CultureInfo.InvariantCulture));
+            await writer.WriteAttributeStringAsync(null,"THE-VALUE", null, XmlConvert.ToString(this.TheValue));
             await writer.WriteStartElementAsync(null, "DEFINITION", null);
             await writer.WriteElementStringAsync(null, "ATTRIBUTE-DEFINITION-REAL-REF", null, this.Definition.Identifier);
             await writer.WriteEndElementAsync();
