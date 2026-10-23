@@ -181,7 +181,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(specObject));
             }
 
-            ReqIFContent.EnsureSameContent(this.ReqIfContent, specObject.ReqIFContent, specObject, nameof(specObject));
+            ReqIFContent.ValidateSameContent(this.ReqIfContent, specObject.ReqIFContent, specObject, nameof(specObject));
 
             var specHierarchy = new SpecHierarchy(this, this.Root, this.ReqIfContent, this.loggerFactory)
             {

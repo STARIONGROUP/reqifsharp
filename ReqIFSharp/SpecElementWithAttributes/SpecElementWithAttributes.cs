@@ -141,7 +141,7 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueBoolean CreateAttributeValue(AttributeDefinitionBoolean definition, bool value)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             return new AttributeValueBoolean(this, this.loggerFactory)
             {
@@ -175,7 +175,7 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueDate CreateAttributeValue(AttributeDefinitionDate definition, DateTime value)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             return new AttributeValueDate(this, this.loggerFactory)
             {
@@ -210,7 +210,7 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueInteger CreateAttributeValue(AttributeDefinitionInteger definition, long value)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             var datatype = definition.Type;
 
@@ -252,7 +252,7 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueReal CreateAttributeValue(AttributeDefinitionReal definition, double value)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             var datatype = definition.Type;
 
@@ -294,7 +294,7 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueString CreateAttributeValue(AttributeDefinitionString definition, string value)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             if (value == null)
             {
@@ -346,14 +346,14 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueXHTML CreateAttributeValue(AttributeDefinitionXHTML definition, string xhtml)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             if (xhtml == null)
             {
                 throw new ArgumentNullException(nameof(xhtml));
             }
 
-            AttributeValueXHTML.EnsureValidValue(xhtml);
+            AttributeValueXHTML.ValidateXhtml(xhtml);
             var theValue = AttributeValueXHTML.DeclareXhtmlPrefix(xhtml);
 
             var attributeValue = new AttributeValueXHTML(this, this.loggerFactory)
@@ -393,7 +393,7 @@ namespace ReqIFSharp
         /// </exception>
         public AttributeValueEnumeration CreateAttributeValue(AttributeDefinitionEnumeration definition, params EnumValue[] values)
         {
-            this.EnsureValueCanBeCreated(definition);
+            this.ValidateValueCanBeCreated(definition);
 
             if (values == null)
             {
@@ -443,7 +443,7 @@ namespace ReqIFSharp
         /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, or this
         /// element already has a value for it
         /// </exception>
-        private void EnsureValueCanBeCreated(AttributeDefinition definition)
+        private void ValidateValueCanBeCreated(AttributeDefinition definition)
         {
             if (definition == null)
             {

@@ -146,7 +146,7 @@ namespace ReqIFSharp
         /// <exception cref="ArgumentException">
         /// The element belongs to another <see cref="ReqIFContent"/>
         /// </exception>
-        internal static void EnsureSameContent(ReqIFContent content, ReqIFContent elementContent, Identifiable element, string paramName)
+        internal static void ValidateSameContent(ReqIFContent content, ReqIFContent elementContent, Identifiable element, string paramName)
         {
             if (content != null && elementContent != null && !ReferenceEquals(content, elementContent))
             {
@@ -433,7 +433,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(type));
             }
 
-            EnsureSameContent(this, type.ReqIFContent, type, nameof(type));
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
 
             var specObject = new SpecObject(this, this.loggerFactory)
             {
@@ -471,7 +471,7 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(type));
             }
 
-            EnsureSameContent(this, type.ReqIFContent, type, nameof(type));
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
 
             var specification = new Specification(this, this.loggerFactory)
             {
@@ -525,9 +525,9 @@ namespace ReqIFSharp
                 throw new ArgumentNullException(nameof(target));
             }
 
-            EnsureSameContent(this, type.ReqIFContent, type, nameof(type));
-            EnsureSameContent(this, source.ReqIFContent, source, nameof(source));
-            EnsureSameContent(this, target.ReqIFContent, target, nameof(target));
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
+            ValidateSameContent(this, source.ReqIFContent, source, nameof(source));
+            ValidateSameContent(this, target.ReqIFContent, target, nameof(target));
 
             var specRelation = new SpecRelation(this, this.loggerFactory)
             {
@@ -586,9 +586,9 @@ namespace ReqIFSharp
             }
 
             Identifiable.ValidateLongName(longName);
-            EnsureSameContent(this, type.ReqIFContent, type, nameof(type));
-            EnsureSameContent(this, sourceSpecification.ReqIFContent, sourceSpecification, nameof(sourceSpecification));
-            EnsureSameContent(this, targetSpecification.ReqIFContent, targetSpecification, nameof(targetSpecification));
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
+            ValidateSameContent(this, sourceSpecification.ReqIFContent, sourceSpecification, nameof(sourceSpecification));
+            ValidateSameContent(this, targetSpecification.ReqIFContent, targetSpecification, nameof(targetSpecification));
 
             var relationGroup = new RelationGroup(this, this.loggerFactory)
             {

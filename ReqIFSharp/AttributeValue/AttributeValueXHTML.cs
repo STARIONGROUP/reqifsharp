@@ -703,7 +703,7 @@ namespace ReqIFSharp
         /// <exception cref="ArgumentException">
         /// The <paramref name="xhtml"/> does not meet these rules
         /// </exception>
-        internal static void EnsureValidValue(string xhtml)
+        internal static void ValidateXhtml(string xhtml)
         {
             var rootElements = 0;
 
@@ -760,7 +760,7 @@ namespace ReqIFSharp
         /// and is written well-formed whatever prefixes the document declares.
         /// </summary>
         /// <param name="xhtml">
-        /// XHTML that <see cref="EnsureValidValue"/> accepts
+        /// XHTML that <see cref="ValidateXhtml"/> accepts
         /// </param>
         /// <returns>
         /// The <paramref name="xhtml"/> with <code>xmlns:xhtml</code> added to its root element when needed, otherwise the

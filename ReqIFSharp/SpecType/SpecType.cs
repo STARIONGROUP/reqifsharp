@@ -116,7 +116,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionBoolean(this, this.loggerFactory)
             {
@@ -154,7 +154,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionDate(this, this.loggerFactory)
             {
@@ -195,7 +195,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionEnumeration(this, this.loggerFactory)
             {
@@ -234,7 +234,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionInteger(this, this.loggerFactory)
             {
@@ -272,7 +272,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionReal(this, this.loggerFactory)
             {
@@ -310,7 +310,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionString(this, this.loggerFactory)
             {
@@ -348,7 +348,7 @@ namespace ReqIFSharp
             }
 
             ValidateLongName(longName);
-            ReqIFContent.EnsureSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
 
             var attributeDefinition = new AttributeDefinitionXHTML(this, this.loggerFactory)
             {
