@@ -9,7 +9,10 @@
 
 namespace ReqIFSharp
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Xml;
@@ -112,6 +115,363 @@ namespace ReqIFSharp
         /// The <see cref="SpecType"/> to set.
         /// </param>
         protected abstract void SetSpecType(SpecType specType);
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueBoolean"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionBoolean"/> the value is for. It must be an attribute of the <see cref="SpecType"/>
+        /// of this element.
+        /// </param>
+        /// <param name="value">
+        /// The value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueBoolean"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, or this
+        /// element already has a value for it
+        /// </exception>
+        public AttributeValueBoolean CreateAttributeValue(AttributeDefinitionBoolean definition, bool value)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            return new AttributeValueBoolean(this, this.loggerFactory)
+            {
+                Definition = definition,
+                TheValue = value
+            };
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueDate"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionDate"/> the value is for. It must be an attribute of the <see cref="SpecType"/>
+        /// of this element.
+        /// </param>
+        /// <param name="value">
+        /// The value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueDate"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, or this
+        /// element already has a value for it
+        /// </exception>
+        public AttributeValueDate CreateAttributeValue(AttributeDefinitionDate definition, DateTime value)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            return new AttributeValueDate(this, this.loggerFactory)
+            {
+                Definition = definition,
+                TheValue = value
+            };
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueInteger"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionInteger"/> the value is for. It must be an attribute of the <see cref="SpecType"/>
+        /// of this element.
+        /// </param>
+        /// <param name="value">
+        /// The value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueInteger"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, this
+        /// element already has a value for it, or the <paramref name="value"/> is outside the <see cref="DatatypeDefinitionInteger.Min"/> and
+        /// <see cref="DatatypeDefinitionInteger.Max"/> of its datatype
+        /// </exception>
+        public AttributeValueInteger CreateAttributeValue(AttributeDefinitionInteger definition, long value)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            var datatype = definition.Type;
+
+            if (value < datatype.Min || value > datatype.Max)
+            {
+                throw new ArgumentException($"The value {value} is outside the range {datatype.Min} to {datatype.Max} of the datatype {datatype.Identifier}", nameof(value));
+            }
+
+            return new AttributeValueInteger(this, this.loggerFactory)
+            {
+                Definition = definition,
+                TheValue = value
+            };
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueReal"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionReal"/> the value is for. It must be an attribute of the <see cref="SpecType"/>
+        /// of this element.
+        /// </param>
+        /// <param name="value">
+        /// The value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueReal"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, this
+        /// element already has a value for it, or the <paramref name="value"/> is outside the <see cref="DatatypeDefinitionReal.Min"/> and
+        /// <see cref="DatatypeDefinitionReal.Max"/> of its datatype, or is not a number
+        /// </exception>
+        public AttributeValueReal CreateAttributeValue(AttributeDefinitionReal definition, double value)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            var datatype = definition.Type;
+
+            if (!(value >= datatype.Min && value <= datatype.Max))
+            {
+                throw new ArgumentException($"The value {value.ToString(CultureInfo.InvariantCulture)} is outside the range {datatype.Min.ToString(CultureInfo.InvariantCulture)} to {datatype.Max.ToString(CultureInfo.InvariantCulture)} of the datatype {datatype.Identifier}", nameof(value));
+            }
+
+            return new AttributeValueReal(this, this.loggerFactory)
+            {
+                Definition = definition,
+                TheValue = value
+            };
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueString"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionString"/> the value is for. It must be an attribute of the <see cref="SpecType"/>
+        /// of this element.
+        /// </param>
+        /// <param name="value">
+        /// The value; use an empty string for no text, as the ReqIF schema requires a value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueString"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> or <paramref name="value"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, this
+        /// element already has a value for it, or the <paramref name="value"/> is longer than the <see cref="DatatypeDefinitionString.MaxLength"/>
+        /// of its datatype
+        /// </exception>
+        public AttributeValueString CreateAttributeValue(AttributeDefinitionString definition, string value)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
+            var datatype = definition.Type;
+
+            if (value.Length > datatype.MaxLength)
+            {
+                throw new ArgumentException($"The value is {value.Length} characters long, more than the max length {datatype.MaxLength} of the datatype {datatype.Identifier}", nameof(value));
+            }
+
+            return new AttributeValueString(this, this.loggerFactory)
+            {
+                Definition = definition,
+                TheValue = value
+            };
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueXHTML"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionXHTML"/> the value is for. It must be an attribute of the <see cref="SpecType"/>
+        /// of this element.
+        /// </param>
+        /// <param name="xhtml">
+        /// The XHTML content: well-formed XML with one root element, an <c>xhtml:div</c> or <c>xhtml:p</c>, and no text
+        /// outside it. The <c>xhtml</c> prefix may be used without declaring it. The content of the root element is not
+        /// validated against the XHTML schema.
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueXHTML"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element and an
+        /// <see cref="ExternalObject"/> in <see cref="AttributeValueXHTML.ExternalObjects"/> for each <c>xhtml:object</c>.
+        /// When the <paramref name="xhtml"/> uses the <c>xhtml</c> prefix without declaring it, its
+        /// <see cref="AttributeValueXHTML.TheValue"/> has <c>xmlns:xhtml</c> added to the root element, so the value is
+        /// complete on its own, like a value read from a document, and is written well-formed in any document.
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> or <paramref name="xhtml"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, this
+        /// element already has a value for it, or the <paramref name="xhtml"/> does not meet the rules above
+        /// </exception>
+        public AttributeValueXHTML CreateAttributeValue(AttributeDefinitionXHTML definition, string xhtml)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            if (xhtml == null)
+            {
+                throw new ArgumentNullException(nameof(xhtml));
+            }
+
+            AttributeValueXHTML.ValidateXhtml(xhtml);
+            var theValue = AttributeValueXHTML.DeclareXhtmlPrefix(xhtml);
+
+            var attributeValue = new AttributeValueXHTML(this, this.loggerFactory)
+            {
+                Definition = definition,
+                TheValue = theValue
+            };
+
+            attributeValue.ExternalObjects.AddRange(attributeValue.CreateExternalObjects(theValue));
+            return attributeValue;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeValueEnumeration"/> for the <paramref name="definition"/> and adds it to <see cref="Values"/>
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinitionEnumeration"/> the value is for. It must be an attribute of the
+        /// <see cref="SpecType"/> of this element.
+        /// </param>
+        /// <param name="values">
+        /// The selected literals. They must be literals of the enumeration that is the type of the
+        /// <paramref name="definition"/>; select more than one only when the definition is multi-valued.
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeValueEnumeration"/>, with <see cref="AttributeValue.SpecElAt"/> set to this element
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> or <paramref name="values"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, this element
+        /// already has a value for it, a selected literal is null or not a literal of its enumeration, or more than one
+        /// literal is selected for a definition that is not multi-valued
+        /// </exception>
+        public AttributeValueEnumeration CreateAttributeValue(AttributeDefinitionEnumeration definition, params EnumValue[] values)
+        {
+            this.ValidateValueCanBeCreated(definition);
+
+            if (values == null)
+            {
+                throw new ArgumentNullException(nameof(values));
+            }
+
+            if (values.Length > 1 && !definition.IsMultiValued)
+            {
+                throw new ArgumentException($"The attribute definition {definition.Identifier} is not multi-valued, but {values.Length} values are selected", nameof(values));
+            }
+
+            foreach (var enumValue in values)
+            {
+                if (enumValue == null)
+                {
+                    throw new ArgumentException("A selected value is null", nameof(values));
+                }
+
+                if (!definition.Type.SpecifiedValues.Contains(enumValue))
+                {
+                    throw new ArgumentException($"The enum value {enumValue.Identifier} is not a literal of the enumeration {definition.Type.Identifier}", nameof(values));
+                }
+            }
+
+            var attributeValue = new AttributeValueEnumeration(this, this.loggerFactory)
+            {
+                Definition = definition
+            };
+
+            attributeValue.Values.AddRange(values);
+            return attributeValue;
+        }
+
+        /// <summary>
+        /// Checks that a value for the <paramref name="definition"/> can be added to this element
+        /// </summary>
+        /// <param name="definition">
+        /// The <see cref="AttributeDefinition"/> of the value to create
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="definition"/> is null
+        /// </exception>
+        /// <exception cref="InvalidOperationException">
+        /// This element has no <see cref="SpecType"/>
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="definition"/> has no datatype or is not an attribute of the <see cref="SpecType"/> of this element, or this
+        /// element already has a value for it
+        /// </exception>
+        private void ValidateValueCanBeCreated(AttributeDefinition definition)
+        {
+            if (definition == null)
+            {
+                throw new ArgumentNullException(nameof(definition));
+            }
+
+            var specType = this.SpecType;
+
+            if (specType == null)
+            {
+                throw new InvalidOperationException($"{this.Identifier} has no spec type, so it cannot have attribute values");
+            }
+
+            if (definition.DatatypeDefinition == null)
+            {
+                throw new ArgumentException($"The attribute definition {definition.Identifier} has no datatype", nameof(definition));
+            }
+
+            if (!specType.SpecAttributes.Contains(definition))
+            {
+                throw new ArgumentException($"The attribute definition {definition.Identifier} is not an attribute of the spec type {specType.Identifier} of {this.Identifier}", nameof(definition));
+            }
+
+            if (this.Values.Any(x => x.AttributeDefinition == definition))
+            {
+                throw new ArgumentException($"{this.Identifier} already has a value for the attribute definition {definition.Identifier}", nameof(definition));
+            }
+        }
 
         /// <summary>
         /// Generates a <see cref="SpecElementWithAttributes"/> object from its XML representation.

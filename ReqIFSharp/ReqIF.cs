@@ -9,6 +9,7 @@
 
 namespace ReqIFSharp
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading;
     using System.Threading.Tasks;
@@ -86,6 +87,46 @@ namespace ReqIFSharp
         /// </remarks>
         [ReqIfProperty(aggregation: AggregationKind.None, lowerValue: 0, upperValue: 1, isOrdered: false, isReadOnly: false, isDerived: false, isDerivedUnion: false, isUnique: true, defaultValue: null)]
         public string Lang { get; set; }
+
+        /// <summary>
+        /// Creates an empty <see cref="ReqIF"/> document with a header and a content. Build the content with the
+        /// <c>Create...</c> methods of <see cref="ReqIFContent"/>.
+        /// </summary>
+        /// <param name="title">
+        /// The title of the document, or null; a null title is written as an empty <c>TITLE</c> element
+        /// </param>
+        /// <param name="loggerFactory">
+        /// The (injected) <see cref="ILoggerFactory"/> used to set up logging, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="ReqIF"/>. Its <see cref="TheHeader"/> has a new identifier, the <paramref name="title"/>,
+        /// <see cref="ReqIFHeader.CreationTime"/> set to now, <see cref="ReqIFHeader.ReqIFVersion"/> "1.0", and
+        /// "ReqIFSharp" as <see cref="ReqIFHeader.ReqIFToolId"/> and <see cref="ReqIFHeader.SourceToolId"/>; change these
+        /// as needed. The <see cref="ReqIFHeader.DocumentRoot"/> of the header and the <see cref="ReqIFContent.DocumentRoot"/>
+        /// of the <see cref="CoreContent"/> are set to the new document.
+        /// </returns>
+        public static ReqIF Create(string title, ILoggerFactory loggerFactory = null)
+        {
+            var reqif = new ReqIF(loggerFactory);
+
+            reqif.TheHeader = new ReqIFHeader(loggerFactory)
+            {
+                Identifier = Identifiable.CreateIdentifier(),
+                Title = title,
+                CreationTime = DateTime.UtcNow,
+                ReqIFVersion = "1.0",
+                ReqIFToolId = "ReqIFSharp",
+                SourceToolId = "ReqIFSharp",
+                DocumentRoot = reqif
+            };
+
+            reqif.CoreContent = new ReqIFContent(loggerFactory)
+            {
+                DocumentRoot = reqif
+            };
+
+            return reqif;
+        }
 
         /// <summary>
         /// Generates a <see cref="ReqIF"/> object from its XML representation.

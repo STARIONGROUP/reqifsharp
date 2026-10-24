@@ -127,6 +127,481 @@ namespace ReqIFSharp
         public ReqIF DocumentRoot { get; set; }
 
         /// <summary>
+        /// Checks that an element passed to a create method does not belong to another <see cref="ReqIFContent"/>, so
+        /// that the new element only refers to elements of its own document. An element that belongs to no content is
+        /// accepted.
+        /// </summary>
+        /// <param name="content">
+        /// The <see cref="ReqIFContent"/> the new element is created in
+        /// </param>
+        /// <param name="elementContent">
+        /// The <see cref="ReqIFContent"/> of the element that is passed
+        /// </param>
+        /// <param name="element">
+        /// The element that is passed
+        /// </param>
+        /// <param name="paramName">
+        /// The name of the parameter the element is passed in
+        /// </param>
+        /// <exception cref="ArgumentException">
+        /// The element belongs to another <see cref="ReqIFContent"/>
+        /// </exception>
+        internal static void ValidateSameContent(ReqIFContent content, ReqIFContent elementContent, Identifiable element, string paramName)
+        {
+            if (content != null && elementContent != null && !ReferenceEquals(content, elementContent))
+            {
+                throw new ArgumentException($"{element.Identifier} belongs to another ReqIF document and cannot be referenced from this one", paramName);
+            }
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionBoolean"/> and adds it to <see cref="DataTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionBoolean"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        public DatatypeDefinitionBoolean CreateDatatypeDefinitionBoolean(string longName)
+        {
+            var datatypeDefinition = new DatatypeDefinitionBoolean(this, this.loggerFactory);
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionDate"/> and adds it to <see cref="DataTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionDate"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        public DatatypeDefinitionDate CreateDatatypeDefinitionDate(string longName)
+        {
+            var datatypeDefinition = new DatatypeDefinitionDate(this, this.loggerFactory);
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionEnumeration"/> and adds it to <see cref="DataTypes"/>. Add its literals
+        /// with <see cref="DatatypeDefinitionEnumeration.CreateEnumValue"/>.
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionEnumeration"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        public DatatypeDefinitionEnumeration CreateDatatypeDefinitionEnumeration(string longName)
+        {
+            var datatypeDefinition = new DatatypeDefinitionEnumeration(this, this.loggerFactory);
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionInteger"/> and adds it to <see cref="DataTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <param name="min">
+        /// The smallest allowed value
+        /// </param>
+        /// <param name="max">
+        /// The largest allowed value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionInteger"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="min"/> is larger than <paramref name="max"/>
+        /// </exception>
+        public DatatypeDefinitionInteger CreateDatatypeDefinitionInteger(string longName, long min, long max)
+        {
+            if (min > max)
+            {
+                throw new ArgumentException($"The min {min} is larger than the max {max}", nameof(min));
+            }
+
+            var datatypeDefinition = new DatatypeDefinitionInteger(this, this.loggerFactory)
+            {
+                Min = min,
+                Max = max
+            };
+
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionReal"/> and adds it to <see cref="DataTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <param name="accuracy">
+        /// The number of digits after the decimal point
+        /// </param>
+        /// <param name="min">
+        /// The smallest allowed value
+        /// </param>
+        /// <param name="max">
+        /// The largest allowed value
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionReal"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="accuracy"/> is negative, or <paramref name="min"/> is larger than <paramref name="max"/>
+        /// </exception>
+        public DatatypeDefinitionReal CreateDatatypeDefinitionReal(string longName, long accuracy, double min, double max)
+        {
+            if (accuracy < 0)
+            {
+                throw new ArgumentException($"The accuracy {accuracy} is negative", nameof(accuracy));
+            }
+
+            if (min > max)
+            {
+                throw new ArgumentException($"The min {min} is larger than the max {max}", nameof(min));
+            }
+
+            var datatypeDefinition = new DatatypeDefinitionReal(this, this.loggerFactory)
+            {
+                Accuracy = accuracy,
+                Min = min,
+                Max = max
+            };
+
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionString"/> and adds it to <see cref="DataTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <param name="maxLength">
+        /// The largest allowed number of characters
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionString"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="maxLength"/> is negative
+        /// </exception>
+        public DatatypeDefinitionString CreateDatatypeDefinitionString(string longName, long maxLength)
+        {
+            if (maxLength < 0)
+            {
+                throw new ArgumentException($"The max length {maxLength} is negative", nameof(maxLength));
+            }
+
+            var datatypeDefinition = new DatatypeDefinitionString(this, this.loggerFactory)
+            {
+                MaxLength = maxLength
+            };
+
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="DatatypeDefinitionXHTML"/> and adds it to <see cref="DataTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="DatatypeDefinitionXHTML"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="DatatypeDefinition.ReqIFContent"/> set to this content
+        /// </returns>
+        public DatatypeDefinitionXHTML CreateDatatypeDefinitionXHTML(string longName)
+        {
+            var datatypeDefinition = new DatatypeDefinitionXHTML(this, this.loggerFactory);
+            datatypeDefinition.InitializeCreated(longName);
+            return datatypeDefinition;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SpecObjectType"/> and adds it to <see cref="SpecTypes"/>. Add its attributes with the
+        /// <see cref="SpecType.CreateAttributeDefinition(DatatypeDefinitionString, string)"/> overloads.
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="SpecObjectType"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecType.ReqIFContent"/> set to this content
+        /// </returns>
+        public SpecObjectType CreateSpecObjectType(string longName)
+        {
+            var specType = new SpecObjectType(this, this.loggerFactory);
+            specType.InitializeCreated(longName);
+            return specType;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SpecificationType"/> and adds it to <see cref="SpecTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="SpecificationType"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecType.ReqIFContent"/> set to this content
+        /// </returns>
+        public SpecificationType CreateSpecificationType(string longName)
+        {
+            var specType = new SpecificationType(this, this.loggerFactory);
+            specType.InitializeCreated(longName);
+            return specType;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SpecRelationType"/> and adds it to <see cref="SpecTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="SpecRelationType"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecType.ReqIFContent"/> set to this content
+        /// </returns>
+        public SpecRelationType CreateSpecRelationType(string longName)
+        {
+            var specType = new SpecRelationType(this, this.loggerFactory);
+            specType.InitializeCreated(longName);
+            return specType;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="RelationGroupType"/> and adds it to <see cref="SpecTypes"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="RelationGroupType"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecType.ReqIFContent"/> set to this content
+        /// </returns>
+        public RelationGroupType CreateRelationGroupType(string longName)
+        {
+            var specType = new RelationGroupType(this, this.loggerFactory);
+            specType.InitializeCreated(longName);
+            return specType;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SpecObject"/> of the <paramref name="type"/> and adds it to <see cref="SpecObjects"/>.
+        /// Add its values with the <see cref="SpecElementWithAttributes.CreateAttributeValue(AttributeDefinitionString, string)"/>
+        /// overloads.
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="SpecObjectType"/> of the new <see cref="SpecObject"/>
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="SpecObject"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecElementWithAttributes.ReqIFContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="type"/> belongs to another <see cref="ReqIFContent"/>
+        /// </exception>
+        public SpecObject CreateSpecObject(SpecObjectType type, string longName = null)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
+
+            var specObject = new SpecObject(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            specObject.InitializeCreated(longName);
+            return specObject;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="Specification"/> of the <paramref name="type"/> and adds it to <see cref="Specifications"/>.
+        /// Add its spec objects with <see cref="Specification.AddChild"/>.
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="SpecificationType"/> of the new <see cref="Specification"/>
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="Specification"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecElementWithAttributes.ReqIFContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="type"/> belongs to another <see cref="ReqIFContent"/>
+        /// </exception>
+        public Specification CreateSpecification(SpecificationType type, string longName = null)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
+
+            var specification = new Specification(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            specification.InitializeCreated(longName);
+            return specification;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="SpecRelation"/> of the <paramref name="type"/> from <paramref name="source"/> to
+        /// <paramref name="target"/> and adds it to <see cref="SpecRelations"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="SpecRelationType"/> of the new <see cref="SpecRelation"/>
+        /// </param>
+        /// <param name="source">
+        /// The <see cref="SpecObject"/> the relation starts from
+        /// </param>
+        /// <param name="target">
+        /// The <see cref="SpecObject"/> the relation points to
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        /// <returns>
+        /// The new <see cref="SpecRelation"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="SpecElementWithAttributes.ReqIFContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/>, <paramref name="source"/> or <paramref name="target"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// The <paramref name="type"/>, <paramref name="source"/> or <paramref name="target"/> belongs to another <see cref="ReqIFContent"/>
+        /// </exception>
+        public SpecRelation CreateSpecRelation(SpecRelationType type, SpecObject source, SpecObject target, string longName = null)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (target == null)
+            {
+                throw new ArgumentNullException(nameof(target));
+            }
+
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
+            ValidateSameContent(this, source.ReqIFContent, source, nameof(source));
+            ValidateSameContent(this, target.ReqIFContent, target, nameof(target));
+
+            var specRelation = new SpecRelation(this, this.loggerFactory)
+            {
+                Type = type,
+                Source = source,
+                Target = target
+            };
+
+            specRelation.InitializeCreated(longName);
+            return specRelation;
+        }
+
+        /// <summary>
+        /// Creates a <see cref="RelationGroup"/> of the <paramref name="type"/> between two specifications and adds it to
+        /// <see cref="SpecRelationGroups"/>. Add its relations to <see cref="RelationGroup.SpecRelations"/>.
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="RelationGroupType"/> of the new <see cref="RelationGroup"/>
+        /// </param>
+        /// <param name="sourceSpecification">
+        /// The <see cref="Specification"/> the relations of the group start from
+        /// </param>
+        /// <param name="targetSpecification">
+        /// The <see cref="Specification"/> the relations of the group point to
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for a relation group
+        /// </param>
+        /// <returns>
+        /// The new <see cref="RelationGroup"/>, with a new identifier, <see cref="Identifiable.LastChange"/>
+        /// set to now and <see cref="RelationGroup.CoreContent"/> set to this content
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/>, <paramref name="sourceSpecification"/>, <paramref name="targetSpecification"/> or
+        /// <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/>, <paramref name="sourceSpecification"/> or
+        /// <paramref name="targetSpecification"/> belongs to another <see cref="ReqIFContent"/>
+        /// </exception>
+        public RelationGroup CreateRelationGroup(RelationGroupType type, Specification sourceSpecification, Specification targetSpecification, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            if (sourceSpecification == null)
+            {
+                throw new ArgumentNullException(nameof(sourceSpecification));
+            }
+
+            if (targetSpecification == null)
+            {
+                throw new ArgumentNullException(nameof(targetSpecification));
+            }
+
+            Identifiable.ValidateLongName(longName);
+            ValidateSameContent(this, type.ReqIFContent, type, nameof(type));
+            ValidateSameContent(this, sourceSpecification.ReqIFContent, sourceSpecification, nameof(sourceSpecification));
+            ValidateSameContent(this, targetSpecification.ReqIFContent, targetSpecification, nameof(targetSpecification));
+
+            var relationGroup = new RelationGroup(this, this.loggerFactory)
+            {
+                Type = type,
+                SourceSpecification = sourceSpecification,
+                TargetSpecification = targetSpecification
+            };
+
+            relationGroup.InitializeCreated(longName);
+            return relationGroup;
+        }
+
+        /// <summary>
         /// Generates a <see cref="ReqIFContent"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">

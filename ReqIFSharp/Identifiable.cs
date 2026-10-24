@@ -103,6 +103,73 @@ namespace ReqIFSharp
         public AlternativeId AlternativeId { get; set; }
 
         /// <summary>
+        /// Creates a new identifier that is a valid <code>xsd:ID</code>: an underscore followed by a new <see cref="Guid"/>
+        /// </summary>
+        /// <remarks>
+        /// An <code>xsd:ID</code> must start with a letter or an underscore. A bare <see cref="Guid"/> often starts with a
+        /// digit, which makes a written document invalid against the ReqIF schema.
+        /// </remarks>
+        /// <returns>
+        /// a new, unique identifier
+        /// </returns>
+        public static string CreateIdentifier()
+        {
+            return "_" + Guid.NewGuid().ToString();
+        }
+
+        /// <summary>
+        /// Sets <see cref="LastChange"/> to the current UTC date and time
+        /// </summary>
+        /// <remarks>
+        /// Call this method after changing the element, for example after changing one of the attribute values of a
+        /// <see cref="SpecObject"/>. <see cref="LastChange"/> is not updated automatically.
+        /// </remarks>
+        public void MarkAsChanged()
+        {
+            this.LastChange = DateTime.UtcNow;
+        }
+
+        /// <summary>
+        /// Gives a newly created element a new <see cref="Identifier"/>, sets its <see cref="LastChange"/> to the current
+        /// UTC date and time and sets its <see cref="LongName"/>
+        /// </summary>
+        /// <param name="longName">
+        /// The human-readable name, or null
+        /// </param>
+        internal void InitializeCreated(string longName)
+        {
+            this.Identifier = CreateIdentifier();
+            this.LongName = longName;
+            this.MarkAsChanged();
+        }
+
+        /// <summary>
+        /// Checks the long name of an element for which the ReqIF specification makes it mandatory: attribute
+        /// definitions, enum values and relation groups
+        /// </summary>
+        /// <param name="longName">
+        /// The long name to check
+        /// </param>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty
+        /// </exception>
+        internal static void ValidateLongName(string longName)
+        {
+            if (longName == null)
+            {
+                throw new ArgumentNullException(nameof(longName), "The ReqIF specification makes the long name mandatory for this element");
+            }
+
+            if (longName.Length == 0)
+            {
+                throw new ArgumentException("The ReqIF specification makes the long name mandatory for this element; it may not be empty", nameof(longName));
+            }
+        }
+
+        /// <summary>
         /// Generates a <see cref="AttributeDefinition"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">

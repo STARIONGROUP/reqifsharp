@@ -90,6 +90,276 @@ namespace ReqIFSharp
         public ReqIFContent ReqIFContent { get; set; }
 
         /// <summary>
+        /// Creates an <see cref="AttributeDefinitionBoolean"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionBoolean"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionBoolean"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionBoolean CreateAttributeDefinition(DatatypeDefinitionBoolean type, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionBoolean(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeDefinitionDate"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionDate"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionDate"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionDate CreateAttributeDefinition(DatatypeDefinitionDate type, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionDate(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeDefinitionEnumeration"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionEnumeration"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <param name="isMultiValued">
+        /// A value indicating whether more than one literal of the enumeration can be selected
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionEnumeration"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionEnumeration CreateAttributeDefinition(DatatypeDefinitionEnumeration type, string longName, bool isMultiValued = false)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionEnumeration(this, this.loggerFactory)
+            {
+                Type = type,
+                IsMultiValued = isMultiValued
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeDefinitionInteger"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionInteger"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionInteger"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionInteger CreateAttributeDefinition(DatatypeDefinitionInteger type, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionInteger(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeDefinitionReal"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionReal"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionReal"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionReal CreateAttributeDefinition(DatatypeDefinitionReal type, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionReal(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeDefinitionString"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionString"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionString"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionString CreateAttributeDefinition(DatatypeDefinitionString type, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionString(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
+        /// Creates an <see cref="AttributeDefinitionXHTML"/> of the <paramref name="type"/> and adds it to <see cref="SpecAttributes"/>
+        /// </summary>
+        /// <param name="type">
+        /// The <see cref="DatatypeDefinitionXHTML"/> of the new attribute
+        /// </param>
+        /// <param name="longName">
+        /// The human-readable name, mandatory for an attribute definition
+        /// </param>
+        /// <returns>
+        /// The new <see cref="AttributeDefinitionXHTML"/>, with a new identifier, <see cref="Identifiable.LastChange"/> set to now
+        /// and <see cref="AttributeDefinition.SpecType"/> set to this spec type
+        /// </returns>
+        /// <exception cref="ArgumentNullException">
+        /// <paramref name="type"/> or <paramref name="longName"/> is null
+        /// </exception>
+        /// <exception cref="ArgumentException">
+        /// <paramref name="longName"/> is empty, or <paramref name="type"/> belongs to another <see cref="ReqIFSharp.ReqIFContent"/>
+        /// </exception>
+        public AttributeDefinitionXHTML CreateAttributeDefinition(DatatypeDefinitionXHTML type, string longName)
+        {
+            if (type == null)
+            {
+                throw new ArgumentNullException(nameof(type));
+            }
+
+            ValidateLongName(longName);
+            ReqIFContent.ValidateSameContent(this.ReqIFContent, type.ReqIFContent, type, nameof(type));
+
+            var attributeDefinition = new AttributeDefinitionXHTML(this, this.loggerFactory)
+            {
+                Type = type
+            };
+
+            attributeDefinition.InitializeCreated(longName);
+            return attributeDefinition;
+        }
+
+        /// <summary>
         /// Generates a <see cref="SpecType"/> object from its XML representation.
         /// </summary>
         /// <param name="reader">
